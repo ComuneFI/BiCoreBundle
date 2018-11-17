@@ -1,0 +1,55 @@
+parameters:
+#    fi_pannello_amministrazione.example.class: Cdf\PannelloAmministrazioneBundle\Example
+
+services:
+#    fi_pannello_amministrazione.example:
+#        class: %fi_pannello_amministrazione.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+            
+    pannelloamministrazione.commands:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.utils:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.projectpath:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.generatorhelper:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        public: true
+        arguments:
+            ['@service_container']
+
+    pannelloamministrazione.command.generateormentities:
+        class: Cdf\PannelloAmministrazioneBundle\Command\GenerateOrmEntitiesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    pannelloamministrazione.command.generateform:
+        class: Cdf\PannelloAmministrazioneBundle\Command\GenerateFormCommand
+        public: false
+        tags:
+            -  { name: console.command }            
+
+    pannelloamministrazione.command.checkgitversion:
+        class: Cdf\PannelloAmministrazioneBundle\Command\CheckgitversionCommand
+        public: false
+        tags:
+            -  { name: console.command }            
+
+    pannelloamministrazione.command.checksrc:
+        class: Cdf\PannelloAmministrazioneBundle\Command\ChecksrcCommand
+        public: false
+        tags:
+            -  { name: console.command }

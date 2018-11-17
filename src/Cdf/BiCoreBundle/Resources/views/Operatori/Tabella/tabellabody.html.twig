@@ -1,0 +1,23 @@
+<tbody>
+    {% for record in parametri.recordstabella %}
+        <tr data-bitableid='{{record.id}}'>
+            <td scope="row">
+                <div class="form-check">
+                    <input id="checkbox{{record.id}}" type="checkbox" class="form-check-input position-static mx-auto">
+                </div>
+            </td>
+
+            {% for colonnatabella in parametri.parametritabella %}
+                {#{dump(colonnatabella)}#}
+                <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
+                {%if (colonnatabella.escluso == false ) %}
+                    <td scope="row">{{ object2view(field2object(colonnatabella.nomecampo,record),colonnatabella.tipocampo) }}</td>
+                {%endif%}
+            {% endfor%} 
+
+            <td>
+                <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
+            </td>
+        </tr>
+    {%endfor%}
+</tbody>

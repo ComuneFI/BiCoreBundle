@@ -1,0 +1,41 @@
+Ordine_container:
+    path:  /
+    defaults: { _controller: 'App\Controller\OrdineController::index' }
+
+Ordine_new:
+    path:  /new
+    defaults: { _controller: 'App\Controller\OrdineController::new' }
+
+Ordine_create:
+    path:  /create
+    defaults: { _controller: 'App\Controller\OrdineController::create' }
+    requirements: { methods: post }
+
+Ordine_edit:
+    path:  /{id}/edit
+    defaults: { _controller: 'App\Controller\OrdineController::edit' }
+
+Ordine_update:
+    path:  /{id}/update
+    defaults: { _controller: 'App\Controller\OrdineController::update' }
+    requirements: { methods: post|put }
+
+Ordine_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: 'App\Controller\OrdineController::aggiorna' }
+    requirements: { methods: post|put }
+
+Ordine_delete:
+    path:  /{id}/delete
+    defaults: { _controller: 'App\Controller\OrdineController::delete' }
+    requirements: { methods: post|delete }
+
+Ordine_deletemultiple:
+    path:  /delete
+    defaults: { _controller: 'App\Controller\OrdineController::delete' }
+    requirements: { methods: post|delete }
+
+Ordine__tabella:
+    path:  /tabella
+    defaults: { _controller: 'App\Controller\OrdineController::tabella' }
+    requirements: { methods: post }

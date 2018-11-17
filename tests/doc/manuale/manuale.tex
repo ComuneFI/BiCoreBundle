@@ -1,0 +1,58 @@
+\documentclass[a4paper,11pt]{report}
+\usepackage[margin=1.2in]{geometry}
+\usepackage[latin1]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\newcommand{\virgolette}[1]{``#1''}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\addvar}[2]{% #1 name, #2 value
+	\expandafter\def\csname varmacro#1\endcsname{#2}
+}
+\newcommand{\var}[1]{% 
+	\csname varmacro#1\endcsname
+}
+
+\addvar{percorso_programma}{\url{http://formazione.comune.intranet}}
+
+\addvar{nome_programma}{Formazione}
+
+\addvar{mail_assistenza}{emidio.picariello@comune.fi.it}
+
+\pagestyle{fancy}
+\lhead{Manuale d'uso di \var{nome_programma}}
+\lfoot{Emidio Picariello}
+\rfoot{}
+
+\title{Manuale d'uso di \var{nome_programma}}  
+\author{Emidio Picariello \\ emidio.picariello@comune.fi.it }
+
+\begin{document}
+\maketitle
+
+\newpage
+\section*{Funzionalità}
+\input{generali}
+
+\newpage
+\section*{Segnalazione degli Errori}
+\input{mantis}
+
+\newpage
+
+\begin{flushleft}
+Per la stesura di questa relazione sono stati utilizzati i seguenti strumenti opensource: \\
+
+\LaTeX\ \url{http://www.latex-project.org/} \\
+Texmaker \url{http://www.xm1math.net/texmaker/} \\
+Gimp \url{http://www.gimp.org/} \\
+
+\end{flushleft}
+
+\end{document}

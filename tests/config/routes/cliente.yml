@@ -1,0 +1,42 @@
+Cliente_container:
+    path:  /
+    defaults: { _controller: 'App\Controller\ClienteController::index' }
+
+Cliente_new:
+    path:  /new
+    defaults: { _controller: 'App\Controller\ClienteController::new' }
+
+Cliente_create:
+    path:  /create
+    defaults: { _controller: 'App\Controller\ClienteController::create' }
+    requirements: { methods: post }
+
+Cliente_edit:
+    path:  /{id}/edit
+    defaults: { _controller: 'App\Controller\ClienteController::edit' }
+
+Cliente_update:
+    path:  /{id}/update
+    defaults: { _controller: 'App\Controller\ClienteController::update' }
+    requirements: { methods: post|put }
+
+Cliente_aggiorna:
+    path:  /{id}/aggiorna
+    defaults: { _controller: 'App\Controller\ClienteController::aggiorna' }
+    requirements: { methods: post|put }
+
+Cliente_delete:
+    path:  /{id}/delete
+    defaults: { _controller: 'App\Controller\ClienteController::delete' }
+    requirements: { methods: post|delete }
+
+Cliente_deletemultiple:
+    path:  /delete
+    defaults: { _controller: 'App\Controller\ClienteController::delete' }
+    requirements: { methods: post|delete }
+
+Cliente_tabella:
+    path:  /tabella
+    defaults: { _controller: 'App\Controller\ClienteController::tabella' }
+    requirements: { methods: post }
+

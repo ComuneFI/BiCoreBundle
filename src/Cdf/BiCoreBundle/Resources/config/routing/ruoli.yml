@@ -1,0 +1,40 @@
+Ruoli:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:index" }
+
+Ruoli_show:
+    path:  /{id}/show
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:show" }
+
+Ruoli_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:new" }
+
+Ruoli_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:create" }
+    requirements: { methods: post }
+
+Ruoli_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:edit" }
+
+Ruoli_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:update" }
+    requirements: { methods: post|put }
+
+Ruoli_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
+    requirements: { methods: post|delete }
+    
+Ruoli_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
+    requirements: { methods: post|delete }
+
+Ruoli_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:tabella" }
+    requirements: { methods: post }

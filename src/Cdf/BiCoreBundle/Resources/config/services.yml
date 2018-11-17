@@ -1,0 +1,202 @@
+parameters:
+    cdf.bicorebundle.parameter.maintenance.lockfile: "%kernel.cache_dir%/maintenance.lock"  
+    locale: "%env(resolve:locale)%"
+    appname: "%env(resolve:bicorebundle_appname)%"
+    appid_applicativo: "%env(resolve:bicorebundle_appid_applicativo)%"
+    solosso: "%env(resolve:bicorebundle_solosso)%"
+    browser4test: "%env(resolve:bicorebundle_browser4test)%"
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+    #cache
+    Cdf\BiCoreBundle\Cache\CacheClearer:
+        tags: [kernel.cache_clearer]
+        public: false
+
+    cdf.bicorebundle.cache.clearer:
+        alias: Cdf\BiCoreBundle\Cache\CacheClearer
+        public: true
+        
+    #twig extension
+    cdf.bicorebundle.twig.permessi_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\PermessiTwigExtension
+        arguments: [ '@service_container', '@request_stack' ]
+        tags:
+            - { name: twig.extension }
+
+    cdf.bicorebundle.twig.menu_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\MenuExtension
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@security.token_storage', '%kernel.project_dir%' ]
+        tags:
+            - { name: twig.extension }
+
+    cdf.bicorebundle.twig.objecttotabella_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
+        tags:
+            - { name: twig.extension }
+            
+    cdf.bicorebundle.twig.versione_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\VersioneExtension
+        arguments: ['@service_container']
+        tags:
+          - { name: twig.extension }
+
+    cdf.bicorebundle.twig.parametritabella_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\ParametriTabellaTwigExtension
+        tags:
+          - { name: twig.extension }
+
+    cdf.bicorebundle.twig.utilita_extension:
+      class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@twig.loader' ]
+
+    cdf.bicorebundle.twig.misc_extension:
+      class: Cdf\BiCoreBundle\Twig\Extension\MiscExtension
+      tags:
+        - { name: twig.extension }
+      arguments: [ '@service_container' ]
+
+    #Informazioni connessione database su Web Debug Toolbar
+    cdf.bicorebundle.collector.databaseinfo:
+        class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
+        arguments: [ '@service_container' ]
+        tags:
+            - { name: data_collector , template: "BiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
+            
+    #Utility database
+    cdf.bicorebundle.utility.database:
+        class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
+        public: true
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+            
+    #Utility entities
+    cdf.bicorebundle.utility.entity:
+        class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
+        public: true
+        arguments: [ '@doctrine.orm.entity_manager' ]
+            
+    #Utility tabelle di sistema bi
+    cdf.bicorebundle.utility.entity.system:
+        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        public: true
+        arguments: [ '@doctrine.orm.entity_manager' ]
+            
+    #subscriber per aggiungere un suffisso alle tabelle di bi
+    cdf.bicorebundle.subscriber.tableprefix:
+        class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+            
+    #subscriber per aggiungere uno schema alle tabelle di bi
+    cdf.bicorebundle.subscriber.schemaprefix:
+        class: Cdf\BiCoreBundle\Subscriber\TableSchemaSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    #Entity type hidden
+    cdf.bicorebundle.entitytype.hidden:
+        class: Cdf\BiCoreBundle\Form\Type\EntityHiddenType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+        - { name: form.type, alias: entity_hidden }
+     
+    #Servizi fos user bundle usato principalmente per i test
+    cdf.bicorebundle.fos_user.security.login_manager:
+        alias: fos_user.security.login_manager
+        public: true
+            
+    cdf.bicorebundle.fos_user.user_manager:
+        alias: fos_user.user_manager
+        public: true
+            
+    cdf.bicorebundle.fos_user.util.user_manipulator:
+        alias: fos_user.util.user_manipulator
+        public: true
+    
+    #listener
+    cdf.bicorebundle.kernel.listener.maintenance:
+        class: Cdf\BiCoreBundle\Listener\MaintenanceListener
+        arguments: 
+            - "%cdf.bicorebundle.parameter.maintenance.lockfile%"
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+            
+    #Controllers
+    cdf.bicorebundle.controller.ficontroller:
+        class: Cdf\BiCoreBundle\Controller\FiController
+
+    cdf.bicorebundle.controller.operatori:
+        class: Cdf\BiCoreBundle\Controller\OperatoriController
+        bind:
+            # for any $logger argument, pass this specific service
+            $logger: '@logger'
+            $usermanipulator: '@cdf.bicorebundle.fos_user.util.user_manipulator'
+            
+    cdf.bicorebundle.controller.permessi:
+        class: Cdf\BiCoreBundle\Controller\PermessiController
+    
+    cdf.bicorebundle.controller.ruoli:
+        class: Cdf\BiCoreBundle\Controller\RuoliController
+    
+    cdf.bicorebundle.controller.opzionitabelle:
+        class: Cdf\BiCoreBundle\Controller\OpzionitabelleController
+
+    cdf.bicorebundle.controller.menuapplicazione:
+        class: Cdf\BiCoreBundle\Controller\MenuapplicazioneController
+
+    cdf.bicorebundle.controller.colonnetabelle:
+        class: Cdf\BiCoreBundle\Controller\ColonnetabelleController
+
+    cdf.bicorebundle.controller.storicomodifiche:
+        class: Cdf\BiCoreBundle\Controller\StoricomodificheController
+    
+    #Commands as services
+    cdf.bicorebundle.command.createdatabase:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleCreatedatabaseCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.dropdatabase:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleDropdatabaseCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.droptables:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.install:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.pubblicamanuale:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundlePubblicamanualeCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.configuratorimport:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
+    cdf.bicorebundle.command.configuratorexport:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
+        public: false
+        tags:
+            -  { name: console.command }

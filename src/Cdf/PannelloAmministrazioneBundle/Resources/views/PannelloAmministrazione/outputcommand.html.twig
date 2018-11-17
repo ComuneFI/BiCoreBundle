@@ -1,0 +1,8 @@
+<div style="background-color: white;">
+    <strong style="color: black;">$</strong>:<i style="color: black;">{{ command|replace({';': "\n"})|nl2br }}</i><br/>
+    {% if (errcode == false) %}
+        <p style="color: green;">{{ message|replace({';': "\n"})|nl2br }}</p>
+    {% else %}
+        <p style="color: red;">{{ message|replace({';': "\n"})|nl2br }}</p>
+    {% endif %}
+</div>

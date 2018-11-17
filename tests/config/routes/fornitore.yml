@@ -1,0 +1,41 @@
+Fornitore_container:
+    path:  /
+    defaults: { _controller: 'App\Controller\FornitoreController::index' }
+
+Fornitore_new:
+    path:  /new
+    defaults: { _controller: 'App\Controller\FornitoreController::new' }
+
+Fornitore_create:
+    path:  /create
+    defaults: { _controller: 'App\Controller\FornitoreController::create' }
+    requirements: { methods: post }
+
+Fornitore_edit:
+    path:  /{id}/edit
+    defaults: { _controller: 'App\Controller\FornitoreController::edit' }
+
+Fornitore_update:
+    path:  /{id}/update
+    defaults: { _controller: 'App\Controller\FornitoreController::update' }
+    requirements: { methods: post|put }
+
+Fornitore_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: 'App\Controller\FornitoreController::aggiorna' }
+    requirements: { methods: post|put }
+
+Fornitore_delete:
+    path:  /{id}/delete
+    defaults: { _controller: 'App\Controller\FornitoreController::delete' }
+    requirements: { methods: post|delete }
+
+Fornitore_deletemultiple:
+    path:  /delete
+    defaults: { _controller: 'App\Controller\FornitoreController::delete' }
+    requirements: { methods: post|delete }
+
+Fornitore_tabella:
+    path:  /tabella
+    defaults: { _controller: 'App\Controller\FornitoreController::tabella' }
+    requirements: { methods: post }

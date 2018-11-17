@@ -1,0 +1,17 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_pgsql
+    database_host: localhost
+    database_port: null
+    database_name: unittest
+    database_path: null
+    database_user: biuser
+    database_password: biuserpwd
+    mailer_transport: smtp
+    mailer_host: null
+    mailer_user: user@mail.com
+    mailer_password: null
+    locale: it
+    secret: ThisTokenIsNotSoSecretChangeIt
+    temascelto: sunny
+    browser4test: firefox

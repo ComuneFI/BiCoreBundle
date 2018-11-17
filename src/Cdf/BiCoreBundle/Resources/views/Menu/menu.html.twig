@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg"><span></span>
+    <button class="custom-navbar-toggler" type="button" aria-controls="navbarNavB" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarNavB"><span class="it-list"></span>
+    </button>
+    <div class="navbar-collapsable" id="navbarNavB">
+        <div class="close-div">
+            <button class="btn close-menu" type="button"><span class="it-close"></span>close
+            </button>
+        </div>
+        <div class="menu-wrapper">
+            <ul class="navbar-nav">
+                {% for i in risposta %}
+                    {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
+                            <div class="dropdown-menu">
+                                <div class="link-list-wrapper">
+                                    <ul class="link-list">
+                                        {% for sottomenu in i.sottolivello %}
+                                            {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
+                                                <h6 class="dropdown-header">{{sottomenu.nome}}</h6>
+                                                <li><span class="divider"></span>
+                                                </li>
+                                                {% for sottosubmenu in sottomenu.sottolivello %}
+                                                    <li><a class="list-item" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
+                                                    {% endfor %}
+                                                <li><span class="divider"></span>
+                                                {% else  %}
+                                                </li>                               
+                                                <li><a class="list-item" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
+                                                {% endif  %}
+                                            {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>                        
+                    {% else %}
+                        <li class="nav-item"{% if i.classe is defined %} class = "nav-link {{ i.classe }}" {% endif %} >
+                            <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}" class="nav-link" >
+                                <span>{{ i.nome }} </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script type="text/javascript" >
+    $(document).ready(function ()
+    {
+
+
+    {% for i in risposta %}
+
+        {% if (i.notifiche is defined) and (i.notifiche) %}
+
+
+            {% if (i.percorsonotifiche.percorso) %}
+                    $('#{{i.tag}}Body').load('{{i.percorsonotifiche.percorso}}');
+            {% endif %}
+
+
+                    $('body').click(function (evt) {
+                        //console.log(evt.target.id);
+                        if (evt.target.id == "{{i.tag}}Container") {
+                            return;
+                        }
+                        //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
+                        //console.log($(evt.target).closest('#{{i.tag}}Container').length);
+                        if ($(evt.target).closest('#{{i.tag}}Container').length) {
+                            return;
+                        }
+
+
+
+
+                        $(".{{i.tag}}Container").hide();
+                        $("#{{i.tag}}Container").hide();
+                        //Do processing of click event here for every element except with id menu_content
+
+                    });
+
+
+                    $("#{{i.tag}}Link").click(function () {
+                        $("#{{i.tag}}Container").fadeToggle(300);
+                        //$("#notification_count").fadeOut("slow");
+                        return false;
+                    });
+                    //Popup on click
+                    $("#{{i.tag}}Container").click(function () {
+
+                    });
+        {%endif %}
+    {% endfor %}
+        });
+
+
+
+
+</script>

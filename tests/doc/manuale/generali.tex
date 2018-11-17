@@ -1,0 +1,174 @@
+\subsection*{Accesso}
+
+Il programma è attualmente testato per funzionare solo con Mozilla Firefox, scaricabile da qui \\
+\begin{flushleft}
+\url{http://www.mozilla.org/it/firefox/new/} \\ 
+\end{flushleft}
+
+Quando si accede collegandosi a \var{percorso_programma} il programma rinvia alla pagina di 
+autenticazione di SSO (il sistema di Single Sign On del Comune). Qui si deve inserire la propria 
+matricola e  la propria password. L'utente viene quindi automaticamente reindirizzato alla 
+pagina successiva. 
+
+\begin{flushleft}
+\includegraphics[scale=0.7]{img_gen/001_accesso.jpg}
+\end{flushleft}
+\newpage
+
+\subsection*{Note generali}
+Ciascuna pagina del programma è composta da un menù a tendina che mostra a ciascun utente 
+solo le cose per le  quali esso dispone delle autorizzazioni e ogni voce di menù 
+rimanda a una griglia che mostra i dati e offre le funzioni di ricerca e stampa. 
+
+\begin{flushleft}
+\includegraphics[scale=0.58]{img_gen/005_generale.jpg}
+\end{flushleft}
+
+Il menù è composto dal nome del programma (nell'esempio qui sotto \virgolette{Formazione}) 
+come prima voce a sinistra, dalle voci di menù specifiche dell'applicazione e dalla voce
+\virgolette{Manuale} (che consente di scaricare il presente manuale) e infine da una voce di menù 
+caratterizzata dalla matricola che ha effettuato l'accesso. Cliccando sulla prima voce
+(il nome del programma) si viene riportati alla pagina principale del programma, cliccando 
+sul codice di matricola si apre un sotto-menù che consente di effettuare il \virgolette{Logout} (di uscire
+dal programma in modo che altri utenti non lo possano utilizzare quando lasciamo incustodito 
+il nostro computer). 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/010_menu.jpg}
+\end{flushleft}
+
+
+Sopra ciascuna colonna (in quella che abbiamo chiamato \virgolette{Testata della griglia} 
+è presente un campo di ricerca (nell'immagine qui sotto evidenziato in 
+arancione) e un tasto che consente di selezionare il tipo di ricerca (qui sotto cerchiato in verde). 
+Quando si clicca sul tasto \virgolette{tipo di ricerca} si apre un menù (qui sotto riquadrato di verde) dal 
+quale possiamo scegliere che tipo di ricerca verrà effettuata. Per esempio: se seleziono il tipo 
+di ricerca \virgolette{Inizia con} e nel campo di ricerca scrivo \virgolette{Pro}, la griglia mostrerà tutte le righe 
+della mia tabella che, in quel campo hanno un valore che comincia con \virgolette{Pro} (\virgolette{Professionista}, 
+\virgolette{Prototipo}, etc). Se invece scelgo \virgolette{Contiene} mostrerà tutte le righe che in quel campo contengono 
+la parola \virgolette{pro} (\virgolette{Professionista}, \virgolette{Prototipo}, ma anche \virgolette{Apro}, etc.). 
+
+Se clicco sul nome del campo (nell'esempio \virgolette{Corso}, riquadrato in giallo) verrà operato un ordinamento 
+crescente (se clicco una volta), decrescente (se clicco una seconda volta), verrà annullato l'ordinamento
+(se clicco una terza volta). Se effettuo queste operazioni su più campi i filtri si sommano e avrò una 
+tabella filtrata secondo le mie esigenze. 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/050_ricerca.jpg}
+\end{flushleft}
+
+Andiamo adesso a vedere come è composto il \virgolette{Piede della griglia}. A sinistra ci sono dei pulsanti 
+che consentono di accedere ad alcune funzioni, nel  merito delle quali entreremo più avanti, al centro c'è 
+il numero di pagina corrente e quante sono le righe mostrate in questa pagina. Qui si può anche scegliere di 
+vedere più righe per ciascuna pagina. A destra c'è il conto delle righe mostrate rispetto alle righe totali 
+della tabella (o rispondenti ai criteri di ricerca impostati). 
+
+\begin{flushleft}
+\includegraphics[scale=0.58]{img_gen/060_piede.jpg}
+\end{flushleft}
+
+Vediamo quindi le funzioni disponibili. Premettiamo che non tutte le funzioni sono disponibili in tutte 
+le tabelle, quindi se una tasto non appare nella tabella in cui siete, semplicemente quella funzione 
+non è disponibile per quella tabella. 
+
+La prima funzione disponibile è quella di ricerca \includegraphics[scale=1]{img_gen/070_ricerca.jpg} che 
+apre una pagina in cui si può compiere una ricerca ancora più avanzata di quella che si può 
+effettuare dalla testata della griglia. Innanzitutto possiamo scegliere fra \virgolette{tutto} e 
+\virgolette{almeno uno}. Poi possiamo aggiungere e togliere i campi sui quali vogliamo fare la 
+ricerca con il simbolo \virgolette{+} accanto alla scelta fra \virgolette{tutto} e \virgolette{almeno uno} 
+e con il simbolo \virgolette{-} accanto alla ricerca impostata. Possiamo inoltre scegliere il tipo di ricerca
+(come nel caso della ricerca da testata della griglia si può cercare per inizio, contenuto, etc.) 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/071_ricerca.jpg}
+\end{flushleft}
+
+Facciamo un esempio. Abbiamo una tabella con tre record. 
+
+\begin{center}
+\begin{tabular}{|c|c|} \hline
+{$Nome$} & {$Cognome$}\\ \hline
+Andrea & Manzi \\
+Emidio & Picariello \\
+Andrea & Rossi \\ \hline
+\end{tabular} 
+\end{center}
+
+Se scelgo \virgolette{tutto} poi \virgolette{nome} \virgolette{inizia con} \virgolette{Andr} otterrò 
+
+\begin{center}
+\begin{tabular}{|c|c|} \hline
+{$Nome$} & {$Cognome$}\\ \hline
+Andrea & Manzi \\
+Andrea & Rossi \\ \hline
+\end{tabular}
+\end{center}
+
+Ovvero le due righe dove \virgolette{nome} inizia con \virgolette{Andr}
+
+Se aggiungo \virgolette{cognome}, \virgolette{inizia con}, \virgolette{Ros}, ottengo solo \virgolette{Andrea Rossi} 
+ovvero la riga che soddisfa tutti i criteri (ricordiamo che ho scelto \virgolette{tutto}). 
+
+Se invece scelgo \virgolette{almeno uno} e poi scelgo \virgolette{cognome} \virgolette{inizia con} \virgolette{man} 
+poi clicco su \virgolette{+} e aggiungo una riga \virgolette{cognome} \virgolette{inizia con} \virgolette{pica} ottengo
+
+\begin{center}
+\begin{tabular}{|c|c|} \hline
+{$Nome$} & {$Cognome$}\\ \hline
+Andrea & Manzi \\
+Emidio & Picariello \\ \hline
+\end{tabular}
+\end{center}
+
+ovvero tutte le righe che soddisfano almeno uno dei due criteri che ho impostato. 
+
+Cliccando sul tasto 	\virgolette{pulisci} ottengo la cancellazione di della ricerca. Notiamo che effettuo una ricerca
+e poi chiudo la finestra di ricerca, la ricerca resta impostata sulla pagina e in basso, appare la scritta: 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/072_ricerca.jpg}
+\end{flushleft}
+
+In questo modo siamo consapevoli del fatto che non stiamo vedendo tutti i dati e che per vedere tutti i dati dobbiamo 
+cliccare di nuovo su \includegraphics[scale=1]{img_gen/070_ricerca.jpg} e poi su \virgolette{Pulisci}
+
+La seconda funziona che troviamo è rappresentata dal simbolo \includegraphics[scale=1]{img_gen/075_refresh.jpg} che ha lo 
+scopo di ricaricare i dati della griglia. Questo potrebbe essere necessario se qualcun altro da un'altra postazione 
+aggiunge o modifica i dati. 
+
+La funzione successiva, rappresentata dal simbolo \includegraphics[scale=1]{img_gen/080_piu.jpg} consente di aggiungere 
+una riga. Ciò può avvenire o tramite una apposita maschera, o con la possibilità di immissione dei dati direttamente 
+all'interno di una riga bianca della griglia che in questo caso apparirà. In quel caso avremo altre due icone di funzione
+ovvero quella per salvare \includegraphics[scale=1]{img_gen/086_salva.jpg} la modifica effettuata sulla riga e 
+quella per annullare la modifica \includegraphics[scale=1]{img_gen/087_annulla.jpg}.
+
+Ma di questo si parlerà più dettagliatamente quando parleremo di ciascuna funzionalità. 
+
+Successivamente troviamo la funzione \includegraphics[scale=1]{img_gen/081_edit.jpg} di modifica che consente di modificare 
+una riga esistente dopo averci cliccato una volta. Si accede alla funzione di modifica anche cliccando due volte su una 
+riga. La funzione rappresentata dal tasto \includegraphics[scale=1]{img_gen/082_delete.jpg} è quella classica di cancellazione. 
+
+Le operazioni di aggiunta, modifica e cancellazione si posso attivare anche cliccando con il tasto destro su una riga, si 
+apre quindi un menù: 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/090_tasto_destro.jpg}
+\end{flushleft}
+
+Cliccando sul pulsante \includegraphics[scale=1]{img_gen/083_stampa.jpg} si ottiene la stampa delle informazioni che si trovano 
+nella griglia in quel momento, in formato pdf. La funzione \includegraphics[scale=1]{img_gen/084_custom.jpg} invece apre una 
+maschera che mostra tutti i campi della tabella e permette di scegliere quali mostrare in griglia. 
+
+\begin{flushleft}
+\includegraphics[scale=1]{img_gen/085_custom.jpg}
+\end{flushleft}
+
+Dopo aver selezionano la riga che si desidera modificare si clicca su \includegraphics[scale=1]{img_gen/081_edit.jpg} si 
+toglie o si aggiunge la spunta alla colonna che si vuole nascondere o mostrare e poi si 
+salva \includegraphics[scale=1]{img_gen/086_salva.jpg} \footnote{Alcuni campi non possono essere mostrati in griglia 
+a causa di una impostazione specifica del programma. In quel caso, anche se appare la spunta in questa finestra
+comunque non appariranno. In questo caso si può concordare con gli sviluppatori del software una modifica di 
+questa impostazione, ma non è una modifica che l'utente può apportare autonomamente.}. Le impostazioni così effettuate 
+avranno valore solo per l'utente che le ha effettuate e non per tutti gli utenti.  
+
+

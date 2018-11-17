@@ -1,0 +1,40 @@
+<VirtualHost *:8000>
+    DocumentRoot %TRAVIS_BUILD_DIR%/tests/public
+
+    <Directory "%TRAVIS_BUILD_DIR%/tests/public">
+        Options FollowSymLinks ExecCGI
+        AllowOverride All
+        Require all granted
+
+        <IfModule mod_rewrite.c>
+            Options -MultiViews
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*)$ index.php [QSA,L]
+        </IfModule>
+    </Directory>
+
+    # optionally disable the RewriteEngine for the asset directories
+    # which will allow apache to simply reply with a 404 when files are
+    # not found instead of passing the request into the full symfony stack
+    <Directory  "%TRAVIS_BUILD_DIR%/tests/web/bundles">
+        <IfModule mod_rewrite.c>
+            RewriteEngine Off
+        </IfModule>
+    </Directory>
+    ErrorLog /var/log/apache2/bi_error.log
+    CustomLog /var/log/apache2/bi_access.log combined
+
+    # Wire up Apache to use Travis CI's php-fpm.
+  <IfModule mod_fastcgi.c>
+    AddHandler php5-fcgi .php
+    Action php5-fcgi /php5-fcgi
+    Alias /php5-fcgi /usr/lib/cgi-bin/php5-fcgi
+    FastCgiExternalServer /usr/lib/cgi-bin/php5-fcgi -host 127.0.0.1:9000 -pass-header Authorization
+    
+    <Directory /usr/lib/cgi-bin>
+        Require all granted
+    </Directory>
+  </IfModule>
+
+</VirtualHost>

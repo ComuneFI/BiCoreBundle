@@ -1,0 +1,40 @@
+Permessi:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:index" }
+
+Permessi_show:
+    path:  /{id}/show
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:show" }
+
+Permessi_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:new" }
+
+Permessi_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:create" }
+    requirements: { methods: post }
+
+Permessi_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:edit" }
+
+Permessi_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:update" }
+    requirements: { methods: post|put }
+
+Permessi_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
+    requirements: { methods: post|delete }
+
+Permessi_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
+    requirements: { methods: post|delete }
+
+Permessi_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi:tabella" }
+    requirements: { methods: post }

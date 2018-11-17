@@ -1,0 +1,18 @@
+<!-- Si controlla di non usare postgress sui server del comune perchè non si hanno le grant per ricreare i database -->
+{% if pdo == 'pdo_pgsql' and (('.comune.intranet' in host ) or '192.168.' in host) %}
+<h2 style="color:red;">ATTENZIONE: sui server Postgres del Comune di Firenze non si dispone delle grant per ricreare il database</h2>
+{% else %}
+<h1>Sei sicuro di voler ricreare il database con le impostazioni iniziali?</h1>
+<h3>Tutti i dati andranno persi</h3>
+<a id="confirmdb" href="{{url}}">SI</a>
+{% endif %}
+
+<script type="text/javascript">
+    $('#confirmdb').click(function(e) {
+        e.preventDefault();
+        $('#risultato').slideUp("slow").load($(this).attr('href'), function() {
+            $('#risultato').slideDown("slow");
+        });
+        return false;
+    });
+    </script>

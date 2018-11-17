@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="{{ asset('bundles/bootstrapitalia/css/bootstrap-italia.min.css') }}" >
+        <link rel="stylesheet" href="{{ asset('bundles/bootstrapitalia/css/italia-icon-font.css') }}" >  
+        <link rel="stylesheet" href="{{ asset('bundles/bicore/css/login.css') }}" >  
+    </head>
+    <body>
+        {% for type, messages in app.session.flashBag.all %}
+            {% for message in messages %}
+                <div class="{{ type }}">
+                    {{ message|trans({}, 'FOSUserBundle') }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% block fos_user_content %}{% endblock %}
+{% block javascripts %}{% endblock %}
+<script type="text/javascript" src="{{ asset('bundles/bootstrapitalia/js/bootstrap-italia.bundle.min.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/bootstrapitalia/js/bootbox.min.js') }}" ></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+Prodottofornitore_container:
+    path:  /
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::index' }
+
+Prodottofornitore_new:
+    path:  /new
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::new' }
+
+Prodottofornitore_create:
+    path:  /create
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::create' }
+    requirements: { methods: post }
+
+Prodottofornitore_edit:
+    path:  /{id}/edit
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::edit' }
+
+Prodottofornitore_update:
+    path:  /{id}/update
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::update' }
+    requirements: { methods: post|put }
+
+Prodottofornitore_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::aggiorna' }
+    requirements: { methods: post|put }
+
+Prodottofornitore_delete:
+    path:  /{id}/delete
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::delete' }
+    requirements: { methods: post|delete }
+
+Prodottofornitore_deletemultiple:
+    path:  /delete
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::delete' }
+    requirements: { methods: post|delete }
+
+Prodottofornitore__tabella:
+    path:  /tabella
+    defaults: { _controller: 'App\Controller\ProdottofornitoreController::tabella' }
+    requirements: { methods: post }

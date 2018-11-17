@@ -1,0 +1,17 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_sqlite
+    database_host: null
+    database_port: null
+    database_name: '%kernel.root_dir%/dbtest.sqlite'
+    database_path: '%kernel.root_dir%/dbtest.sqlite'
+    database_user: null
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: null
+    mailer_user: user@mail.com
+    mailer_password: null
+    locale: it
+    secret: ThisTokenIsNotSoSecretChangeIt
+    temascelto: sunny
+    browser4test: firefox

@@ -1,0 +1,41 @@
+Storicomodifiche_container:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:index" }
+
+Storicomodifiche_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:new" }
+
+Storicomodifiche_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:create" }
+    requirements: { methods: post }
+
+Storicomodifiche_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:edit" }
+
+Storicomodifiche_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:update" }
+    requirements: { methods: post|put }
+
+Storicomodifiche_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:aggiorna" }
+    requirements: { methods: post|put }
+
+Storicomodifiche_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:delete" }
+    requirements: { methods: post|delete }
+
+Storicomodifiche_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:delete" }
+    requirements: { methods: post|delete }
+
+Storicomodifiche_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:tabella" }
+    requirements: { methods: post }

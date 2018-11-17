@@ -1,0 +1,27 @@
+<thead>
+    <tr class="filters">
+        <th scope="col" class="col-1">
+            <div class="dropdown">
+                <button class="btn btn-dropdown dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Selezione
+                    <svg class="icon-expand icon icon-sm icon-primary"><use xlink:href="{{asset('bundles/bootstrapitalia/svg/sprite.svg#it-expand')}}"></use></svg>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="link-list-wrapper">
+                        <ul class="link-list">
+                            <li><a class="list-item" href="#"><span>Seleziona tutti</span></a></li>
+                            <li><a class="list-item" href="#"><span>Deseleziona tutti</span></a></li>
+                            <li><a class="list-item" href="#"><span>Cancella selezionati</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </th>
+        {% for colonnatabella in parametri.parametritabella %}
+            {%if (colonnatabella.escluso == false) %}
+                <th><input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" placeholder="{{colonnatabella.etichetta}}" disabled></th>
+                {%endif%}
+            {% endfor%}
+        <th></th>
+    </tr>
+</thead>

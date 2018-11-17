@@ -1,0 +1,45 @@
+App_Magazzino:
+  resource: routes/magazzino.yml
+  prefix: /Magazzino
+
+App_Ordine:
+  resource: routes/ordine.yml
+  prefix: /Ordine
+
+App_Prodottofornitore:
+  resource: routes/prodottofornitore.yml
+  prefix: /Prodottofornitore
+
+App_Fornitore:
+  resource: routes/fornitore.yml
+  prefix: /Fornitore
+
+App_Cliente:
+  resource: routes/cliente.yml
+  prefix: /Cliente
+
+fi_pannello_amministrazione:
+    resource: "@PannelloAmministrazioneBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fi_core:
+    resource: "@BiCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+#HOMEPAGE ROUTE
+homepage:
+    prefix:   /
+    path:      /
+    defaults: { _controller: 'App\Controller\ClienteController::index' }
+    requirements:
+      methods:  GET
+
+# This file is the entry point to configure your own HTTP routes.
+# Files in the routes/ subdirectory configure the routes for your dependencies.
+
+#index:
+#    path: /
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }

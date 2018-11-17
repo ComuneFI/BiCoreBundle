@@ -1,0 +1,52 @@
+fi_pannello_amministrazione_homepage:
+    path:  /adminpanel
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:index }
+
+fi_pannello_amministrazione_clearcache:
+    path:  /adminpanel/clearcache
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:clearCache }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_getVcs:
+    path:  /adminpanel/getVcs
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:getVcs }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_generateentity:
+    path:  /adminpanel/generateEntity
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateEntity }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_aggiornaschemadatabase:
+    path:  /adminpanel/aggiornaschemadatabase
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:aggiornaSchemaDatabase }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_generateformcrud:
+    path:  /adminpanel/generateFormCrud
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:generateFormCrud }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_symfonycommand:
+    path:  /adminpanel/symfonyCommand
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:symfonyCommand }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_unixcommand:
+    path:  /adminpanel/unixCommand
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:unixCommand }
+    options:
+        expose: true
+
+fi_pannello_amministrazione_phpunittest:
+    path:  /adminpanel/phpunittest
+    defaults: { _controller: PannelloAmministrazioneBundle:PannelloAmministrazione:phpunittest }
+    options:
+        expose: true
+

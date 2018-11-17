@@ -1,0 +1,41 @@
+Opzionitabelle:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:index" }
+
+Opzionitabelle_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:new" }
+
+Opzionitabelle_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:create" }
+    requirements: { methods: post }
+
+Opzionitabelle_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:edit" }
+
+Opzionitabelle_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:update" }
+    requirements: { methods: post|put }
+
+Opzionitabelle_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:aggiorna" }
+    requirements: { methods: post|put }
+
+Opzionitabelle_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:delete" }
+    requirements: { methods: post|delete }
+
+Opzionitabelle_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:delete" }
+    requirements: { methods: post|delete }
+
+Opzionitabelle_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:tabella" }
+    requirements: { methods: post }

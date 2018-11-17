@@ -1,0 +1,35 @@
+Cdf\BiCoreBundle\Entity\Ffprincipale:
+    properties:
+        descrizione:
+            - NotBlank: ~
+            
+Cdf\BiCoreBundle\Entity\Ffsecondaria:
+    properties:
+        descsec:
+            - NotBlank: ~
+        importo:
+            - Range:
+                min: 2
+                max: 10000000
+                minMessage: 'Importo deve essere maggiore o uguale a {{ limit }}'
+                maxMessage: 'Importo non può essere più grande di {{ limit }}'
+        intero:
+            - Range:
+                min: 2
+                max: 10000000
+                minMessage: 'Intero deve essere maggiore o uguale a {{ limit }}'
+                maxMessage: 'Intero non può essere più grande di {{ limit }}'
+        nota:
+            - Length:
+                min: 2
+                max: 250
+                minMessage: 'La nota deve essere almeno {{ limit }} caratteri'
+                maxMessage: 'La nota non può essere più grande di {{ limit }} caratteri'
+                
+        #data:
+        #    - GreaterThan: today
+
+Cdf\BiCoreBundle\Entity\Menuapplicazione:
+    properties:
+        nome:
+            - NotBlank: ~

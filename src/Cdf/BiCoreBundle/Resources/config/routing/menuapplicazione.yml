@@ -1,0 +1,45 @@
+Menuapplicazione_container:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }
+
+Menuapplicazione:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }
+
+Menuapplicazione_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:new" }
+
+Menuapplicazione_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:create" }
+    requirements: { methods: post }
+
+Menuapplicazione_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:edit" }
+
+Menuapplicazione_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:update" }
+    requirements: { methods: post|put }
+
+Menuapplicazione_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:aggiorna" }
+    requirements: { methods: post|put }
+
+Menuapplicazione_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:delete" }
+    requirements: { methods: post|delete }
+
+Menuapplicazione_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:delete" }
+    requirements: { methods: post|delete }
+
+Menuapplicazione_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:tabella" }
+    requirements: { methods: post }

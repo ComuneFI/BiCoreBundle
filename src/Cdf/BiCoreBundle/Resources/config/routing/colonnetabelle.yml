@@ -1,0 +1,76 @@
+Colonnetabelle:
+    path:  /
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:index" }
+
+Colonnetabelle_configura:
+    path:  /configura/{nometabella}
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:configura" }
+    requirements: { methods: post|put|get }
+
+Colonnetabelle_stampatabella:
+    path:  /stampatabella/{nometabella}
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:stampatabella" }
+    requirements: { methods: post|put|get }
+    
+Colonnetabelle_esportaexceltabella:
+    path:  /esportaexcel/{nometabella}
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:esportaexcel" }
+    requirements: { methods: post|put|get }
+    
+#Colonnetabelle_importaexceltabella:
+#    path:  /importaexcel/{nometabella}
+#    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:importaexcel" }
+#    requirements: { methods: post|put|get }
+
+Colonnetabelle_grigliapopup:
+    path:  /{chiamante}/grigliapopup
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:grigliapopup" }
+    requirements: { methods: post|put|get }
+
+Colonnetabelle_show:
+    path:  /{id}/show
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:show" }
+
+Colonnetabelle_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:new" }
+
+Colonnetabelle_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:create" }
+    requirements: { methods: post }
+
+Colonnetabelle_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:edit" }
+
+Colonnetabelle_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:aggiorna" }
+    requirements: { methods: post|put }
+
+Colonnetabelle_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:update" }
+    requirements: { methods: post|put }
+
+Colonnetabelle_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
+    requirements: { methods: post|delete }
+    
+Colonnetabelle_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
+    requirements: { methods: post|delete }
+
+Colonnetabelle_Tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:tabella" }
+    requirements: { methods: post }
+    
+Colonnetabelle_listacampitabella:
+    path:  /listacampitabella
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:listacampitabella" }
+    requirements: { methods: get }
+    

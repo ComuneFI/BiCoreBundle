@@ -1,0 +1,64 @@
+# Cache and logs (Symfony2)
+/tests/app/cache/*
+/tests/app/logs/*
+!tests/app/cache/.gitkeep
+!tests/app/logs/.gitkeep
+
+# Email spool folder
+/tests/app/spool/*
+
+# Cache, session files and logs (Symfony3)
+/tests/var/cache/*
+/tests/var/logs/*
+/tests/var/sessions/*
+!tests/var/cache/.gitkeep
+!tests/var/logs/.gitkeep
+!tests/var/sessions/.gitkeep
+
+# Parameters
+/tests/app/config/parameters.yml
+/tests/app/config/parameters.ini
+
+# Managed by Composer
+/tests/app/bootstrap.php.cache
+/tests/var/bootstrap.php.cache
+/tests/bin/*
+!tests/bin/console
+!tests/bin/symfony_requirements
+
+# Assets and user uploads
+/tests/web/bundles/
+/tests/web/uploads/
+
+# PHPUnit
+/tests/app/phpunit.xml
+/phpunit.xml
+
+# Build data
+/build/
+
+# Backup entities generated with doctrine:generate:entities command
+**/Entity/*~
+
+# Embedded web-server pid file
+/.web-server-pid
+
+/vendor/
+/tests/app/dbtest.sqlite
+composer.lock
+
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###

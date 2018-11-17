@@ -1,0 +1,40 @@
+Operatori:
+    path:  /
+    defaults: { _controller: cdf.bicorebundle.controller.operatori:index }
+
+Operatori_show:
+    path:  /{id}/show
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:show" }
+
+Operatori_new:
+    path:  /new
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:new" }
+
+Operatori_create:
+    path:  /create
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:create" }
+    requirements: { methods: post }
+
+Operatori_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:edit" }
+
+Operatori_update:
+    path:  /{id}/update
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:update" }
+    requirements: { methods: post|put }
+
+Operatori_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:delete" }
+    requirements: { methods: post|delete }
+
+Operatori_deletemultiple:
+    path:  /delete
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:delete" }
+    requirements: { methods: post|delete }
+
+Operatori_tabella:
+    path:  /tabella
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:tabella" }
+    requirements: { methods: post }

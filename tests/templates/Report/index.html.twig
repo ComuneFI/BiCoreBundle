@@ -1,0 +1,55 @@
+{% extends "BiCoreBundle::layout.html.twig" %}
+
+{% block content %}
+
+    <h1>Report {{anno}}<h1>
+            <h2>Clienti attivi</h2>
+            <ul>
+                {%for cliente in clientiattivi%}
+                    <li>{{cliente}}</li>
+                    {%endfor%}
+            </ul>
+
+            <br/>
+
+            <h2>Clienti disattivati</h2>
+            <ul>
+                {%for cliente in clientidisattivati%}
+                    <li>{{cliente}}</li>
+                    {%endfor%}
+            </ul>
+
+            <br/>
+
+            <h2>Prodotti disponibili</h2>
+            <ul>
+                {%for prodotto in prodottidisponibili%}
+                    <li>{{prodotto}}</li>
+                    {%endfor%}
+            </ul>
+
+            <br/>
+
+            <h2>Prodotti non disponibili</h2>
+            <ul>
+                {%for prodotto in prodottinondisponibili%}
+                    <li>{{prodotto}}</li>
+                    {%endfor%}
+            </ul>
+
+            <br/>
+
+            <h2>Ordini del mese</h2>
+            <ul>
+                {%for ordine in ordinidelmese%}
+                    <li>{{ordine}}</li>
+                    {%endfor%}
+            </ul>
+
+            <h2>Tutti gli ordini</h2>
+            <ul>
+                {%for ordine in ordini%}
+                    <li>{{ordine}}</li>
+                    {%endfor%}
+            </ul>
+        {% endblock %}

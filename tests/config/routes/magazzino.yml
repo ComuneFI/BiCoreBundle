@@ -1,0 +1,37 @@
+Magazzino_container:
+    path:  /
+    defaults: { _controller: 'App\Controller\MagazzinoController::index' }
+
+Magazzino_new:
+    path:  /new
+    defaults: { _controller: 'App\Controller\MagazzinoController::new' }
+    requirements: { methods: get|post }
+
+Magazzino_edit:
+    path:  /{id}/edit
+    defaults: { _controller: 'App\Controller\MagazzinoController::edit' }
+
+Magazzino_update:
+    path:  /{id}/update
+    defaults: { _controller: 'App\Controller\MagazzinoController::update' }
+    requirements: { methods: post|put }
+
+Magazzino_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: 'App\Controller\MagazzinoController::aggiorna' }
+    requirements: { methods: post|put }
+
+Magazzino_delete:
+    path:  /{id}/delete
+    defaults: { _controller: 'App\Controller\MagazzinoController::delete' }
+    requirements: { methods: post|delete }
+
+Magazzino_deletemultiple:
+    path:  /delete
+    defaults: { _controller: 'App\Controller\MagazzinoController::delete' }
+    requirements: { methods: post|delete }
+
+Magazzino_tabella:
+    path:  /tabella
+    defaults: { _controller: 'App\Controller\MagazzinoController::tabella' }
+    requirements: { methods: post }
