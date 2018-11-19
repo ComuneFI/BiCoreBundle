@@ -62,7 +62,7 @@ class MenuExtension extends \Twig_Extension
                 'nome' => 'Manuale', 'target' => '_blank');
         }
 
-        if ($this->user->getToken()->getProviderKey() === 'secured_area') {
+        if ($this->user->getToken()->getProviderKey() === 'ssocdf') {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
