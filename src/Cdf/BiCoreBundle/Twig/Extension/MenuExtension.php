@@ -63,8 +63,8 @@ class MenuExtension extends \Twig_Extension
         }
 
         if ($this->user->getToken()->getProviderKey() === 'secured_area') {
-            $username = $this->user->getUsername();
-            $urlLogout = $this->generateUrl('fi_autenticazione_signout');
+            $username = $this->user->getToken()->getUser()->getUsername();
+            $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
 
         if ($this->user->getToken()->getProviderKey() === 'main') {
