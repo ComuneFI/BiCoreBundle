@@ -22,30 +22,36 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
         $(".colonnatabellafiltro").each(function (index) {
             if ($(this).val() != "") {
                 var tipocampo = $(this).data('tipocampo');
+                var valorefiltro = $(this).val();
+                if (typeof ($(this).data('decodifiche')) !== "undefined") {
+                    //console.log($(this).data('decodifiche'));
+                    decodifiche = $(this).data('decodifiche');
+                    valorefiltro = findKeyArrayByValue(decodifiche, valorefiltro);
+                }
                 switch (tipocampo) {
                     case "string":
-                        var testo = encodeURIComponent($(this).val());
+                        var testo = encodeURIComponent(valorefiltro);
                         var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': 'CONTAINS', 'valore': testo};
                         break;
                     case "integer":
-                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': parseInt($(this).val())};
+                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': parseInt(valorefiltro)};
                         break;
                     case "decimal":
-                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': parseFloat($(this).val())};
+                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': parseFloat(valorefiltro)};
                         break;
                     case "boolean":
-                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': ($(this).val() == 'SI' ? true : false)};
+                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': (valorefiltro == 'SI' ? true : false)};
                         break;
                     case "date":
-                        var date = getDateTimeTabella($(this).val());
+                        var date = getDateTimeTabella(valorefiltro);
                         var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                         break;
                     case "datetime":
-                        var date = getDateTimeTabella($(this).val());
+                        var date = getDateTimeTabella(valorefiltro);
                         var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                         break;
                     default:
-                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': $(this).val()};
+                        var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': valorefiltro};
                         break;
                 }
                 filtririchiesti.push(elem);

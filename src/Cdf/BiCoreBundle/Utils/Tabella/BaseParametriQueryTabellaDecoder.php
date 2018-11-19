@@ -44,9 +44,11 @@ class BaseParametriQueryTabellaDecoder
     public function getDescrizioneFiltro()
     {
         $descrizionevalore = '';
-        
+
         switch (true) {
             case $this->getDescrizioneFiltroIsNull($descrizionevalore):
+                break;
+            case $this->getDescrizioneFiltroDecodifiche($descrizionevalore):
                 break;
             case $this->getDescrizioneFiltroBoolean($descrizionevalore):
                 break;
@@ -101,6 +103,23 @@ class BaseParametriQueryTabellaDecoder
         if (is_string($this->fieldvalue)) {
             $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
             $trovato = true;
+        }
+        return $trovato;
+    }
+
+    protected function getDescrizioneFiltroDecodifiche(&$descrizionevalore)
+    {
+        $trovato = false;
+        if (isset($this->fieldinfo["decodifiche"])) {
+            $decodifiche = $this->fieldinfo["decodifiche"];
+            if ($decodifiche) {
+                if (isset($decodifiche[$this->fieldvalue])) {
+                    $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
+                } else {
+                    $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+                }
+                $trovato = true;
+            }
         }
         return $trovato;
     }

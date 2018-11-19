@@ -38,6 +38,11 @@ class BaseMagazzino
     protected $dataspedizione;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $giornodellasettimana;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Ordine", inversedBy="magazzinos")
      * @ORM\JoinColumn(name="ordine_id", referencedColumnName="id", nullable=false)
      */
@@ -125,6 +130,29 @@ class BaseMagazzino
     public function setDataspedizione($dataspedizione)
     {
         $this->dataspedizione = $dataspedizione;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of giornodellasettimana.
+     *
+     * @return \integer
+     */
+    public function getGiornodellasettimana()
+    {
+        return $this->giornodellasettimana;
+    }
+
+    /**
+     * Set the value of giornodellasettimana.
+     *
+     * @param \integer $giornodellasettimana
+     * @return \App\Entity\Magazzino
+     */
+    public function setGiornodellasettimana($giornodellasettimana)
+    {
+        $this->giornodellasettimana = $giornodellasettimana;
 
         return $this;
     }

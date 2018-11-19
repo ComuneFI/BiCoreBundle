@@ -12,12 +12,12 @@ class DoctrineFieldReader
         $this->bitableprefix = getenv("bicorebundle_table_prefix");
     }
 
-    public function getField2Object($fieldtoobj, $object)
+    public function getField2Object($fieldname, $object, $decodifiche = null)
     {
         $property = "";
         $field = "";
         $propertyfound = false;
-        $subfields = explode(".", str_replace($this->bitableprefix, "", $fieldtoobj));
+        $subfields = explode(".", str_replace($this->bitableprefix, "", $fieldname));
         foreach ($subfields as $field) {
             $property = $this->getObjectProperty($field, $object);
             if ($property) {
@@ -26,14 +26,23 @@ class DoctrineFieldReader
             }
         }
         if (!$propertyfound) {
-            throw new \Exception("Proprietà " . $field . " non trovata per " . $fieldtoobj);
+            throw new \Exception("Proprietà " . $field . " non trovata per " . $fieldname);
+        }
+        if ($decodifiche) {
+            if (key_exists($object, $decodifiche)) {
+                $object = $decodifiche[$object];
+            }
         }
         return $object;
     }
 
-    public function object2View($object, $type = null)
+    public function object2View($object, $type = null, $decodifiche = null)
     {
         $risposta = null;
+
+        if ($decodifiche) {
+            $type = "string";
+        }
 
         if (!is_null($object)) {
             if ($type === null) {

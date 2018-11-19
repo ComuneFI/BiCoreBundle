@@ -18,6 +18,7 @@ use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 
 class LoadDefaultDataCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
@@ -25,6 +26,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
                 ->setDescription('Carica dei dati di default per il demo')
         ;
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
@@ -276,58 +278,76 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmagazzino->setEvaso(false);
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "30/10/2018 23:59");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinemanzi);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "30/10/2018 23:59"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "31/12/2017 00:01");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinemanzi1);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "31/12/2017 00:01"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "01/01/1999 00:01");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordineangelalasagne);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "01/01/1999 00:01"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "01/01/1980 00:01");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordineangelapenne);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "01/01/1980 00:01"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "10/10/2018 23:59");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinegiovanniconchiglie);
         $newmagazzino->setEvaso(false);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "10/10/2018 23:59"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "10/09/2018 23:59");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinelisasucco);
         $newmagazzino->setEvaso(false);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "10/09/2018 23:59"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "01/11/2018 23:59");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinepicarielloquinoa);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(\DateTime::createFromFormat("d/m/Y H:i", "01/11/2018 23:59"));
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = new \DateTime();
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinepicarielloquinoa);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(new \DateTime());
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
+        $datamaga = new \DateTime();
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinepaolospaghetti);
         $newmagazzino->setEvaso(true);
-        $newmagazzino->setDataspedizione(new \DateTime());
+        $newmagazzino->setDataspedizione($datamaga);
+        $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
         $em->flush();
@@ -338,7 +358,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $em->persist($newmenu);
         $em->flush();
         $idpadremenudemo = $newmenu->getId();
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Cliente");
         $newmenu->setAttivo(true);
@@ -346,7 +366,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Cliente_container");
         $newmenu->setOrdine(10);
         $em->persist($newmenu);
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Fornitore");
         $newmenu->setAttivo(true);
@@ -354,7 +374,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Fornitore_container");
         $newmenu->setOrdine(20);
         $em->persist($newmenu);
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Prodottofornitore");
         $newmenu->setAttivo(true);
@@ -362,7 +382,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Prodottofornitore_container");
         $newmenu->setOrdine(30);
         $em->persist($newmenu);
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Ordine");
         $newmenu->setAttivo(true);
@@ -370,7 +390,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Ordine_container");
         $newmenu->setOrdine(50);
         $em->persist($newmenu);
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Magazzino");
         $newmenu->setAttivo(true);
@@ -378,7 +398,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Magazzino_container");
         $newmenu->setOrdine(60);
         $em->persist($newmenu);
-        
+
         $newmenu = new \Cdf\BiCoreBundle\Entity\Menuapplicazione();
         $newmenu->setNome("Report");
         $newmenu->setAttivo(true);
@@ -386,11 +406,12 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmenu->setPercorso("Report_container");
         $newmenu->setOrdine(70);
         $em->persist($newmenu);
-        
+
         $em->flush();
-        
+
         $output->writeln("Done!");
     }
+
     private function createCliente($em, $cliente)
     {
         $newcliente = new Cliente;
@@ -404,6 +425,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $em->flush();
         return $newcliente;
     }
+
     private function createFornitore($em, $fornitore)
     {
         $newfornitore = new Fornitore;
@@ -414,6 +436,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $em->flush();
         return $newfornitore;
     }
+
     private function truncateTables($em, $className)
     {
         $cmd = $em->getClassMetadata($className);
@@ -433,4 +456,5 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
             //echo $exc->getMessage();
         }
     }
+
 }

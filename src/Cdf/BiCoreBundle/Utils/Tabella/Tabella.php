@@ -77,7 +77,6 @@ class Tabella extends TabellaOpzioni
                 $fieldoperator = $this->getOperator($filtrocorrente["operatore"]);
                 $fitrocorrenteqp = "fitrocorrente" . $num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente["nomecampo"]);
-
                 $criteria = new ParametriQueryTabellaDecoder(
                     $fieldname,
                     $fieldoperator,

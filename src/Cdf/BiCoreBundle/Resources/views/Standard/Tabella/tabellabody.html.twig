@@ -9,7 +9,8 @@
                 {#{dump(colonnatabella)}#}
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
-                    <td scope="row">{{ object2view(field2object(colonnatabella.nomecampo,record),colonnatabella.tipocampo) }}</td>
+                    {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
+                    <td scope="row">{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}</td>
                 {%endif%}
             {% endfor%} 
 

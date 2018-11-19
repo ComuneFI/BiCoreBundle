@@ -101,6 +101,7 @@ class TabellaOpzioni extends TabellaDecoder
             "larghezza" => 100,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
+            "decodifiche" => null,
             "escluso" => ($ricursione === true) ? true : substr($colonnadatabase["fieldName"], -3) == "_id" ? true : false,
         );
     }

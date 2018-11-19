@@ -88,7 +88,8 @@ class TabellaXls
             foreach ($header as $colonnatestata => $valorecolonnatestata) {
                 if ($valorecolonnatestata["escluso"] === false) {
                     $dfr = new DoctrineFieldReader();
-                    $oggetto = $dfr->getField2Object($colonnatestata, $riga);
+                    $decodiche = isset($valorecolonnatestata["decodifiche"])?$valorecolonnatestata["decodifiche"]:null;
+                    $oggetto = $dfr->getField2Object($colonnatestata, $riga, $decodiche);
                     $valorecampo = $dfr->object2view($oggetto, $valorecolonnatestata["tipocampo"]);
                     if ($valorecampo === '' || $valorecampo === null) {
                         $col = $col + 1;

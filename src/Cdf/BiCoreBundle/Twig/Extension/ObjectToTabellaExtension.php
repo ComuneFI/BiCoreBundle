@@ -15,15 +15,15 @@ class ObjectToTabellaExtension extends \Twig_Extension
         );
     }
 
-    public function object2View($object, $type = null)
+    public function object2View($object, $type = null, $decodifiche = null)
     {
         $dfr = new DoctrineFieldReader();
-        return $dfr->object2View($object, $type);
+        return $dfr->object2View($object, $type, $decodifiche);
     }
 
-    public function field2Object($fieldtoobj, $object)
+    public function field2Object($fieldname, $object, $decodifiche = null)
     {
         $dfr = new DoctrineFieldReader();
-        return $dfr->getField2Object($fieldtoobj, $object);
+        return $dfr->getField2Object($fieldname, $object, $decodifiche);
     }
 }
