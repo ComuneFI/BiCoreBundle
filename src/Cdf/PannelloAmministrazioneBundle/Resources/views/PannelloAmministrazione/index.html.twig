@@ -13,14 +13,14 @@
         {% if (git == true) %}var vcs = "git";{% endif %}
         {% if (svn == true) %}var vcs = "svn";{% endif %}
     </script>
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionefunzioni.js') }}" ></script>
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazione.js') }}" ></script>
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionecommands.js') }}" ></script>
+    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionefunzioni.js') }}?ver={{versione_tag_git()}}" ></script>
+    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazione.js') }}?ver={{versione_tag_git()}}" ></script>
+    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionecommands.js') }}?ver={{versione_tag_git()}}" ></script>
 {% endblock %}
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/pannelloamministrazione.css')}}" />
+    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/pannelloamministrazione.css')}}?ver={{versione_tag_git()}}" />
 {% endblock %}
 
 {% block body %}
@@ -60,32 +60,44 @@
         <div class="adminpanel entity">
             <div class="callout shadow-sm p-3 mb-5 bg-white">
                 <div class="callout-title" data-toggle="tooltip" data-placement="top" title="{{database_url}}"><i class="it-ico it-file" aria-hidden="true"></i><span class="sr-only">Database</span> Database</div>
+
                 <div class="form-group">
-                    <select class="custom-select" id="entityfile">
-                        {% for mwb in mwbs %}
-                            <option value="{{mwb}}">{{mwb}}</option>
-                        {% endfor %}
-                    </select>
-                    <label for='entityfile'>Seleziona il modello mysqlworkbench</label>
-                </div>
+                    <div class="bootstrap-select-wrapper">
+                        <label class="active">Seleziona il modello mysqlworkbench</label>
+                        <div class="dropdown bootstrap-select">
+                            <select id="entityfile" title="Seleziona una opzione" data-live-search="true" data-live-search-placeholder="Cerca...">
+                                {% for mwb in mwbs %}
+                                    <option value="{{mwb}}">{{mwb}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>                
+                </div>                
+
                 <button id="adminpanelgenerateentity" class="active btn btn-success" data-reactid=".3.0" type="button">Genera entity da modello workbench</button>
                 <br/><br/>
                 <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
             </div>
         </div>
-
         <div class="adminpanel bundle">
             <div class="callout shadow-sm p-3 mb-5 bg-white">
                 <div class="callout-title" data-toggle="tooltip" data-placement="top" title="Genera form"><i class="it-ico it-list" aria-hidden="true"></i><span class="sr-only">Form</span> Form</div>
+
                 <div class="form-group">
-                    <select class="custom-select" id="entityform">
-                        {% for entity in entities %}
-                            <option value="{{entity}}">{{entity}}</option>
-                        {% endfor %}
-                    </select>
-                    <label for='entityform'>Entità</label>
-                    <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
-                </div>
+                    <div class="bootstrap-select-wrapper">
+                        <label class="active">Entità</label>
+                        <div class="dropdown bootstrap-select">
+                            <select id="entityform" title="Seleziona una opzione" data-live-search="true" data-live-search-placeholder="Cerca...">
+                                {% for entity in entities %}
+                                    <option value="{{entity}}">{{entity}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>                
+                </div>        
+
+                <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
+
             </div>
         </div>
     </div>
