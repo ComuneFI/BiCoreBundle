@@ -49,7 +49,7 @@ Installazione:
     bin/console assets:install --symlink --relative tests/public
 
     ##Start server 
-    bin/console server:start 2>&1 &
+    bin/console server:start --docroot=tests/public 2>&1 &
     
     #Lanciare i test
     PANTHER_WEB_SERVER_DIR=$(pwd)/tests/public ant
