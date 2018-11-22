@@ -66,8 +66,12 @@
         
     </filter>
     
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension" />
+    </extensions>
+    
     <listeners>
-        <listener class="Symfony\Component\Panther\ServerListener" />
+        <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
         <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
     </listeners>   
