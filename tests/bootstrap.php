@@ -30,24 +30,20 @@ cleanFilesystem();
 function clearcache()
 {
     passthru(sprintf(
-        '"%s/console" cache:clear',
-        __DIR__ . '/../bin'
+                    '"%s/console" cache:clear', __DIR__ . '/../bin'
     ));
 }
 
 function databaseinit()
 {
     passthru(sprintf(
-        '"%s/console" bicorebundle:dropdatabase --force',
-        __DIR__ . '/../bin'
+                    '"%s/console" bicorebundle:dropdatabase --force', __DIR__ . '/../bin'
     ));
     passthru(sprintf(
-        '"%s/console" bicorebundle:install admin admin admin@admin.it',
-        __DIR__ . '/../bin'
+                    '"%s/console" bicorebundle:install admin admin admin@admin.it', __DIR__ . '/../bin'
     ));
     passthru(sprintf(
-        '"%s/console" bicoredemo:loaddefauldata',
-        __DIR__ . '/../bin'
+                    '"%s/console" bicoredemo:loaddefauldata', __DIR__ . '/../bin'
     ));
 
     #sleep(1);
@@ -85,7 +81,7 @@ function getErrorText($process, $command)
 function cleanFilesystem()
 {
     $vendorDir = dirname(dirname(__FILE__) . '/tests');
-    $publicDir = str_replace("tests", "public", realpath(dirname(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR)));
+    $publicDir = realpath(dirname(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR)). DIRECTORY_SEPARATOR ."public";
     //deleteLineFromFile($kernelfile, $DELETE);
     $routingfile = $vendorDir . '/config/routes.yaml';
 
@@ -167,7 +163,7 @@ function cleanFilesystem()
     if ($fs->exists($controller)) {
         $fs->remove($controller, true);
     }
-    
+
     if ($fs->exists($publicDir . '/js/Prova.js')) {
         $fs->remove($publicDir . '/js/Prova.js');
     }
@@ -179,6 +175,10 @@ function cleanFilesystem()
     }
     if ($fs->exists($publicDir . '/css/Tabellacollegata.css')) {
         $fs->remove($publicDir . '/css/Tabellacollegata.css');
+    }
+    //Questo mi tocca tenerlo perchè fallisce il routing fos js se trova già una cartella js
+    if ($fs->exists($publicDir . '/js')) {
+        $fs->remove($publicDir . '/js', true);
     }
     /* $bundlesrcdir = $vendorDir . '/src';
 

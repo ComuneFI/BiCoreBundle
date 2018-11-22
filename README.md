@@ -55,7 +55,7 @@ composer require comunedifirenze/bicorebundle
     bin/console server:start 2>&1 &
     
     #Lanciare i test
-    ant
+    PANTHER_WEB_SERVER_DIR=$(pwd)/tests/public ant
     #oppure
     #vendor/bin/simple-phpunit
 

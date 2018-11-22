@@ -9,6 +9,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
     /*
      * @test
      */
+
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
@@ -82,11 +83,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         $page = $this->getCurrentPage();
 
         //echo $page->getHtml();
-
         //$this->crudoperation($session, $page);
 
         $session->quit();
     }
+
     /*
      * @test
      */
@@ -107,6 +108,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
       $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
       $container->get('session')->save();
       } */
+
     private function crudoperation($session, $page)
     {
         $client = $this->getClient();
@@ -155,7 +157,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
 
         $this->clickElement('prova_submit');
         $this->ajaxWait(6000);
-        
+
         //Non ho idea del perchè non funzioni anche perchè il record è stato davvero modificato
         /* $qb2 = $this->em->createQueryBuilder()
           ->select(array("Prova"))
@@ -185,6 +187,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
 
         $this->assertEquals(count($qb3), 0);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -195,4 +198,5 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         removecache();
         clearcache();
     }
+
 }
