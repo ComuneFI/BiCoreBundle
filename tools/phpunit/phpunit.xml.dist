@@ -49,7 +49,7 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         
-        <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
+        <!--<server name="PANTHER_WEB_SERVER_PORT" value="9090" />-->
         
     </php>
     
