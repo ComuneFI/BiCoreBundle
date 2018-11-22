@@ -20,7 +20,9 @@
 
 {% block body %}
     <div id="spinnerloader" class="loader loader-default"></div>
+    {% block menuapplicazione %}
     {{ generamenu() }}
+    {% endblock %}
     {% for label, messages in app.flashes(['success','warning']) %}
         {% for message in messages %}
             <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
