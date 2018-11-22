@@ -22,10 +22,7 @@ Per esempio, il software di gestione del Patrimonio Immobiliare è composto da m
 Installazione:
 -------------
 
-- Prendere il template già pronto per iniziare ad usarlo:
-```
-https://github.com/ComuneFI/BiCoreTemplate
-```
+- Prendere il <a href="https://github.com/ComuneFI/BiCoreTemplate" target="_blank">template</a> già pronto per iniziare ad usarlo:
 
 - Test
 
