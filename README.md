@@ -22,9 +22,9 @@ Per esempio, il software di gestione del Patrimonio Immobiliare è composto da m
 Installazione:
 -------------
 
-- Aggiungere tramite composer:
+- Prendere il template già pronto per iniziare ad usarlo:
 ```
-composer require comunedifirenze/bicorebundle
+https://github.com/ComuneFI/BiCoreTemplate
 ```
 
 - Test
