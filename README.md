@@ -49,7 +49,7 @@ composer require comunedifirenze/bicorebundle
     chmod 666 tests/var/cache/dbtest.sqlite
 
     #Assets install
-    bin/console assets:install --symlink --relative public
+    bin/console assets:install --symlink --relative tests/public
 
     ##Start server 
     bin/console server:start 2>&1 &

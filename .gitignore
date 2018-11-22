@@ -50,6 +50,7 @@ composer.lock
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
+tests/public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###

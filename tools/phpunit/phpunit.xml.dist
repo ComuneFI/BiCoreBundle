@@ -50,6 +50,7 @@
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
+        
     </php>
     
     <filter>
@@ -65,11 +66,8 @@
         
     </filter>
     
-    <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension" />
-    </extensions>
-
     <listeners>
+        <listener class="Symfony\Component\Panther\ServerListener" />
         <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
         <!--<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />-->
     </listeners>   

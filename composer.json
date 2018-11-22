@@ -106,7 +106,7 @@
     "prefer-stable": true,
     "bin": ["check-src"],
     "extra": {
-        "public-dir": "public",
+        "public-dir": "tests/public",
         "conf-dir": "tests/conf",
         "config-dir": "tests/config",
         "branch-alias": {

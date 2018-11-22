@@ -174,11 +174,11 @@ function cleanFilesystem()
     if ($fs->exists($publicDir . '/js/Tabellacollegata.js')) {
         $fs->remove($publicDir . '/js/Tabellacollegata.js');
     }
-    if ($fs->exists($publicDir . '/js/Prova.css')) {
-        $fs->remove($publicDir . '/js/Prova.css');
+    if ($fs->exists($publicDir . '/css/Prova.css')) {
+        $fs->remove($publicDir . '/css/Prova.css');
     }
-    if ($fs->exists($publicDir . '/js/Tabellacollegata.css')) {
-        $fs->remove($publicDir . '/js/Tabellacollegata.css');
+    if ($fs->exists($publicDir . '/css/Tabellacollegata.css')) {
+        $fs->remove($publicDir . '/css/Tabellacollegata.css');
     }
     /* $bundlesrcdir = $vendorDir . '/src';
 

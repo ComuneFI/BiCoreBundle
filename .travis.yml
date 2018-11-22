@@ -15,9 +15,12 @@ services:
   
 # Configure different DB environments
 env:
-  - DB=mysql BROWSER=chrome
-  - DB=pgsql BROWSER=chrome
-  - DB=sqlite3 BROWSER=chrome
+  global:
+    - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
+  matrix:
+    - DB=mysql BROWSER=chrome
+    - DB=pgsql BROWSER=chrome
+    - DB=sqlite3 BROWSER=chrome
   
 matrix:
     fast_finish: true
