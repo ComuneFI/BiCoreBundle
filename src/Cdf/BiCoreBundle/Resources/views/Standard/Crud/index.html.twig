@@ -5,13 +5,17 @@
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabella.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellafiltri.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/biindex.js') }}" ></script>
-    <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}" ></script>
+    {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
+        <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}" ></script>
+    {%endif%}
 {% endblock%}
 
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}" >
+    {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
+        <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}" >
+    {%endif%}
 {% endblock%}
 
 {% block content -%}
@@ -20,7 +24,7 @@
         {% for key,parametro in parametritabella %}
             {% set parametri = parametri ~ 'data-' ~ key ~ '="' ~ parametro~ '" ' %}
         {% endfor %}
-        
+
         <div class="parametri-tabella" {{parametri|raw}}></div>
         <div id="tabella{{parametritabella.nomecontroller|getparametrotabella}}"></div>
     </div>
