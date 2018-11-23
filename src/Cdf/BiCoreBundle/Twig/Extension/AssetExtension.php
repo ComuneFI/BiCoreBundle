@@ -19,10 +19,10 @@ class AssetExtension extends \Twig_Extension
 
     public function getFunctions()
     {
-        return [new \Twig_SimpleFunction('asset_exists', [$this, 'asset_exists'], ['is_safe' => ['html']])];
+        return [new \Twig_SimpleFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
     }
 
-    public function asset_exists($path)
+    public function assetExists($path)
     {
         $publicRoot = realpath($this->kernel->getRootDir() . '/../public/') . DIRECTORY_SEPARATOR;
         $toCheck = realpath($publicRoot . $path);
