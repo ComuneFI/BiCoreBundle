@@ -1,23 +1,26 @@
 //Sul click del pulnsate aggiorna si lancia il refresh della tabella
 $(document).ready(function () {
+    var nomecontroller = getMainTabella();
     $(document).on("click", "#tabellarefresh", function (e) {
         e.preventDefault();
-        ricaricatabella();
+        ricaricatabella(nomecontroller);
     });
     $(document).on("click", "#tabelladel", function (e) {
         e.preventDefault();
-        eliminaselezionati();
+        eliminaselezionati(nomecontroller);
     });
     $(document).on("click", ".paginascelta", function (e) {
         e.preventDefault();
-        var divparametri = getParametriTabellaDataset();
+        var nomecontroller = getMainTabella();
+        var divparametri = getParametriTabellaDataset(nomecontroller);
         divparametri["paginacorrente"] = setTabellaParameter(this.dataset["paginascelta"]);
-        ricaricatabella();
+        ricaricatabella(nomecontroller);
     });
 
     $(document).on("click", "#tabellaadd", function (e) {
         e.preventDefault();
-        var parametri = getParametriTabellaDataset();
+        var nomecontroller = getMainTabella();
+        var parametri = getParametriTabellaDataset(nomecontroller);
         var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
         $.ajax({
             url: newurl,
@@ -46,7 +49,8 @@ $(document).ready(function () {
     });
     $(document).on("click", "#tabelladownload", function (e) {
         e.preventDefault();
-        var parametri = getParametriTabellaDataset();
+        var nomecontroller = getMainTabella();
+        var parametri = getParametriTabellaDataset(nomecontroller);
         var url = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + '/exportxls';
         $.ajax({
             type: 'POST',
@@ -76,19 +80,26 @@ $(document).ready(function () {
 });
 
 
-function getParametriTabellaDataset()
+function getParametriTabellaDataset(nomecontroller)
 {
-    return document.querySelector('.parametri-tabella').dataset;
+    return document.querySelector('#Parametri' + nomecontroller + '.parametri-tabella').dataset;
+}
+
+function getMainTabella()
+{
+    var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
+    return nomecontroller;
 }
 //Funzione di reload della tabella
-function ricaricatabella()
+function ricaricatabella(nomecontroller)
 {
-    caricatabella(getParametriTabellaDataset());
+    caricatabella(getParametriTabellaDataset(nomecontroller));
 }
 
 function eliminaselezionati()
 {
-    var parametri = getParametriTabellaDataset();
+    var nomecontroller = getMainTabella();
+    var parametri = getParametriTabellaDataset(nomecontroller);
     var permessi = JSON.parse(getTabellaParameter(parametri.permessi));
     if (permessi.update !== true) {
         binotification("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
@@ -145,7 +156,7 @@ function eliminaselezionati()
 
                         },
                         success: function (response) {
-                            ricaricatabella();
+                            ricaricatabella(nomecontroller);
                             binotification("Elementi eliminati", "warning", "it-error");
                         }
                     });
@@ -161,20 +172,21 @@ function eliminaselezionati()
 //Gestione symfony di passaggio parametri tra twig e javascript di parametri in attribute data-*
 document.addEventListener('DOMContentLoaded', function (e) {
     e.preventDefault();
-    ricaricatabella();
+    var nomecontroller = getMainTabella();
+    ricaricatabella(nomecontroller);
     //dumpParametriTabella();
 });
 
 //Funzione per modificare il valore di un parametro della tabella
-function setDataParameterTabella(parametro, valore)
+function setDataParameterTabella(nomecontroller, parametro, valore)
 {
-    var divparametri = getParametriTabellaDataset();
+    var divparametri = getParametriTabellaDataset(nomecontroller);
     divparametri[parametro] = setTabellaParameter(valore);
 }
 //Funzione per prendere il valore di un parametro della tabella
-function getDataParameterTabella(parametro)
+function getDataParameterTabella(nomecontroller, parametro)
 {
-    var divparametri = getParametriTabellaDataset();
+    var divparametri = getParametriTabellaDataset(nomecontroller);
     return divparametri[parametro];
 }
 

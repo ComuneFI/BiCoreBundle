@@ -19,13 +19,14 @@
 {% endblock%}
 
 {% block content -%}
-    <div id="tabella-container">
+    <div id="main-tabella" class="main-tabella" data-nomecontroller="{{parametritabella.nomecontroller|getparametrotabella}}"></div>
+    <div class="tabella-container">
         {% set parametri= '' %}
         {% for key,parametro in parametritabella %}
             {% set parametri = parametri ~ 'data-' ~ key ~ '="' ~ parametro~ '" ' %}
         {% endfor %}
 
-        <div class="parametri-tabella" {{parametri|raw}}></div>
+        <div id="Parametri{{parametritabella.nomecontroller|getparametrotabella}}" class="parametri-tabella" {{parametri|raw}}></div>
         <div id="tabella{{parametritabella.nomecontroller|getparametrotabella}}"></div>
     </div>
 {% endblock %}

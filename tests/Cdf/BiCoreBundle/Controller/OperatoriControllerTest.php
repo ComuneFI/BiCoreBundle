@@ -13,17 +13,17 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredOperatoriIndex()
     {
-        $this->client->request('GET', '/Operatori');
+        $nomecontroller = 'Operatori';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Operatori/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Pagina 1 di 1 (Righe estratte: 3)',
-            $this->client->getResponse()->getContent()
+                'Pagina 1 di 1 (Righe estratte: 3)', $this->client->getResponse()->getContent()
         );
 
         //Export xls
@@ -49,18 +49,17 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
         $password2 = "operatori[password][second]";
         $email = "operatori[email]";
         $form = $crawler->filter('form[id=formdatiOperatori]')->form(
-            array(
+                array(
                     $username => $provaooperatori,
                     $password1 => $provaooperatori,
                     $password2 => $provaooperatori,
-                    $email => $provaooperatori."@".$provaooperatori,
-            )
+                    $email => $provaooperatori . "@" . $provaooperatori,
+                )
         );
         // submit that form
         $crawler = $this->client->submit($form);
         $this->assertContains(
-            $provaooperatori,
-            $this->client->getResponse()->getContent()
+                $provaooperatori, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $entity = $this->em->getRepository("BiCoreBundle:Operatori")->findByUsername($provaooperatori);
@@ -79,8 +78,7 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->request('GET', '/Operatori/' . $operatoriinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Provaoperatori2',
-            $this->client->getResponse()->getContent()
+                'Provaoperatori2', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 

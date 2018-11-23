@@ -113,10 +113,16 @@ class BaseParametriQueryTabellaDecoder
         if (isset($this->fieldinfo["decodifiche"])) {
             $decodifiche = $this->fieldinfo["decodifiche"];
             if ($decodifiche) {
-                if (isset($decodifiche[$this->fieldvalue])) {
-                    $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
+                if (is_array($this->fieldvalue)) {
+                    foreach ($this->fieldvalue as $value) {
+                        $descrizionevalore = $descrizionevalore . "'" . $decodifiche[$value] . "', ";
+                    }
                 } else {
-                    $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+                    if (isset($decodifiche[$this->fieldvalue])) {
+                        $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
+                    } else {
+                        $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+                    }
                 }
                 $trovato = true;
             }

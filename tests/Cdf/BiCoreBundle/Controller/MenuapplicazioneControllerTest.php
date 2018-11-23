@@ -13,17 +13,17 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredMenuapplicazioneIndex()
     {
-        $this->client->request('GET', '/Menuapplicazione');
+        $nomecontroller = 'Menuapplicazione';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Menuapplicazione/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Pagina 1 di 2 (Righe estratte: 16)',
-            $this->client->getResponse()->getContent()
+                'Pagina 1 di 2 (Righe estratte: 16)', $this->client->getResponse()->getContent()
         );
 
         //New
@@ -39,8 +39,7 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
         // submit that form
         $crawler = $this->client->submit($form);
         $this->assertContains(
-            $provamenuapplicazione,
-            $this->client->getResponse()->getContent()
+                $provamenuapplicazione, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $entity = $this->em->getRepository("BiCoreBundle:Menuapplicazione")->findByNome($provamenuapplicazione);
@@ -59,8 +58,7 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Provamenuapplicazione2',
-            $this->client->getResponse()->getContent()
+                'Provamenuapplicazione2', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
