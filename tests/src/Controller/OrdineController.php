@@ -157,6 +157,7 @@ class OrdineController extends FiController
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
             'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
+            'multiselezione' => ParametriTabella::setParameter("0"),
             'paginacorrente' => ParametriTabella::setParameter("1"),
             'paginetotali' => ParametriTabella::setParameter(""),
             'righeperpagina' => ParametriTabella::setParameter("15"),
