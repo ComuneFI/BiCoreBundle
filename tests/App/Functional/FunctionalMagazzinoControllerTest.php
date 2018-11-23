@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
 
 class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
 {
-    public function testFunctionalMagazzinoIndex()
+    /*public function testFunctionalMagazzinoIndex()
     {
         $magazzinoregistrati = 11;
         $htmltableid = "tabellaMagazzino";
@@ -21,7 +21,7 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
                     });
         });
         $this->assertSame($magazzinoregistrati, count($magazzino));
-    }
+    }*/
     public function testSecuredFunctionalMagazzinoIndex()
     {
 
