@@ -19,17 +19,17 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $this->logInAdmin();
         $this->em = $this->client->getContainer()->get("doctrine")->getManager();
     }
-    protected function getParametriTabella($crawler)
+    protected function getParametriTabella($nomecontroller, $crawler)
     {
         $parametri = array();
         $attributi = array(
             'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
             'filtri', 'formclass', 'idpassato', 'modellocolonne', 'nomecontroller',
             'paginacorrente', 'paginetotali', 'permessi', 'prefiltri', 'righeperpagina', 'righetotali', 'estraituttirecords',
-            'tablename', 'titolotabella', 'traduzionefiltri', 'urltabella'
+            'tablename', 'titolotabella', 'multiselezione', 'traduzionefiltri', 'urltabella'
         );
         foreach ($attributi as $attributo) {
-            $parametri[$attributo] = $crawler->filter('#tabella-container .parametri-tabella')->attr('data-' . $attributo);
+            $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
         }
         return $parametri;
     }
