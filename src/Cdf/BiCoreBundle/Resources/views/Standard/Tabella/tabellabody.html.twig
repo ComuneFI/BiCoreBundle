@@ -1,7 +1,7 @@
 <tbody>
     {% for record in parametri.recordstabella %}
         <tr data-bitableid='{{record.id}}'>
-            <td scope="row" class="text-center">
+            <td scope="row" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
                 <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">
             </td>
 
