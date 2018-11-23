@@ -6,13 +6,13 @@
     </tr>
     <tr class="filters">
         <th scope="col" class="text-center">
-            <input type="checkbox" class="bitabellacheckboxselectall">
+            <input type="checkbox" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}bitabellacheckboxselectall{% endif %}">
         </th>
         {% for colonnatabella in parametri.parametritabella %}
-            {%if (colonnatabella.escluso == false) %}
+            {% if (colonnatabella.escluso == false) %}
                 <th scope="col" class="col-auto"><input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" {{colonnatabella.decodifiche is defined?'data-decodifiche='~colonnatabella.decodifiche|json_encode():""}} placeholder="{{colonnatabella.etichetta}}" disabled></th>
-                {%endif%}
-            {% endfor%}
+            {% endif %}
+        {% endfor%}
         <th></th>
     </tr>
 </thead>
