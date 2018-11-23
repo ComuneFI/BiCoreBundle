@@ -24,6 +24,12 @@ services:
         public: true
         
     #twig extension
+    cdf.bicorebundle.twig.asset_extension:
+        class: Cdf\BiCoreBundle\Twig\Extension\AssetExtension
+        arguments: ['@kernel']
+        tags:
+            - { name: twig.extension }
+
     cdf.bicorebundle.twig.permessi_extension:
         class: Cdf\BiCoreBundle\Twig\Extension\PermessiTwigExtension
         arguments: [ '@service_container', '@request_stack' ]
