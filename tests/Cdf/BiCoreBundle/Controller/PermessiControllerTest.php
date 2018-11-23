@@ -13,11 +13,12 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredPermessiIndex()
     {
-        $this->client->request('GET', '/Permessi');
+        $nomecontroller = 'Permessi';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Permessi/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

@@ -13,17 +13,17 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredRuoliIndex()
     {
-        $this->client->request('GET', '/Ruoli');
+        $nomecontroller = 'Ruoli';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Ruoli/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Pagina 1 di 1 (Righe estratte: 3)',
-            $this->client->getResponse()->getContent()
+                'Pagina 1 di 1 (Righe estratte: 3)', $this->client->getResponse()->getContent()
         );
 
         //New
@@ -39,8 +39,7 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
         // submit that form
         $crawler = $this->client->submit($form);
         $this->assertContains(
-            'Provaruolo',
-            $this->client->getResponse()->getContent()
+                'Provaruolo', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $entity = $this->em->getRepository("BiCoreBundle:Ruoli")->findByRuolo($provaruolo);
@@ -59,8 +58,7 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Provaruolo2',
-            $this->client->getResponse()->getContent()
+                'Provaruolo2', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 

@@ -13,17 +13,17 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredOpzionitabelleIndex()
     {
-        $this->client->request('GET', '/Opzionitabelle');
+        $nomecontroller = 'Opzionitabelle';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Opzionitabelle/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Pagina 1 di 1 (Righe estratte: 3)',
-            $this->client->getResponse()->getContent()
+                'Pagina 1 di 1 (Righe estratte: 3)', $this->client->getResponse()->getContent()
         );
 
         //New
@@ -39,8 +39,7 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
         // submit that form
         $crawler = $this->client->submit($form);
         $this->assertContains(
-            $provaopzionitabelle,
-            $this->client->getResponse()->getContent()
+                $provaopzionitabelle, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $entity = $this->em->getRepository("BiCoreBundle:Opzionitabelle")->findByNometabella($provaopzionitabelle);
@@ -59,8 +58,7 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
-            'Provaopzionitabella2',
-            $this->client->getResponse()->getContent()
+                'Provaopzionitabella2', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 

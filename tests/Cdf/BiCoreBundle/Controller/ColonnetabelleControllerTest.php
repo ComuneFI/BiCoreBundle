@@ -13,11 +13,12 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
     }
     public function testSecuredColonnetabelleIndex()
     {
-        $this->client->request('GET', '/Colonnetabelle');
+        $nomecontroller = 'Colonnetabelle';
+        $this->client->request('GET', '/' . $nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $parametri = $this->getParametriTabella($crawler);
+        $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         $this->client->request('POST', '/Colonnetabelle/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
