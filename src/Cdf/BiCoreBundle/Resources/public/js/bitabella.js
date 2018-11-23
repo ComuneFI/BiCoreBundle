@@ -36,8 +36,9 @@ $(document).on("submit", ".bitabellaform", function (e) {
     var url = form.attr('action');
     var formSerialize = form.serialize();
     var jqxhr = $.post(url, formSerialize, function (xhr) {
-        ricaricatabella();
-        binotification("Inserito");
+        var nomecontroller = getMainTabella();
+        ricaricatabella(nomecontroller);
+        binotification("Registrazione effettuata");
         //alert("success");
     }).done(function () {
         //alert("second success");
@@ -62,7 +63,7 @@ $(document).on("submit", ".bitabellaform", function (e) {
     // Perform other work here ...
     // Set another completion function for the request above
     jqxhr.always(function () {
-        //ricaricatabella();
+        //ricaricatabella(nomecontroller);
         //alert("second finished");
     });
 });
@@ -77,7 +78,8 @@ function beforeTabellaLoadComplete()
 function afterTabellaLoadComplete()
 {
 
-    var parametri = getParametriTabellaDataset();
+    var nomecontroller = getMainTabella();
+    var parametri = getParametriTabellaDataset(nomecontroller);
 
     //Genera menu per edit e delete
     generatemenuconfirmation(parametri);
@@ -111,7 +113,8 @@ function afterTabellaLoadComplete()
 function aggiustafootertabella()
 {
     var colCount = 0;
-    var parametri = getParametriTabellaDataset();
+    var nomecontroller = getMainTabella();
+    var parametri = getParametriTabellaDataset(nomecontroller);
     var nometabella = getTabellaParameter(parametri.nomecontroller);
     $('#tabella' + nometabella + ' tr:nth-child(2) th').each(function () {
         if ($(this).attr('colspan')) {

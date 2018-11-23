@@ -23,8 +23,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
             if ($(this).val() != "") {
                 var tipocampo = $(this).data('tipocampo');
                 var valorefiltro = $(this).val();
-                if (typeof ($(this).data('decodifiche')) !== "undefined") {
-                    //console.log($(this).data('decodifiche'));
+                if ($(this).data('decodifiche') !== null) {
                     decodifiche = $(this).data('decodifiche');
                     valorifiltro = Array();
                     $.each(decodifiche, function (key, value) {
@@ -67,9 +66,10 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                 filtririchiesti.push(elem);
             }
         });
-        setDataParameterTabella("filtri", JSON.stringify(filtririchiesti));
-        dumpParametriTabella();
-        ricaricatabella();
+        var nomecontroller = getMainTabella();
+        setDataParameterTabella(nomecontroller, "filtri", JSON.stringify(filtririchiesti));
+        //dumpParametriTabella(nomecontroller);
+        ricaricatabella(nomecontroller);
     }
 });
 
@@ -83,6 +83,7 @@ function getDateTimeTabella(stringadata)
 
 $(document).on("click", '.birimuovifiltri', function (e) {
     //var $pulsante = this.id;
-    setDataParameterTabella("filtri", JSON.stringify([]));
-    ricaricatabella();
+    var nomecontroller = getMainTabella();
+    setDataParameterTabella(nomecontroller, "filtri", JSON.stringify([]));
+    ricaricatabella(nomecontroller);
 });
