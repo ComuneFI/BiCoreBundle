@@ -16,6 +16,7 @@
     <testsuites>
         <testsuite name="App">
             <directory suffix=".php">./../../tests/App/Controller</directory>
+            <directory suffix=".php">./../../tests/App/Functional</directory>
         </testsuite>
         <testsuite name="Corebundle">
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Collector</directory>

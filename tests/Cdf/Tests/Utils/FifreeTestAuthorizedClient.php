@@ -22,6 +22,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
     {
 
         $this->client = static::createPantherClient();
+        
         $this->container = static::$kernel->getContainer();
         $username4test = $this->container->getParameter('admin4test');
         $password4test = $this->container->getParameter('adminpwd4test');
