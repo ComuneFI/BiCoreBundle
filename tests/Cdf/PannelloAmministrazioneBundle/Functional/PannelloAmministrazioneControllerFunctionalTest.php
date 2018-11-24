@@ -100,7 +100,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
       // @var $loginManager \FOS\UserBundle\Security\LoginManager
       $loginManager = $container->get('bi.fos_user.security.login_manager');
       $firewallName = $container->getParameter('fos_user.firewall_name');
-      $username4test = $container->getParameter('user4test');
+      $username4test = $container->getParameter('usernoroles4test');
       $user = $userManager->findUserBy(array('username' => $username4test));
       $loginManager->loginUser($firewallName, $user);
 

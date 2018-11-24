@@ -6,11 +6,12 @@ parameters:
     appname: "%env(resolve:bicorebundle_appname)%"
     appid_applicativo: "%env(resolve:bicorebundle_appid_applicativo)%"
     solosso: "%env(resolve:bicorebundle_solosso)%"
-    browser4test: "%env(resolve:bicorebundle_browser4test)%"
-    admin4test: "%env(resolve:bicorebundle_admin4test)%"
-    adminpwd4test: "%env(resolve:bicorebundle_adminpwd4test)%"
-    user4test: "%env(resolve:bicorebundle_user4test)%"
-    userpwd4test: "%env(resolve:bicorebundle_userpwd4test)%"
+    admin4test: "admin"
+    adminpwd4test: "admin"
+    usernoroles4test: "usernoroles"
+    usernorolespwd4test: "usernoroles"
+    userreadroles4test: "userreadroles"
+    userreadrolespwd4test: "userreadroles"
 
 
 fos_user:

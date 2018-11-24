@@ -2,36 +2,18 @@
 
 namespace Cdf\BiCoreBundle\Tests\Utils;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
-abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
+abstract class FifreeWebtestcaseNorolesAuthorizedClient extends FifreeWebtestcaseAuthorizedClient
 {
-
-    protected $client = null;
-    protected $em = null;
 
     public function setUp()
     {
         $this->client = static::createClient();
-        $this->logInAdmin();
+        $this->logInUser();
         $this->em = $this->client->getContainer()->get("doctrine")->getManager();
     }
-    protected function getParametriTabella($nomecontroller, $crawler)
-    {
-        $parametri = array();
-        $attributi = array(
-            'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
-            'filtri', 'formclass', 'idpassato', 'modellocolonne', 'nomecontroller',
-            'paginacorrente', 'paginetotali', 'permessi', 'prefiltri', 'righeperpagina', 'righetotali', 'estraituttirecords',
-            'tablename', 'titolotabella', 'multiselezione', 'traduzionefiltri', 'urltabella'
-        );
-        foreach ($attributi as $attributo) {
-            $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
-        }
-        return $parametri;
-    }
-    protected function logInAdmin()
+    protected function logInUser()
     {
 
         $container = $this->client->getContainer();
@@ -43,7 +25,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('admin4test');
+        $username4test = $container->getParameter('usernoroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 

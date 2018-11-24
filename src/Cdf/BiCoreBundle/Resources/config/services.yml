@@ -4,7 +4,6 @@ parameters:
     appname: "%env(resolve:bicorebundle_appname)%"
     appid_applicativo: "%env(resolve:bicorebundle_appid_applicativo)%"
     solosso: "%env(resolve:bicorebundle_solosso)%"
-    browser4test: "%env(resolve:bicorebundle_browser4test)%"
 
 services:
     # default configuration for services in *this* file
