@@ -38,10 +38,12 @@ class FiTabellaController extends FiCrudController
         //$tablename = ParametriTabella::getParameter($parametripassati["tablename"]);
         $controller = ParametriTabella::getParameter($parametripassati["nomecontroller"]);
         $form = $this->createForm(
-                $formType, $entity, array('attr' => array(
+            $formType,
+            $entity,
+            array('attr' => array(
                 'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_new'),
+                ),
+                'action' => $this->generateUrl($controller . '_new'),
                 )
         );
 
@@ -61,7 +63,8 @@ class FiTabellaController extends FiCrudController
         $parametri["templatelocation"] = $templatelocation;
 
         return $this->render(
-                        $template, array(
+            $template,
+            array(
                     'parametri' => $parametri
                         )
         );
