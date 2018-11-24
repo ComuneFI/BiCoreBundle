@@ -3,24 +3,23 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Cdf\BiCoreBundle\Utils\Export\TabellaXls;
-use Cdf\BiCoreBundle\Utils\Export\TabellaPdf;
 use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FiTabellaController extends FiCrudController
 {
-
     public function tabella(Request $request)
     {
         $doctrine = $this->get("doctrine");
         //$em = $doctrine->getManager();
 
         $parametripassati = array_merge($request->get("parametri"), array('user' => $this->getUser()));
+        if (!$this->permessi->canRead()) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = array(
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
@@ -39,12 +38,10 @@ class FiTabellaController extends FiCrudController
         //$tablename = ParametriTabella::getParameter($parametripassati["tablename"]);
         $controller = ParametriTabella::getParameter($parametripassati["nomecontroller"]);
         $form = $this->createForm(
-            $formType,
-            $entity,
-            array('attr' => array(
+                $formType, $entity, array('attr' => array(
                 'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_new'),
+            ),
+            'action' => $this->generateUrl($controller . '_new'),
                 )
         );
 
@@ -64,13 +61,11 @@ class FiTabellaController extends FiCrudController
         $parametri["templatelocation"] = $templatelocation;
 
         return $this->render(
-            $template,
-            array(
+                        $template, array(
                     'parametri' => $parametri
                         )
         );
     }
-
     public function exportXls(Request $request)
     {
         $doctrine = $this->get("doctrine");

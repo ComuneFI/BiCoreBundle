@@ -105,7 +105,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - ant
+  - travis_wait 20 ant
 
 after_success:
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then php vendor/bin/php-coveralls -v; fi
