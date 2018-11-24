@@ -18,5 +18,7 @@ class OrdineControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->client->request('GET', '/' . $nomecontroller . '/1/delete');
         $this->assertSame(501, $this->client->getResponse()->getStatusCode());
 
+        $this->client->request('GET', '/' . $nomecontroller . '/100/update');
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 }

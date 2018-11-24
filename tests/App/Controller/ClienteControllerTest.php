@@ -52,6 +52,18 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $entity = $this->em->getRepository("App:" . $nomecontroller)->findByNominativo($nominativo);
         $nominativonserito = $entity[0];
 
+        //Update
+        $crawler = $this->client->request('GET', '/Cliente/' . $nominativonserito->getId() . '/edit');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        //Submit
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
+        $camponominativo = "cliente[nominativo]";
+        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => ""));
+
+        // submit that form
+        $crawler = $this->client->submit($form);
+
         //Edit
         $crawler = $this->client->request('GET', '/Cliente/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
