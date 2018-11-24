@@ -17,12 +17,6 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        /*$urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
-        $client->request('GET', $urlcc, array("env" => "prod"));
-        dump($client->getResponse());
-        exit;
-        $this->assertTrue($client->getResponse()->isSuccessful());*/
-
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
         $client->request('GET', $urlsc, array("symfonycommand" => "list"));
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -63,6 +57,10 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->assertTrue(file_exists($checktypeprova));
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
+
+        $urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
+        $client->request('GET', $urlcc);
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         cleanFilesystem();
         //dump($client->getResponse());
