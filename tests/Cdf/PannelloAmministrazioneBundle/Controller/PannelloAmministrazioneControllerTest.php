@@ -31,6 +31,10 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $client->request('GET', $urluc, array("unixcommand" => "ls -all"));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
+        $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
+        $client->request('GET', $urluc, array("unixcommand" => "lsssss -all"));
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+
         //Restart client per caricare il nuovo bundle
         $client->reload();
         $urlge = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateentity');
