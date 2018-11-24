@@ -24,7 +24,7 @@ abstract class FifreeWebtestcaseReadrolesAuthorizedClient extends FifreeWebtestc
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('userreadroles');
+        $username4test = $container->getParameter('userreadroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
