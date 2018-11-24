@@ -15,6 +15,9 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
+        $this->client->request('GET', '/' . $nomecontroller.'edit/1000');
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+
         $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
         //Export xls

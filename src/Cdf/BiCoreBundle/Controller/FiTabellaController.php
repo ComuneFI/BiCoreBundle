@@ -13,13 +13,13 @@ class FiTabellaController extends FiCrudController
 {
     public function tabella(Request $request)
     {
+        if (!$this->permessi->canRead()) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
         $doctrine = $this->get("doctrine");
         //$em = $doctrine->getManager();
 
         $parametripassati = array_merge($request->get("parametri"), array('user' => $this->getUser()));
-        if (!$this->permessi->canRead()) {
-            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
-        }
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = array(
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
