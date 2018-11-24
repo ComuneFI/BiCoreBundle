@@ -15,7 +15,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $this->client->request('GET', '/' . $nomecontroller.'edit/1000');
+        $this->client->request('GET', '/' . $nomecontroller.'/1000/edit');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
 
         $parametri = $this->getParametriTabella($nomecontroller, $crawler);
@@ -37,6 +37,17 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
                 'Pagina 1 di 14 (Righe estratte: 210)', $this->client->getResponse()->getContent()
         );
 
+        //New
+        $crawler = $this->client->request('GET', '/Cliente/new');
+        //Incomplete submit
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
+        $camponominativo = "cliente[nominativo]";
+        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => ""));
+
+        // submit that form
+        $crawler = $this->client->submit($form);
+        $this->assertContains('Questo valore non dovrebbe essere vuoto', $this->client->getResponse()->getContent());
+
         $nominativo = "Andrea Manzi";
         $entity = $this->em->getRepository("App:" . $nomecontroller)->findByNominativo($nominativo);
         $nominativonserito = $entity[0];
@@ -45,6 +56,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->request('GET', '/Cliente/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
+        //Submit
         $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
         $camponominativo = "cliente[nominativo]";
         $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => "Andrea Manzi 2"));
@@ -77,6 +89,10 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(2, count($entity));
         foreach ($entity as $clientemodificato) {
             $this->assertSame("admin", $clientemodificato->getOperatori()->getUsername());
+            $this->em->remove($clientemodificato);
+            $this->em->flush();
         }
+        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/delete');
+        $this->assertSame(501, $this->client->getResponse()->getStatusCode());
     }
 }
