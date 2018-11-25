@@ -95,7 +95,7 @@ function deletemenu(biid, parametri)
 
                     },
                     success: function (response) {
-                        ricaricatabella(nomecontroller);
+                        ricaricatabella(getTabellaParameter(parametri.nomecontroller));
                         binotification("Eliminato", "warning", "it-error");
                     }
                 });
