@@ -18,9 +18,9 @@ env:
   global:
     - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
   matrix:
-    - DB=mysql BROWSER=chrome
-    - DB=pgsql BROWSER=chrome
-    - DB=sqlite3 BROWSER=chrome
+    - DB=mysql
+    - DB=pgsql
+    - DB=sqlite3
   
 matrix:
     fast_finish: true
@@ -28,14 +28,14 @@ matrix:
     allow_failures:
         #Sqlite fails on comparision date (equals)
         - php: 7.2
-          env: DB=sqlite3 BROWSER=chrome
+          env: DB=sqlite3
        # - php: hhvm-3.24
        # - php: 5.6
-       #   env: BROWSER=chrome
+       #   env:
        # - php: 7.0
-       #   env: BROWSER=chrome
+       #   env:
        # - php: 7.1
-       #   env: BROWSER=chrome
+       #   env:
     exclude:
     #- php: hhvm
     #  env: DB=pgsql
