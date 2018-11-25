@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Cdf\BiCoreBundle\Utils;
+namespace Cdf\BiCoreBundle\Utils\Permessi;
 
 use Cdf\BiCoreBundle\Entity\Permessi;
 

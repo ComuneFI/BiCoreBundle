@@ -23,39 +23,38 @@ services:
         public: true
         
     #twig extension
-    cdf.bicorebundle.twig.asset_extension:
+    cdf.bicorebundle.twig.extension.asset:
         class: Cdf\BiCoreBundle\Twig\Extension\AssetExtension
         arguments: ['@kernel']
         tags:
             - { name: twig.extension }
 
-    cdf.bicorebundle.twig.menu_extension:
+    cdf.bicorebundle.twig.extension.menu:
         class: Cdf\BiCoreBundle\Twig\Extension\MenuExtension
         arguments: [ '@doctrine.orm.entity_manager', '@router', '@security.token_storage', '%kernel.project_dir%' ]
         tags:
             - { name: twig.extension }
 
-    cdf.bicorebundle.twig.objecttotabella_extension:
+    cdf.bicorebundle.twig.extension.objecttotabella:
         class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
         tags:
             - { name: twig.extension }
             
-    cdf.bicorebundle.twig.versione_extension:
+    cdf.bicorebundle.twig.extension.versione:
         class: Cdf\BiCoreBundle\Twig\Extension\VersioneExtension
         arguments: ['@service_container']
         tags:
           - { name: twig.extension }
 
-    cdf.bicorebundle.twig.parametritabella_extension:
+    cdf.bicorebundle.twig.extension.parametritabella:
         class: Cdf\BiCoreBundle\Twig\Extension\ParametriTabellaTwigExtension
         tags:
           - { name: twig.extension }
 
-    cdf.bicorebundle.twig.utilita_extension:
+    cdf.bicorebundle.twig.extension.utilita:
       class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
       tags:
         - { name: twig.extension }
-      arguments: [ '@service_container' ]
 
     #Informazioni connessione database su Web Debug Toolbar
     cdf.bicorebundle.collector.databaseinfo:

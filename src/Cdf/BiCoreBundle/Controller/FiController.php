@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Cdf\BiCoreBundle\Utils\PermessiUtils;
+use Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

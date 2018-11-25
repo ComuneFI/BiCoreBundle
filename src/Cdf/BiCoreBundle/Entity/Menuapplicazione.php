@@ -1,4 +1,5 @@
 <?php
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,7 @@ use Cdf\BiCoreBundle\Entity\BaseMenuapplicazione;
 /**
  * Cdf\BiCoreBundle\Entity\Menuapplicazione
  *
- * @ORM\Entity(repositoryClass="Cdf\BiCoreBundle\Repository\MenuapplicazioneRepository")
+ * @ORM\Entity()
  */
 class Menuapplicazione extends BaseMenuapplicazione
 {

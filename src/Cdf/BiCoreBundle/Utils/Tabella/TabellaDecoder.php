@@ -19,7 +19,6 @@ class TabellaDecoder extends TabellaBase
     protected function getFieldValue($fieldvalue)
     {
         if (isset($fieldvalue["date"])) {
-            //StdClassUtils::arrayToObject($fieldvalue, DatetimeTabella::class);
             return new \Datetime($fieldvalue["date"]);
         } else {
             return $fieldvalue;

@@ -88,7 +88,7 @@ class MenuExtension extends \Twig_Extension
             $visualizzare = true;
 
             if ($item->isAutorizzazionerichiesta()) {
-                $permessi = new \Cdf\BiCoreBundle\Utils\PermessiUtils($this->em, $item->getTag(), $this->user->getToken()->getUser());
+                $permessi = new \Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils($this->em, $item->getTag(), $this->user->getToken()->getUser());
                 $visualizzare = $permessi->canRead();
             }
 
@@ -129,7 +129,7 @@ class MenuExtension extends \Twig_Extension
         foreach ($submenu as $subitem) {
             $visualizzare = true;
             if ($subitem->isAutorizzazionerichiesta()) {
-                $permessi = new \Cdf\BiCoreBundle\Utils\PermessiUtils($this->em, $subitem->getTag(), $this->user->getToken()->getUser());
+                $permessi = new \Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils($this->em, $subitem->getTag(), $this->user->getToken()->getUser());
                 $visualizzare = $permessi->canRead();
             }
 
