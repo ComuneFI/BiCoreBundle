@@ -87,9 +87,8 @@ function deletemenu(biid, parametri)
                                 title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
                                 message: divboxerrori(xhr.responseText)
                             });
-                            return false
+                            return false;
                         }
-                        ;
                     },
                     beforeSend: function (xhr) {
 
