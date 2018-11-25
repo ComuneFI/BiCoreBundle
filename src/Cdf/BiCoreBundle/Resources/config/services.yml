@@ -29,12 +29,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    cdf.bicorebundle.twig.permessi_extension:
-        class: Cdf\BiCoreBundle\Twig\Extension\PermessiTwigExtension
-        arguments: [ '@service_container', '@request_stack' ]
-        tags:
-            - { name: twig.extension }
-
     cdf.bicorebundle.twig.menu_extension:
         class: Cdf\BiCoreBundle\Twig\Extension\MenuExtension
         arguments: [ '@doctrine.orm.entity_manager', '@router', '@security.token_storage', '%kernel.project_dir%' ]
@@ -59,12 +53,6 @@ services:
 
     cdf.bicorebundle.twig.utilita_extension:
       class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
-      tags:
-        - { name: twig.extension }
-      arguments: [ '@twig.loader' ]
-
-    cdf.bicorebundle.twig.misc_extension:
-      class: Cdf\BiCoreBundle\Twig\Extension\MiscExtension
       tags:
         - { name: twig.extension }
       arguments: [ '@service_container' ]

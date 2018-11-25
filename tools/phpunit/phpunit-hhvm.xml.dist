@@ -34,7 +34,6 @@
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="135" />
-        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
     </php>
 
     <filter>

@@ -46,9 +46,7 @@
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SHELL_VERBOSITY" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
-        <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
         
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
         
