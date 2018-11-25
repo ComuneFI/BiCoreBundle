@@ -62,7 +62,7 @@ class PannelloamministrazioneCommands
             'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
             $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
     }
-    public function generateFormCrud($entityform)
+    public function generateFormCrud($entityform, $generatemplate)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $resultchk = $this->checkFormCrud($entityform);
@@ -70,7 +70,7 @@ class PannelloamministrazioneCommands
         if ($resultchk["errcode"] !== 0) {
             return $resultchk;
         }
-        $formcrudparms = array("entityform" => $entityform);
+        $formcrudparms = array("entityform" => $entityform, "--generatemplate" => $generatemplate);
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 

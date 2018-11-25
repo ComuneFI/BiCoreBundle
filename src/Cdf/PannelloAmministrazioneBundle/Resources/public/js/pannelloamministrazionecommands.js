@@ -38,8 +38,9 @@ $(document).ready(function () {
 
     $("#adminpanelgenerateformcrud").click(function () {
         var entityform = $("#entityform").val();
+        var generatemplate = $("#generatemplate").prop("checked");
         var domanda = "Vuoi creare il crud per il form " + entityform;
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateformcrud"), {entityform: entityform});
+        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateformcrud"), {entityform: entityform, generatemplate: generatemplate});
     });
 
     $("#adminpanelaggiornadatabase").click(function () {

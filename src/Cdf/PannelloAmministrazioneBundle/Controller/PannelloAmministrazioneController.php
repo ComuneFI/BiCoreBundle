@@ -167,11 +167,11 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $entityform = $request->get('entityform');
-
+            $generatemplate = $request->get('generatemplate') === 'true'? true: false;
             $this->locksystem->acquire();
 
             $command = $this->get("pannelloamministrazione.commands");
-            $result = $command->generateFormCrud($entityform);
+            $result = $command->generateFormCrud($entityform, $generatemplate);
 
             $this->locksystem->release();
             //$retcc = '';

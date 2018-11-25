@@ -4,6 +4,7 @@ namespace Cdf\PannelloAmministrazioneBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -16,6 +17,7 @@ class GenerateFormCommand extends ContainerAwareCommand
     protected $apppaths;
     protected $genhelper;
     protected $pammutils;
+    private $generatemplate;
 
     protected function configure()
     {
@@ -23,7 +25,8 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->setName('pannelloamministrazione:generateformcrud')
                 ->setDescription('Genera le views per il crud')
                 ->setHelp('Genera le views per il crud, <br/>bi.mwb AppBundle default [--schemaupdate]<br/>')
-                ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare');
+                ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare')
+                ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -33,6 +36,7 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         $bundlename = "App";
         $entityform = $input->getArgument('entityform');
+        $this->generatemplate = $input->getOption('generatemplate');
 
         $phpPath = OsFunctions::getPHPExecutableFromPath();
         $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ';
@@ -41,19 +45,19 @@ class GenerateFormCommand extends ContainerAwareCommand
             $fs = new Filesystem();
             //Controller
             $controlleFile = $this->apppaths->getSrcPath() . '/Controller/' . $entityform . 'Controller.php';
-            
+
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
             $line_i_am_looking_for = 8;
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             $lines[$line_i_am_looking_for] = 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;';
             file_put_contents($formFile, implode("\n", $lines));
-            
+
             $line_i_am_looking_for = 12;
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             $lines[$line_i_am_looking_for] = "        {\$submitparms = array("
-                    . "'label' => 'Aggiorna ".$entityform."','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));";
+                    . "'label' => 'Aggiorna " . $entityform . "','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));";
             file_put_contents($formFile, implode("\n", $lines));
-            
+
             $line_i_am_looking_for = 13;
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             $lines[$line_i_am_looking_for] = "        \$builder->add('submit', SubmitType::class, \$submitparms)";
@@ -108,31 +112,27 @@ class GenerateFormCommand extends ContainerAwareCommand
         $fs = new Filesystem();
         $publicfolder = $this->apppaths->getPublicPath();
 
-        if (!$fs->exists($publicfolder)) {
-            $publicfolder = realpath($this->apppaths->getVendorPath() . DIRECTORY_SEPARATOR . '../../public');
+        if (!$fs->exists($publicfolder . "/js")) {
             $fs->mkdir($publicfolder . "/js", 0777);
+        }
+
+        if (!$fs->exists($publicfolder . "/css")) {
             $fs->mkdir($publicfolder . "/css", 0777);
         }
 
         $templatetablefolder = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
-        $crudfolder = $this->apppaths->getVendorPath()
-                . DIRECTORY_SEPARATOR . 'comunedifirenze/bicorebundle/src/Cdf/BiCoreBundle/Resources/views/Standard/Crud';
-        if (!$fs->exists($crudfolder)) {
-            $crudfolder = realpath($this->apppaths->getSrcPath()
-                    . DIRECTORY_SEPARATOR . '../../src/Cdf/BiCoreBundle/Resources/views/Standard/Crud');
-        }
-        $tabellafolder = $this->apppaths->getVendorPath()
-                . DIRECTORY_SEPARATOR . 'comunedifirenze/bicorebundle/src/Cdf/BiCoreBundle/Resources/views/Standard/Tabella';
+        $crudfolder = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle')
+                . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Crud';
+        $tabellafolder = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle')
+                . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Tabella';
 
-        if (!$fs->exists($tabellafolder)) {
-            $tabellafolder = realpath($this->apppaths->getVendorPath()
-                    . DIRECTORY_SEPARATOR . '../../src/Cdf/BiCoreBundle/Resources/views/Standard/Tabella');
-        }
         $fs->mirror($crudfolder, $templatetablefolder . '/Crud');
-        $fs->mirror($tabellafolder, $templatetablefolder . '/Tabella');
+        if ($this->generatemplate) {
+            $fs->mirror($tabellafolder, $templatetablefolder . '/Tabella');
+        }
 
-        $fs->touch($publicfolder . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR . $entityform . ".js");
-        $fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
+        //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR . $entityform . ".js");
+        //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
     }
     private function generateFormsDefaultTableValues($entityform)
     {
