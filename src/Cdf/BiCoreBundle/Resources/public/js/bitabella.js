@@ -22,7 +22,7 @@ function caricatabella(parametri)
         },
         success: function (response) {
             $('#tabella' + getTabellaParameter(parametri.nomecontroller)).html(response);
-            afterTabellaLoadComplete();
+            afterTabellaLoadComplete(getTabellaParameter(parametri.nomecontroller));
             closeloaderspinner();
         }
     });
@@ -75,10 +75,8 @@ function beforeTabellaLoadComplete()
     $('[data-toggle="popover"]').popover('dispose');
 }
 
-function afterTabellaLoadComplete()
+function afterTabellaLoadComplete(nomecontroller)
 {
-
-    var nomecontroller = getMainTabella();
     var parametri = getParametriTabellaDataset(nomecontroller);
 
     //Genera menu per edit e delete
@@ -89,7 +87,7 @@ function afterTabellaLoadComplete()
         $('[data-toggle="popover"]').popover({container: 'body'});
         $('[data-toggle="tooltip"]').tooltip('enable');
     });
-    aggiustafootertabella();
+    aggiustafootertabella(nomecontroller);
 
     //Sistema label per form inserimento
     formlabeladjust();
@@ -110,10 +108,9 @@ function afterTabellaLoadComplete()
     });
 }
 
-function aggiustafootertabella()
+function aggiustafootertabella(nomecontroller)
 {
     var colCount = 0;
-    var nomecontroller = getMainTabella();
     var parametri = getParametriTabellaDataset(nomecontroller);
     var nometabella = getTabellaParameter(parametri.nomecontroller);
     $('#tabella' + nometabella + ' tr:nth-child(2) th').each(function () {

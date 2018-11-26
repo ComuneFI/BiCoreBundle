@@ -1,0 +1,12 @@
+<div style="overflow-x:auto;">
+    <div class="panel panel-primary filterable">
+        <table id="tabella{{parametri.nomecontroller|getparametrotabella}}" class="table table-sm table-responsive-sm table-striped bitable table-hover">
+            {% include parametri.templatelocation ~ 'Tabella/tabellaheader.html.twig' with parametri %}
+            {% include parametri.templatelocation ~ 'Tabella/tabellabody.html.twig' with parametri %}
+            {% include parametri.templatelocation ~ 'Tabella/tabellafooter.html.twig' with parametri %}
+        </table>
+        <div class="fifireetoolbar">
+            {% include parametri.templatelocation ~ 'Tabella/tabellatoolbar.html.twig' with parametri %}
+        </div>
+    </div>
+</div>

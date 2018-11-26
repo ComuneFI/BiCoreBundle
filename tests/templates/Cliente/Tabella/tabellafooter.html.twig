@@ -1,0 +1,105 @@
+{%set nearbyPagesLimit = 3 %}
+<tfoot>
+    <tr>
+        <td id="bitraduzionefiltri{{parametri.nomecontroller|getparametrotabella}}">
+            <small>{{parametri.traduzionefiltri}}</small><br/><button id="birimuovifiltri{{parametri.nomecontroller|getparametrotabella}}" class="badge birimuovifiltri {{parametri.traduzionefiltri?'':'sr-only'}}">Rimuovi filtri</button>
+        </td>
+    </tr>
+    <tr>
+        <td id="bitollbarbottoni{{parametri.nomecontroller|getparametrotabella}}" scope="col" class="text-center" >
+            <div class="bitoolbarazioni pull-left">
+                {% if (json_decode(parametri.permessi|getparametrotabella).create) %}
+                    <button id="tabellaadd" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Nuovo inserimento">
+                        <span class="it-copy"></span>
+                    </button>
+                {% endif %}
+                {% if (json_decode(parametri.permessi|getparametrotabella).delete) %}
+                <button id="tabelladel" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Elimina selezionati">
+                    <span class="it-cancel"></span>
+                </button>
+                {% endif %}
+                <button id="tabellarefresh" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Aggiorna">
+                    <span class="it-refresh"></span>
+                </button>
+                <button id="tabellasearch" type="button" class="btn btn-default btn-xs btn-filter" data-toggle="tooltip" data-placement="top" title="Filtri">
+                    <span class="it-search"></span>
+                </button>
+                <button id="tabelladownload" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Scarica">
+                    <span class="it-download"></span>
+                </button>
+            </div>
+            <nav aria-label="Page navigation example">
+                <div class="bitoolbarpaginazione pull-right">
+                    <ul class="pagination pagination-sm">
+                        <!--Prima pagina avanti e precedente-->
+                        {% if parametri.paginacorrente != 1 %}
+                            <li class="page-item">
+                                <a class="page-link paginascelta" data-paginascelta="1" href="#">
+                                    <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
+                                    <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
+                                </a>
+                                <!--<a href="{#{ path(url, { 'page': 1, 'q': query }) }#}">First</a>-->
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginacorrente-1}}" href="#">
+                                    <i class="it-chevron-left"></i><span class="sr-only">Pagina precedente</span>
+                                </a>
+                            </li>
+                        {% endif %}        
+
+                        <!--Pagine centrali-->
+                        {% for i in 1..parametri.paginetotali %}
+                            {% if 0 == (parametri.paginacorrente - nearbyPagesLimit) - loop.index %} {# dot before #}
+                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
+                                {% elseif 0 == (parametri.paginacorrente + nearbyPagesLimit) - loop.index %} {# dot after #}
+                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
+                                {% elseif 0 < (parametri.paginacorrente - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                                {% elseif 0 > (parametri.paginacorrente + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                                {% else %}<!---->
+                                    <!--<a href="{#{ path(url, { 'page': loop.index, 'q': query }) }#}">{#{ loop.index }#}</a>-->
+                                {% if parametri.paginacorrente == loop.index  %} 
+                                    <li class="page-item active">
+                                        <span class="page-link">
+                                            <span class="d-inline-block d-sm-none">Pagina</span>
+                                            {{ loop.index }}
+                                            <span class="sr-only">corrente</span>
+                                        </span>
+                                    </li>                
+                                {%else%}<!---->
+                                    <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">{{ loop.index }}</a></li>
+                                {% endif %}<!---->
+                            {% endif %}
+                        {% endfor %}        
+
+                        <!--Pagina avanti e ultima-->
+                        {% if parametri.paginacorrente != parametri.paginetotali %}
+                            <li class="page-item">
+                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginacorrente+1}}" href="#">
+                                    <i class="it-chevron-right"></i><span class="sr-only">Pagina successiva</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginetotali}}" href="#">
+                                    <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
+                                    <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
+                                </a>
+                                <!--<a href="{#{ path(url, { 'page': nbPages, 'q': query }) }#}">Last</a>-->
+                            </li>
+                        {% endif %}
+
+                        <!--Pagina n di tot-->
+                        <li class="page-item active">
+                            <span class="page-link">
+                                <span class="d-inline-block d-sm-none">Pagina</span>
+                                Pagina {{parametri.paginacorrente}} di {{parametri.paginetotali}} (Righe estratte: {{parametri.righetotali}})
+                                <span class="sr-only">corrente</span>
+                            </span>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+        </td>
+    </tr>
+</tfoot>
