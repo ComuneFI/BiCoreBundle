@@ -82,7 +82,7 @@ class PannelloAmministrazioneController extends Controller
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
-        $projectparentdir = realpath($projectDir . '/../');
+        $projectparentdir = $projectDir . '/../';
         $envvars = $projectparentdir . "/" . "envvars";
         $composercachedir = $projectparentdir . "/" . ".composer";
         $composerinstall = "";
