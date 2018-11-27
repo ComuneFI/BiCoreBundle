@@ -123,6 +123,7 @@ function editmenu(biid, parametri)
 
         },
         success: function (response) {
+            $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
             var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
             form.replaceWith(response).promise().done(function () {
                 formlabeladjust();
