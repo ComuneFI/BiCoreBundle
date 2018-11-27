@@ -36,6 +36,12 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertContains(
                 'Pagina 1 di 14 (Righe estratte: 210)', $this->client->getResponse()->getContent()
         );
+        //Sub tables
+        $this->client->request('POST', '/Ordine/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Ordine.Cliente.id","operatore":"=","valore":1}],"titolotabella":"Ordini+del+cliente+Andrea+Manzi","modellocolonne":[{"nomecampo":"Ordine.Cliente","escluso":true}],"colonneordinamento":{"Ordine.data":"DESC","Ordine.quantita":"DESC"},"multiselezione":true}')));
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        
+        $this->client->request('POST', '/Magazzino/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Magazzino.Ordine.Cliente.id","operatore":"=","valore":1}],"modellocolonne":[{"nomecampo":"Magazzino.giornodellasettimana","escluso":false,"decodifiche":["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"]}],"titolotabella":"Roba+in+magazzino+del+cliente+Andrea+Manzi"}')));
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //New
         $crawler = $this->client->request('GET', '/Cliente/new');

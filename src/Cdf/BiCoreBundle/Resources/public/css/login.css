@@ -1,13 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700);
 body
 {
-    font-family: roboto;
+    font-family: "Titillium Web";
 }
 
 .form-heading { color:#fff; font-size:23px;}
 .panel h2{ color:#444444; font-size:18px;}
 .panel p { color:#777777; font-size:14px; }
-
 
 .container
 {
@@ -30,7 +28,6 @@ body
     height: 50px;
     line-height: 50px;
 }
-
 
 .login-form .form-group {
 
