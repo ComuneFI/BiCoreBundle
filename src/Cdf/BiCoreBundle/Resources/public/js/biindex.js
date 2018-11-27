@@ -40,6 +40,7 @@ $(document).ready(function () {
 
             },
             success: function (response) {
+                $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').html("");
                 var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
                 form.replaceWith(response).promise().done(function () {
                     formlabeladjust();

@@ -33,6 +33,7 @@
 
 {{ form_end(form) }}
 
+<div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
 {%if not isnew %}
     <div class="collapse" id="collapseExample">
         <div class="card card-body">
@@ -88,3 +89,4 @@
         });
     </script>
 {%endif %}
+</div>

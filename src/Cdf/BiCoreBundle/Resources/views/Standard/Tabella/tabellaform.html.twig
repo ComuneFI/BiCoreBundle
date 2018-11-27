@@ -13,19 +13,19 @@
 
 {{ form_widget(form) }}
 
-{%if not isnew %}
-    <p>
-        <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+{{ form_end(form) }}
+
+<div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
+    {%if not isnew %}
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Registro modifiche
         </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-            {% for modifica in elencomodifiche %}
-                <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
-                {% endfor %}
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                {% for modifica in elencomodifiche %}
+                    <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
+                    {% endfor %}
+            </div>
         </div>
-    </div>
-{%endif %}
-
-{{ form_end(form) }}
+    {%endif %}
+</div>
