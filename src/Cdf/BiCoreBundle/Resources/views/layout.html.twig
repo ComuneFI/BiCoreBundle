@@ -21,7 +21,7 @@
 {% block body %}
     <div id="spinnerloader" class="loader loader-default"></div>
     {% block menuapplicazione %}
-    {{ generamenu() }}
+        {{ generamenu() }}
     {% endblock %}
     {% for label, messages in app.flashes(['success','warning']) %}
         {% for message in messages %}
