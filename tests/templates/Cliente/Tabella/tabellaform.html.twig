@@ -34,57 +34,59 @@
 {{ form_end(form) }}
 
 {%if not isnew %}
-    <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-            {% for modifica in elencomodifiche %}
-                <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
-                {% endfor %}
+    <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                {% for modifica in elencomodifiche %}
+                    <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
+                    {% endfor %}
+            </div>
         </div>
-    </div>
-    <ul class="nav nav-tabs nav-tabs-cards" id="card-simple" role="tablist">
-        <li class="nav-item"><a class="nav-link active" id="card-simple1-tab" data-toggle="tab" href="#card-simpletab1" role="tab" aria-controls="card-simpletab1" aria-selected="true">Ordini</a></li>
-        <li class="nav-item"><a class="nav-link" id="card-simple2-tab" data-toggle="tab" href="#card-simpletab2" role="tab" aria-controls="card-simpletab2" aria-selected="false">Magazzino</a></li>
-        <li class="nav-item-filler"></li>
-    </ul>
-    <div class="tab-content" id="card-simpleContent">
-        <div class="tab-pane p-4 fade show active" id="card-simpletab1" role="tabpanel" aria-labelledby="card-simple1-tab">
-            <!-- Tabella ordini -->
-            <div id="tabellaOrdineCliente"></div>
+        <ul class="nav nav-tabs nav-tabs-cards" id="card-simple" role="tablist">
+            <li class="nav-item"><a class="nav-link active" id="card-simple1-tab" data-toggle="tab" href="#card-simpletab1" role="tab" aria-controls="card-simpletab1" aria-selected="true">Ordini</a></li>
+            <li class="nav-item"><a class="nav-link" id="card-simple2-tab" data-toggle="tab" href="#card-simpletab2" role="tab" aria-controls="card-simpletab2" aria-selected="false">Magazzino</a></li>
+            <li class="nav-item-filler"></li>
+        </ul>
+        <div class="tab-content" id="card-simpleContent">
+            <div class="tab-pane p-4 fade show active" id="card-simpletab1" role="tabpanel" aria-labelledby="card-simple1-tab">
+                <!-- Tabella ordini -->
+                <div id="tabellaOrdineCliente"></div>
+            </div>
+            <div class="tab-pane p-4 fade" id="card-simpletab2" role="tabpanel" aria-labelledby="card-simple2-tab">
+                <div id="tabellaMagazzinoCliente"></div>
+            </div>
         </div>
-        <div class="tab-pane p-4 fade" id="card-simpletab2" role="tabpanel" aria-labelledby="card-simple2-tab">
-            <div id="tabellaMagazzinoCliente"></div>
-        </div>
-    </div>
 
-    <script type="text/javascript">
-        var url = '{{path("Ordine_indexdettaglio")}}';
-        var data = {
-        prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
-                titolotabella: 'Ordini del cliente {{entity.nominativo}}',
-                modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
-                colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
-                multiselezione: true
-        };
-        $.ajax({
-        type: 'POST',
-                url: url,
-                data: {parametripassati: JSON.stringify(data)}
-        }).done(function (data) {
-        $("#tabellaOrdineCliente").html(data);
-        });
-    </script>
-    <script type="text/javascript">
-        var url = '{{path("Magazzino_indexdettaglio")}}';
-        var data = {
-        prefiltri: [{nomecampo: "Magazzino.Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
-                modellocolonne: [{nomecampo: 'Magazzino.giornodellasettimana', escluso: false, decodifiche: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]}],
-                titolotabella: 'Roba in magazzino del cliente {{entity.nominativo}}'};
-        $.ajax({
-        type: 'POST',
-                url: url,
-                data: {parametripassati: JSON.stringify(data)}
-        }).done(function (data) {
-        $("#tabellaMagazzinoCliente").html(data);
-        });
-    </script>
+        <script type="text/javascript">
+            var url = '{{path("Ordine_indexdettaglio")}}';
+            var data = {
+            prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
+                    titolotabella: 'Ordini del cliente {{entity.nominativo}}',
+                    modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
+                    colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
+                    multiselezione: true
+            };
+            $.ajax({
+            type: 'POST',
+                    url: url,
+                    data: {parametripassati: JSON.stringify(data)}
+            }).done(function (data) {
+            $("#tabellaOrdineCliente").html(data);
+            });
+        </script>
+        <script type="text/javascript">
+            var url = '{{path("Magazzino_indexdettaglio")}}';
+            var data = {
+            prefiltri: [{nomecampo: "Magazzino.Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
+                    modellocolonne: [{nomecampo: 'Magazzino.giornodellasettimana', escluso: false, decodifiche: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]}],
+                    titolotabella: 'Roba in magazzino del cliente {{entity.nominativo}}'};
+            $.ajax({
+            type: 'POST',
+                    url: url,
+                    data: {parametripassati: JSON.stringify(data)}
+            }).done(function (data) {
+            $("#tabellaMagazzinoCliente").html(data);
+            });
+        </script>
+    </div>
 {%endif %}
