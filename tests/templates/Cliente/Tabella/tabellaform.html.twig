@@ -32,7 +32,14 @@
     </div>
     <script type="text/javascript">
         var url = '{{path("Ordine_indexdettaglio")}}';
-        var data = {prefiltri: [{nomecampo: "Ordine.Cliente.id", valorecampo: {{entity.id}}}]};
+        var data = {
+            prefiltri: [{nomecampo: "Ordine.Cliente.id", valorecampo: {{entity.id}}}],
+            titolotabella: 'Ordini del cliente {{entity.nominativo}}',
+            modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
+            colonneordinamento: {'Ordine.data': 'DESC','Ordine.quantita': 'DESC'},
+            multiselezione: true
+        };
+
         $.ajax({
             type: 'POST',
             url: url,

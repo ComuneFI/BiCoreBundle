@@ -11,6 +11,9 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\Asset\Packages;
 
+/**
+ * @property \Symfony\Component\Security\Core\Security $user
+ */
 class FiCrudController extends AbstractController
 {
 
@@ -96,12 +99,12 @@ class FiCrudController extends AbstractController
 /**
  * Lists all tables entities.
  */
-    public function indexDettaglio(Request $request, \Symfony\Component\Asset\Packages $assetsmanager)
+    public function indexDettaglio(Request $request, Packages $assetsmanager)
     {
         if (!$this->getPermessi()->canRead()) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
-        
+
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $parametripassati = json_decode($request->get('parametripassati'), true);
@@ -110,6 +113,26 @@ class FiCrudController extends AbstractController
                 $prefiltri_passati = $parametripassati["prefiltri"];
             } else {
                 $prefiltri_passati = array();
+            }
+            if (isset($parametripassati["titolotabella"])) {
+                $titolotabella = $parametripassati["titolotabella"];
+            } else {
+                $titolotabella = "Elenco " . $controller;
+            }
+            if (isset($parametripassati["modellocolonne"])) {
+                $modellocolonne = $parametripassati["modellocolonne"];
+            } else {
+                $modellocolonne = array();
+            }
+            if (isset($parametripassati["colonneordinamento"])) {
+                $colonneordinamento = $parametripassati["colonneordinamento"];
+            } else {
+                $colonneordinamento = array();
+            }
+            if (isset($parametripassati["multiselezione"])) {
+                $multiselezione = $parametripassati["multiselezione"];
+            } else {
+                $multiselezione = 0;
             }
         } else {
             $prefiltri_passati = array();
@@ -126,8 +149,6 @@ class FiCrudController extends AbstractController
 
         $formclass = str_replace("Entity", "Form", $entityclass);
 
-        $modellocolonne = array();
-        $colonneordinamento = array();
         $filtri = array();
         $prefiltri = array();
 
@@ -155,8 +176,8 @@ class FiCrudController extends AbstractController
         'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
         'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
         'idpassato' => ParametriTabella::setParameter(0),
-        'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
-        'multiselezione' => ParametriTabella::setParameter("0"),
+        'titolotabella' => ParametriTabella::setParameter($titolotabella),
+        'multiselezione' => ParametriTabella::setParameter($multiselezione),
         'paginacorrente' => ParametriTabella::setParameter("1"),
         'paginetotali' => ParametriTabella::setParameter(""),
         'righeperpagina' => ParametriTabella::setParameter("15"),
