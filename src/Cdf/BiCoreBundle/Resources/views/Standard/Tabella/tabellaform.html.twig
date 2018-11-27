@@ -15,8 +15,8 @@
 
 {{ form_end(form) }}
 
-<div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
-    {%if not isnew %}
+{%if not isnew %}
+    <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
         <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Registro modifiche
         </button>
@@ -27,5 +27,5 @@
                     {% endfor %}
             </div>
         </div>
-    {%endif %}
-</div>
+    </div>
+{%endif %}
