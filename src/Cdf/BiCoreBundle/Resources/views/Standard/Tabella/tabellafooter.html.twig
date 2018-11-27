@@ -9,22 +9,22 @@
         <td id="bitollbarbottoni{{parametri.nomecontroller|getparametrotabella}}" scope="col" class="text-center" >
             <div class="bitoolbarazioni pull-left">
                 {% if (json_decode(parametri.permessi|getparametrotabella).create) %}
-                    <button id="tabellaadd" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Nuovo inserimento">
+                    <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabellaadd" data-toggle="tooltip" data-placement="top" title="Nuovo inserimento">
                         <span class="it-copy"></span>
                     </button>
                 {% endif %}
                 {% if (json_decode(parametri.permessi|getparametrotabella).delete) %}
-                <button id="tabelladel" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Elimina selezionati">
-                    <span class="it-cancel"></span>
-                </button>
+                    <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabelladel" data-toggle="tooltip" data-placement="top" title="Elimina selezionati">
+                        <span class="it-cancel"></span>
+                    </button>
                 {% endif %}
-                <button id="tabellarefresh" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Aggiorna">
+                <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabellarefresh" data-toggle="tooltip" data-placement="top" title="Aggiorna">
                     <span class="it-refresh"></span>
                 </button>
-                <button id="tabellasearch" type="button" class="btn btn-default btn-xs btn-filter" data-toggle="tooltip" data-placement="top" title="Filtri">
+                <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs btn-filter tabellasearch" data-toggle="tooltip" data-placement="top" title="Filtri">
                     <span class="it-search"></span>
                 </button>
-                <button id="tabelladownload" type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Scarica">
+                <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabelladownload" data-toggle="tooltip" data-placement="top" title="Scarica">
                     <span class="it-download"></span>
                 </button>
             </div>
@@ -34,14 +34,14 @@
                         <!--Prima pagina avanti e precedente-->
                         {% if parametri.paginacorrente != 1 %}
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-paginascelta="1" href="#">
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="1" href="#">
                                     <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
                                     <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
                                 </a>
                                 <!--<a href="{#{ path(url, { 'page': 1, 'q': query }) }#}">First</a>-->
                             </li>
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginacorrente-1}}" href="#">
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente-1}}" href="#">
                                     <i class="it-chevron-left"></i><span class="sr-only">Pagina precedente</span>
                                 </a>
                             </li>
@@ -50,9 +50,9 @@
                         <!--Pagine centrali-->
                         {% for i in 1..parametri.paginetotali %}
                             {% if 0 == (parametri.paginacorrente - nearbyPagesLimit) - loop.index %} {# dot before #}
-                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
+                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
                                 {% elseif 0 == (parametri.paginacorrente + nearbyPagesLimit) - loop.index %} {# dot after #}
-                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
+                                <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{ loop.index }}" href="#">...</a></li>
                                 {% elseif 0 < (parametri.paginacorrente - nearbyPagesLimit) - loop.index %} {# hide all before #}
                                 {% elseif 0 > (parametri.paginacorrente + nearbyPagesLimit) - loop.index %} {# hide all after #}
                                 {% else %}<!---->
@@ -66,7 +66,7 @@
                                         </span>
                                     </li>                
                                 {%else%}<!---->
-                                    <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-paginascelta="{{ loop.index }}" href="#">{{ loop.index }}</a></li>
+                                    <li class="page-item d-none d-sm-block"><a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{ loop.index }}" href="#">{{ loop.index }}</a></li>
                                 {% endif %}<!---->
                             {% endif %}
                         {% endfor %}        
@@ -74,12 +74,12 @@
                         <!--Pagina avanti e ultima-->
                         {% if parametri.paginacorrente != parametri.paginetotali %}
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginacorrente+1}}" href="#">
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente+1}}" href="#">
                                     <i class="it-chevron-right"></i><span class="sr-only">Pagina successiva</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-paginascelta="{{parametri.paginetotali}}" href="#">
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginetotali}}" href="#">
                                     <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
                                     <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
                                 </a>

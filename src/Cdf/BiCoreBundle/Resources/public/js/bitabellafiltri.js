@@ -66,7 +66,8 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                 filtririchiesti.push(elem);
             }
         });
-        var nomecontroller = getMainTabella();
+        var nomecontroller = this.dataset["nomecontroller"];
+
         setDataParameterTabella(nomecontroller, "filtri", JSON.stringify(filtririchiesti));
         //dumpParametriTabella(nomecontroller);
         ricaricatabella(nomecontroller);
