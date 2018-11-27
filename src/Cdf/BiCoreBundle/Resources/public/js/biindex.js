@@ -1,25 +1,26 @@
 //Sul click del pulnsate aggiorna si lancia il refresh della tabella
 $(document).ready(function () {
-    var nomecontroller = getMainTabella();
-    $(document).on("click", "#tabellarefresh", function (e) {
+    $(document).on("click", ".tabellarefresh", function (e) {
         e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
         ricaricatabella(nomecontroller);
     });
-    $(document).on("click", "#tabelladel", function (e) {
+    $(document).on("click", ".tabelladel", function (e) {
         e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
         eliminaselezionati(nomecontroller);
     });
     $(document).on("click", ".paginascelta", function (e) {
         e.preventDefault();
-        var nomecontroller = getMainTabella();
+        var nomecontroller = this.dataset["nomecontroller"];
         var divparametri = getParametriTabellaDataset(nomecontroller);
         divparametri["paginacorrente"] = setTabellaParameter(this.dataset["paginascelta"]);
         ricaricatabella(nomecontroller);
     });
 
-    $(document).on("click", "#tabellaadd", function (e) {
+    $(document).on("click", ".tabellaadd", function (e) {
         e.preventDefault();
-        var nomecontroller = getMainTabella();
+        var nomecontroller = this.dataset["nomecontroller"];
         var parametri = getParametriTabellaDataset(nomecontroller);
         var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
         $.ajax({
@@ -47,9 +48,9 @@ $(document).ready(function () {
             }
         });
     });
-    $(document).on("click", "#tabelladownload", function (e) {
+    $(document).on("click", ".tabelladownload", function (e) {
         e.preventDefault();
-        var nomecontroller = getMainTabella();
+        var nomecontroller = this.dataset["nomecontroller"];
         var parametri = getParametriTabellaDataset(nomecontroller);
         var url = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + '/exportxls';
         $.ajax({

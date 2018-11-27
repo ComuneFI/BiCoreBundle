@@ -29,9 +29,9 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
         $client = $this->getClient();
 
         $client->request('GET', $url);
-        $client->waitFor("#tabellasearch");
+        $client->waitFor(".tabellasearch");
 
-        $this->pressButton('tabellasearch');
+        $this->pressButton('.tabellasearch');
         $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div.card.mb-3 div.card-body div#myTab2Content.tab-content div#tab1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tabellaMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters th.col-auto input.form-control.colonnatabellafiltro";
         $this->fillField($fieldhtml, "ed");
 
