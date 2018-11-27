@@ -317,9 +317,9 @@ Cdf\BiCoreBundle\Entity\Menuapplicazione:
     ordine: 20
     attivo: true
     target: null
-    tag: null
+    tag: Amministrazione
     notifiche: null
-    autorizzazionerichiesta: null
+    autorizzazionerichiesta: true
     percorsonotifiche: null
   -
     id: 2
