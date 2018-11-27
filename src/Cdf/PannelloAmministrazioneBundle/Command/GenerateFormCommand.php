@@ -55,7 +55,7 @@ class GenerateFormCommand extends ContainerAwareCommand
             $line_i_am_looking_for = 12;
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             $lines[$line_i_am_looking_for] = "        {\$submitparms = array("
-                    . "'label' => 'Aggiorna " . $entityform . "','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));";
+                    . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));";
             file_put_contents($formFile, implode("\n", $lines));
 
             $line_i_am_looking_for = 13;
