@@ -6,6 +6,11 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
 /**
+ * @property \Doctrine\ORM\EntityManager $em
+ * @property \Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils $permessi
+ * @property \Symfony\Component\Security\Core\Security $user
+ */
+/**
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class TabellaBase

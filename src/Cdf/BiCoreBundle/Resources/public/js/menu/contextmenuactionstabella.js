@@ -126,7 +126,7 @@ function editmenu(biid, parametri)
             var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
             form.replaceWith(response).promise().done(function () {
                 formlabeladjust();
-                $('.nav-tabs a[href="#tab2a"]').tab('show');
+                $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').tab('show');
             });
         }
     });

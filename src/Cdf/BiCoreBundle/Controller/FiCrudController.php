@@ -11,6 +11,9 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\Asset\Packages;
 
+/**
+ * @property \Symfony\Component\Security\Core\Security $user
+ */
 class FiCrudController extends AbstractController
 {
 
@@ -18,10 +21,9 @@ class FiCrudController extends AbstractController
     protected $controller;
     protected $permessi;
 
-    
-    /**
-     * Lists all tables entities.
-     */
+/**
+ * Lists all tables entities.
+ */
     public function index(Request $request, Packages $assetsmanager)
     {
         $bundle = $this->getBundle();
@@ -39,25 +41,25 @@ class FiCrudController extends AbstractController
         $formclass = str_replace("Entity", "Form", $entityclass);
 
         $modellocolonne = array(
-        /*
-          $controller . ".nominativo" => array(
-          "nometabella" => $controller,
-          "nomecampo" => "nominativo",
-          "etichetta" => "Nominativo",
-          "ordine" => 10,
-          "larghezza" => 200,
-          "escluso" => false
-          ),
-          $controller . ".datanascita" => array(
-          "nometabella" => $controller,
-          "nomecampo" => "datanascita",
-          "etichetta" => "Data di nascita",
-          "ordine" => 20,
-          "larghezza" => 100,
-          "escluso" => false
-          ),
+    /*
+      $controller . ".nominativo" => array(
+      "nometabella" => $controller,
+      "nomecampo" => "nominativo",
+      "etichetta" => "Nominativo",
+      "ordine" => 10,
+      "larghezza" => 200,
+      "escluso" => false
+      ),
+      $controller . ".datanascita" => array(
+      "nometabella" => $controller,
+      "nomecampo" => "datanascita",
+      "etichetta" => "Data di nascita",
+      "ordine" => 20,
+      "larghezza" => 100,
+      "escluso" => false
+      ),
 
-         */
+     */
         );
 
         $colonneordinamento = array($controller . '.id' => "DESC");
@@ -93,9 +95,84 @@ class FiCrudController extends AbstractController
 
         return $this->render($crudtemplate, array('parametritabella' => $parametritabella, ));
     }
-    /**
-     * Displays a form to create a new table entity.
-     */
+
+    private function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
+    {
+        if (isset($parametripassati[$keyparametro])) {
+            $parametro = $parametripassati[$keyparametro];
+        } else {
+            $parametro = $defaultvalue;
+        }
+        return $parametro;
+    }
+
+/**
+ * Lists all tables entities.
+ */
+    public function indexDettaglio(Request $request, Packages $assetsmanager)
+    {
+        if (!$this->getPermessi()->canRead()) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
+
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+        $parametripassati = json_decode($request->get('parametripassati'), true);
+
+        $filtri = $this->getParametroIndexDettaglio($parametripassati, "filtri", array());
+        $prefiltri = $this->getParametroIndexDettaglio($parametripassati, "prefiltri", array());
+        $titolotabella = $this->getParametroIndexDettaglio($parametripassati, "titolotabella", "Elenco " . $controller);
+        $modellocolonne = $this->getParametroIndexDettaglio($parametripassati, "modellocolonne", array());
+        $colonneordinamento = $this->getParametroIndexDettaglio($parametripassati, "colonneordinamento", array());
+        $multiselezione = $this->getParametroIndexDettaglio($parametripassati, "multiselezione", 0);
+
+        $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
+        if (!$this->get('templating')->exists($template)) {
+            $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
+        }
+
+        $entityclassnotation = $this->getEntityClassNotation();
+        $entityclass = $this->getEntityClassName();
+
+        $formclass = str_replace("Entity", "Form", $entityclass);
+
+        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get("doctrine")->getManager());
+
+        $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
+        $parametritabella = array("em" => ParametriTabella::setParameter("default"),
+        'tablename' => ParametriTabella::setParameter($tablenamefromentity),
+        'nomecontroller' => ParametriTabella::setParameter($controller),
+        'bundle' => ParametriTabella::setParameter($bundle),
+        'entityname' => ParametriTabella::setParameter($entityclassnotation),
+        'entityclass' => ParametriTabella::setParameter($entityclass),
+        'formclass' => ParametriTabella::setParameter($formclass),
+        'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
+        'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
+        'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
+        'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
+        'idpassato' => ParametriTabella::setParameter(0),
+        'titolotabella' => ParametriTabella::setParameter($titolotabella),
+        'multiselezione' => ParametriTabella::setParameter($multiselezione),
+        'paginacorrente' => ParametriTabella::setParameter("1"),
+        'paginetotali' => ParametriTabella::setParameter(""),
+        'righeperpagina' => ParametriTabella::setParameter("15"),
+        'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
+        'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
+        'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
+        'traduzionefiltri' => ParametriTabella::setParameter(""),
+        );
+
+        return $this->render(
+            $template,
+            array(
+            'parametritabella' => $parametritabella,
+            )
+        );
+    }
+
+/**
+ * Displays a form to create a new table entity.
+ */
     public function new(Request $request)
     {
     /* @var $em \Doctrine\ORM\EntityManager */
@@ -139,14 +216,14 @@ class FiCrudController extends AbstractController
                     200
                 );
             } else {
-                //Quando non passa la validazione
+            //Quando non passa la validazione
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     400
                 );
             }
         } else {
-            //Quando viene richiesta una "nuova" new
+        //Quando viene richiesta una "nuova" new
             return new Response(
                 $this->renderView($crudtemplate, $twigparms),
                 200
@@ -202,7 +279,7 @@ class FiCrudController extends AbstractController
             'tabellatemplate' => $tabellatemplate,
             'edit_form' => $editForm->createView(),
             'elencomodifiche' => $elencomodifiche,
-                )
+            )
         );
     }
 
@@ -271,7 +348,7 @@ class FiCrudController extends AbstractController
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
             'nomecontroller' => ParametriTabella::setParameter($controller),
-                )
+            )
         );
     }
 
@@ -348,29 +425,34 @@ class FiCrudController extends AbstractController
         }
         return $crudtemplate;
     }
+
     protected function getBundle()
     {
         return $this->bundle;
     }
+
     protected function getController()
     {
         return $this->controller;
     }
+
     protected function getPermessi()
     {
         return $this->permessi;
     }
-    /**
-     * Returns the calling function through a backtrace
-     */
+
+/**
+ * Returns the calling function through a backtrace
+ */
     protected function getThisFunctionName()
     {
-        // a funciton x has called a function y which called this
-        // see stackoverflow.com/questions/190421
+    // a funciton x has called a function y which called this
+    // see stackoverflow.com/questions/190421
         $caller = debug_backtrace();
         $caller = $caller[1];
         return $caller['function'];
     }
+
     protected function getEntityClassNotation()
     {
         $em = $this->get("doctrine")->getManager();
@@ -378,6 +460,7 @@ class FiCrudController extends AbstractController
         $entityutils = new EntityUtils($em);
         return $entityutils->getClassNameToShortcutNotations($entityfinder->getClassNameFromEntityName());
     }
+
     protected function getEntityClassName()
     {
         $em = $this->get("doctrine")->getManager();

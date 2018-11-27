@@ -187,6 +187,10 @@ EOF;
     path:  /
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::index' }
 
+[tabella]_indexdettaglio:
+    path:  /indexDettaglio
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::indexDettaglio' }
+
 [tabella]_new:
     path:  /new
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::new' }
