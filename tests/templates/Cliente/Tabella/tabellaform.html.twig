@@ -33,10 +33,10 @@
     <script type="text/javascript">
         var url = '{{path("Ordine_indexdettaglio")}}';
         var data = {
-            prefiltri: [{nomecampo: "Ordine.Cliente.id", valorecampo: {{entity.id}}}],
+            prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
             titolotabella: 'Ordini del cliente {{entity.nominativo}}',
             modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
-            colonneordinamento: {'Ordine.data': 'DESC','Ordine.quantita': 'DESC'},
+            colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
             multiselezione: true
         };
 

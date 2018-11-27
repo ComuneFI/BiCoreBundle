@@ -96,6 +96,16 @@ class FiCrudController extends AbstractController
         return $this->render($crudtemplate, array('parametritabella' => $parametritabella, ));
     }
 
+    private function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
+    {
+        if (isset($parametripassati[$keyparametro])) {
+            $parametro = $parametripassati[$keyparametro];
+        } else {
+            $parametro = $defaultvalue;
+        }
+        return $parametro;
+    }
+
 /**
  * Lists all tables entities.
  */
@@ -108,36 +118,13 @@ class FiCrudController extends AbstractController
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $parametripassati = json_decode($request->get('parametripassati'), true);
-        if ($parametripassati) {
-            if (isset($parametripassati["prefiltri"])) {
-                $prefiltri_passati = $parametripassati["prefiltri"];
-            } else {
-                $prefiltri_passati = array();
-            }
-            if (isset($parametripassati["titolotabella"])) {
-                $titolotabella = $parametripassati["titolotabella"];
-            } else {
-                $titolotabella = "Elenco " . $controller;
-            }
-            if (isset($parametripassati["modellocolonne"])) {
-                $modellocolonne = $parametripassati["modellocolonne"];
-            } else {
-                $modellocolonne = array();
-            }
-            if (isset($parametripassati["colonneordinamento"])) {
-                $colonneordinamento = $parametripassati["colonneordinamento"];
-            } else {
-                $colonneordinamento = array();
-            }
-            if (isset($parametripassati["multiselezione"])) {
-                $multiselezione = $parametripassati["multiselezione"];
-            } else {
-                $multiselezione = 0;
-            }
-        } else {
-            $prefiltri_passati = array();
-        }
 
+        $filtri = $this->getParametroIndexDettaglio($parametripassati, "filtri", array());
+        $prefiltri = $this->getParametroIndexDettaglio($parametripassati, "prefiltri", array());
+        $titolotabella = $this->getParametroIndexDettaglio($parametripassati, "titolotabella", "Elenco " . $controller);
+        $modellocolonne = $this->getParametroIndexDettaglio($parametripassati, "modellocolonne", array());
+        $colonneordinamento = $this->getParametroIndexDettaglio($parametripassati, "colonneordinamento", array());
+        $multiselezione = $this->getParametroIndexDettaglio($parametripassati, "multiselezione", 0);
 
         $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
         if (!$this->get('templating')->exists($template)) {
@@ -149,18 +136,6 @@ class FiCrudController extends AbstractController
 
         $formclass = str_replace("Entity", "Form", $entityclass);
 
-        $filtri = array();
-        $prefiltri = array();
-
-        if (count($prefiltri_passati) > 0) {
-            foreach ($prefiltri_passati as $prefiltropassato) {
-                $prefiltri[] = array(
-                "nomecampo" => $prefiltropassato["nomecampo"],
-                "operatore" => "=",
-                "valore" => $prefiltropassato["valorecampo"],
-                );
-            }
-        }
         $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get("doctrine")->getManager());
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
