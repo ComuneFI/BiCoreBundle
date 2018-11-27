@@ -43,7 +43,7 @@ $(document).ready(function () {
                 var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
                 form.replaceWith(response).promise().done(function () {
                     formlabeladjust();
-                    $('.nav-tabs a[href="#tab2a"]').click();
+                    $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').click();
                 });
             }
         });
@@ -97,9 +97,8 @@ function ricaricatabella(nomecontroller)
     caricatabella(getParametriTabellaDataset(nomecontroller));
 }
 
-function eliminaselezionati()
+function eliminaselezionati(nomecontroller)
 {
-    var nomecontroller = getMainTabella();
     var parametri = getParametriTabellaDataset(nomecontroller);
     var permessi = JSON.parse(getTabellaParameter(parametri.permessi));
     if (permessi.update !== true) {
