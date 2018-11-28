@@ -6,9 +6,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 class StoricomodificheType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -31,5 +33,13 @@ class StoricomodificheType extends AbstractType
                 ->add('operatori')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Storicomodifiche::class,
+            'parametriform' => array()
+        ]);
     }
 }

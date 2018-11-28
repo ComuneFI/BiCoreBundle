@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Cdf\BiCoreBundle\Entity\Operatori;
+use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ColonnetabelleType extends AbstractType
@@ -33,5 +34,12 @@ class ColonnetabelleType extends AbstractType
                 ->add('operatori', EntityType::class, array('class' => Operatori::class, 'required' => false))
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Colonnetabelle::class,
+            'parametriform' => array()
+        ]);
     }
 }

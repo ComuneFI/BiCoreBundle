@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 
 class OpzionitabelleType extends AbstractType
 {
@@ -24,5 +25,12 @@ class OpzionitabelleType extends AbstractType
                 ->add('valore')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Opzionitabelle::class,
+            'parametriform' => array()
+        ]);
     }
 }

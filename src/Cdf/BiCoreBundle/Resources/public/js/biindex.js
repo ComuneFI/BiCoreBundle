@@ -22,10 +22,15 @@ $(document).ready(function () {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];
         var parametri = getParametriTabellaDataset(nomecontroller);
+        var parametriform = [];
+        if (typeof parametri.parametriform !== "undefined"){
+            parametriform = getTabellaParameter(parametri.parametriform);
+        }
         var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
         $.ajax({
             url: newurl,
             type: "GET",
+            data: {parametriform: parametriform},
             async: true,
             error: function (xhr, textStatus, errorThrown) {
                 bootbox.alert({

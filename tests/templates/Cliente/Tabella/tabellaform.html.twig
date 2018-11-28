@@ -11,29 +11,48 @@
                 })
 }}
 
-{{ form_row(form.nominativo) }}
-{{ form_row(form.datanascita) }}
-{{ form_row(form.attivo) }}
-{{ form_row(form.punti) }}
-{{ form_row(form.iscrittoil) }}
-{{ form_row(form.creditoresiduo) }}
-{{ form_row(form.note) }}
-
 <div class="form-row">
-    <div class="col-sm-2">{{ form_widget(form.submit) }}</div>
-    {%if not isnew %}
-        <div class="col-sm-2">
+    <div class="form-group col-md-2">
+        {{ form_row(form.nominativo) }}
+    </div>
+    <div class="form-group col-md-2">
+        {{ form_row(form.datanascita) }}
+    </div>        
+    <div class="form-group col-md-2">
+        {{ form_row(form.punti) }}
+    </div>
+    <div class="form-group col-md-2">
+        {{ form_row(form.iscrittoil) }}
+    </div>
+    <!--Se uno vuole forzare ad andare a capo calcola quanto manca per arrivare a 12-->
+    <!--<div class="form-group col-md-4"></div>-->
+    <div class="form-group col-md-2">
+        {{ form_row(form.creditoresiduo) }}
+    </div>
+    <div class="form-group col-md-2">
+        {{ form_row(form.attivo) }}
+    </div>
+
+    <div class="form-group col-md-12">
+        {{ form_row(form.note) }}
+    </div>
+</div>
+
+<div class="clearfix">
+    <div class="float-lg-right">
+        {{ form_widget(form.submit) }}
+        {%if not isnew %}
             <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 Registro modifiche
             </button>
-        </div>
-    {%endif %}
+        {%endif %}
+    </div>
 </div>
-
-
 {{ form_end(form) }}
 
 {%if not isnew %}
+    <!--Attenzione a questo div che deve contenere tutte queste informazioni, altrimenti nella edit si raddoppiano 
+    i div ogni chiamata ad una nuova edit -->
     <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
@@ -64,6 +83,7 @@
                     titolotabella: 'Ordini del cliente {{entity.nominativo}}',
                     modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
                     colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
+                    parametriform: {'cliente_id': {{entity.id}}},
                     multiselezione: true
             };
             $.ajax({

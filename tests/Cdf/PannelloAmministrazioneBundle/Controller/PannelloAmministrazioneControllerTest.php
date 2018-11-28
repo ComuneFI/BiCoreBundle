@@ -29,9 +29,13 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $client->request('GET', $urluc, array("unixcommand" => "lsssss -all"));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
-        //Restart client per caricare il nuovo bundle
         $client->reload();
         $urlge = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateentity');
+
+        $client->request('GET', $urlge, array("file" => "tabellaminuscola.mwb"));
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        
+        //Restart client per caricare il nuovo bundle
         $client->request('GET', $urlge, array("file" => "wbadmintest.mwb"));
         $this->assertTrue($client->getResponse()->isSuccessful());
 

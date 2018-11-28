@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Cdf\BiCoreBundle\Entity\Menuapplicazione;
 
 class MenuapplicazioneType extends AbstractType
 {
@@ -34,5 +35,12 @@ class MenuapplicazioneType extends AbstractType
                 ->add('percorsonotifiche')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Menuapplicazione::class,
+            'parametriform' => array()
+        ]);
     }
 }

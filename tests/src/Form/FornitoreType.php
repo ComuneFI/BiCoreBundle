@@ -31,6 +31,7 @@ class FornitoreType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Fornitore::class,
+            'parametriform' => array()
         ]);
     }
 }

@@ -25,3 +25,6 @@
     float: center;
 }
 
+.nav-tabs .nav-link:not(.active){
+     opacity: 0.5;
+}
