@@ -6,6 +6,7 @@ use App\Entity\Prodottofornitore;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProdottofornitoreType extends AbstractType
 {
@@ -22,5 +23,15 @@ class ProdottofornitoreType extends AbstractType
                 ->add('quantitadisponibile')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => Prodottofornitore::class,
+            'parametriform' => array()
+        ));
     }
 }

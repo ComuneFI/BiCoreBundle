@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
--->
-<project name="FifreeBiCoreBundle" default="build">
-    <target name="build"
-            depends="prepare,
+
+<project name="BiCoreBundle" default="build">
+    
+    <target name="build" depends="prepare,
                     composer-self-update,
                     composer-run-install,
                     bicorebundle-drop-database,
@@ -14,15 +13,20 @@
                     phpcpd-ci,
                     phpmd-ci,
                     php-security-checker, 
-                    phpunit-ci"
-    />
-
-    <target name="clean" description="Cleanup build artifacts">
+                    phpunit-ci,
+                    finish">
+    </target>
+    
+    <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
         <delete dir="build/artifacts/logs"/>
+        <delete file="cache.properties"/>
+        <delete file="composer.phar"/>
     </target>
 
-    <target name="prepare-dev" description="Prepare for dev build">
+    <target name="finish" description="Cleanup">
+        <delete file="cache.properties"/>
+        <delete file="composer.phar"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
@@ -143,6 +147,8 @@
 
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
+            <env key="PANTHER_WEB_SERVER_DIR" value="${basedir}/tests/public"/>
+            <env key="PANTHER_NO_HEADLESS" value="0"/>
             <arg line="--configuration=${basedir}/tools/phpunit/phpunit.xml.dist"/>
             <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
         </exec>

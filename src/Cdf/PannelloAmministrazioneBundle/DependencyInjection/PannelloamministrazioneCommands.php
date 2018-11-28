@@ -20,6 +20,7 @@ class PannelloamministrazioneCommands
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
         $this->pammutils = $container->get("pannelloamministrazione.utils");
     }
+
     // @codeCoverageIgnoreStart
     public function getVcs()
     {
@@ -40,6 +41,7 @@ class PannelloamministrazioneCommands
         $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
         return $this->pammutils->runCommand($command);
     }
+
     // @codeCoverageIgnoreEnd
     public function generateEntity($wbFile)
     {
@@ -49,19 +51,17 @@ class PannelloamministrazioneCommands
         if ($result["errcode"] != 0) {
             return array(
                 'errcode' => -1,
-                'message' => 'Errore nel comando: <i style="color: white;">' .
-                $command . '</i><br/><i style="color: red;">' .
-                str_replace("\n", '<br/>', $result["message"]) .
-                'in caso di errori eseguire il comando symfony non da web: pannelloamministrazione:generateymlentities ' .
-                $wbFile . '<br/></i>',
+                'command' => $command,
+                'message' => 'Errore nel comando:' . $command . ';' . $result["message"],
             );
         }
 
         return array(
             'errcode' => 0,
-            'message' => '<pre>Eseguito comando: <i style = "color: white;">' .
-            $command . '</i><br/>' . str_replace("\n", '<br/>', $result["message"]) . '</pre>',);
+            'command' => $command,
+            'message' => 'Eseguito comando:' . $command . ';' . $result["message"]);
     }
+
     public function generateFormCrud($entityform, $generatemplate)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
@@ -82,6 +82,7 @@ class PannelloamministrazioneCommands
 
         return $retmsg;
     }
+
     public function checkFormCrud($entityform)
     {
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
@@ -117,6 +118,7 @@ class PannelloamministrazioneCommands
 
         return array('errcode' => 0, 'message' => 'OK');
     }
+
     public function clearcache()
     {
         $cmdoutput = "";
@@ -131,6 +133,7 @@ class PannelloamministrazioneCommands
         }
         return $result;
     }
+
     public function aggiornaSchemaDatabase()
     {
         $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));

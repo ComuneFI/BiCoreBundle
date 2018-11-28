@@ -1,4 +1,5 @@
 <?php
+
 namespace Cdf\PannelloAmministrazioneBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -159,6 +160,7 @@ class PannelloAmministrazioneController extends Controller
             }
         }
     }
+
     /* FORMS */
 
     public function generateFormCrudAction(Request $request)
@@ -167,7 +169,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $entityform = $request->get('entityform');
-            $generatemplate = $request->get('generatemplate') === 'true'? true: false;
+            $generatemplate = $request->get('generatemplate') === 'true' ? true : false;
             $this->locksystem->acquire();
 
             $command = $this->get("pannelloamministrazione.commands");
@@ -189,6 +191,7 @@ class PannelloAmministrazioneController extends Controller
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
     }
+
     /* ENTITIES */
 
     public function generateEntityAction(Request $request)
@@ -199,11 +202,20 @@ class PannelloAmministrazioneController extends Controller
             $this->locksystem->acquire();
             $wbFile = $request->get('file');
             $command = $this->get("pannelloamministrazione.commands");
-            $ret = $command->generateEntity($wbFile);
+            $result = $command->generateEntity($wbFile);
+            $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
             $this->locksystem->release();
-            return new Response($ret['message']);
+            if ($result['errcode'] != 0) {
+                $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return new Response($view, 500);
+            } else {
+                $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+            }
         }
     }
+
     /* VCS (GIT,SVN) */
 
     /**
@@ -225,6 +237,7 @@ class PannelloAmministrazioneController extends Controller
             return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
         }
     }
+
     /* CLEAR CACHE */
 
     /**
@@ -254,6 +267,7 @@ class PannelloAmministrazioneController extends Controller
             }
         }
     }
+
     /* CLEAR CACHE */
 
     public function symfonyCommandAction(Request $request)
@@ -334,7 +348,7 @@ class PannelloAmministrazioneController extends Controller
                 $phpPath = OsFunctions::getPHPExecutableFromPath();
 
                 $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                    $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
+                        $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
 
                 $process = new Process($command);
                 $process->run();

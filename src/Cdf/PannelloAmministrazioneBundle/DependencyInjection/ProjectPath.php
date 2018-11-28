@@ -57,17 +57,6 @@ class ProjectPath
         }
         return $vendorbindir;
     }
-    public function getVendorPath()
-    {
-        $vendordir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor';
-        if (!file_exists($vendordir)) {
-            $vendordir = realpath($this->getProjectPath() . '/../vendor/bin');
-            if (!file_exists($vendordir)) {
-                throw new \Exception("Cartella Bin in vendor non trovata", -100);
-            }
-        }
-        return $vendordir;
-    }
     public function getSrcPath()
     {
         $srcdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'src';
@@ -118,16 +107,6 @@ class ProjectPath
     {
         $console = $this->getBinPath() . '/console';
         // Questo codice per versioni che usano un symfony 2 o 3
-        if (!file_exists($console)) {
-            $console = $this->getProjectPath() . '/bin/console';
-            if (!file_exists($console)) {
-                $console = realpath($this->getProjectPath() . '/../bin/console');
-            }
-            if (!file_exists($console)) {
-                $console = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor' .
-                        DIRECTORY_SEPARATOR . 'bin/console';
-            }
-        }
         if (!file_exists($console)) {
             throw new \Exception("Console non trovata", -100);
         }

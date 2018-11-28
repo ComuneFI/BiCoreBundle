@@ -52,7 +52,7 @@ Installazione:
     bin/console server:start --docroot=tests/public 2>&1 &
     
     #Lanciare i test
-    PANTHER_WEB_SERVER_DIR=$(pwd)/tests/public ant
+    ant
     #oppure
     #vendor/bin/simple-phpunit
 

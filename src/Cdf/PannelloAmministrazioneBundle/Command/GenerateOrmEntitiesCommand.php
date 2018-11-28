@@ -20,7 +20,7 @@ class GenerateOrmEntitiesCommand extends ContainerAwareCommand
         $this
                 ->setName('pannelloamministrazione:generateormentities')
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
-                ->setHelp('Genera i ifle yml per le entities partendo da un modello workbeanch mwb, <br/>bi.mwb Fi/BiCoreBundle default<br/>')
+                ->setHelp('Genera i file orm per le entities partendo da un modello workbeanch mwb, <br/>bi.mwb Fi/BiCoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')
         ;
     }
@@ -39,7 +39,7 @@ class GenerateOrmEntitiesCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $destinationPath = $this->genhelper->getDestinationEntityYmlPath();
+        $destinationPath = $this->genhelper->getDestinationEntityOrmPath();
 
         $command = $this->getExportJsonCommand($wbFile);
         
@@ -66,7 +66,7 @@ class GenerateOrmEntitiesCommand extends ContainerAwareCommand
     {
         $exportJson = $this->genhelper->getExportJsonFile();
         $scriptGenerator = $this->genhelper->getScriptGenerator();
-        $destinationPathEscaped = $this->genhelper->getDestinationEntityYmlPath();
+        $destinationPathEscaped = $this->genhelper->getDestinationEntityOrmPath();
         $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
         
         $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);

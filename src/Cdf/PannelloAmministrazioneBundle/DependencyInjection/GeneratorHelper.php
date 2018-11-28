@@ -18,7 +18,7 @@ class GeneratorHelper
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
     }
 
-    public function getDestinationEntityYmlPath()
+    public function getDestinationEntityOrmPath()
     {
         $entitypath = realpath($this->apppaths->getSrcPath() . '/../src/Entity/');
         if (DIRECTORY_SEPARATOR == '/') {
@@ -33,41 +33,49 @@ class GeneratorHelper
         $finder = new Finder();
         $fs = new Filesystem();
 
-        $pathdoctrineyml = $destinationPath;
+        $pathdoctrineorm = $destinationPath;
 
-        //Si converte il nome file tabella.orm.yml se ha undercore
-        $finder->in($pathdoctrineyml)->files()->name('*_*');
+        //Si converte il nome file per l'Orm della tabella se ha undercore
+        $finder->in($pathdoctrineorm)->files()->name('*_*');
         $table = new Table();
 
         foreach ($finder as $file) {
             $oldfilename = $file->getPathName();
-            $newfilename = $pathdoctrineyml . DIRECTORY_SEPARATOR . $table->beautify($file->getFileName());
+            $newfilename = $pathdoctrineorm . DIRECTORY_SEPARATOR . $table->beautify($file->getFileName());
             $fs->rename($oldfilename, $newfilename, true);
         }
 
         //Si cercano file con nomi errati
         $finderwrong = new Finder();
-        $finderwrong->in($pathdoctrineyml)->files()->name('*_*');
+        $finderwrong->in($pathdoctrineorm)->files()->name('*_*');
         $wrongfilename = array();
         if (count($finderwrong) > 0) {
             foreach ($finderwrong as $file) {
                 $wrongfilename[] = $file->getFileName();
-                $fs->remove($pathdoctrineyml . DIRECTORY_SEPARATOR . $file->getFileName());
-            }
-        }
-        $finderwrongcapitalize = new Finder();
-        $finderwrongcapitalize->in($pathdoctrineyml)->files()->name('*.yml');
-        foreach ($finderwrongcapitalize as $file) {
-            if (!ctype_upper(substr($file->getFileName(), 0, 1))) {
-                $wrongfilename[] = $file->getFileName();
-                $fs->remove($pathdoctrineyml . DIRECTORY_SEPARATOR . $file->getFileName());
+                $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
             }
         }
 
-        if (count($wrongfilename) > 0) {
-            $errout = '<error>Ci sono tabelle nel file ' . $wbFile . ' con nomi non consentiti:' .
-                    implode(',', $wrongfilename) .
-                    '. I nomi tabella devono essere : con la prima lettera maiuscola,underscore ammesso,doppio underscore non ammesso</error>';
+        //Si cercano file con nomi campo errati
+        $finderwrongproperty = new Finder();
+        $finderwrongproperty->in($pathdoctrineorm)->files()->name('*');
+        $wrongpropertyname = array();
+        foreach ($finderwrongproperty as $file) {
+            $ref = new \ReflectionClass("App\\Entity\\" . basename($file->getFileName(), ".php"));
+            $props = $ref->getProperties();
+            foreach ($props as $prop) {
+                $f = $prop->getName();
+                if ($f !== strtolower($f)) {
+                    $wrongpropertyname[] = $file->getFileName();
+                    $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
+                }
+            }
+        }
+
+        if (count($wrongpropertyname) > 0) {
+            $errout = '<error>Ci sono campi nel file ' . $wbFile . ' con nomi non consentiti:' .
+                    implode(',', $wrongpropertyname) .
+                    '. I nomi dei campi devono essere lower case</error>';
 
             $output->writeln($errout);
 
@@ -93,8 +101,8 @@ class GeneratorHelper
 
         $scriptGenerator = $this->getScriptGenerator();
 
-        $destinationPath = $this->getDestinationEntityYmlPath();
-        $output->writeln('Creazione entities yml in ' . $destinationPath . ' da file ' . $mwbfile);
+        $destinationPath = $this->getDestinationEntityOrmPath();
+        $output->writeln('Creazione orm entities in ' . $destinationPath . ' da file ' . $mwbfile);
 
         if (!$fs->exists($bundlePath)) {
             $output->writeln('<error>Non esiste la cartella del bundle ' . $bundlePath . '</error>');
