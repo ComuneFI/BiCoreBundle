@@ -28,6 +28,7 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare')
                 ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
@@ -47,21 +48,17 @@ class GenerateFormCommand extends ContainerAwareCommand
             $controlleFile = $this->apppaths->getSrcPath() . '/Controller/' . $entityform . 'Controller.php';
 
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
+
+            $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             
-            $line_i_am_looking_for = 8;
-            $lines = file($formFile, FILE_IGNORE_NEW_LINES);
-            $lines[$line_i_am_looking_for] = 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;';
-            file_put_contents($formFile, implode("\n", $lines));
+            array_splice($lines, 8, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
+            
+            array_splice($lines, 14, 0, "        \$submitparms = array("
+                    . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));");
+            
+            array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
 
-            $line_i_am_looking_for = 12;
-            $lines = file($formFile, FILE_IGNORE_NEW_LINES);
-            $lines[$line_i_am_looking_for] = "        {\$submitparms = array("
-                    . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));";
-            file_put_contents($formFile, implode("\n", $lines));
-
-            $line_i_am_looking_for = 13;
-            $lines = file($formFile, FILE_IGNORE_NEW_LINES);
-            $lines[$line_i_am_looking_for] = "        \$builder->add('submit', SubmitType::class, \$submitparms)";
+            array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
             file_put_contents($formFile, implode("\n", $lines));
 
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
@@ -81,6 +78,7 @@ class GenerateFormCommand extends ContainerAwareCommand
             return 1;
         }
     }
+
     private function generateFormRouting($entityform)
     {
         //Routing del form
@@ -108,18 +106,19 @@ class GenerateFormCommand extends ContainerAwareCommand
 
         return $retmsg;
     }
+
     private function copyTableStructureWiew($entityform)
     {
         $fs = new Filesystem();
         $publicfolder = $this->apppaths->getPublicPath();
 
-        if (!$fs->exists($publicfolder . "/js")) {
+        /*if (!$fs->exists($publicfolder . "/js")) {
             $fs->mkdir($publicfolder . "/js", 0777);
         }
 
         if (!$fs->exists($publicfolder . "/css")) {
             $fs->mkdir($publicfolder . "/css", 0777);
-        }
+        }*/
 
         $templatetablefolder = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
         $crudfolder = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle')
@@ -135,6 +134,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR . $entityform . ".js");
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
     }
+
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
@@ -153,6 +153,7 @@ class GenerateFormCommand extends ContainerAwareCommand
         $em->persist($tabelle);
         $em->flush();
     }
+
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -181,6 +182,7 @@ EOF;
 
         return $code;
     }
+
     private function getRoutingCode($bundlename, $tabella)
     {
         $codeTemplate = <<<'EOF'
@@ -231,4 +233,5 @@ EOF;
 
         return $code;
     }
+
 }
