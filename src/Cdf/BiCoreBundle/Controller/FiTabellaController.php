@@ -21,7 +21,8 @@ class FiTabellaController extends FiCrudController
         //$em = $doctrine->getManager();
 
         $parametripassati = array_merge($request->get("parametri"), array('user' => $this->getUser()));
-        $parametriform = isset($parametripassati["parametriform"]) ? json_decode(ParametriTabella::getParameter($parametripassati["parametriform"]), true) : array();
+        $parametriform = isset($parametripassati["parametriform"]) ?
+                json_decode(ParametriTabella::getParameter($parametripassati["parametriform"]), true) : array();
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = array(
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),

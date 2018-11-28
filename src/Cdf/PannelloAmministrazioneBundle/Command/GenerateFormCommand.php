@@ -110,9 +110,9 @@ class GenerateFormCommand extends ContainerAwareCommand
     private function copyTableStructureWiew($entityform)
     {
         $fs = new Filesystem();
-        $publicfolder = $this->apppaths->getPublicPath();
+        /*$publicfolder = $this->apppaths->getPublicPath();
 
-        /*if (!$fs->exists($publicfolder . "/js")) {
+        if (!$fs->exists($publicfolder . "/js")) {
             $fs->mkdir($publicfolder . "/js", 0777);
         }
 
