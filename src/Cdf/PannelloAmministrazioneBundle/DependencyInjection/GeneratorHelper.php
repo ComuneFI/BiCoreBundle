@@ -55,19 +55,27 @@ class GeneratorHelper
                 $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
             }
         }
-        $finderwrongcapitalize = new Finder();
-        $finderwrongcapitalize->in($pathdoctrineorm)->files()->name('*.php');
-        foreach ($finderwrongcapitalize as $file) {
-            if (!ctype_upper(substr($file->getFileName(), 0, 1))) {
-                $wrongfilename[] = $file->getFileName();
-                $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
+
+        //Si cercano file con nomi campo errati
+        $finderwrongproperty = new Finder();
+        $finderwrongproperty->in($pathdoctrineorm)->files()->name('*');
+        $wrongpropertyname = array();
+        foreach ($finderwrongproperty as $file) {
+            $ref = new \ReflectionClass("App\\Entity\\" . basename($file->getFileName(), ".php"));
+            $props = $ref->getProperties();
+            foreach ($props as $prop) {
+                $f = $prop->getName();
+                if ($f !== strtolower($f)) {
+                    $wrongpropertyname[] = $file->getFileName();
+                    $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
+                }
             }
         }
 
-        if (count($wrongfilename) > 0) {
-            $errout = '<error>Ci sono tabelle nel file ' . $wbFile . ' con nomi non consentiti:' .
-                    implode(',', $wrongfilename) .
-                    '. I nomi tabella devono essere : con la prima lettera maiuscola,underscore ammesso,doppio underscore non ammesso</error>';
+        if (count($wrongpropertyname) > 0) {
+            $errout = '<error>Ci sono campi nel file ' . $wbFile . ' con nomi non consentiti:' .
+                    implode(',', $wrongpropertyname) .
+                    '. I nomi dei campi devono essere lower case</error>';
 
             $output->writeln($errout);
 
