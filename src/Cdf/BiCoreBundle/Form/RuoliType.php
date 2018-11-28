@@ -4,7 +4,9 @@ namespace Cdf\BiCoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Cdf\BiCoreBundle\Entity\Ruoli;
 
 class RuoliType extends AbstractType
 {
@@ -24,5 +26,12 @@ class RuoliType extends AbstractType
                 ->add('user')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Ruoli::class,
+            'parametriform' => array()
+        ]);
     }
 }

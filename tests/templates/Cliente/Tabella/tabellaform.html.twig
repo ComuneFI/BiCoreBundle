@@ -83,6 +83,7 @@
                     titolotabella: 'Ordini del cliente {{entity.nominativo}}',
                     modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
                     colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
+                    parametriform: {'cliente_id': {{entity.id}}},
                     multiselezione: true
             };
             $.ajax({

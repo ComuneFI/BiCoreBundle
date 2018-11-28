@@ -45,6 +45,7 @@ class ClienteType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Cliente::class,
+            'parametriform' => array(),
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token

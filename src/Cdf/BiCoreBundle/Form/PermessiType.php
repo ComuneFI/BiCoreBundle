@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Cdf\BiCoreBundle\Entity\Permessi;
 
 class PermessiType extends AbstractType
 {
@@ -24,5 +25,12 @@ class PermessiType extends AbstractType
                 ->add('ruoli')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Permessi::class,
+            'parametriform' => array()
+        ]);
     }
 }

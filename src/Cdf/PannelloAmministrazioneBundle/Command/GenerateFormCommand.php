@@ -47,6 +47,7 @@ class GenerateFormCommand extends ContainerAwareCommand
             $controlleFile = $this->apppaths->getSrcPath() . '/Controller/' . $entityform . 'Controller.php';
 
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
+            
             $line_i_am_looking_for = 8;
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
             $lines[$line_i_am_looking_for] = 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;';
