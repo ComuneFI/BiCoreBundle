@@ -64,7 +64,8 @@ class PannelloAmministrazioneController extends Controller
         sort($mwbs);
         $svn = $fs->exists($projectDir . '/.svn');
         $git = $fs->exists($projectDir . '/.git');
-
+        $appname = $this->getParameter("bi_core.appname");
+        
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
             $setfilelock = "touch " . $this->getParameter("bi_core.lockfile");
@@ -125,6 +126,7 @@ class PannelloAmministrazioneController extends Controller
             'comandishell' => $comandishell,
             'comandisymfony' => $comandisymfony,
             'iswindows' => $windows,
+            'appname'=> $appname
         );
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);

@@ -3,7 +3,6 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-        appname: "%env(resolve:bicorebundle_appname)%"
         database_url: "%env(resolve:DATABASE_URL)%"
         #database_driver: "%env(resolve:database_driver)%"
         #database_host: "%env(resolve:database_host)%"
