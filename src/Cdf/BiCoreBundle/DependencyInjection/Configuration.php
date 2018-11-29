@@ -18,12 +18,15 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('bicore');
-
-        $treeBuilder->root('bicore')->children();
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode = $treeBuilder->root('bi_core');
+        $rootNode
+                ->children()
+                ->scalarNode('lockfile')->defaultValue('%kernel.cache_dir%/maintenance.lock')->end()
+                ->scalarNode('appname')->defaultValue('BiCoreBundle')->end()
+                ->scalarNode('appid')->defaultValue('999')->end()
+                ->booleanNode('solosso')->defaultFalse()->end()
+                ->end()
+        ;
 
         return $treeBuilder;
     }
