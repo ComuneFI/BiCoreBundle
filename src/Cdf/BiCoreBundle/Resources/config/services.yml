@@ -30,6 +30,8 @@ services:
 
     cdf.bicorebundle.twig.extension.objecttotabella:
         class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
+        properties:
+            container: "@service_container"
         tags:
             - { name: twig.extension }
             
@@ -75,16 +77,21 @@ services:
         class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
         public: true
         arguments: [ '@doctrine.orm.entity_manager' ]
-            
+    
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
         class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
+        properties:
+            container: "@service_container"
+
         tags:
             - { name: doctrine.event_subscriber }
             
     #subscriber per aggiungere uno schema alle tabelle di bi
     cdf.bicorebundle.subscriber.schemaprefix:
         class: Cdf\BiCoreBundle\Subscriber\TableSchemaSubscriber
+        properties:
+            container: "@service_container"
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -94,7 +101,12 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
         - { name: form.type, alias: entity_hidden }
-     
+        
+    cdf.bicorebundle.utils.entity.doctrinefieldreader:
+        class: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
+        properties:
+            container: "@service_container"
+        
     #Servizi fos user bundle usato principalmente per i test
     cdf.bicorebundle.fos_user.security.login_manager:
         alias: fos_user.security.login_manager
@@ -117,8 +129,8 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
             
     #Controllers
-    cdf.bicorebundle.controller.ficontroller:
-        class: Cdf\BiCoreBundle\Controller\FiController
+    cdf.bicorebundle.controller.fitabellacontroller:
+        class: Cdf\BiCoreBundle\Controller\FiTabellaController
 
     cdf.bicorebundle.controller.operatori:
         class: Cdf\BiCoreBundle\Controller\OperatoriController

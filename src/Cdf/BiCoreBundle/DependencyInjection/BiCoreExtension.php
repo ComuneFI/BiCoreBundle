@@ -28,6 +28,10 @@ class BiCoreExtension extends Extension
         $container->setParameter('bi_core.appname', $config['appname']);
         $container->setParameter('bi_core.appid', $config['appid']);
         $container->setParameter('bi_core.solosso', $config['solosso']);
+
+        $container->setParameter('bi_core.table_prefix', $config['table_prefix']);
+        $container->setParameter('bi_core.table_schema', $config['table_schema']);
+        
         $container->setParameter('bi_core.admin4test', $config['admin4test']);
         $container->setParameter('bi_core.adminpwd4test', $config['adminpwd4test']);
         

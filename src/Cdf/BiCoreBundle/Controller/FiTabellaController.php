@@ -8,10 +8,10 @@ use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FiTabellaController extends FiCrudController
 {
-
     public function tabella(Request $request)
     {
         if (!$this->permessi->canRead()) {
@@ -91,7 +91,7 @@ class FiTabellaController extends FiCrudController
                 'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
                 'nomecontroller' => ParametriTabella::getParameter($parametripassati["nomecontroller"]),
             );
-            $xls = new TabellaXls();
+            $xls = new TabellaXls($this->container);
             $filexls = $xls->esportaexcel($parametritabella);
             if (file_exists($filexls)) {
                 $response = array(

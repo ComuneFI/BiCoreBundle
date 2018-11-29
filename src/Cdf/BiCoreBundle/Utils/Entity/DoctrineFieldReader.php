@@ -5,11 +5,11 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 class DoctrineFieldReader
 {
 
-    private $bitableprefix;
-
-    public function __construct()
+    public $container;
+    
+    public function __construct($container)
     {
-        $this->bitableprefix = getenv("bicorebundle_table_prefix");
+        $this->container = $container;
     }
 
     public function getField2Object($fieldname, $object, $decodifiche = null)
@@ -17,7 +17,8 @@ class DoctrineFieldReader
         $property = "";
         $field = "";
         $propertyfound = false;
-        $subfields = explode(".", str_replace($this->bitableprefix, "", $fieldname));
+        //FIXME: TODO:
+        $subfields = explode(".", str_replace('__bicorebundle_', "", $fieldname));
         foreach ($subfields as $field) {
             $property = $this->getObjectProperty($field, $object);
             if ($property) {

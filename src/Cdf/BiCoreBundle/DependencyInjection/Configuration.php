@@ -25,6 +25,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('lockfile')->defaultValue('%kernel.cache_dir%/maintenance.lock')->end()
                 ->scalarNode('appname')->defaultValue('BiCoreBundle')->end()
                 ->scalarNode('appid')->defaultValue('999')->end()
+                ->scalarNode('table_prefix')->defaultValue('__bicorebundle_')->end()
+                ->scalarNode('table_schema')->defaultValue('')->end()
                 ->scalarNode('admin4test')->defaultValue('admin')->end()
                 ->scalarNode('adminpwd4test')->defaultValue('admin')->end()
                 ->scalarNode('usernoroles4test')->defaultValue('usernoroles')->end()

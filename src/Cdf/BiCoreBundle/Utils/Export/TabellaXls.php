@@ -10,7 +10,11 @@ use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 
 class TabellaXls
 {
-
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+    
     public function esportaexcel($parametri = array())
     {
         set_time_limit(960);
@@ -87,7 +91,7 @@ class TabellaXls
             $col = 1;
             foreach ($header as $colonnatestata => $valorecolonnatestata) {
                 if ($valorecolonnatestata["escluso"] === false) {
-                    $dfr = new DoctrineFieldReader();
+                    $dfr = new DoctrineFieldReader($this->container);
                     $decodiche = isset($valorecolonnatestata["decodifiche"])?$valorecolonnatestata["decodifiche"]:null;
                     $oggetto = $dfr->getField2Object($colonnatestata, $riga, $decodiche);
                     $valorecampo = $dfr->object2view($oggetto, $valorecolonnatestata["tipocampo"]);
