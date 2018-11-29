@@ -1,5 +1,7 @@
 {% extends "BootstrapitaliaBundle::layout.html.twig" %}
 
+{% block title %}{{parameter('bi_core.appname')}}{% endblock%}
+
 {% block javascript %}
     {{parent()}}
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-confirmation.min.js') }}?ver={{versione_tag_git()}}" ></script>

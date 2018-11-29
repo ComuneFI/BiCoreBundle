@@ -45,9 +45,11 @@ services:
           - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.utilita:
-      class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
-      tags:
-        - { name: twig.extension }
+        class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
+        properties:
+            container: "@service_container"
+        tags:
+          - { name: twig.extension }
 
     #Informazioni connessione database su Web Debug Toolbar
     cdf.bicorebundle.collector.databaseinfo:
