@@ -11,7 +11,13 @@
     </div>
     <div class="tab-pane p-3 fade" id="tab{{parametri.nomecontroller|getparametrotabella}}2a" role="tabpanel" aria-labelledby="tab{{parametri.nomecontroller|getparametrotabella}}2a-tab">
         <!--Form-->
-        {% include parametri.templatelocation ~ 'Tabella/tabellaform.html.twig' with parametri %}
+        {%if (json_decode(parametri.permessi|getparametrotabella).create)%}
+            {% include parametri.templatelocation ~ 'Tabella/tabellaform.html.twig' with parametri %}
+        {%else%}
+            <form id="formdati{{parametri.nomecontroller|getparametrotabella}}">
+                <span>Non si hanno i diritti per la creazione di un nuovo contenuto</span>
+            </form>
+        {%endif%}
         <!--Form-->
     </div>
 </div>

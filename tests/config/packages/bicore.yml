@@ -1,0 +1,5 @@
+bi_core:
+    lockfile: "%kernel.cache_dir%/maintenance.lock"  
+    appname: BiCoreTest
+    appid: 9999
+    solosso: false

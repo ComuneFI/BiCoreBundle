@@ -420,7 +420,7 @@ class FiCrudController extends AbstractController
 
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
-        $crudtemplate = $bundle . ':' . $controller . ':Crud/' . $this->getThisFunctionName() . '.html.twig';
+        $crudtemplate = $bundle . ':' . $controller . ':Crud/' . $operation . '.html.twig';
         if (!$this->get('templating')->exists($crudtemplate)) {
             $crudtemplate = $controller . '/Crud/' . $operation . '.html.twig';
             if (!$this->get('templating')->exists($crudtemplate)) {
