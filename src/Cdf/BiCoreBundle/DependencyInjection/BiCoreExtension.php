@@ -19,10 +19,14 @@ class BiCoreExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $container->setParameter('bi_core.lockfile', $config['lockfile']);
+        $container->setParameter('bi_core.appname', $config['appname']);
+        $container->setParameter('bi_core.appid', $config['appid']);
+        $container->setParameter('bi_core.solosso', $config['solosso']);
     }
 }

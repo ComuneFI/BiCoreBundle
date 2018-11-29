@@ -1,6 +1,3 @@
-parameters:
-#    fi_pannello_amministrazione.example.class: Cdf\PannelloAmministrazioneBundle\Example
-
 services:
 #    fi_pannello_amministrazione.example:
 #        class: %fi_pannello_amministrazione.example.class%
