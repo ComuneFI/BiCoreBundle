@@ -17,21 +17,21 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {
-        if ($this->container->getParameter('bi_core.table_schema') != '') {
+        $tableschema = $this->container->getParameter('bi_core.table_schema');
+        if ($tableschema != '') {
             $classMetadata = $args->getClassMetadata();
 
-            $classMetadata->setPrimaryTable(array('name' => $this->container->getParameter('bi_core.table_schema').'.'.$classMetadata->getTableName()));
-
+            $classMetadata->setPrimaryTable(array('name' => $tableschema.'.'.$classMetadata->getTableName()));
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
                 $jointablename = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
                 if ($mapping['type'] == ClassMetadataInfo::MANY_TO_MANY && isset($jointablename)) {
                     $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
-                    $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->container->getParameter('bi_core.table_schema').'.'.$mappedTableName;
+                    $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $tableschema.'.'.$mappedTableName;
                 }
             }
             if ($classMetadata->isIdGeneratorSequence()) {
                 $newDefinition = $classMetadata->sequenceGeneratorDefinition;
-                $newDefinition['sequenceName'] = $this->container->getParameter('bi_core.table_schema').'.'.$newDefinition['sequenceName'];
+                $newDefinition['sequenceName'] = $tableschema.'.'.$newDefinition['sequenceName'];
 
                 $classMetadata->setSequenceGeneratorDefinition($newDefinition);
                 $em = $args->getEntityManager();
