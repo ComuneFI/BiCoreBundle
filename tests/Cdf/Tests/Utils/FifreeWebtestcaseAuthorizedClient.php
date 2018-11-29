@@ -43,7 +43,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('admin4test');
+        $username4test = $container->getParameter('bi_core.admin4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
@@ -64,7 +64,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('usernoroles4test');
+        $username4test = $container->getParameter('bi_core.usernoroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
@@ -85,7 +85,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('userreadroles4test');
+        $username4test = $container->getParameter('bi_core.userreadroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 

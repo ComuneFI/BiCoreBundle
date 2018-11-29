@@ -19,11 +19,18 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('bi_core');
+
         $rootNode
                 ->children()
                 ->scalarNode('lockfile')->defaultValue('%kernel.cache_dir%/maintenance.lock')->end()
                 ->scalarNode('appname')->defaultValue('BiCoreBundle')->end()
                 ->scalarNode('appid')->defaultValue('999')->end()
+                ->scalarNode('admin4test')->defaultValue('admin')->end()
+                ->scalarNode('adminpwd4test')->defaultValue('admin')->end()
+                ->scalarNode('usernoroles4test')->defaultValue('usernoroles')->end()
+                ->scalarNode('usernorolespwd4test')->defaultValue('usernoroles')->end()
+                ->scalarNode('userreadroles4test')->defaultValue('userreadroles')->end()
+                ->scalarNode('userreadrolespwd4test')->defaultValue('userreadroles')->end()
                 ->booleanNode('solosso')->defaultFalse()->end()
                 ->end()
         ;

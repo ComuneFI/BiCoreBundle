@@ -67,13 +67,13 @@ class PannelloAmministrazioneController extends Controller
 
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $setfilelock = "touch " . $this->getParameter("cdf.bicorebundle.parameter.maintenance.lockfile");
-            $remfilelock = "rm " . $this->getParameter("cdf.bicorebundle.parameter.maintenance.lockfile");
+            $setfilelock = "touch " . $this->getParameter("bi_core.lockfile");
+            $remfilelock = "rm " . $this->getParameter("bi_core.lockfile");
             $windows = false;
         } else {
             $delcmd = 'del';
-            $setfilelock = 'echo $null >> ' . $this->getParameter("cdf.bicorebundle.parameter.maintenance.lockfile");
-            $remfilelock = "del " . $this->getParameter("cdf.bicorebundle.parameter.maintenance.lockfile");
+            $setfilelock = 'echo $null >> ' . $this->getParameter("bi_core.lockfile");
+            $remfilelock = "del " . $this->getParameter("bi_core.lockfile");
             $windows = true;
         }
 
