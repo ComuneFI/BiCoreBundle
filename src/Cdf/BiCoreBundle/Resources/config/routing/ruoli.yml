@@ -24,6 +24,14 @@ Ruoli_update:
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:update" }
     requirements: { methods: post|put }
 
+Ruoli_aggiorna:
+    path:  /{id}/aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:aggiorna" }
+    requirements: { methods: post|put }
+    options:
+        expose: true
+
+
 Ruoli_delete:
     path:  /{id}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }

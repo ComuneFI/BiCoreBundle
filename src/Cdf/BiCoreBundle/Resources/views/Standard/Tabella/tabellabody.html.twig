@@ -1,6 +1,8 @@
 <tbody>
     {% for record in parametri.recordstabella %}
-        <tr data-bitableid='{{record.id}}'>
+
+        <tr data-bitableid='{{record.id}}' class="{{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
+
             <td scope="row" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
                 <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">
             </td>
@@ -10,13 +12,21 @@
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
                     {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
-                    <td scope="row">{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}</td>
+                    <td scope="row" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}">
+                        {%if (parametri.editinline|getparametrotabella == true)%}
+                            <input type="text" class="form-control" value="{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}" disabled/>
+                        {%else%}
+                            {{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}
+                        {%endif%}
+                    </td>
                 {%endif%}
             {% endfor%} 
 
             <td>
                 <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
             </td>
+
         </tr>
+
     {%endfor%}
 </tbody>

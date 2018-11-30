@@ -82,6 +82,7 @@ class FiCrudController extends AbstractController
             'idpassato' => ParametriTabella::setParameter($idpassato),
             'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
             'multiselezione' => ParametriTabella::setParameter("0"),
+            'editinline' => ParametriTabella::setParameter("0"),
             'paginacorrente' => ParametriTabella::setParameter("1"),
             'paginetotali' => ParametriTabella::setParameter(""),
             'righetotali' => ParametriTabella::setParameter("0"),
@@ -141,34 +142,34 @@ class FiCrudController extends AbstractController
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = array("em" => ParametriTabella::setParameter("default"),
-        'tablename' => ParametriTabella::setParameter($tablenamefromentity),
-        'nomecontroller' => ParametriTabella::setParameter($controller),
-        'bundle' => ParametriTabella::setParameter($bundle),
-        'entityname' => ParametriTabella::setParameter($entityclassnotation),
-        'entityclass' => ParametriTabella::setParameter($entityclass),
-        'formclass' => ParametriTabella::setParameter($formclass),
-        'parametriform' => ParametriTabella::setParameter(json_encode($parametriform)),
-        'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
-        'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
-        'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
-        'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
-        'idpassato' => ParametriTabella::setParameter(0),
-        'titolotabella' => ParametriTabella::setParameter($titolotabella),
-        'multiselezione' => ParametriTabella::setParameter($multiselezione),
-        'paginacorrente' => ParametriTabella::setParameter("1"),
-        'paginetotali' => ParametriTabella::setParameter(""),
-        'righeperpagina' => ParametriTabella::setParameter("15"),
-        'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
-        'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
-        'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
-        'traduzionefiltri' => ParametriTabella::setParameter(""),
+            'tablename' => ParametriTabella::setParameter($tablenamefromentity),
+            'nomecontroller' => ParametriTabella::setParameter($controller),
+            'bundle' => ParametriTabella::setParameter($bundle),
+            'entityname' => ParametriTabella::setParameter($entityclassnotation),
+            'entityclass' => ParametriTabella::setParameter($entityclass),
+            'formclass' => ParametriTabella::setParameter($formclass),
+            'parametriform' => ParametriTabella::setParameter(json_encode($parametriform)),
+            'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
+            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
+            'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
+            'idpassato' => ParametriTabella::setParameter(0),
+            'titolotabella' => ParametriTabella::setParameter($titolotabella),
+            'multiselezione' => ParametriTabella::setParameter($multiselezione),
+            'paginacorrente' => ParametriTabella::setParameter("1"),
+            'paginetotali' => ParametriTabella::setParameter(""),
+            'righeperpagina' => ParametriTabella::setParameter("15"),
+            'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
+            'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
+            'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
+            'traduzionefiltri' => ParametriTabella::setParameter(""),
         );
 
         return $this->render(
             $template,
             array(
-            'parametritabella' => $parametritabella,
-            )
+                    'parametritabella' => $parametritabella,
+                        )
         );
     }
 
@@ -177,7 +178,7 @@ class FiCrudController extends AbstractController
      */
     public function new(Request $request)
     {
-    /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canCreate()) {
@@ -195,17 +196,17 @@ class FiCrudController extends AbstractController
         $entity = new $entityclass();
         $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-        'id' => 'formdati' . $controller,
-        ),
-        'action' => $this->generateUrl($controller . '_new'), "parametriform" => $parametriform
+                'id' => 'formdati' . $controller,
+            ),
+            'action' => $this->generateUrl($controller . '_new'), "parametriform" => $parametriform
         ));
 
         $form->handleRequest($request);
 
         $twigparms = array(
-        'form' => $form->createView(),
-        'nomecontroller' => ParametriTabella::setParameter($controller),
-        'tabellatemplate' => $tabellatemplate
+            'form' => $form->createView(),
+            'nomecontroller' => ParametriTabella::setParameter($controller),
+            'tabellatemplate' => $tabellatemplate
         );
 
         if ($form->isSubmitted()) {
@@ -235,12 +236,12 @@ class FiCrudController extends AbstractController
         }
     }
 
-/**
- * Displays a form to edit an existing table entity.
- */
+    /**
+     * Displays a form to edit an existing table entity.
+     */
     public function edit(Request $request, $id)
     {
-    /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
@@ -269,30 +270,30 @@ class FiCrudController extends AbstractController
             $formType,
             $entity,
             array('attr' => array(
-            'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-            )
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                )
         );
 
         return $this->render(
             $crudtemplate,
             array(
-            'entity' => $entity,
-            'nomecontroller' => ParametriTabella::setParameter($controller),
-            'tabellatemplate' => $tabellatemplate,
-            'edit_form' => $editForm->createView(),
-            'elencomodifiche' => $elencomodifiche,
-                )
+                    'entity' => $entity,
+                    'nomecontroller' => ParametriTabella::setParameter($controller),
+                    'tabellatemplate' => $tabellatemplate,
+                    'edit_form' => $editForm->createView(),
+                    'elencomodifiche' => $elencomodifiche,
+                        )
         );
     }
 
-/**
- * Edits an existing table entity.
- */
+    /**
+     * Edits an existing table entity.
+     */
     public function update(Request $request, $id)
     {
-    /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate()) {
@@ -316,10 +317,10 @@ class FiCrudController extends AbstractController
             $formType,
             $entity,
             array('attr' => array(
-            'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-            )
+                'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                )
         );
 
         $editForm->submit($request->request->get($editForm->getName()));
@@ -349,19 +350,19 @@ class FiCrudController extends AbstractController
         return $this->render(
             $crudtemplate,
             array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'nomecontroller' => ParametriTabella::setParameter($controller),
-                )
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'nomecontroller' => ParametriTabella::setParameter($controller),
+                        )
         );
     }
 
-/**
- * Deletes a table entity.
- */
+    /**
+     * Deletes a table entity.
+     */
     public function delete(Request $request)
     {
-    /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em \Doctrine\ORM\EntityManager */
         if (!$this->getPermessi()->canDelete()) {
             throw new AccessDeniedException("Non si hanno i permessi per eliminare questo contenuto");
         }
@@ -373,8 +374,8 @@ class FiCrudController extends AbstractController
             $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
             $qb->delete($entityclass, 'u')
-            ->andWhere('u.id IN (:ids)')
-            ->setParameter('ids', $ids);
+                    ->andWhere('u.id IN (:ids)')
+                    ->setParameter('ids', $ids);
 
             $query = $qb->getQuery();
             $query->execute();
@@ -398,7 +399,7 @@ class FiCrudController extends AbstractController
             array(
             'nometabella' => $controller,
             'idtabella' => $id,
-            ),
+                ),
             array('giorno' => 'DESC')
         );
 
@@ -445,13 +446,13 @@ class FiCrudController extends AbstractController
         return $this->permessi;
     }
 
-/**
- * Returns the calling function through a backtrace
- */
+    /**
+     * Returns the calling function through a backtrace
+     */
     protected function getThisFunctionName()
     {
-    // a funciton x has called a function y which called this
-    // see stackoverflow.com/questions/190421
+        // a funciton x has called a function y which called this
+        // see stackoverflow.com/questions/190421
         $caller = debug_backtrace();
         $caller = $caller[1];
         return $caller['function'];

@@ -34,7 +34,7 @@ class MenuExtension extends \Twig_Extension
     {
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();
-        $rispostahome[] = array('percorso' => $this->getUrlObject(getenv('bicorebundle_appname'), $router, ''),
+        $rispostahome[] = array('percorso' => $this->getUrlObject('', $router, ''),
             'nome' => 'Home',
             'target' => '',
         );

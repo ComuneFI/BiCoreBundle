@@ -194,6 +194,7 @@ class ClienteController extends FiController
             'idpassato' => ParametriTabella::setParameter($idpassato),
             'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
             'multiselezione' => ParametriTabella::setParameter("1"),
+            'editinline' => ParametriTabella::setParameter("0"),
             'paginacorrente' => ParametriTabella::setParameter("1"),
             'paginetotali' => ParametriTabella::setParameter(""),
             'righetotali' => ParametriTabella::setParameter("0"),

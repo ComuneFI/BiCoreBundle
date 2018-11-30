@@ -334,7 +334,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
-        $datamaga = new \DateTime();
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "30/11/2018 23:59");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinepicarielloquinoa);
         $newmagazzino->setEvaso(true);
@@ -342,7 +342,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $newmagazzino->setGiornodellasettimana($datamaga->format("w"));
         $em->persist($newmagazzino);
 
-        $datamaga = new \DateTime();
+        $datamaga = \DateTime::createFromFormat("d/m/Y H:i", "30/11/2018 00:00");
         $newmagazzino = new \App\Entity\Magazzino();
         $newmagazzino->setOrdine($newordinepaolospaghetti);
         $newmagazzino->setEvaso(true);

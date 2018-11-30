@@ -24,7 +24,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
             'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
             'filtri', 'formclass', 'idpassato', 'modellocolonne', 'nomecontroller',
             'paginacorrente', 'paginetotali', 'permessi', 'prefiltri', 'righeperpagina', 'righetotali', 'estraituttirecords',
-            'tablename', 'titolotabella', 'multiselezione', 'traduzionefiltri', 'urltabella'
+            'tablename', 'titolotabella', 'multiselezione', 'editinline' ,'traduzionefiltri', 'urltabella'
         );
         foreach ($attributi as $attributo) {
             $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
@@ -43,7 +43,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('admin4test');
+        $username4test = $container->getParameter('bi_core.admin4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
@@ -64,7 +64,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('usernoroles4test');
+        $username4test = $container->getParameter('bi_core.usernoroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 
@@ -85,7 +85,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('userreadroles4test');
+        $username4test = $container->getParameter('bi_core.userreadroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 

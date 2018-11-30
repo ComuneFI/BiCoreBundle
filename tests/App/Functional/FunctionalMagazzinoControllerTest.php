@@ -38,7 +38,7 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
         $crawler = $this->findField($fieldhtml)->sendKeys("\n");
         $this->ajaxWait(6000);
         $numrowstabella = $this->evaluateScript("return $('#tabellaMagazzino > tbody > tr').length;");
-        $this->assertEquals(7, $numrowstabella);
+        $this->assertEquals(5, $numrowstabella);
 
         //$this->assertContains('My Title', $crawler->filter('title')->html());
     }

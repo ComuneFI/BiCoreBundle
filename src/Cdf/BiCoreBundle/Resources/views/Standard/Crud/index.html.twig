@@ -3,6 +3,7 @@
 {% block javascript %}
     {{parent()}}
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabella.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellainline.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellafiltri.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('bundles/bicore/js/biindex.js') }}" ></script>
     {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}

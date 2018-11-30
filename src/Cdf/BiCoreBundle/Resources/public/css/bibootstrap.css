@@ -28,3 +28,13 @@
 .nav-tabs .nav-link:not(.active){
      opacity: 0.5;
 }
+
+.inputeditinline input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+    font-weight: normal;
+}

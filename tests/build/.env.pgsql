@@ -36,8 +36,3 @@ MAILER_URL=null://localhost
 ###< symfony/swiftmailer-bundle ###
 
 locale="it"
-bicorebundle_table_schema=
-bicorebundle_table_prefix="__bicorebundle_"
-bicorebundle_appname="FifreeCoreDemo"
-bicorebundle_appid_applicativo=9999
-bicorebundle_solosso=false

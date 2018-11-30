@@ -16,8 +16,8 @@ abstract class FifreeTestReadrolesAuthorizedClient extends FifreeTestAuthorizedC
         $this->client = static::createPantherClient();
         
         $this->container = static::$kernel->getContainer();
-        $username4test = $this->container->getParameter('usernoroles4test');
-        $password4test = $this->container->getParameter('usernorolespwd4test');
+        $username4test = $this->container->getParameter('bi_core.usernoroles4test');
+        $password4test = $this->container->getParameter('bi_core.usernorolespwd4test');
         $this->em = $this->container->get("doctrine")->getManager();
         
         $testUrl = '/';

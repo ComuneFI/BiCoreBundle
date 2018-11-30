@@ -25,7 +25,7 @@ abstract class FifreeWebtestcaseNorolesAuthorizedClient extends FifreeWebtestcas
         $loginManager = $container->get('fos_user.security.login_manager');
         $firewallName = $container->getParameter('fos_user.firewall_name');
 
-        $username4test = $container->getParameter('usernoroles4test');
+        $username4test = $container->getParameter('bi_core.usernoroles4test');
         $user = $userManager->findUserBy(array('username' => $username4test));
         $loginManager->loginUser($firewallName, $user);
 

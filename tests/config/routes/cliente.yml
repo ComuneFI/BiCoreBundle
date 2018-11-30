@@ -24,6 +24,8 @@ Cliente_aggiorna:
     path:  /{id}/aggiorna
     defaults: { _controller: 'App\Controller\ClienteController::aggiorna' }
     requirements: { methods: post|put }
+    options:
+        expose: true
 
 Cliente_delete:
     path:  /{id}/delete
