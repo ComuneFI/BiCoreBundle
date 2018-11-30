@@ -24,6 +24,8 @@ Opzionitabelle_aggiorna:
     path:  /aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:aggiorna" }
     requirements: { methods: post|put }
+    options:
+        expose: true
 
 Opzionitabelle_delete:
     path:  /{id}/delete

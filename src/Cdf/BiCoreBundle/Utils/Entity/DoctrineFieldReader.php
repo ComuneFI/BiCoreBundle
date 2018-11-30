@@ -11,14 +11,13 @@ class DoctrineFieldReader
     {
         $this->container = $container;
     }
-
+    
     public function getField2Object($fieldname, $object, $decodifiche = null)
     {
         $property = "";
         $field = "";
         $propertyfound = false;
-        //FIXME: TODO:
-        $subfields = explode(".", str_replace('__bicorebundle_', "", $fieldname));
+        $subfields = explode(".", str_replace($this->container->getParameter("bi_core.table_prefix"), "", $fieldname));
         foreach ($subfields as $field) {
             $property = $this->getObjectProperty($field, $object);
             if ($property) {

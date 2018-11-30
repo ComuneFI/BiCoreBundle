@@ -78,6 +78,11 @@ services:
         public: true
         arguments: [ '@doctrine.orm.entity_manager' ]
     
+    #Utility export excel tabelle
+    cdf.bicorebundle.utils.export.tabellaxls:
+        class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
+#        bind: 
+#            $tableprefix: '%bi_core.table_prefix%'
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
         class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
@@ -104,8 +109,8 @@ services:
         
     cdf.bicorebundle.utils.entity.doctrinefieldreader:
         class: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
-        properties:
-            container: "@service_container"
+#        bind: 
+#            $tableprefix: '%bi_core.table_prefix%'
         
     #Servizi fos user bundle usato principalmente per i test
     cdf.bicorebundle.fos_user.security.login_manager:
@@ -131,6 +136,9 @@ services:
     #Controllers
     cdf.bicorebundle.controller.fitabellacontroller:
         class: Cdf\BiCoreBundle\Controller\FiTabellaController
+        bind:
+            # for any $logger argument, pass this specific service
+            $container: '@service_container'
 
     cdf.bicorebundle.controller.operatori:
         class: Cdf\BiCoreBundle\Controller\OperatoriController

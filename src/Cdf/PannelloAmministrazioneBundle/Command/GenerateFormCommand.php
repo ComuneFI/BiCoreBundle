@@ -212,6 +212,8 @@ EOF;
     path:  /aggiorna
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::aggiorna' }
     requirements: { methods: post|put }
+    options:
+        expose: true
 
 [tabella]_delete:
     path:  /{id}/delete

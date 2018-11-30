@@ -105,30 +105,88 @@ function deletemenu(biid, parametri)
 
 function editmenu(biid, parametri)
 {
-    var editurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/edit";
-    $.ajax({
-        url: editurl,
-        type: "GET",
-        async: true,
-        error: function (xhr, textStatus, errorThrown) {
-            bootbox.alert({
-                size: "large",
-                closeButton: false,
-                title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                message: divboxerrori(xhr.responseText)
-            });
-            return false;
-        },
-        beforeSend: function (xhr) {
+    if (getTabellaParameter(parametri.editinline) == 1) {
+        var elencocampi = $("#tabella" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
+        elencocampi.each(function (index, object) {
+            var originalinput = $(object).clone();
+            var fieldname = object.closest("td").dataset["nomecampo"];
+            var fieldtype = object.closest("td").dataset["tipocampo"];
+            var input;
+            var div = $('<div />', {class: 'form-group'});
 
-        },
-        success: function (response) {
-            $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
-            var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
-            form.replaceWith(response).promise().done(function () {
-                formlabeladjust();
-                $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').tab('show');
-            });
-        }
-    });
+            if (fieldname) {
+                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
+                    //Id e campi di tabelle collegate non devono essere modificabili
+                    input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
+                } else {
+                    //fieldvalue = $(object).val();
+                    switch (fieldtype) {
+                        case 'boolean':
+                            input = $('<input />', {type: 'checkbox', class: 'form-control'});
+                            if ($(object).val() == 'SI') {
+                                input.attr("checked", true);
+                            } else {
+                                input.attr("checked", false);
+                            }
+                            break;
+                        case 'date':
+                            input = $('<input />', {type: 'text', class: 'bidatepicker form-control', value: $(object).val()});
+                            break;
+                        case 'datetime':
+                            input = $('<input />', {type: 'text', class: 'bidatetimepicker form-control', value: $(object).val()});
+                            break;
+                        default:
+                            $(object).attr("disabled", false);
+                            //input = object;
+                            input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val()});
+                            break;
+                    }
+                }
+            } else {
+                input = $(object).clone().attr("disabled",true);
+
+            }
+            $(input).appendTo(div);
+            $(object).closest("td").html(div);
+            //$( ".inner" ).wrap( "<div class='new'></div>" );
+            //$(object).wrap(div);
+            //$(object).replaceWith(input);
+            //div.append($(input));
+            //console.log(div);
+            //$(object).wrap(div);
+            //$(object).closest("div.form-group").wrap(div);
+            //$(object).closest("div.form-group").replaceWith(div);
+            //$(object).replaceWith(div);
+            //$(object).replaceWith(div);
+            formlabeladjust();
+        });
+
+    } else {
+        var editurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/edit";
+        $.ajax({
+            url: editurl,
+            type: "GET",
+            async: true,
+            error: function (xhr, textStatus, errorThrown) {
+                bootbox.alert({
+                    size: "large",
+                    closeButton: false,
+                    title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
+                    message: divboxerrori(xhr.responseText)
+                });
+                return false;
+            },
+            beforeSend: function (xhr) {
+
+            },
+            success: function (response) {
+                $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
+                var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
+                form.replaceWith(response).promise().done(function () {
+                    formlabeladjust();
+                    $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').tab('show');
+                });
+            }
+        });
+    }
 }

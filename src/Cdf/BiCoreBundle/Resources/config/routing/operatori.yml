@@ -34,6 +34,13 @@ Operatori_deletemultiple:
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:delete" }
     requirements: { methods: post|delete }
 
+Operatori_aggiorna:
+    path:  /aggiorna
+    defaults: { _controller: "cdf.bicorebundle.controller.operatori:aggiorna" }
+    requirements: { methods: post|put }
+    options:
+        expose: true
+
 Operatori_tabella:
     path:  /tabella
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:tabella" }

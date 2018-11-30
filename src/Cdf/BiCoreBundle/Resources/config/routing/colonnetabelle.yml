@@ -48,6 +48,8 @@ Colonnetabelle_aggiorna:
     path:  /aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:aggiorna" }
     requirements: { methods: post|put }
+    options:
+        expose: true
 
 Colonnetabelle_update:
     path:  /{id}/update

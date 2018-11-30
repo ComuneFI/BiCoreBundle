@@ -24,7 +24,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
             'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
             'filtri', 'formclass', 'idpassato', 'modellocolonne', 'nomecontroller',
             'paginacorrente', 'paginetotali', 'permessi', 'prefiltri', 'righeperpagina', 'righetotali', 'estraituttirecords',
-            'tablename', 'titolotabella', 'multiselezione', 'traduzionefiltri', 'urltabella'
+            'tablename', 'titolotabella', 'multiselezione', 'editinline' ,'traduzionefiltri', 'urltabella'
         );
         foreach ($attributi as $attributo) {
             $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
