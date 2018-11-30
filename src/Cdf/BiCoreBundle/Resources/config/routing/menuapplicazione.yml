@@ -25,7 +25,7 @@ Menuapplicazione_update:
     requirements: { methods: post|put }
 
 Menuapplicazione_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:aggiorna" }
     requirements: { methods: post|put }
     options:

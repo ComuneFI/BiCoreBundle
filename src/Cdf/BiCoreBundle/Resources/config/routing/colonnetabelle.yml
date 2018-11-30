@@ -45,7 +45,7 @@ Colonnetabelle_edit:
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:edit" }
 
 Colonnetabelle_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:aggiorna" }
     requirements: { methods: post|put }
     options:

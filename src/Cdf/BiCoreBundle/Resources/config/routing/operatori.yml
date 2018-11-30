@@ -35,7 +35,7 @@ Operatori_deletemultiple:
     requirements: { methods: post|delete }
 
 Operatori_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:aggiorna" }
     requirements: { methods: post|put }
     options:

@@ -21,7 +21,7 @@ Opzionitabelle_update:
     requirements: { methods: post|put }
 
 Opzionitabelle_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:aggiorna" }
     requirements: { methods: post|put }
     options:
