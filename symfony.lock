@@ -215,6 +215,9 @@
             "ref": "e3868d2f4a5104f19f844fe551099a00c6562527"
         }
     },
+    "symfony/contracts": {
+        "version": "v1.0.0"
+    },
     "symfony/css-selector": {
         "version": "v3.4.14"
     },
@@ -409,6 +412,9 @@
     },
     "symfony/var-dumper": {
         "version": "v3.4.14"
+    },
+    "symfony/var-exporter": {
+        "version": "v4.2.0"
     },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
