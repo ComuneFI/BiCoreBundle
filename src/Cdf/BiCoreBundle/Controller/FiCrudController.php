@@ -156,6 +156,7 @@ class FiCrudController extends AbstractController
             'idpassato' => ParametriTabella::setParameter(0),
             'titolotabella' => ParametriTabella::setParameter($titolotabella),
             'multiselezione' => ParametriTabella::setParameter($multiselezione),
+            'editinline' => ParametriTabella::setParameter("0"),
             'paginacorrente' => ParametriTabella::setParameter("1"),
             'paginetotali' => ParametriTabella::setParameter(""),
             'righeperpagina' => ParametriTabella::setParameter("15"),
