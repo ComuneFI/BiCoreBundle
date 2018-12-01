@@ -74,7 +74,7 @@ class GenerateFormCommand extends ContainerAwareCommand
             $output->writeln("<info>" . $retmsg . "</info>");
             return 0;
         } else {
-            $output->writeln("<error>" . $resultcrud['errmsg'] . "</error>");
+            $output->writeln("<error>" . $resultcrud['message'] . "</error>");
             return 1;
         }
     }

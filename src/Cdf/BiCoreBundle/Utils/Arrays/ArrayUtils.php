@@ -1,4 +1,5 @@
 <?php
+
 namespace Cdf\BiCoreBundle\Utils\Arrays;
 
 class ArrayUtils
@@ -31,7 +32,6 @@ class ArrayUtils
         }
         return false;
     }
-
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
@@ -62,7 +62,6 @@ class ArrayUtils
         }
         return (count($trovato) > 0 ? $trovato : false);
     }
-
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
@@ -103,7 +102,6 @@ class ArrayUtils
 
         return $risposta;
     }
-
     /**
      * La funzione ordina un array multidimensionale $array.
      *
@@ -139,7 +137,6 @@ class ArrayUtils
         call_user_func_array('array_multisort', $args);
         return array_pop($args);
     }
-
     public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
@@ -150,7 +147,6 @@ class ArrayUtils
 
         return false;
     }
-
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
@@ -173,19 +169,8 @@ class ArrayUtils
      */
     public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true)
     {
-        $check = null;
-        $diff = false;
-        //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
-        foreach ($array as $key => $val) {
-            if (isset($check) && $check != $val[$subkey]) {
-                $diff = true;
-                break;
-            } else {
-                $check = $val[$subkey];
-            }
-        }
         //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
-        if ($diff) {
+        if (!self::isSortArray($array, $subkey)) {
             if (count($array)) {
                 $temp_array[key($array)] = array_shift($array);
             }
@@ -208,11 +193,32 @@ class ArrayUtils
                     $temp_array = array_merge($temp_array, array($key => $val));
                 }
             }
-            if ($sort_ascending) {
-                $array = array_reverse($temp_array);
+            $array = self::executeSortMultiAssociativeArray($temp_array, $sort_ascending);
+        }
+    }
+    private static function isSortArray($array, $subkey)
+    {
+        $check = null;
+        $diff = false;
+        $key = "";
+        //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
+        foreach ($array as $key => $val) {
+            if (isset($check) && $check != $val[$subkey]) {
+                $diff = true;
+                break;
             } else {
-                $array = $temp_array;
+                $check = $val[$subkey];
             }
         }
+        return !$diff;
+    }
+    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending)
+    {
+        if ($sort_ascending) {
+            $array = array_reverse($temp_array);
+        } else {
+            $array = $temp_array;
+        }
+        return $array;
     }
 }
