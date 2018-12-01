@@ -169,44 +169,19 @@ class BaseParametriQueryTabellaDecoder
 
     protected function operatorToString($operator)
     {
-        $operatoredecodificato = '';
-        switch ($operator) {
-            case Comparison::LT:
-                $operatoredecodificato = 'minore di';
-                break;
-            case Comparison::LTE:
-                $operatoredecodificato = 'minore o uguale di';
-                break;
-            case Comparison::GT:
-                $operatoredecodificato = 'maggiore di';
-                break;
-            case Comparison::GTE:
-                $operatoredecodificato = 'maggiore o uguale di';
-                break;
-            case Comparison::CONTAINS:
-                $operatoredecodificato = 'contiene';
-                break;
-            case Comparison::STARTS_WITH:
-                $operatoredecodificato = 'inizia con';
-                break;
-            case Comparison::ENDS_WITH:
-                $operatoredecodificato = 'finisce con';
-                break;
-            case Comparison::IN:
-                $operatoredecodificato = 'compreso tra';
-                break;
-            case Comparison::NIN:
-                $operatoredecodificato = 'non compreso tra';
-                break;
-            case Comparison::EQ:
-                $operatoredecodificato = 'uguale a';
-                break;
-            case Comparison::NEQ:
-                $operatoredecodificato = 'diverso da';
-                break;
-            default:
-                break;
-        }
-        return $operatoredecodificato;
+        $decoder = array(
+            Comparison::LT=>'minore di',
+            Comparison::LTE=>'minore o uguale di',
+            Comparison::GT=>'maggiore di',
+            Comparison::GTE=>'maggiore o uguale di',
+            Comparison::CONTAINS=>'contiene',
+            Comparison::STARTS_WITH=>'inizia con',
+            Comparison::ENDS_WITH=>'finisce con',
+            Comparison::IN=>'compreso tra',
+            Comparison::NIN=>'non compreso tra',
+            Comparison::EQ=>'uguale a',
+            Comparison::NEQ=>'diverso da',
+            );
+        return $decoder[$operator];
     }
 }
