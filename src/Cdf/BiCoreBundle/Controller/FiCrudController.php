@@ -228,7 +228,7 @@ class FiCrudController extends AbstractController
         /* @var $em \Doctrine\ORM\EntityManager */
         $controller = $this->getController();
         $entityclass = $this->getEntityClassName();
-        $this->checkAggiornaRight($id);
+
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->createQueryBuilder();
         $insert = ($id === 0);
@@ -259,23 +259,19 @@ class FiCrudController extends AbstractController
             //Si prende in considerazione solo i campi strettamente legati a questa entity
             if ($table == $controller && count($fieldpieces) == 2) {
                 $field = $fieldpieces[1];
-                $subfieldpieces = explode("_", $field);
                 if ($insert) {
                     $queryBuilder->setValue($field, ':' . $field);
                     $queryBuilder->setParameter($field, $value["fieldvalue"]);
                     $querydaeseguire = true;
                 } else {
-                    /**/
-                    $nomefunzioneget = "get";
-                    foreach ($subfieldpieces as $field4get) {
-                        $nomefunzioneget .= ucfirst($field4get);
-                    }
-                    if (method_exists($entity, $nomefunzioneget)) {
-                        if ($entity->$nomefunzioneget() != $value["fieldvalue"]) {
-                            $querydaeseguire = true;
-                            $queryBuilder->set("u." . $field, ':' . $field);
-                            $queryBuilder->setParameter($field, $value["fieldvalue"]);
-                        }
+                    $subfieldpieces = explode("_", $field);
+                    $entityutils = new EntityUtils($em);
+                    $property = $entityutils->getEntityProperties($field, $entity);
+                    $nomefunzioneget = $property["get"];
+                    if ($nomefunzioneget != $value["fieldvalue"]) {
+                        $querydaeseguire = true;
+                        $queryBuilder->set("u." . $field, ':' . $field);
+                        $queryBuilder->setParameter($field, $value["fieldvalue"]);
                     }
                 }
             } else {
