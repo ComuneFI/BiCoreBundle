@@ -392,9 +392,8 @@ class FiCrudController extends AbstractController
     protected function getEntityClassNotation()
     {
         $em = $this->get("doctrine")->getManager();
-        $entityfinder = new Finder($em, $this->controller);
         $entityutils = new EntityUtils($em);
-        return $entityutils->getClassNameToShortcutNotations($entityfinder->getClassNameFromEntityName());
+        return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
     }
 
     protected function getEntityClassName()

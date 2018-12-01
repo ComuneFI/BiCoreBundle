@@ -3,13 +3,14 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class EntityUtils
 {
 
     private $em;
 
-    public function __construct($em)
+    public function __construct(ObjectManager $em)
     {
         $this->em = $em;
     }
