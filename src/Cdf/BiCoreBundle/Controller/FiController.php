@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Asset\Packages;
 
