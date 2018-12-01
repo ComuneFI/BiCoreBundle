@@ -257,7 +257,7 @@ class FiCrudController extends AbstractController
             $fieldpieces = explode(".", $value["fieldname"]);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && count($fieldpieces) == 2) {
+            if ($table == $controller && count($fieldpieces) == 2 && $value["fieldtype"] != 'join') {
                 $field = $fieldpieces[1];
                 if ($insert) {
                     $queryBuilder->setValue($field, ':' . $field);
