@@ -106,7 +106,7 @@ function deletemenu(biid, parametri)
 function editmenu(biid, parametri)
 {
     if (getTabellaParameter(parametri.editinline) == 1) {
-        var elencocampi = $("#tabella" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
+        var elencocampi = $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
         elencocampi.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];

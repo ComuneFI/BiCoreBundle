@@ -15,6 +15,7 @@ $(document).on("keypress", '.inputeditinline input', function (e) {
     if (code == '13') {
         var inputs = $("#" + idtabella + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
         var values = Array();
+        
         inputs.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
@@ -23,12 +24,13 @@ $(document).on("keypress", '.inputeditinline input', function (e) {
                 values.push({fieldname: fieldname, fieldvalue: fieldvalue, fieldtype: fieldtype});
             }
         });
-
+        
+        var token = this.closest("tr").dataset["token"];
         var url = Routing.generate(nomecontroller + '_aggiorna', {id: biid});
         $.ajax({
             url: url,
             type: "POST",
-            data: {values: values},
+            data: {values: values, token: token},
             async: true,
             error: function (xhr, textStatus, errorThrown) {
                 bootbox.alert({
@@ -66,10 +68,10 @@ function reseteditinline(inputs) {
             }
             $(div).remove();
             $(td).html(obj);
-        }else{
+        } else {
             $(div).remove();
             $(object).appendTo(td);
-            
+
         }
     });
     $(".biselecttablerow").attr("disabled", false);

@@ -95,7 +95,7 @@ function afterTabellaLoadComplete(nomecontroller)
     var permessi = JSON.parse(getTabellaParameter(parametri.permessi));
     if (permessi.update === true) {
         //Doppio click su riga per edit
-        $('#tabella' + nomecontroller + ' > tbody > tr').dblclick(function () {
+        $('#table' + nomecontroller + ' > tbody > tr').dblclick(function () {
             var biid = this.dataset['bitableid'];
             if (biid) {
                 editmenu(biid, parametri);

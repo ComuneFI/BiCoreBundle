@@ -112,7 +112,7 @@ function eliminaselezionati(nomecontroller)
         return false;
     }
     var nomecontroller = getTabellaParameter(parametri["nomecontroller"]);
-    var recordsdacancellareids = $("#tabella" + nomecontroller + " > tbody > tr .biselecttablerow").map(function () {
+    var recordsdacancellareids = $("#table" + nomecontroller + " > tbody > tr .biselecttablerow").map(function () {
         if ($(this).prop("checked") === true) {
             return parseInt(this.dataset['bitableid']);
         }

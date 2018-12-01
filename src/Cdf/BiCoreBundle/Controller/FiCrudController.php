@@ -251,6 +251,13 @@ class FiCrudController extends AbstractController
                     ->setParameter("id", $id);
         }
         $values = $request->get("values");
+        $token = $request->get("token");
+        $isValidToken = $this->isCsrfTokenValid($id, $token);
+        
+        if (!$isValidToken) {
+            throw $this->createNotFoundException('Token non valido');
+        }
+        
         $querydaeseguire = false;
 
         foreach ($values as $value) {
@@ -294,6 +301,12 @@ class FiCrudController extends AbstractController
         }
         $entityclass = $this->getEntityClassName();
 
+        /*$token = $request->get("token");
+        $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
+
+        if (!$isValidToken){
+            throw $this->createNotFoundException('Token non valido');
+        }*/
 
         try {
             $em = $this->getDoctrine()->getManager();
