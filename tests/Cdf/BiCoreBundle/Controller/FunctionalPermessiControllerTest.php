@@ -9,7 +9,7 @@ class FunctionalPermessiControllerTest extends FifreeTestAuthorizedClient
     public function testPermessiIndex()
     {
         $permessiregistrati = 1;
-        $htmltableid = "tabellaPermessi";
+        $htmltableid = "tablePermessi";
         $client = $this->getClient();
         $testUrl = '/Permessi/';
         $crawler = $client->request('GET', $testUrl);

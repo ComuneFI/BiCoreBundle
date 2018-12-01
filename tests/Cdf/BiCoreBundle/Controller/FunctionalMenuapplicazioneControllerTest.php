@@ -9,7 +9,7 @@ class FunctionalMenuapplicazioneControllerTest extends FifreeTestAuthorizedClien
     public function testMenuapplicazioneIndex()
     {
         $menuapplicazioneregistrati = 15;
-        $htmltableid = "tabellaMenuapplicazione";
+        $htmltableid = "tableMenuapplicazione";
         $client = $this->getClient();
         $testUrl = '/Menuapplicazione/';
         $crawler = $client->request('GET', $testUrl);
