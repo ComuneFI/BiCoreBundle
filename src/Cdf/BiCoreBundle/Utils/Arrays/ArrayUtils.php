@@ -200,6 +200,7 @@ class ArrayUtils
     {
         $check = null;
         $diff = false;
+        $key = "";
         //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
         foreach ($array as $key => $val) {
             if (isset($check) && $check != $val[$subkey]) {
