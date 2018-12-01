@@ -9,7 +9,7 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
     /*public function testFunctionalMagazzinoIndex()
     {
         $magazzinoregistrati = 11;
-        $htmltableid = "tabellaMagazzino";
+        $htmltableid = "tableMagazzino";
         $client = $this->getClient();
         $testUrl = '/Magazzino/';
         $crawler = $client->request('GET', $testUrl);

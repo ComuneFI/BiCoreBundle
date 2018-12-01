@@ -9,7 +9,7 @@ class FunctionalClienteControllerTest extends FifreeTestAuthorizedClient
     public function testFunctionalClienteIndex()
     {
         $clientiregistrati = 15;
-        $htmltableid = "tabellaCliente";
+        $htmltableid = "tableCliente";
         $client = $this->getClient();
         $testUrl = '/Cliente/';
         $crawler = $client->request('GET', $testUrl);

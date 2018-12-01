@@ -9,7 +9,7 @@ class FunctionalProdottofornitoreControllerTest extends FifreeTestAuthorizedClie
     public function testFunctionalProdottofornitoreIndex()
     {
         $prodottifornitoreregistrati = 11;
-        $htmltableid = "tabellaProdottofornitore";
+        $htmltableid = "tableProdottofornitore";
         $client = $this->getClient();
         $testUrl = '/Prodottofornitore/';
         $crawler = $client->request('GET', $testUrl);

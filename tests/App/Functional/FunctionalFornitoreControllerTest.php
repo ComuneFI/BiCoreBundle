@@ -9,7 +9,7 @@ class FunctionalFornitoreControllerTest extends FifreeTestAuthorizedClient
     public function testFunctionalFornitoreIndex()
     {
         $fornitoriregistrati = 3;
-        $htmltableid = "tabellaFornitore";
+        $htmltableid = "tableFornitore";
         $client = $this->getClient();
         $testUrl = '/Fornitore/';
         $crawler = $client->request('GET', $testUrl);
