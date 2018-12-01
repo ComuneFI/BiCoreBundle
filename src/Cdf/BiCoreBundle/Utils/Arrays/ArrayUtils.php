@@ -170,7 +170,7 @@ class ArrayUtils
     public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true)
     {
         //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
-        if (!self::isSortArray($array,$subkey)) {
+        if (!self::isSortArray($array, $subkey)) {
             if (count($array)) {
                 $temp_array[key($array)] = array_shift($array);
             }
@@ -181,7 +181,9 @@ class ArrayUtils
                 foreach ($temp_array as $tmp_key => $tmp_val) {
                     if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
                         $temp_array = array_merge(
-                                (array) array_slice($temp_array, 0, $offset), array($key => $val), array_slice($temp_array, $offset)
+                            (array) array_slice($temp_array, 0, $offset),
+                            array($key => $val),
+                            array_slice($temp_array, $offset)
                         );
                         $found = true;
                     }
@@ -194,7 +196,7 @@ class ArrayUtils
             $array = self::executeSortMultiAssociativeArray($temp_array, $sort_ascending);
         }
     }
-    private static function isSortArray($array,$subkey)
+    private static function isSortArray($array, $subkey)
     {
         $check = null;
         $diff = false;
