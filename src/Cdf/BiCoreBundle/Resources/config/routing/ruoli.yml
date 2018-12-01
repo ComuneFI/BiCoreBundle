@@ -25,7 +25,7 @@ Ruoli_update:
     requirements: { methods: post|put }
 
 Ruoli_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:aggiorna" }
     requirements: { methods: post|put }
     options:
@@ -33,12 +33,12 @@ Ruoli_aggiorna:
 
 
 Ruoli_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
     requirements: { methods: post|delete }
     
 Ruoli_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
     requirements: { methods: post|delete }
 

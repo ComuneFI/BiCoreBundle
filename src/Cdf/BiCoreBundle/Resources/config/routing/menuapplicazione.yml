@@ -25,14 +25,14 @@ Menuapplicazione_update:
     requirements: { methods: post|put }
 
 Menuapplicazione_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Menuapplicazione_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:delete" }
     requirements: { methods: post|delete }
 

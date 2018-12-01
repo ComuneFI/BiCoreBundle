@@ -66,7 +66,8 @@ function deletemenu(biid, parametri)
         },
         callback: function (confirm) {
             if (confirm) {
-                var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/delete";
+                var token = $("#table" + getTabellaParameter(parametri.nomecontroller)).attr("data-tabletoken");
+                var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/" + token + "/delete";
                 $.ajax({
                     url: deleteturl,
                     type: "POST",

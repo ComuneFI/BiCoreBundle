@@ -293,7 +293,7 @@ class FiCrudController extends AbstractController
     /**
      * Deletes a table entity.
      */
-    public function delete(Request $request)
+    public function delete(Request $request, $token)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         if (!$this->getPermessi()->canDelete()) {
@@ -301,12 +301,11 @@ class FiCrudController extends AbstractController
         }
         $entityclass = $this->getEntityClassName();
 
-        /*$token = $request->get("token");
         $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
 
-        if (!$isValidToken){
+        if (!$isValidToken) {
             throw $this->createNotFoundException('Token non valido');
-        }*/
+        }
 
         try {
             $em = $this->getDoctrine()->getManager();

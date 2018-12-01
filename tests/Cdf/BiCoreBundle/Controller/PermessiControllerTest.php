@@ -76,7 +76,8 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $crawler = $this->client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Permessi");
+        $crawler = $this->client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

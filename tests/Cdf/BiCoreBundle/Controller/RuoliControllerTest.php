@@ -63,7 +63,8 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Ruoli");
+        $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

@@ -110,7 +110,8 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
             $this->em->remove($clientemodificato);
             $this->em->flush();
         }
-        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken($nomecontroller);
+        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/' . $csrfDeleteToken. '/delete');
         $this->assertSame(501, $this->client->getResponse()->getStatusCode());
     }
 }

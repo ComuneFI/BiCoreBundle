@@ -209,19 +209,19 @@ EOF;
     requirements: { methods: post|put }
 
 [tabella]_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::aggiorna' }
     requirements: { methods: post|put }
     options:
         expose: true
 
 [tabella]_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::delete' }
     requirements: { methods: post|delete }
 
 [tabella]_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::delete' }
     requirements: { methods: post|delete }
 

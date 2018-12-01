@@ -25,17 +25,17 @@ Operatori_update:
     requirements: { methods: post|put }
 
 Operatori_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:delete" }
     requirements: { methods: post|delete }
 
 Operatori_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:delete" }
     requirements: { methods: post|delete }
 
 Operatori_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:aggiorna" }
     requirements: { methods: post|put }
     options:

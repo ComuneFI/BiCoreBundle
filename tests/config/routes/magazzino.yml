@@ -21,19 +21,19 @@ Magazzino_update:
     requirements: { methods: post|put }
 
 Magazzino_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: 'App\Controller\MagazzinoController::aggiorna' }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Magazzino_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: 'App\Controller\MagazzinoController::delete' }
     requirements: { methods: post|delete }
 
 Magazzino_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: 'App\Controller\MagazzinoController::delete' }
     requirements: { methods: post|delete }
 

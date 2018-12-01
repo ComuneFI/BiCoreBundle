@@ -21,19 +21,19 @@ Storicomodifiche_update:
     requirements: { methods: post|put }
 
 Storicomodifiche_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Storicomodifiche_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:delete" }
     requirements: { methods: post|delete }
 
 Storicomodifiche_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:delete" }
     requirements: { methods: post|delete }
 

@@ -23,7 +23,7 @@ $(document).ready(function () {
         var nomecontroller = this.dataset["nomecontroller"];
         var parametri = getParametriTabellaDataset(nomecontroller);
         var parametriform = [];
-        if (typeof parametri.parametriform !== "undefined"){
+        if (typeof parametri.parametriform !== "undefined") {
             parametriform = getTabellaParameter(parametri.parametriform);
         }
         var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
@@ -112,6 +112,7 @@ function eliminaselezionati(nomecontroller)
         return false;
     }
     var nomecontroller = getTabellaParameter(parametri["nomecontroller"]);
+    var token = $("#table" + nomecontroller).attr("data-tabletoken");
     var recordsdacancellareids = $("#table" + nomecontroller + " > tbody > tr .biselecttablerow").map(function () {
         if ($(this).prop("checked") === true) {
             return parseInt(this.dataset['bitableid']);
@@ -133,7 +134,7 @@ function eliminaselezionati(nomecontroller)
             },
             callback: function (confirm) {
                 if (confirm) {
-                    var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/delete";
+                    var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + token + "/delete";
                     $.ajax({
                         url: deleteturl,
                         type: "POST",

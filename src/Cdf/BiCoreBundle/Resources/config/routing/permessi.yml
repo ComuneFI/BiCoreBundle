@@ -25,19 +25,19 @@ Permessi_update:
     requirements: { methods: post|put }
 
 Permessi_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.permessi:aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Permessi_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
     requirements: { methods: post|delete }
 
 Permessi_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
     requirements: { methods: post|delete }
 

@@ -1,23 +1,32 @@
 <tbody>
     {% for record in parametri.recordstabella %}
-        <tr data-bitableid='{{record.id}}'>
-            <td scope="row">
-                <div class="form-check">
-                    <input id="checkbox{{record.id}}" type="checkbox" class="form-check-input position-static mx-auto">
-                </div>
+
+        <tr data-bitableid='{{record.id}}' data-token="{{ csrf_token(record.id) }}" class="{{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
+
+            <td scope="row" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
+                <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">
             </td>
 
             {% for colonnatabella in parametri.parametritabella %}
                 {#{dump(colonnatabella)}#}
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
-                    <td scope="row">{{ object2view(field2object(colonnatabella.nomecampo,record),colonnatabella.tipocampo) }}</td>
+                    {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
+                    <td scope="row" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}">
+                        {%if (parametri.editinline|getparametrotabella == true)%}
+                            <input type="text" class="form-control" value="{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}" disabled/>
+                        {%else%}
+                            {{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}
+                        {%endif%}
+                    </td>
                 {%endif%}
             {% endfor%} 
 
             <td>
                 <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
             </td>
+
         </tr>
+
     {%endfor%}
 </tbody>
