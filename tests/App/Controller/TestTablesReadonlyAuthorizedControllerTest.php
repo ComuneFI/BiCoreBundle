@@ -31,9 +31,9 @@ class TestTablesReadonlyAuthorizedControllerTest extends Cdf\BiCoreBundle\Tests\
         $client->request('GET', $url);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        $url = $client->getContainer()->get('router')->generate("Cliente_delete", array("id" => 1));
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Cliente");
+        $url = $client->getContainer()->get('router')->generate("Cliente_delete", array("id" => 1, "token" => $csrfDeleteToken));
         $client->request('GET', $url);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
-
     }
 }
