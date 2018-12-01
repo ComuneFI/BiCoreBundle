@@ -264,7 +264,6 @@ class FiCrudController extends AbstractController
                     $queryBuilder->setParameter($field, $value["fieldvalue"]);
                     $querydaeseguire = true;
                 } else {
-                    $subfieldpieces = explode("_", $field);
                     $entityutils = new EntityUtils($em);
                     $property = $entityutils->getEntityProperties($field, $entity);
                     $nomefunzioneget = $property["get"];
