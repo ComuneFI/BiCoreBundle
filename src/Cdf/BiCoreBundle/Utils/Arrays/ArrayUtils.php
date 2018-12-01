@@ -1,4 +1,5 @@
 <?php
+
 namespace Cdf\BiCoreBundle\Utils\Arrays;
 
 class ArrayUtils
@@ -31,7 +32,6 @@ class ArrayUtils
         }
         return false;
     }
-
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
@@ -62,7 +62,6 @@ class ArrayUtils
         }
         return (count($trovato) > 0 ? $trovato : false);
     }
-
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice
@@ -103,7 +102,6 @@ class ArrayUtils
 
         return $risposta;
     }
-
     /**
      * La funzione ordina un array multidimensionale $array.
      *
@@ -139,7 +137,6 @@ class ArrayUtils
         call_user_func_array('array_multisort', $args);
         return array_pop($args);
     }
-
     public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
@@ -150,7 +147,6 @@ class ArrayUtils
 
         return false;
     }
-
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
@@ -173,6 +169,33 @@ class ArrayUtils
      */
     public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true)
     {
+        //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
+        if (!self::isSortArray($array,$subkey)) {
+            if (count($array)) {
+                $temp_array[key($array)] = array_shift($array);
+            }
+
+            foreach ($array as $key => $val) {
+                $offset = 0;
+                $found = false;
+                foreach ($temp_array as $tmp_key => $tmp_val) {
+                    if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
+                        $temp_array = array_merge(
+                                (array) array_slice($temp_array, 0, $offset), array($key => $val), array_slice($temp_array, $offset)
+                        );
+                        $found = true;
+                    }
+                    $offset++;
+                }
+                if (!$found) {
+                    $temp_array = array_merge($temp_array, array($key => $val));
+                }
+            }
+            $array = self::executeSortMultiAssociativeArray($temp_array, $sort_ascending);
+        }
+    }
+    private static function isSortArray($array,$subkey)
+    {
         $check = null;
         $diff = false;
         //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
@@ -184,35 +207,15 @@ class ArrayUtils
                 $check = $val[$subkey];
             }
         }
-        //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
-        if ($diff) {
-            if (count($array)) {
-                $temp_array[key($array)] = array_shift($array);
-            }
-
-            foreach ($array as $key => $val) {
-                $offset = 0;
-                $found = false;
-                foreach ($temp_array as $tmp_key => $tmp_val) {
-                    if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
-                        $temp_array = array_merge(
-                            (array) array_slice($temp_array, 0, $offset),
-                            array($key => $val),
-                            array_slice($temp_array, $offset)
-                        );
-                        $found = true;
-                    }
-                    $offset++;
-                }
-                if (!$found) {
-                    $temp_array = array_merge($temp_array, array($key => $val));
-                }
-            }
-            if ($sort_ascending) {
-                $array = array_reverse($temp_array);
-            } else {
-                $array = $temp_array;
-            }
+        return !$diff;
+    }
+    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending)
+    {
+        if ($sort_ascending) {
+            $array = array_reverse($temp_array);
+        } else {
+            $array = $temp_array;
         }
+        return $array;
     }
 }
