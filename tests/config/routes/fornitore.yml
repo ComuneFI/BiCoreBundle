@@ -21,7 +21,7 @@ Fornitore_update:
     requirements: { methods: post|put }
 
 Fornitore_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: 'App\Controller\FornitoreController::aggiorna' }
     requirements: { methods: post|put }
     options:

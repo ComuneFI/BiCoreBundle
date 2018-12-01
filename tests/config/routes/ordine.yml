@@ -25,7 +25,7 @@ Ordine_update:
     requirements: { methods: post|put }
 
 Ordine_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: 'App\Controller\OrdineController::aggiorna' }
     requirements: { methods: post|put }
     options:

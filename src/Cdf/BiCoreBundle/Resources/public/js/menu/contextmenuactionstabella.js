@@ -108,14 +108,13 @@ function editmenu(biid, parametri)
     if (getTabellaParameter(parametri.editinline) == 1) {
         var elencocampi = $("#tabella" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
         elencocampi.each(function (index, object) {
-            var originalinput = $(object).clone();
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
             var input;
             var div = $('<div />', {class: 'form-group'});
 
             if (fieldname) {
-                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
+                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2 || fieldtype == 'join') {
                     //Id e campi di tabelle collegate non devono essere modificabili
                     input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
                 } else {
@@ -143,7 +142,7 @@ function editmenu(biid, parametri)
                     }
                 }
             } else {
-                input = $(object).clone().attr("disabled",true);
+                input = $(object).clone().attr("disabled", true);
 
             }
             $(input).appendTo(div);

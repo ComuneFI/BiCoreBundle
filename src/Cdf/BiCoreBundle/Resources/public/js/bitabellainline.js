@@ -17,9 +17,10 @@ $(document).on("keypress", '.inputeditinline input', function (e) {
         var values = Array();
         inputs.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
+            var fieldtype = object.closest("td").dataset["tipocampo"];
             fieldvalue = $(object).val();
             if (fieldname) {
-                values.push({fieldname: fieldname, fieldvalue: fieldvalue});
+                values.push({fieldname: fieldname, fieldvalue: fieldvalue, fieldtype: fieldtype});
             }
         });
 

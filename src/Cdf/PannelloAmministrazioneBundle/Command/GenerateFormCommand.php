@@ -209,7 +209,7 @@ EOF;
     requirements: { methods: post|put }
 
 [tabella]_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::aggiorna' }
     requirements: { methods: post|put }
     options:

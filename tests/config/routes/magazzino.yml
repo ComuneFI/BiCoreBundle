@@ -21,7 +21,7 @@ Magazzino_update:
     requirements: { methods: post|put }
 
 Magazzino_aggiorna:
-    path:  /aggiorna
+    path:  /{id}/aggiorna
     defaults: { _controller: 'App\Controller\MagazzinoController::aggiorna' }
     requirements: { methods: post|put }
     options:

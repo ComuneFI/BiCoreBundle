@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class Finder
 {
@@ -10,10 +11,10 @@ class Finder
     private $entityname;
     private $em;
 
-    public function __construct($em, $entityname)
+    public function __construct(ObjectManager $em, $entityname)
     {
-        $this->entityname = $entityname;
         $this->em = $em;
+        $this->entityname = $entityname;
     }
     public function getClassNameFromEntityName()
     {
