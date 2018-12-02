@@ -41,11 +41,6 @@ services:
         tags:
           - { name: twig.extension }
 
-    cdf.bicorebundle.twig.extension.parametritabella:
-        class: Cdf\BiCoreBundle\Twig\Extension\ParametriTabellaTwigExtension
-        tags:
-          - { name: twig.extension }
-
     cdf.bicorebundle.twig.extension.utilita:
         class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
         properties:

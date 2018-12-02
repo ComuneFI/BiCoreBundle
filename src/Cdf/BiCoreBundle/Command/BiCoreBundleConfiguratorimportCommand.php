@@ -86,7 +86,7 @@ class BiCoreBundleConfiguratorimportCommand extends ContainerAwareCommand
         if ($schemachanged) {
             $msgerr = "<error>Attenzione, lo schema database non è aggiornato, verrà comunque tentata l'importazione</error>";
             $this->output->writeln($msgerr);
-            sleep(3);
+            //sleep(3);
         }
     }
 

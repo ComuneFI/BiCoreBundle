@@ -111,7 +111,6 @@ function eliminaselezionati(nomecontroller)
         binotification("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
         return false;
     }
-    var nomecontroller = getTabellaParameter(parametri["nomecontroller"]);
     var token = $("#table" + nomecontroller).attr("data-tabletoken");
     var recordsdacancellareids = $("#table" + nomecontroller + " > tbody > tr .biselecttablerow").map(function () {
         if ($(this).prop("checked") === true) {
