@@ -1,7 +1,7 @@
 <tbody>
     {% for record in parametri.recordstabella %}
 
-        <tr data-bitableid='{{record.id}}' class="{{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
+        <tr data-bitableid='{{record.id}}' data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" data-token="{{ csrf_token(record.id) }}" class="{{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
 
             <td scope="row" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
                 <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">

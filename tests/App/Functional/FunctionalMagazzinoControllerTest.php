@@ -9,7 +9,7 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
     /*public function testFunctionalMagazzinoIndex()
     {
         $magazzinoregistrati = 11;
-        $htmltableid = "tabellaMagazzino";
+        $htmltableid = "tableMagazzino";
         $client = $this->getClient();
         $testUrl = '/Magazzino/';
         $crawler = $client->request('GET', $testUrl);
@@ -32,12 +32,12 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
         $client->waitFor(".tabellasearch");
 
         $this->pressButton('.tabellasearch');
-        $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tabellaMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters th.col-auto input.form-control.colonnatabellafiltro";
+        $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters th.col-auto input.form-control.colonnatabellafiltro";
         $this->fillField($fieldhtml, "ed");
 
         $crawler = $this->findField($fieldhtml)->sendKeys("\n");
         $this->ajaxWait(6000);
-        $numrowstabella = $this->evaluateScript("return $('#tabellaMagazzino > tbody > tr').length;");
+        $numrowstabella = $this->evaluateScript("return $('#tableMagazzino > tbody > tr').length;");
         $this->assertEquals(5, $numrowstabella);
 
         //$this->assertContains('My Title', $crawler->filter('title')->html());

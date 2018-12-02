@@ -57,12 +57,12 @@ Colonnetabelle_update:
     requirements: { methods: post|put }
 
 Colonnetabelle_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
     requirements: { methods: post|delete }
     
 Colonnetabelle_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
     requirements: { methods: post|delete }
 

@@ -9,7 +9,7 @@ class FunctionalColonnetabelleControllerTest extends FifreeTestAuthorizedClient
     public function testColonnetabelleIndex()
     {
         $colonnetabelleregistrati = 6;
-        $htmltableid = "tabellaColonnetabelle";
+        $htmltableid = "tableColonnetabelle";
         $client = $this->getClient();
         $testUrl = '/Colonnetabelle/';
         $crawler = $client->request('GET', $testUrl);

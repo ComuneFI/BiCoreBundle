@@ -9,7 +9,7 @@ class FunctionalOperatoriControllerTest extends FifreeTestAuthorizedClient
     public function testOperatoriIndex()
     {
         $operatoriregistrati = 3;
-        $htmltableid = "tabellaOperatori";
+        $htmltableid = "tableOperatori";
         $client = $this->getClient();
         $testUrl = '/Operatori/';
         $crawler = $client->request('GET', $testUrl);

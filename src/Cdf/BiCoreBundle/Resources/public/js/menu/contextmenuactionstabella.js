@@ -66,7 +66,8 @@ function deletemenu(biid, parametri)
         },
         callback: function (confirm) {
             if (confirm) {
-                var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/delete";
+                var token = $("#table" + getTabellaParameter(parametri.nomecontroller)).attr("data-tabletoken");
+                var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/" + token + "/delete";
                 $.ajax({
                     url: deleteturl,
                     type: "POST",
@@ -106,7 +107,7 @@ function deletemenu(biid, parametri)
 function editmenu(biid, parametri)
 {
     if (getTabellaParameter(parametri.editinline) == 1) {
-        var elencocampi = $("#tabella" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
+        var elencocampi = $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
         elencocampi.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];

@@ -9,7 +9,7 @@ class FunctionalRuoliControllerTest extends FifreeTestAuthorizedClient
     public function testRuoliIndex()
     {
         $ruoliregistrati = 3;
-        $htmltableid = "tabellaRuoli";
+        $htmltableid = "tableRuoli";
         $client = $this->getClient();
         $testUrl = '/Ruoli/';
         $crawler = $client->request('GET', $testUrl);

@@ -66,7 +66,8 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $crawler = $this->client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Colonnetabelle");
+        $crawler = $this->client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() .'/'.$csrfDeleteToken .'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

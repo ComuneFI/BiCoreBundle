@@ -9,7 +9,7 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
     public function testFunctionalOrdineIndex()
     {
         $ordiniregistrati = 14;
-        $htmltableid = "tabellaOrdine";
+        $htmltableid = "tableOrdine";
         $client = $this->getClient();
         $testUrl = '/Ordine/';
         $crawler = $client->request('GET', $testUrl);

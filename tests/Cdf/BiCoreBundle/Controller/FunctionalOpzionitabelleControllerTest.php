@@ -9,7 +9,7 @@ class FunctionalOpzionitabelleControllerTest extends FifreeTestAuthorizedClient
     public function testOpzionitabelleIndex()
     {
         $opzionitabelleregistrati = 3;
-        $htmltableid = "tabellaOpzionitabelle";
+        $htmltableid = "tableOpzionitabelle";
         $client = $this->getClient();
         $testUrl = '/Opzionitabelle/';
         $crawler = $client->request('GET', $testUrl);

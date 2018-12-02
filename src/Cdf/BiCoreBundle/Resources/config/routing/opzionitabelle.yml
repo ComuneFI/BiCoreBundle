@@ -21,19 +21,19 @@ Opzionitabelle_update:
     requirements: { methods: post|put }
 
 Opzionitabelle_aggiorna:
-    path:  /{id}/aggiorna
+    path:  /{id}/{token}/aggiorna
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Opzionitabelle_delete:
-    path:  /{id}/delete
+    path:  /{id}/{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:delete" }
     requirements: { methods: post|delete }
 
 Opzionitabelle_deletemultiple:
-    path:  /delete
+    path:  /{token}/delete
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:delete" }
     requirements: { methods: post|delete }
 

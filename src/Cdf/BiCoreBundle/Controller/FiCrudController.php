@@ -221,7 +221,7 @@ class FiCrudController extends AbstractController
     /**
      * Inline existing table entity.
      */
-    public function aggiorna(Request $request, $id)
+    public function aggiorna(Request $request, $id, $token)
     {
         $this->checkAggiornaRight($id);
 
@@ -251,6 +251,12 @@ class FiCrudController extends AbstractController
                     ->setParameter("id", $id);
         }
         $values = $request->get("values");
+        $isValidToken = $this->isCsrfTokenValid($id, $token);
+        
+        if (!$isValidToken) {
+            throw $this->createNotFoundException('Token non valido');
+        }
+        
         $querydaeseguire = false;
 
         foreach ($values as $value) {
@@ -286,7 +292,7 @@ class FiCrudController extends AbstractController
     /**
      * Deletes a table entity.
      */
-    public function delete(Request $request)
+    public function delete(Request $request, $token)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         if (!$this->getPermessi()->canDelete()) {
@@ -294,6 +300,11 @@ class FiCrudController extends AbstractController
         }
         $entityclass = $this->getEntityClassName();
 
+        $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
+
+        if (!$isValidToken) {
+            throw $this->createNotFoundException('Token non valido');
+        }
 
         try {
             $em = $this->getDoctrine()->getManager();
