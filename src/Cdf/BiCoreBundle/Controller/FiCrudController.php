@@ -221,7 +221,7 @@ class FiCrudController extends AbstractController
     /**
      * Inline existing table entity.
      */
-    public function aggiorna(Request $request, $id)
+    public function aggiorna(Request $request, $id, $token)
     {
         $this->checkAggiornaRight($id);
 
@@ -251,7 +251,6 @@ class FiCrudController extends AbstractController
                     ->setParameter("id", $id);
         }
         $values = $request->get("values");
-        $token = $request->get("token");
         $isValidToken = $this->isCsrfTokenValid($id, $token);
         
         if (!$isValidToken) {

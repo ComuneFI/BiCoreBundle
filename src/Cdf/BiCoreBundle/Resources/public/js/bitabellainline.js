@@ -26,11 +26,11 @@ $(document).on("keypress", '.inputeditinline input', function (e) {
         });
         
         var token = this.closest("tr").dataset["token"];
-        var url = Routing.generate(nomecontroller + '_aggiorna', {id: biid});
+        var url = Routing.generate(nomecontroller + '_aggiorna', {id: biid, token: token});
         $.ajax({
             url: url,
             type: "POST",
-            data: {values: values, token: token},
+            data: {values: values},
             async: true,
             error: function (xhr, textStatus, errorThrown) {
                 bootbox.alert({

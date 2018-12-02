@@ -2,7 +2,7 @@
     <div class="panel panel-primary filterable">
         <div class="panel-heading">
         </div>
-        <table id="table{{parametri.nomecontroller|getparametrotabella}}" data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" class="table table-sm table-responsive-sm table-striped bitable table-hover">
+        <table id="table{{parametri.nomecontroller|getparametrotabella}}" data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" data-nomecontroller="{{ parametri.nomecontroller|getparametrotabella }}" class="table table-sm table-responsive-sm table-striped bitable table-hover">
             {% include parametri.templatelocation ~ 'Tabella/tabellaheader.html.twig' with parametri %}
             {% include parametri.templatelocation ~ 'Tabella/tabellabody.html.twig' with parametri %}
             {% include parametri.templatelocation ~ 'Tabella/tabellafooter.html.twig' with parametri %}

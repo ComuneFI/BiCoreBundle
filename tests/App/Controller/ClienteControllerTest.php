@@ -15,7 +15,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $this->client->request('GET', '/' . $nomecontroller.'/1000/edit');
+        $this->client->request('GET', '/' . $nomecontroller . '/1000/edit');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
 
         $parametri = $this->getParametriTabella($nomecontroller, $crawler);
@@ -39,7 +39,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         //Sub tables
         $this->client->request('POST', '/Ordine/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Ordine.Cliente.id","operatore":"=","valore":1}],"titolotabella":"Ordini+del+cliente+Andrea+Manzi","modellocolonne":[{"nomecampo":"Ordine.Cliente","escluso":true}],"colonneordinamento":{"Ordine.data":"DESC","Ordine.quantita":"DESC"},"multiselezione":true}')));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        
+
         $this->client->request('POST', '/Magazzino/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Magazzino.Ordine.Cliente.id","operatore":"=","valore":1}],"modellocolonne":[{"nomecampo":"Magazzino.giornodellasettimana","escluso":false,"decodifiche":["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"]}],"titolotabella":"Roba+in+magazzino+del+cliente+Andrea+Manzi"}')));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -48,7 +48,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         //Incomplete submit
         $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
         $camponominativo = "cliente[nominativo]";
-        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => ""));
+        $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => ""));
 
         // submit that form
         $crawler = $this->client->submit($form);
@@ -65,7 +65,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         //Submit
         $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
         $camponominativo = "cliente[nominativo]";
-        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => ""));
+        $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => ""));
 
         // submit that form
         $crawler = $this->client->submit($form);
@@ -77,25 +77,25 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         //Submit
         $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
         $camponominativo = "cliente[nominativo]";
-        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => "Andrea Manzi 2"));
+        $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => "Andrea Manzi 2"));
 
         // submit that form
         $crawler = $this->client->submit($form);
 
-        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Andrea Manzi 2', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("cliente_item");
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Cliente");
         $camponominativo = "cliente[nominativo]";
-        $form = $crawler->filter('form[id=formdati'.$nomecontroller.']')->form(array("$camponominativo" => "Andrea Manzi"));
+        $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => "Andrea Manzi"));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Andrea Manzi', $this->client->getResponse()->getContent()
@@ -110,8 +110,29 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
             $this->em->remove($clientemodificato);
             $this->em->flush();
         }
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken($nomecontroller);
-        $crawler = $this->client->request('GET', '/'.$nomecontroller.'/' . $nominativonserito->getId() . '/' . $csrfDeleteToken. '/delete');
+        $crawler = $this->client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/' . $csrfToken . '/delete');
         $this->assertSame(501, $this->client->getResponse()->getStatusCode());
+    }
+    public function testSecuredClienteAggiorna()
+    {
+        $this->logInAdmin();
+        $nomecontroller = 'Cliente';
+
+        //aggiorna ajax
+        $csrfTokenAggiorna = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("1");
+        $parametriagiorna = array("values" => array(array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => "Andrea Manzo")));
+        $this->client->request('POST', '/Cliente/1/' . $csrfTokenAggiorna . '/aggiorna', $parametriagiorna);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $parametriagiorna = array("values" => array(array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => "Andrea Manzi")));
+        $this->client->request('POST', '/Cliente/1/' . $csrfTokenAggiorna . '/aggiorna', $parametriagiorna);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $parametriagiorna = array("values" => array(array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => "Andrea Manzi")));
+        $this->client->request('POST', '/Cliente/1000/' . $csrfTokenAggiorna . '/aggiorna', $parametriagiorna);
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+
+        $parametriagiorna = array("values" => array(array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => "Andrea Manzi")));
+        $this->client->request('POST', '/Cliente/1/TokenNonValido/aggiorna', $parametriagiorna);
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 }
