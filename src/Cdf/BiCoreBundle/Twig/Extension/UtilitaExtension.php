@@ -2,6 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+
 class UtilitaExtension extends \Twig_Extension
 {
     public $container;
@@ -16,6 +18,13 @@ class UtilitaExtension extends \Twig_Extension
         );
     }
     
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('getparametrotabella', array($this, 'getParametroTabella')),
+        );
+    }
+
     public function jsonDecode($string)
     {
         return json_decode($string);
@@ -23,5 +32,9 @@ class UtilitaExtension extends \Twig_Extension
     public function getParameter($parameter)
     {
         return  $this->container->getParameter($parameter);
+    }
+    public function getParametroTabella($parametro)
+    {
+        return ParametriTabella::getParameter($parametro);
     }
 }
