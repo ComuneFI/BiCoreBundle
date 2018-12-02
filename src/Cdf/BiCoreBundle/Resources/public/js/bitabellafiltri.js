@@ -83,7 +83,6 @@ function getDateTimeTabella(stringadata)
 }
 
 $(document).on("click", '.birimuovifiltri', function (e) {
-    //var $pulsante = this.id;
     var nomecontroller = this.dataset["nomecontroller"];
     setDataParameterTabella(nomecontroller, "filtri", JSON.stringify([]));
     ricaricatabella(nomecontroller);

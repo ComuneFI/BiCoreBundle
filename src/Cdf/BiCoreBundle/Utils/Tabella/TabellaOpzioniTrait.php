@@ -7,10 +7,8 @@ use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 use Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils;
 
-class TabellaOpzioni extends TabellaDecoder
+trait TabellaOpzioniTrait
 {
-    protected $maxordine = 0;
-
     protected function getOpzionitabellaFromCore()
     {
         $repoopzionitabelle = $this->em->getRepository(Opzionitabelle::class);
@@ -147,16 +145,6 @@ class TabellaOpzioni extends TabellaDecoder
         }
         // Ordinamento per colonna ordine
         ArrayUtils::sortMultiAssociativeArray($opzionibuilder, "ordine", true);
-    }
-    protected function setMaxOrdine($ordinecorrente)
-    {
-        if ($ordinecorrente > $this->maxordine) {
-            $this->maxordine = $ordinecorrente;
-        }
-    }
-    protected function getMaxOrdine()
-    {
-        return $this->maxordine;
     }
     private function bonificaNomeCampo($nomecampo)
     {
