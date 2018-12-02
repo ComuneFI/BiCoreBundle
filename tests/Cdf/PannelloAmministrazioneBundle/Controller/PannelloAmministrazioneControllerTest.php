@@ -14,16 +14,18 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
         $client->request('GET', $url);
-
         $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
         $client->request('GET', $urlsc, array("symfonycommand" => "list"));
         $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
         $client->request('GET', $urluc, array("unixcommand" => "ls -all"));
         $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
         $client->request('GET', $urluc, array("unixcommand" => "lsssss -all"));
@@ -34,10 +36,11 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
 
         $client->request('GET', $urlge, array("file" => "tabellaminuscola.mwb"));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
-        
+
         //Restart client per caricare il nuovo bundle
         $client->request('GET', $urlge, array("file" => "wbadmintest.mwb"));
         $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $client->reload();
         $urlas = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_aggiornaschemadatabase');
@@ -62,9 +65,15 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
 
+        $client->reload();
         $urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
         $client->request('GET', $urlcc);
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        $client->reload();
+        $this->setUp();
+        $client = $this->client;
+        $client->request('GET', $url);
+        
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         cleanFilesystem();
         //dump($client->getResponse());
