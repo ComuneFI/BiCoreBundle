@@ -2,154 +2,86 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Cdf\BiCoreBundle\Utils\Tabella\ParametriQueryTabellaDecoder;
+use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
-class Tabella extends TabellaOpzioni
+/**
+ * @property \Doctrine\ORM\EntityManager $em
+ * @property \Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils $permessi
+ * @property \Symfony\Component\Security\Core\Security $user
+ */
+
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
+class Tabella
 {
-    protected function biQueryBuilder()
+
+    use TabellaQueryTrait,
+        TabellaOpzioniTrait,
+        TabellaDecoderTrait;
+
+    protected $parametri;
+    protected $colonnedatabase;
+    protected $opzionitabellacore;
+    protected $configurazionecolonnetabella;
+    protected $entityname;
+    protected $tablename;
+    protected $modellocolonne;
+    protected $paginacorrente;
+    protected $righeperpagina;
+    protected $estraituttirecords;
+    protected $prefiltri;
+    protected $filtri;
+    protected $wheremanuale;
+    protected $colonneordinamento;
+    protected $permessi;
+    protected $records;
+    protected $paginetotali;
+    protected $righetotali;
+    protected $traduzionefiltri;
+    protected $maxordine = 0;
+    protected $em;
+    protected $user;
+
+    public function __construct($doctrine, $parametri = '{}')
     {
-        $nometabellaalias = $this->generaAlias($this->tablename);
-        $qb = $this->em->createQueryBuilder()
-                ->select(array($nometabellaalias))
-                ->from($this->entityname, $nometabellaalias);
-        $campi = array_keys($this->em->getMetadataFactory()->getMetadataFor($this->entityname)->reflFields);
-        $this->recursiveJoin($qb, $campi, $this->tablename, $nometabellaalias);
-        $this->buildWhere($qb);
-        $this->orderByBuilder($qb);
-        return $qb;
-    }
-    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array())
-    {
-        foreach ($campi as $campo) {
-            if (!in_array($nometabella, $ancestors)) {
-                $ancestors[] = $nometabella;
-            }
-
-            $configurazionecampo = isset($this->configurazionecolonnetabella[ucfirst(implode(".", $ancestors)) . "." . $campo]) ?
-                    $this->configurazionecolonnetabella[ucfirst(implode(".", $ancestors)) . "." . $campo] : false;
-            if ($configurazionecampo && $configurazionecampo["association"] === true) {
-                // crea la relazione con $padre = $nometabella in corso e figlio = $nomecampo con $alias generato
-                if ((isset($configurazionecampo["sourceentityclass"])) && ($configurazionecampo["sourceentityclass"] !== null)) {
-                    $entitysrc = $configurazionecampo["sourceentityclass"];
-                    $nometabellasrc = $this->em->getClassMetadata($entitysrc)->getTableName();
-                } else {
-                    $nometabellasrc = $nometabella;
-                }
-
-                $entitytarget = $configurazionecampo["associationtable"]["targetEntity"];
-                $nometabellatarget = $this->em->getClassMetadata($entitytarget)->getTableName();
-                $aliastarget = $this->generaAlias($nometabellatarget, $nometabellasrc, $ancestors);
-                //$qb->leftJoin($alias . "." . $configurazionecampo["nomecampo"], $aliastarget);
-                //$camporelazionejoin = strtolower(substr($configurazionecampo["nomecampo"], strpos($configurazionecampo["nomecampo"], ".") + 1));
-                $parti = explode(".", $configurazionecampo["nomecampo"]);
-
-                $camporelazionejoin = strtolower($parti[count($parti) - 1]);
-                $qb->leftJoin($alias . "." . $camporelazionejoin, $aliastarget);
-                $campitarget = array_keys($this->em->getMetadataFactory()->getMetadataFor($entitytarget)->reflFields);
-                $this->recursiveJoin($qb, $campitarget, $nometabellatarget, $aliastarget, $ancestors);
-
-                // lancia rescursiveJoin su questo campo con padre = $aliasgenerato
-                // --- figlio = $nomecampo
-                // --- alias = alias generato nuovo
-            }
-        }
-    }
-    protected function buildWhere(&$qb)
-    {
-        $filtro = "";
-        $prefiltro = "";
-        foreach ($this->prefiltri as $key => $prefiltro) {
-            $this->prefiltri[$key]["prefiltro"] = true;
-        }
-        foreach ($this->filtri as $key => $filtro) {
-            $this->filtri[$key]["prefiltro"] = false;
-        }
-        $tuttifiltri = array_merge($this->filtri, $this->prefiltri);
-        $parametribag = array();
-        if (count($tuttifiltri)) {
-            $descrizionefiltri = "";
-            foreach ($tuttifiltri as $num => $filtrocorrente) {
-                $tablename = substr($filtrocorrente["nomecampo"], 0, strripos($filtrocorrente["nomecampo"], "."));
-                $alias = $this->findAliasByTablename($tablename);
-                $fieldname = $alias . "." . (substr($filtrocorrente["nomecampo"], strripos($filtrocorrente["nomecampo"], ".") + 1));
-                $fieldvalue = $this->getFieldValue($filtrocorrente["valore"]);
-                $fieldoperator = $this->getOperator($filtrocorrente["operatore"]);
-                $fitrocorrenteqp = "fitrocorrente" . $num;
-                $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente["nomecampo"]);
-                $criteria = new ParametriQueryTabellaDecoder(
-                    $fieldname,
-                    $fieldoperator,
-                    $fieldvalue,
-                    $fitrocorrenteqp,
-                    $filtronomecampocorrente
-                );
-
-                $querycriteria = $criteria->getQueryCriteria();
-                $queryparameter = $criteria->getQueryParameters();
-
-                if ($querycriteria) {
-                    $qb->andWhere($querycriteria);
-                    $parametribag = array_merge($queryparameter, $parametribag);
-                } else {
-                    $qb->andWhere($fieldname . " " . $fieldoperator . " " . ":$fitrocorrenteqp");
-                    $parametribag = array_merge(array($fitrocorrenteqp => $fieldvalue), $parametribag);
-                }
-                $this->getDescrizioneFiltro($descrizionefiltri, $filtrocorrente, $criteria);
-            }
-            $this->traduzionefiltri = substr($descrizionefiltri, 2);
-        }
-        $qb->setParameters($parametribag);
-
-        if (isset($this->wheremanuale)) {
-            $qb->andWhere($this->wheremanuale);
-        }
-    }
-    protected function orderByBuilder(&$qb)
-    {
-        foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
-            $tablename = substr($nomecampo, 0, strripos($nomecampo, "."));
-            $alias = $this->getAliasGenerato($tablename);
-            $fieldname = $alias . "." . (substr($nomecampo, strripos($nomecampo, ".") + 1));
-            $qb->addOrderBy($fieldname, $tipoordinamento);
-        }
-    }
-    public function getRecordstabella()
-    {
-
-        $qb = $this->biQueryBuilder();
-
-        if ($this->estraituttirecords === false) {
-            $paginator = new Paginator($qb, true);
-            $this->righetotali = count($paginator);
-            $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
-            /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
-            $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
-
-            /* Imposta il limite ai record da estrarre */
-            if ($this->getRigheperpagina()) {
-                $qb = $qb->setMaxResults($this->getRigheperpagina());
-            }
-            /* E imposta il primo record da visualizzare (per la paginazione) */
-            if ($offsetrecords) {
-                $qb = $qb->setFirstResult($offsetrecords);
-            }
-            /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-            $recordsets = $qb->getQuery()->getResult();
+        $this->parametri = $parametri;
+        if (isset($this->parametri['em'])) {
+            $this->em = $doctrine->getManager(ParametriTabella::getParameter($this->parametri['em']));
         } else {
-            /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-            $recordsets = $qb->getQuery()->getResult();
-            $this->righetotali = count($recordsets);
-            $this->paginetotali = 1;
+            $this->em = $doctrine->getManager();
         }
 
-        $this->records = array();
-        $rigatabellahtml = array();
-        foreach ($recordsets as $record) {
-            $this->records[$record->getId()] = $record;
-            unset($rigatabellahtml);
+        $this->tablename = $this->getTabellaParameter("tablename");
+        $this->entityname = $this->getTabellaParameter("entityclass");
+        $this->entityname = str_replace("FiBiCoreBundle", "BiCoreBundle", $this->entityname);
+        $this->permessi = json_decode($this->getTabellaParameter("permessi"));
+        $this->modellocolonne = json_decode($this->getTabellaParameter('modellocolonne', array()), true);
+        $this->paginacorrente = $this->getTabellaParameter("paginacorrente");
+        $this->paginetotali = $this->getTabellaParameter("paginetotali");
+        $this->righeperpagina = $this->getTabellaParameter('righeperpagina', 15);
+
+        $this->estraituttirecords = $this->getTabellaParameter('estraituttirecords', 0) === "1" ? true : false;
+        $this->colonneordinamento = json_decode($this->getTabellaParameter('colonneordinamento', array()), true);
+        $this->prefiltri = json_decode($this->getTabellaParameter('prefiltri', array()), true);
+        $this->filtri = json_decode($this->getTabellaParameter('filtri', array()), true);
+        $this->wheremanuale = $this->getTabellaParameter("wheremanuale", null);
+        $this->user = $this->parametri["user"];
+
+        $utils = new EntityUtils($this->em, $this->entityname);
+        $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
+        $this->opzionitabellacore = $this->getOpzionitabellaFromCore();
+        $this->configurazionecolonnetabella = $this->getAllOpzioniTabella();
+    }
+    private function getTabellaParameter($name, $default = null)
+    {
+        $risposta = null;
+        if (isset($this->parametri[$name])) {
+            $risposta = ParametriTabella::getParameter($this->parametri[$name]);
+        } else {
+            $risposta = $default;
         }
-        return $this->records;
+        return $risposta;
     }
     public function calcolaPagineTotali($limit)
     {
@@ -158,5 +90,40 @@ class Tabella extends TabellaOpzioni
         }
         /* calcola in mumero di pagine totali necessarie */
         return ceil($this->righetotali / ($limit == 0 ? 1 : $limit));
+    }
+
+    public function getPaginacorrente()
+    {
+        return $this->paginacorrente;
+    }
+    public function getPaginetotali()
+    {
+        return $this->paginetotali;
+    }
+    public function getRigheperpagina()
+    {
+        return $this->righeperpagina;
+    }
+    public function getRighetotali()
+    {
+        return $this->righetotali;
+    }
+    public function getTraduzionefiltri()
+    {
+        return $this->traduzionefiltri;
+    }
+    public function getConfigurazionecolonnetabella()
+    {
+        return $this->configurazionecolonnetabella;
+    }
+    protected function setMaxOrdine($ordinecorrente)
+    {
+        if ($ordinecorrente > $this->maxordine) {
+            $this->maxordine = $ordinecorrente;
+        }
+    }
+    protected function getMaxOrdine()
+    {
+        return $this->maxordine;
     }
 }

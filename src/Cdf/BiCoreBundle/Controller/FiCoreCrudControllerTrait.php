@@ -2,25 +2,14 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Entity\Finder;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use Symfony\Component\Asset\Packages;
 
-/**
- * @property \Symfony\Component\Security\Core\Security $user
- */
-class FiCrudController extends AbstractController
+trait FiCoreCrudControllerTrait
 {
-
-    protected $bundle;
-    protected $controller;
-    protected $permessi;
-
     /**
      * Displays a form to create a new table entity.
      */
@@ -83,7 +72,6 @@ class FiCrudController extends AbstractController
             );
         }
     }
-
     /**
      * Displays a form to edit an existing table entity.
      */
@@ -118,24 +106,23 @@ class FiCrudController extends AbstractController
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                        'id' => 'formdati' . $controller,
+                    ),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
         return $this->render(
             $crudtemplate,
             array(
-                    'entity' => $entity,
-                    'nomecontroller' => ParametriTabella::setParameter($controller),
-                    'tabellatemplate' => $tabellatemplate,
-                    'edit_form' => $editForm->createView(),
-                    'elencomodifiche' => $elencomodifiche,
+                            'entity' => $entity,
+                            'nomecontroller' => ParametriTabella::setParameter($controller),
+                            'tabellatemplate' => $tabellatemplate,
+                            'edit_form' => $editForm->createView(),
+                            'elencomodifiche' => $elencomodifiche,
                         )
         );
     }
-
     /**
      * Edits an existing table entity.
      */
@@ -165,9 +152,9 @@ class FiCrudController extends AbstractController
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                        'id' => 'formdati' . $controller,
+                    ),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -198,13 +185,12 @@ class FiCrudController extends AbstractController
         return $this->render(
             $crudtemplate,
             array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'nomecontroller' => ParametriTabella::setParameter($controller),
+                            'entity' => $entity,
+                            'edit_form' => $editForm->createView(),
+                            'nomecontroller' => ParametriTabella::setParameter($controller),
                         )
         );
     }
-
     private function checkAggiornaRight($id)
     {
         if ($id === 0) {
@@ -217,7 +203,6 @@ class FiCrudController extends AbstractController
             }
         }
     }
-
     /**
      * Inline existing table entity.
      */
@@ -252,11 +237,11 @@ class FiCrudController extends AbstractController
         }
         $values = $request->get("values");
         $isValidToken = $this->isCsrfTokenValid($id, $token);
-        
+
         if (!$isValidToken) {
             throw $this->createNotFoundException('Token non valido');
         }
-        
+
         $querydaeseguire = false;
 
         foreach ($values as $value) {
@@ -328,84 +313,17 @@ class FiCrudController extends AbstractController
 
         return new Response('Operazione eseguita con successo');
     }
-
     private function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
             array(
-            'nometabella' => $controller,
-            'idtabella' => $id,
+                    'nometabella' => $controller,
+                    'idtabella' => $id,
                 ),
             array('giorno' => 'DESC')
         );
 
         return $risultato;
-    }
-
-    protected function getTabellaTemplate($controller)
-    {
-        $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
-        if (!$this->get('templating')->exists($tabellatemplate)) {
-            $tabellatemplate = 'BiCoreBundle:' . $controller . ':Tabella/tabellaform.html.twig';
-            if (!$this->get('templating')->exists($tabellatemplate)) {
-                $tabellatemplate = 'BiCoreBundle:Standard:Tabella/tabellaform.html.twig';
-            }
-        }
-
-        return $tabellatemplate;
-    }
-
-    protected function getCrudTemplate($bundle, $controller, $operation)
-    {
-        $crudtemplate = $bundle . ':' . $controller . ':Crud/' . $operation . '.html.twig';
-        if (!$this->get('templating')->exists($crudtemplate)) {
-            $crudtemplate = $controller . '/Crud/' . $operation . '.html.twig';
-            if (!$this->get('templating')->exists($crudtemplate)) {
-                $crudtemplate = 'BiCoreBundle:Standard:Crud/' . $operation . '.html.twig';
-            }
-        }
-        return $crudtemplate;
-    }
-
-    protected function getBundle()
-    {
-        return $this->bundle;
-    }
-
-    protected function getController()
-    {
-        return $this->controller;
-    }
-
-    protected function getPermessi()
-    {
-        return $this->permessi;
-    }
-
-    /**
-     * Returns the calling function through a backtrace
-     */
-    protected function getThisFunctionName()
-    {
-        // a funciton x has called a function y which called this
-        // see stackoverflow.com/questions/190421
-        $caller = debug_backtrace();
-        $caller = $caller[1];
-        return $caller['function'];
-    }
-
-    protected function getEntityClassNotation()
-    {
-        $em = $this->get("doctrine")->getManager();
-        $entityutils = new EntityUtils($em);
-        return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
-    }
-
-    protected function getEntityClassName()
-    {
-        $em = $this->get("doctrine")->getManager();
-        $entityfinder = new Finder($em, $this->controller);
-        return $entityfinder->getClassNameFromEntityName();
     }
 }

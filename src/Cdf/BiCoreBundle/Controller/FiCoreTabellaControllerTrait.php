@@ -3,15 +3,14 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Cdf\BiCoreBundle\Utils\Export\TabellaXls;
 use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
-use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class FiTabellaController extends FiCrudController
+trait FiCoreTabellaControllerTrait
 {
-
     public function tabella(Request $request)
     {
         if (!$this->permessi->canRead()) {
@@ -44,10 +43,10 @@ class FiTabellaController extends FiCrudController
             $formType,
             $entity,
             array('attr' => array(
-                'id' => 'formdati' . $controller,
-                ),
-                'action' => $this->generateUrl($controller . '_new'),
-                "parametriform" => $parametriform
+                        'id' => 'formdati' . $controller,
+                    ),
+                    'action' => $this->generateUrl($controller . '_new'),
+                    "parametriform" => $parametriform
                 )
         );
 
@@ -69,11 +68,10 @@ class FiTabellaController extends FiCrudController
         return $this->render(
             $template,
             array(
-                    'parametri' => $parametri
+                            'parametri' => $parametri
                         )
         );
     }
-
     public function exportXls(Request $request)
     {
         $doctrine = $this->get("doctrine");

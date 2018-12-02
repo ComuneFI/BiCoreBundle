@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 use \Doctrine\Common\Collections\Expr\Comparison;
 
-class TabellaDecoder extends TabellaBase
+trait TabellaDecoderTrait
 {
     private $aliasGenerati;
     private $decodificaAlias;
