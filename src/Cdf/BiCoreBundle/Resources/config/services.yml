@@ -129,12 +129,8 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
             
     #Controllers
-    
     cdf.bicorebundle.controller.ficontroller:
         class: Cdf\BiCoreBundle\Controller\FiController
-
-    cdf.bicorebundle.controller.fitabellacontroller:
-        class: Cdf\BiCoreBundle\Controller\FiTabellaController
         bind:
             $container: '@service_container'
 
