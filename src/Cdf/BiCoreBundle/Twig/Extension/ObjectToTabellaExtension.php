@@ -31,7 +31,7 @@ class ObjectToTabellaExtension extends \Twig_Extension
     public function joinFieldId($object)
     {
         $valore = null;
-        if ($object){
+        if ($object) {
             $valore = $object->getId();
         }
         return $valore;
