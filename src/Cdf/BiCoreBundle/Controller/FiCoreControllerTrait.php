@@ -170,15 +170,11 @@ trait FiCoreControllerTrait
      */
     public function lista(Request $request)
     {
-        $bundle = $this->getBundle();
-        $controller = $this->getController();
-
         if (!$this->getPermessi()->canRead()) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
 
         $entityclassnotation = $this->getEntityClassNotation();
-        $entityclass = $this->getEntityClassName();
         $em = $this->get("doctrine")->getManager();
         $righe = $em->getRepository($entityclassnotation)->findAll();
 
