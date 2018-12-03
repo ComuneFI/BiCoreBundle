@@ -21,6 +21,7 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
                     });
         });
         $this->assertSame($ordiniregistrati, count($ordini));
+        $this->logout();
     }
     public function testFunctionalOrdineEditinline()
     {
@@ -55,5 +56,6 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
         $selectorinputqtadisabled = "tr.inputeditinline:nth-child(1) > td:nth-child(4) > input:nth-child(1)";
         $qta2 = $this->evaluateScript('return $("'.$selectorinputqtadisabled.'").val();');
         $this->assertEquals($qta2ex, $qta2);
+        $this->logout();
     }
 }
