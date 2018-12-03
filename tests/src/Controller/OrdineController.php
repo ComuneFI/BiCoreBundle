@@ -42,7 +42,10 @@ class OrdineController extends FiController
         $formclass = str_replace("Entity", "Form", $entityclass);
 
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale", "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.id",  "larghezza" => 100),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 100),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente",  "larghezza" => 300),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",  "larghezza" => 300, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
                 //array("nometabella" => $controller, "nomecampo" => "datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 100, "escluso" => false),
         );
 

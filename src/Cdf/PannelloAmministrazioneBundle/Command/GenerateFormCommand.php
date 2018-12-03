@@ -190,6 +190,12 @@ EOF;
     path:  /
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::index' }
 
+[tabella]_lista:
+    path:  /lista
+    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::lista' }
+    options:
+        expose: true
+
 [tabella]_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::indexDettaglio' }

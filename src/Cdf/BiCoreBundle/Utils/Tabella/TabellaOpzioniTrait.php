@@ -96,7 +96,7 @@ trait TabellaOpzioniTrait
             "sourceentityclass" => isset($colonnadatabase["sourceEntityClass"]) ? $colonnadatabase["sourceEntityClass"] : null,
             "ordine" => null,
             "etichetta" => ucfirst($colonnadatabase["columnName"]),
-            "larghezza" => 100,
+            "larghezza" => null,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
             "decodifiche" => null,

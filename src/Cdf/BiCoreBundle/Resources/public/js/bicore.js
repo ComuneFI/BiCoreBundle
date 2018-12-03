@@ -14,3 +14,21 @@ function findKeyArrayByValue(obj, val) {
     }
     return null;
 }
+
+function ucfirst(str, force) {
+    str = force ? str.toLowerCase() : str;
+    return str.replace(/(\b)([a-zA-Z])/,
+            function (firstLetter) {
+                return   firstLetter.toUpperCase();
+            });
+}
+
+/* copiata da quella sopra, quindi non so se fa
+function lcfirst(str, force) {
+    str = force ? str.toUpperCase() : str;
+    return str.replace(/(\b)([a-zA-Z])/,
+            function (firstLetter) {
+                return firstLetter.toLowerCase();
+            });
+}
+*/

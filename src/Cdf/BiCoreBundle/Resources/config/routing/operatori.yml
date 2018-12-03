@@ -2,6 +2,12 @@ Operatori:
     path:  /
     defaults: { _controller: cdf.bicorebundle.controller.operatori:index }
 
+Operatori_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.operatori:lista' }
+    options:
+        expose: true
+
 Operatori_show:
     path:  /{id}/show
     defaults: { _controller: "cdf.bicorebundle.controller.operatori:show" }

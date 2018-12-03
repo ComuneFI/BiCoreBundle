@@ -476,7 +476,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
     }
     public function logout()
     {
-        $this->visit("logout");
+        $this->visit("/logout");
     }
     public function tearDown()
     {

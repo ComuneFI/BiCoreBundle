@@ -20,6 +20,16 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
 
         $parametri = $this->getParametriTabella($nomecontroller, $crawler);
 
+        //Elenco valori entity
+        $crawler = $this->client->request('GET', '/' . $nomecontroller . '/lista');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $ec = count($this->em->getRepository("App:".$nomecontroller)->findAll());
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
+        $this->assertJson($response->getContent());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals(count($responseData), $ec);
+
         //Export xls
         $crawler = $this->client->request('POST', '/' . $nomecontroller . '/exportxls', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

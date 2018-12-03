@@ -2,6 +2,12 @@ Ordine_container:
     path:  /
     defaults: { _controller: 'App\Controller\OrdineController::index' }
 
+Ordine_lista:
+    path:  /lista
+    defaults: { _controller: 'App\Controller\OrdineController::lista' }
+    options:
+        expose: true
+
 Ordine_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: 'App\Controller\OrdineController::indexDettaglio' }

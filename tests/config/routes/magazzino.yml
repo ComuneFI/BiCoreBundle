@@ -2,6 +2,12 @@ Magazzino_container:
     path:  /
     defaults: { _controller: 'App\Controller\MagazzinoController::index' }
 
+Magazzino_lista:
+    path:  /lista
+    defaults: { _controller: 'App\Controller\MagazzinoController::lista' }
+    options:
+        expose: true
+
 Magazzino_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: 'App\Controller\MagazzinoController::indexDettaglio' }

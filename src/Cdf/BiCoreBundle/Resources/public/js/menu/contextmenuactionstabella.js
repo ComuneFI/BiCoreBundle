@@ -113,9 +113,10 @@ function editmenu(biid, parametri)
             var fieldtype = object.closest("td").dataset["tipocampo"];
             var input;
             var div = $('<div />', {class: 'form-group'});
-
+            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
+            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella"+getTabellaParameter(parametri.nomecontroller)+"[data-biid='" + biid + "']").addClass("sr-only");
             if (fieldname) {
-                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2 || fieldtype == 'join') {
+                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
                     //Id e campi di tabelle collegate non devono essere modificabili
                     input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
                 } else {
@@ -128,6 +129,10 @@ function editmenu(biid, parametri)
                             } else {
                                 input.attr("checked", false);
                             }
+                            break;
+                        case 'join':
+                            var jointableid = object.closest("td").dataset["idtabella"];
+                            input = riempiselect(fieldname, jointableid);
                             break;
                         case 'date':
                             input = $('<input />', {type: 'text', class: 'bidatepicker form-control', value: $(object).val()});
