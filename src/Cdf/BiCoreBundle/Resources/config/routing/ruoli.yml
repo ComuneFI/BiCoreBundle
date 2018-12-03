@@ -2,6 +2,12 @@ Ruoli:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:index" }
 
+Ruoli_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.ruoli:lista' }
+    options:
+        expose: true
+
 Ruoli_show:
     path:  /{id}/show
     defaults: { _controller: "cdf.bicorebundle.controller.ruoli:show" }

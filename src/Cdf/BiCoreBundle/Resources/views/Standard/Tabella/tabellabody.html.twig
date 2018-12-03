@@ -12,7 +12,7 @@
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
                     {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
-                    <td scope="row" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}">
+                    <td scope="row" data-idtabella="{{colonnatabella.tipocampo == 'join'?joinfieldid(field2object(colonnatabella.nomecampo,record,decodifiche)):''}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}">
                         {%if (parametri.editinline|getparametrotabella == true)%}
                             <input type="text" class="form-control" value="{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}" disabled/>
                         {%else%}
@@ -22,10 +22,11 @@
                 {%endif%}
             {% endfor%} 
 
-            <td>
+            <td class="colonnazionitabella">
                 <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="conferma" data-biid="{{record.id}}"><span class="it-check"></span></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="annulla" data-biid="{{record.id}}"><span class="it-close"></span></a>
             </td>
-
         </tr>
 
     {%endfor%}

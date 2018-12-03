@@ -2,6 +2,12 @@ Menuapplicazione_container:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }
 
+Menuapplicazione_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.menuapplicazione:lista' }
+    options:
+        expose: true
+
 Menuapplicazione:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }

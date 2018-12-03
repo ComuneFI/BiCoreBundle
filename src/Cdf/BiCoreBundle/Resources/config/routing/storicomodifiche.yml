@@ -2,6 +2,12 @@ Storicomodifiche_container:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:index" }
 
+Storicomodifiche_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.storicomodifiche:lista' }
+    options:
+        expose: true
+
 Storicomodifiche_new:
     path:  /new
     defaults: { _controller: "cdf.bicorebundle.controller.storicomodifiche:new" }

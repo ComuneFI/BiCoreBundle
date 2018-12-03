@@ -63,5 +63,4 @@ class UtilitaExtension extends \Twig_Extension
         }
         return $class;
     }
-
 }

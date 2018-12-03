@@ -13,6 +13,7 @@ class ObjectToTabellaExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('object2view', array($this, 'object2View', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('field2object', array($this, 'field2Object', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('joinfieldid', array($this, 'joinFieldId', 'is_safe' => array('html'))),
         );
     }
 
@@ -26,5 +27,9 @@ class ObjectToTabellaExtension extends \Twig_Extension
     {
         $dfr = new DoctrineFieldReader($this->container);
         return $dfr->getField2Object($fieldname, $object, $decodifiche);
+    }
+    public function joinFieldId($object)
+    {
+        return $object->getId();
     }
 }

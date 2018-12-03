@@ -2,6 +2,12 @@ Colonnetabelle:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:index" }
 
+Colonnetabelle_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.colonnetabelle:lista' }
+    options:
+        expose: true
+
 Colonnetabelle_configura:
     path:  /configura/{nometabella}
     defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:configura" }

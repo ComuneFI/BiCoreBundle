@@ -2,6 +2,12 @@ Opzionitabelle:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:index" }
 
+Opzionitabelle_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.opzionitabelle:lista' }
+    options:
+        expose: true
+
 Opzionitabelle_new:
     path:  /new
     defaults: { _controller: "cdf.bicorebundle.controller.opzionitabelle:new" }

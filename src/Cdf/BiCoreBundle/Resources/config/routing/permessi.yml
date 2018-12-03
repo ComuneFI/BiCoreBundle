@@ -2,6 +2,12 @@ Permessi:
     path:  /
     defaults: { _controller: "cdf.bicorebundle.controller.permessi:index" }
 
+Permessi_lista:
+    path:  /lista
+    defaults: { _controller: 'cdf.bicorebundle.controller.permessi:lista' }
+    options:
+        expose: true
+
 Permessi_show:
     path:  /{id}/show
     defaults: { _controller: "cdf.bicorebundle.controller.permessi:show" }

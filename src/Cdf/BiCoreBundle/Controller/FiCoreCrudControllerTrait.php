@@ -248,8 +248,11 @@ trait FiCoreCrudControllerTrait
             $fieldpieces = explode(".", $value["fieldname"]);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && count($fieldpieces) == 2 && $value["fieldtype"] != 'join') {
+            if ($table == $controller && count($fieldpieces) == 2) {
                 $field = $fieldpieces[1];
+                if ($value["fieldtype"] == 'join') {
+                    $field = lcfirst($field . "_id");
+                }
                 if ($insert) {
                     $queryBuilder->setValue($field, ':' . $field);
                     $queryBuilder->setParameter($field, $value["fieldvalue"]);

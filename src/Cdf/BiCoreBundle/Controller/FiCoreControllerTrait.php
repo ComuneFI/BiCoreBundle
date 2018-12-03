@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
@@ -11,6 +12,7 @@ use Symfony\Component\Asset\Packages;
 
 trait FiCoreControllerTrait
 {
+
     /**
      * Lists all tables entities.
      */
@@ -85,6 +87,7 @@ trait FiCoreControllerTrait
 
         return $this->render($crudtemplate, array('parametritabella' => $parametritabella,));
     }
+
     /**
      * Lists all tables entities.
      */
@@ -151,6 +154,7 @@ trait FiCoreControllerTrait
                         )
         );
     }
+
     private function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
     {
         if (isset($parametripassati[$keyparametro])) {
@@ -159,6 +163,30 @@ trait FiCoreControllerTrait
             $parametro = $defaultvalue;
         }
         return $parametro;
+    }
+
+    /**
+     * Lists all tables entities.
+     */
+    public function lista(Request $request)
+    {
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+
+        if (!$this->getPermessi()->canRead()) {
+            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+        }
+
+        $entityclassnotation = $this->getEntityClassNotation();
+        $entityclass = $this->getEntityClassName();
+        $em = $this->get("doctrine")->getManager();
+        $righe = $em->getRepository($entityclassnotation)->findAll();
+
+        $lista = array();
+        foreach ($righe as $riga) {
+            $lista[] = array("id" => $riga->getId(), "descrizione" => $riga->__toString());
+        }
+        return new JsonResponse(\Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils::arrayOrderby($lista, "descrizione", SORT_ASC));
     }
 
     protected function getTabellaTemplate($controller)
@@ -173,6 +201,7 @@ trait FiCoreControllerTrait
 
         return $tabellatemplate;
     }
+
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
         $crudtemplate = $bundle . ':' . $controller . ':Crud/' . $operation . '.html.twig';
@@ -184,6 +213,7 @@ trait FiCoreControllerTrait
         }
         return $crudtemplate;
     }
+
     /**
      * Returns the calling function through a backtrace
      */
@@ -195,12 +225,14 @@ trait FiCoreControllerTrait
         $caller = $caller[1];
         return $caller['function'];
     }
+
     protected function getEntityClassNotation()
     {
         $em = $this->get("doctrine")->getManager();
         $entityutils = new EntityUtils($em);
         return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
     }
+
     protected function getEntityClassName()
     {
         $em = $this->get("doctrine")->getManager();
