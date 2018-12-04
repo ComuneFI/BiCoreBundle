@@ -4,8 +4,8 @@
             {{parametri.titolotabella|getparametrotabella}}
         </th>
     </tr>
-    <tr class="filters">
-        <th scope="col" class="text-center">
+    <tr class="filters d-flex">
+        <th scope="col" class="biw-3 {% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
             <input type="checkbox" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}bitabellacheckboxselectall{% endif %}">
         </th>
         {% for colonnatabella in parametri.parametritabella %}
@@ -15,6 +15,6 @@
                 </th>
             {% endif %}
         {% endfor%}
-        <th scope="col" class="col-auto"></th>
+        <th scope="col" class="biw-5"></th>
     </tr>
 </thead>

@@ -9,6 +9,7 @@ use Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils;
 
 trait TabellaOpzioniTrait
 {
+
     protected function getOpzionitabellaFromCore()
     {
         $repoopzionitabelle = $this->em->getRepository(Opzionitabelle::class);
@@ -18,6 +19,7 @@ trait TabellaOpzioniTrait
 
         return array("opzionitabella" => $opzionitabella, "colonnetabella" => $colonnetabella);
     }
+
     protected function getAllOpzioniTabella()
     {
         $opzionibuilder = array();
@@ -28,8 +30,10 @@ trait TabellaOpzioniTrait
         $this->setOpzioniTabellaFromModellocolonne($opzionibuilder);
         $this->setOpzioniTabellaFromCore($colonnadatabase, $opzionibuilder);
         $this->setOrdinaColonneTabella($opzionibuilder);
+        $this->setSetLarghezzaColonneTabella($opzionibuilder);
         return $opzionibuilder;
     }
+
     protected function setOpzioniTabellaFromModellocolonne(&$opzionibuilder)
     {
         foreach ($this->modellocolonne as $modellocolonna) {
@@ -48,6 +52,7 @@ trait TabellaOpzioniTrait
             }
         }
     }
+
     protected function setOpzioniTabellaFromCore($colonnadatabase, &$opzionibuilder)
     {
 
@@ -72,6 +77,7 @@ trait TabellaOpzioniTrait
             }
         }
     }
+
     protected function setOpzioniTabellaDefault($infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = array())
     {
         $nometabella = ((isset($jointable)) ? $jointable : $this->tablename);
@@ -86,6 +92,7 @@ trait TabellaOpzioniTrait
             $this->elaboraJoin($opzionibuilder, $infoentity, $ancestors);
         }
     }
+
     private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione)
     {
         $opzionibuilder[$nomecolonna] = array(
@@ -96,13 +103,39 @@ trait TabellaOpzioniTrait
             "sourceentityclass" => isset($colonnadatabase["sourceEntityClass"]) ? $colonnadatabase["sourceEntityClass"] : null,
             "ordine" => null,
             "etichetta" => ucfirst($colonnadatabase["columnName"]),
-            "larghezza" => null,
+            "larghezza" => 10,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
             "decodifiche" => null,
             "escluso" => ($ricursione === true) ? true : substr($colonnadatabase["fieldName"], -3) == "_id" ? true : false,
         );
     }
+
+    private function setSetLarghezzaColonneTabella(&$opzionibuilder)
+    {
+        $larghezzatotalepercentuale = 0;
+        foreach ($opzionibuilder as $opzione) {
+            if ($opzione["escluso"] === false) {
+                $larghezzatotalepercentuale += $opzione["larghezza"];
+            }
+        }
+        // il 5% si lascia per la ruzzolina in fondo alla riga, il 3% si lascia per il checkbox in testa alla riga,
+        // quindi per le colonne dati resta il 92%
+        $percentualefinale = 95; // il 5% si lascia per la ruzzolina in fondo
+        if ($this->getTabellaParameter("multiselezione") === true) {
+            $percentualefinale -= 3;
+        }
+        $percentualerelativatotale = $percentualefinale * 100 / $larghezzatotalepercentuale;
+        if ($percentualefinale - $larghezzatotalepercentuale != 0) {
+            foreach ($opzionibuilder as $key => $opzione) {
+                if ($opzione["escluso"] === false) {
+                    $larghezzapercentualericalcolata = ceil($opzione["larghezza"] * $percentualerelativatotale / 100);
+                    $opzionibuilder[$key]["larghezza"] = ($larghezzapercentualericalcolata < 5 ? 5 : $larghezzapercentualericalcolata);
+                }
+            }
+        }
+    }
+
     private function elaboraJoin(&$opzionibuilder, $colonnadatabase, $ancestors)
     {
         $entitycollegata = $colonnadatabase["associationtable"]["targetEntity"];
@@ -134,6 +167,7 @@ trait TabellaOpzioniTrait
             );
         }
     }
+
     protected function setOrdinaColonneTabella(&$opzionibuilder)
     {
         foreach ($opzionibuilder as $key => $opzione) {
@@ -146,6 +180,7 @@ trait TabellaOpzioniTrait
         // Ordinamento per colonna ordine
         ArrayUtils::sortMultiAssociativeArray($opzionibuilder, "ordine", true);
     }
+
     private function bonificaNomeCampo($nomecampo)
     {
         $parti = explode(".", $nomecampo);
