@@ -12,11 +12,12 @@
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
                     {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
-                    <td scope="row" data-idtabella="{{colonnatabella.tipocampo == 'join'?joinfieldid(field2object(colonnatabella.nomecampo,record,decodifiche)):''}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" class="{{colonnatabella.larghezza|larghezzacolonna}}">
+                    {% set fieldvalue = object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo)  %}
+                    <td scope="row" data-idtabella="{{colonnatabella.tipocampo == 'join'?joinfieldid(field2object(colonnatabella.nomecampo,record,decodifiche)):''}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" class="{{colonnatabella.larghezza|larghezzacolonna}} text-truncate" title="{{fieldvalue}}">
                         {%if (parametri.editinline|getparametrotabella == true)%}
-                            <input type="text" class="form-control" value="{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}" disabled/>
+                            <input type="text" class="form-control" value="{{fieldvalue}}" disabled/>
                         {%else%}
-                            {{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}
+                            {{fieldvalue}}
                         {%endif%}
                     </td>
                 {%endif%}
