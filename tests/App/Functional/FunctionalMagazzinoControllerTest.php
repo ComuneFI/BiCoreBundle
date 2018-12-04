@@ -32,7 +32,7 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
         $client->waitFor(".tabellasearch");
 
         $this->pressButton('.tabellasearch');
-        $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters th.col-sm-1 input.form-control.colonnatabellafiltro";
+        $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters.d-flex th.biw-68 input.form-control.colonnatabellafiltro";
         $this->fillField($fieldhtml, "ed");
 
         $crawler = $this->findField($fieldhtml)->sendKeys("\n");
