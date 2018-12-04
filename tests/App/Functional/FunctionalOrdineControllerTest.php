@@ -33,15 +33,14 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaCliente to appear
         $this->executeScript('$("#ParametriOrdine").attr("data-editinline","Ma==");');
         $this->executeScript('$(".tabellarefresh").click();');
-        sleep(1);
         $this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
-        $selectorinputqta = "tr.inputeditinline:nth-child(1) > td:nth-child(4) > div:nth-child(1) > input:nth-child(1)";
-        $selectorconfirm = "tr.inputeditinline:nth-child(1) > td:nth-child(8) > a:nth-child(2)";
+        $selectorinputqta = "tr.d-flex:nth-child(1) > td:nth-child(4) > div:nth-child(1) > input:nth-child(1)";
+        $selectorconfirm = "tr.d-flex:nth-child(1) > td:nth-child(8) > a:nth-child(2)";
         $qta1ex = 21;
         $this->executeScript("$('".$selectorinputqta."').val(".$qta1ex.")");
         $this->executeScript("$('".$selectorconfirm."').click()");
         sleep(1);
-        $qta1 = $this->evaluateScript('return $("tr.inputeditinline:nth-child(1) > td:nth-child(4) > input:nth-child(1)").val();');
+        $qta1 = $this->evaluateScript('return $("tr.d-flex:nth-child(1) > td:nth-child(4) > input:nth-child(1)").val();');
         $this->assertEquals($qta1ex, $qta1);
 
         sleep(1);
@@ -53,7 +52,7 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
         $this->executeScript("$('".$selectorinputqta."').val(".$qta2ex.")");
         $this->executeScript("$('".$selectorconfirm."').click()");
         sleep(1);
-        $selectorinputqtadisabled = "tr.inputeditinline:nth-child(1) > td:nth-child(4) > input:nth-child(1)";
+        $selectorinputqtadisabled = "tr.d-flex:nth-child(1) > td:nth-child(4) > input:nth-child(1)";
         $qta2 = $this->evaluateScript('return $("'.$selectorinputqtadisabled.'").val();');
         $this->assertEquals($qta2ex, $qta2);
         $this->logout();
