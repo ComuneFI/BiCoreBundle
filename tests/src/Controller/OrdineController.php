@@ -5,13 +5,7 @@ namespace App\Controller;
 use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Cdf\BiCoreBundle\Controller\Griglia;
-use App\Entity\Ordine;
-use App\Form\OrdineType;
-use Doctrine\Common\Collections\Expr\Comparison;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Tabella\DatetimeTabella;
 
 /**
  * Ordine controller.
@@ -43,7 +37,7 @@ class OrdineController extends FiController
 
         $modellocolonne = array(
             array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 10),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Data",  "larghezza" => 15),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.data",  "larghezza" => 15),
             array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente",  "larghezza" => 30),
             array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore",  "larghezza" => 30, "etichetta" => "Prodotto", "escluso" => false),
             array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",  "larghezza" => 20, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
