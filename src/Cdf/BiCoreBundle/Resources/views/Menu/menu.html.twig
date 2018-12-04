@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg"><span></span>
+<nav class="navbar navbar-expand-lg"><span>&nbsp;</span>
     <button class="custom-navbar-toggler" type="button" aria-controls="navbarNavB" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarNavB">
         <svg class="icon icon-sm icon-light"><use xlink:href="{{asset('bundles/bootstrapitalia/svg/sprite.svg#it-list')}}"></use></svg>
     </button>
@@ -18,13 +18,13 @@
                                     <ul class="link-list">
                                         {% for sottomenu in i.sottolivello %}
                                             {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
-                                                <h6 class="dropdown-header">{{sottomenu.nome}}</h6>
-                                                <li><span class="divider"></span>
+                                                <li><h6 class="dropdown-header">{{sottomenu.nome}}</h6></li>
+                                                <li><span class="divider">&nbsp;</span>
                                                 </li>
                                                 {% for sottosubmenu in sottomenu.sottolivello %}
                                                     <li><a class="list-item" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
                                                     {% endfor %}
-                                                <li><span class="divider"></span>
+                                                <li><span class="divider">&nbsp;</span>
                                                 {% else  %}
                                                 </li>                               
                                                 <li><a class="list-item" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
