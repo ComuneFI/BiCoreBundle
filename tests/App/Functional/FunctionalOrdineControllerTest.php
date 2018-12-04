@@ -35,27 +35,36 @@ class FunctionalOrdineControllerTest extends FifreeTestAuthorizedClient
         $this->executeScript('$(".tabellarefresh").click();');
         sleep(1);
         $this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
-        $selectorinputqta = "tr.inputeditinline:nth-child(1) > td:nth-child(4) > div:nth-child(1) > input:nth-child(1)";
-        $selectorconfirm = "tr.inputeditinline:nth-child(1) > td:nth-child(8) > a:nth-child(2)";
-        $qta1ex = 21;
-        $this->executeScript("$('".$selectorinputqta."').val(".$qta1ex.")");
-        $this->executeScript("$('".$selectorconfirm."').click()");
-        sleep(1);
-        $qta1 = $this->evaluateScript('return $("tr.inputeditinline:nth-child(1) > td:nth-child(4) > input:nth-child(1)").val();');
-        $this->assertEquals($qta1ex, $qta1);
+        sleep(2);
+        $selectorinputqta = 'tr[data-bitableid=\"9\"] > td[data-nomecampo="Ordine.quantita"] :input';
+        $selectorconfirm = "a.bibottonieditinline[data-biid=\"9\"]";
 
+        $qta1ex = 21;
+        $this->executeScript("$('" . $selectorinputqta . "').val(" . $qta1ex . ")");
         sleep(1);
+        $this->executeScript("$('" . $selectorconfirm . "').click()");
+        sleep(1);
+
+        /* qui */
+        $ordinerow = $this->em->getRepository("App:Ordine")->find(9);
+        $this->assertEquals($qta1ex, $ordinerow->getQuantita());
+
         $this->executeScript('$(".tabellarefresh").click();');
         sleep(1);
-            
+
         $qta2ex = 22;
         $this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
-        $this->executeScript("$('".$selectorinputqta."').val(".$qta2ex.")");
-        $this->executeScript("$('".$selectorconfirm."').click()");
+        sleep(2);
+        $this->executeScript("$('" . $selectorinputqta . "').val(" . $qta2ex . ")");
         sleep(1);
-        $selectorinputqtadisabled = "tr.inputeditinline:nth-child(1) > td:nth-child(4) > input:nth-child(1)";
-        $qta2 = $this->evaluateScript('return $("'.$selectorinputqtadisabled.'").val();');
-        $this->assertEquals($qta2ex, $qta2);
+        $this->executeScript("$('" . $selectorconfirm . "').click()");
+        sleep(1);
+
+        /* qui */
+        $this->em->clear();
+        $ordinerow2 = $this->em->getRepository("App:Ordine")->find(9);
+        $this->assertEquals($qta2ex, $ordinerow2->getQuantita());
+
         $this->logout();
     }
 }

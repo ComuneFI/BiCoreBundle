@@ -45,21 +45,9 @@ class UtilitaExtension extends \Twig_Extension
 
     public function getLarghezzacolonna($larghezza)
     {
-        $class = "col-auto";
+        $class = "biw-5";
         if ($larghezza) {
-            if ($larghezza <= 100) {
-                $class = "col-sm-1";
-            } elseif ($larghezza > 100 && $larghezza <= 200) {
-                $class = "col-sm-2";
-            } elseif ($larghezza > 200 && $larghezza <= 300) {
-                $class = "col-sm-3";
-            } elseif ($larghezza > 300 && $larghezza <= 400) {
-                $class = "col-sm-4";
-            } elseif ($larghezza > 400 && $larghezza <= 500) {
-                $class = "col-sm-5";
-            } else {
-                $class = "col-sm-6";
-            }
+            $class = "biw-" . $larghezza;
         }
         return $class;
     }

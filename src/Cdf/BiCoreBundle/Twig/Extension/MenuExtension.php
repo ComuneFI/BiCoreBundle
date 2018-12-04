@@ -1,5 +1,4 @@
 <?php
-
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,22 +20,24 @@ class MenuExtension extends \Twig_Extension
         $this->user = $user;
         $this->rootpath = $rootpath;
     }
+
     public function getFunctions()
     {
         return [
             new \Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
                 'needs_environment' => true,
                 'is_safe' => ['html']
-                    ])
+                ])
         ];
     }
+
     public function generamenu(\Twig_Environment $environment)
     {
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();
         $rispostahome[] = array('percorso' => $this->getUrlObject('', $router, ''),
             'nome' => 'Home',
-            'target' => '',
+            'target' => '_self',
         );
 
         $em = $this->em;
@@ -74,11 +75,12 @@ class MenuExtension extends \Twig_Extension
 
         $risposta[] = array('percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',
             'sottolivello' => array(
-                array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => ''),
+                array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => '_self'),
             ),
         );
         return $environment->render('BiCoreBundle:Menu:menu.html.twig', array('risposta' => $risposta));
     }
+
     protected function getMenu($menu)
     {
         $risposta = array();
@@ -107,8 +109,9 @@ class MenuExtension extends \Twig_Extension
 
                 $sottomenutabelle = $this->getSubMenu($submenu);
 
+                $percorso = $this->getUrlObject($item->getNome(), $item->getPercorso(), $item->getTarget());
                 $risposta[] = array(
-                    'percorso' => $this->getUrlObject($item->getNome(), $item->getPercorso(), $item->getTarget()),
+                    'percorso' => $percorso,
                     'nome' => $item->getNome(),
                     'sottolivello' => $sottomenutabelle,
                     'target' => $item->getTarget(),
@@ -123,6 +126,7 @@ class MenuExtension extends \Twig_Extension
 
         return $risposta;
     }
+
     protected function getSubMenu($submenu)
     {
         $sottomenutabelle = array();
@@ -149,14 +153,20 @@ class MenuExtension extends \Twig_Extension
 
         return $sottomenutabelle;
     }
+
     protected function getUrlObject($nome, $percorso, $target)
     {
         if ($this->routeExists($percorso)) {
-            return array('percorso' => $this->urlgenerator->generate($percorso), 'nome' => $nome, 'target' => $target);
+            $percorso = $this->urlgenerator->generate($percorso);
         } else {
-            return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
+            $percorso = "#";
         }
+        if (!$target) {
+            $target = '_self';
+        }
+        return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
     }
+
     protected function routeExists($name)
     {
         $router = $this->urlgenerator;
@@ -167,6 +177,7 @@ class MenuExtension extends \Twig_Extension
             return false;
         }
     }
+
     protected function urlExists($name)
     {
         if ($this->checkUrl($name, false)) {
@@ -179,13 +190,14 @@ class MenuExtension extends \Twig_Extension
             }
         }
     }
+
     protected function checkUrl($name, $proxy)
     {
         $ch = curl_init($name);
 
         curl_setopt($ch, CURLOPT_URL, $name);
         if ($proxy) {
-            curl_setopt($ch, CURLOPT_PROXY, 'proxyhttp.comune.intranet:8080');
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
         } else {
             curl_setopt($ch, CURLOPT_PROXY, null);
         }

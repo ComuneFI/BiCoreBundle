@@ -43,7 +43,7 @@ class MagazzinoController extends FiController
 
         $modellocolonne = array(
             array("nometabella" => $controller, "nomecampo" => "$controller.giornodellasettimana", "etichetta" => "Giorno della settimana",
-                "ordine" => 10, "larghezza" => 100, "escluso" => false,
+                "ordine" => 10, "larghezza" => 10, "escluso" => false,
                 "decodifiche" => array("Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato")
             ),
         );

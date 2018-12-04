@@ -5,13 +5,7 @@ namespace App\Controller;
 use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Cdf\BiCoreBundle\Controller\Griglia;
-use App\Entity\Ordine;
-use App\Form\OrdineType;
-use Doctrine\Common\Collections\Expr\Comparison;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Tabella\DatetimeTabella;
 
 /**
  * Ordine controller.
@@ -42,10 +36,11 @@ class OrdineController extends FiController
         $formclass = str_replace("Entity", "Form", $entityclass);
 
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "Ordine.id",  "larghezza" => 100),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 100),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente",  "larghezza" => 300),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",  "larghezza" => 300, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 10),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.data",  "larghezza" => 15),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente",  "larghezza" => 30),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore",  "larghezza" => 30, "etichetta" => "Prodotto", "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",  "larghezza" => 20, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
                 //array("nometabella" => $controller, "nomecampo" => "datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 100, "escluso" => false),
         );
 
