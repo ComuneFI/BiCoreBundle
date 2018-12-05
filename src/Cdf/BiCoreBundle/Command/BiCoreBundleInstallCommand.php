@@ -236,63 +236,53 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     ordineindex: null
     larghezzaindex: null
     etichettaindex: null
-    mostrastampa: null
-    ordinestampa: null
-    larghezzastampa: null
     operatori_id: null
     registrastorico: null
+    editabile: null
   -
     id: 2
     nometabella: Permessi
     nomecampo: modulo
     mostraindex: true
     ordineindex: 20
-    larghezzaindex: 100
+    larghezzaindex: 20
     etichettaindex: Modulo
-    mostrastampa: true
-    ordinestampa: 20
-    larghezzastampa: 100
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 3
     nometabella: Permessi
     nomecampo: crud
     mostraindex: true
     ordineindex: 30
-    larghezzaindex: 100
+    larghezzaindex: 20
     etichettaindex: CRUD
-    mostrastampa: true
-    ordinestampa: 30
-    larghezzastampa: 100
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 4
     nometabella: Permessi
     nomecampo: ruoli
     mostraindex: true
     ordineindex: 50
-    larghezzaindex: 100
+    larghezzaindex: 20
     etichettaindex: Ruolo
-    mostrastampa: true
-    ordinestampa: 50
-    larghezzastampa: 100
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 5
     nometabella: Permessi
     nomecampo: operatori
     mostraindex: true
     ordineindex: 60
-    larghezzaindex: 100
+    larghezzaindex: 20
     etichettaindex: Operatore
-    mostrastampa: true
-    ordinestampa: 60
-    larghezzastampa: 100
     operatori_id: null
     registrastorico: true
+    editabile: true
 
 Cdf\BiCoreBundle\Entity\Opzionitabelle:
   -

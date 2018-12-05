@@ -50,7 +50,7 @@
 </div>
 {{ form_end(form) }}
 
-{%if not isnew %}
+{% if not isnew %}
     <!--Attenzione a questo div che deve contenere tutte queste informazioni, altrimenti nella edit si raddoppiano 
     i div ogni chiamata ad una nuova edit -->
     <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
@@ -79,11 +79,11 @@
         <script type="text/javascript">
             var url = '{{path("Ordine_indexdettaglio")}}';
             var data = {
-            prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
+            prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{ entity.id }} }],
                     titolotabella: 'Ordini del cliente {{entity.nominativo}}',
                     modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
                     colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
-                    parametriform: {'cliente_id': {{entity.id}}},
+                    parametriform: {'cliente_id': {{ entity.id }} },
                     multiselezione: true
             };
             $.ajax({
@@ -97,7 +97,7 @@
         <script type="text/javascript">
             var url = '{{path("Magazzino_indexdettaglio")}}';
             var data = {
-            prefiltri: [{nomecampo: "Magazzino.Ordine.Cliente.id", operatore: "=", valore: {{entity.id}}}],
+            prefiltri: [{nomecampo: "Magazzino.Ordine.Cliente.id", operatore: "=", valore: {{ entity.id }} }],
                     modellocolonne: [{nomecampo: 'Magazzino.giornodellasettimana', escluso: false, decodifiche: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]}],
                     titolotabella: 'Roba in magazzino del cliente {{entity.nominativo}}'};
             $.ajax({
@@ -109,4 +109,4 @@
             });
         </script>
     </div>
-{%endif %}
+{% endif %}

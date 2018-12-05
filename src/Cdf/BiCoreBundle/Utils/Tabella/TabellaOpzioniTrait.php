@@ -67,6 +67,9 @@ trait TabellaOpzioniTrait
             if (null !== ($colonnatabellacore->getMostraindex())) {
                 $opzionibuilder[$campo]["escluso"] = !$colonnatabellacore->getMostraindex();
             }
+            if (null !== ($colonnatabellacore->getEditabile())) {
+                $opzionibuilder[$campo]["editabile"] = $colonnatabellacore->getEditabile();
+            }
             if (null !== ($colonnatabellacore->getOrdineindex())) {
                 $opzionibuilder[$campo]["ordine"] = $colonnatabellacore->getOrdineindex();
                 $this->setMaxOrdine($colonnatabellacore->getOrdineindex());
@@ -98,6 +101,7 @@ trait TabellaOpzioniTrait
             "ordine" => null,
             "etichetta" => ucfirst($colonnadatabase["columnName"]),
             "larghezza" => 10,
+            "editabile" => true,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
             "decodifiche" => null,
@@ -163,6 +167,7 @@ trait TabellaOpzioniTrait
                 "ordine" => null,
                 "etichetta" => ucfirst($colonnacorrente["columnName"]),
                 "larghezza" => 0,
+                "editabile" => false,
                 "association" => null,
                 "associationtable" => null,
                 "escluso" => true,
