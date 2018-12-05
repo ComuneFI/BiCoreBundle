@@ -111,11 +111,12 @@ function editmenu(biid, parametri)
         elencocampi.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
+            var editable = object.closest("td").dataset["editabile"];
             var input;
             var div = $('<div />', {class: 'form-group'});
             $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
             $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella"+getTabellaParameter(parametri.nomecontroller)+"[data-biid='" + biid + "']").addClass("sr-only");
-            if (fieldname) {
+            if (fieldname && editable == true) {
                 if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
                     //Id e campi di tabelle collegate non devono essere modificabili
                     input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});

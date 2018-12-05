@@ -51,6 +51,7 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $tabella->setLarghezzaindex(30);
         $tabella->setEtichettaindex("Nominativo");
         $tabella->setRegistrastorico(true);
+        $tabella->setEditabile(true);
         $em->persist($tabella);
         $em->flush();
 

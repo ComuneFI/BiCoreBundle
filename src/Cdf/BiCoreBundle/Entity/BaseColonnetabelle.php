@@ -35,7 +35,7 @@ class BaseColonnetabelle
     protected $nomecampo;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
      */
     protected $mostraindex;
 
@@ -55,9 +55,14 @@ class BaseColonnetabelle
     protected $etichettaindex;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     protected $registrastorico;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
+     */
+    protected $editabile;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -72,7 +77,6 @@ class BaseColonnetabelle
 
     public function __construct()
     {
-        
     }
 
     /**
@@ -260,6 +264,29 @@ class BaseColonnetabelle
     }
 
     /**
+     * Set the value of editabile.
+     *
+     * @param boolean $editabile
+     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     */
+    public function setEditabile($editabile)
+    {
+        $this->editabile = $editabile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of editabile.
+     *
+     * @return boolean
+     */
+    public function getEditabile()
+    {
+        return $this->editabile;
+    }
+
+    /**
      * Set the value of operatori_id.
      *
      * @param integer $operatori_id
@@ -307,7 +334,6 @@ class BaseColonnetabelle
 
     public function __sleep()
     {
-        return array('id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'registrastorico', 'operatori_id');
+        return array('id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'editabile', 'registrastorico', 'operatori_id');
     }
-
 }

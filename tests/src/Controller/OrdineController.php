@@ -34,14 +34,14 @@ class OrdineController extends FiController
         $entityclass = $this->getEntityClassName();
 
         $formclass = str_replace("Entity", "Form", $entityclass);
-        
+
         //La larghezza deve essere in percentuale
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 10),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.data",  "larghezza" => 15),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente",  "larghezza" => 30),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore",  "larghezza" => 30, "etichetta" => "Prodotto", "escluso" => false),
-            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",  "larghezza" => 20, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.quantita", "larghezza" => 10),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.data", "larghezza" => 15, "editabile" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Cliente", "larghezza" => 30),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore", "larghezza" => 30, "etichetta" => "Prodotto", "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale", "larghezza" => 20, "etichetta" => "Ragione Sociale fornitore", "escluso" => false),
                 //array("nometabella" => $controller, "nomecampo" => "datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 100, "escluso" => false),
         );
 
@@ -119,14 +119,14 @@ class OrdineController extends FiController
 //                "operatore" => Comparison::LTE,
 //                "valore" => array("date" => new DatetimeTabella("1980-12-31"))
 //            ),
-            /*array("nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",
-                "operatore" => Comparison::EQ,
-                "valore" => "Alce Nero"
-            ),
-            array("nomecampo" => "Ordine.Cliente.nominativo",
-                "operatore" => Comparison::EQ,
-                "valore" => "Andrea Manzi"
-            ),*/
+                /* array("nomecampo" => "Ordine.Prodottofornitore.Fornitore.ragionesociale",
+                  "operatore" => Comparison::EQ,
+                  "valore" => "Alce Nero"
+                  ),
+                  array("nomecampo" => "Ordine.Cliente.nominativo",
+                  "operatore" => Comparison::EQ,
+                  "valore" => "Andrea Manzi"
+                  ), */
                 /* array(
                   "nomecampo" => "Cliente.attivo",
                   "operatore" => Comparison::EQ,
@@ -169,10 +169,11 @@ class OrdineController extends FiController
         );
 
         return $this->render(
-            $template,
-            array(
-                    'parametritabella' => $parametritabella,
+                        $template,
+                        array(
+                            'parametritabella' => $parametritabella,
                         )
         );
     }
+
 }

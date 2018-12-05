@@ -29,9 +29,10 @@ class ColonnetabelleType extends AbstractType
                 ->add('larghezzaindex', null, array('label' => 'Larghezza % in tabella', 'attr' => array(
                         'min' => 0,
                         'max' => 100
-            )))
+                )))
                 ->add('etichettaindex', null, array('label' => 'Etichetta in tabella'))
                 ->add('registrastorico', null, array('label' => 'Registra in storico'))
+                ->add('editabile', null, array('label' => 'Editabile'))
                 ->add('operatori', EntityType::class, array('class' => Operatori::class, 'required' => false))
                 ->add('submit', SubmitType::class, $submitparms)
         ;
@@ -44,5 +45,4 @@ class ColonnetabelleType extends AbstractType
             'parametriform' => array()
         ]);
     }
-
 }

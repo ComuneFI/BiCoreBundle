@@ -238,6 +238,7 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     etichettaindex: null
     operatori_id: null
     registrastorico: null
+    editabile: null
   -
     id: 2
     nometabella: Permessi
@@ -248,6 +249,7 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     etichettaindex: Modulo
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 3
     nometabella: Permessi
@@ -258,6 +260,7 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     etichettaindex: CRUD
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 4
     nometabella: Permessi
@@ -268,6 +271,7 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     etichettaindex: Ruolo
     operatori_id: null
     registrastorico: true
+    editabile: true
   -
     id: 5
     nometabella: Permessi
@@ -278,6 +282,7 @@ Cdf\BiCoreBundle\Entity\Colonnetabelle:
     etichettaindex: Operatore
     operatori_id: null
     registrastorico: true
+    editabile: true
 
 Cdf\BiCoreBundle\Entity\Opzionitabelle:
   -
