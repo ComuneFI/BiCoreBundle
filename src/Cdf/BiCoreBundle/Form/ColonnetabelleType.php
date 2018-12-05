@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ColonnetabelleType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
@@ -22,19 +23,20 @@ class ColonnetabelleType extends AbstractType
 
         $builder
                 ->add('nometabella', null, array('label' => 'Tabella'))
-                ->add('nomecampo')
-                ->add('mostraindex')
-                ->add('ordineindex')
-                ->add('larghezzaindex')
-                ->add('etichettaindex')
-                ->add('mostrastampa')
-                ->add('ordinestampa')
-                ->add('larghezzastampa')
-                ->add('registrastorico')
+                ->add('nomecampo', null, array('label' => 'Nome campo'))
+                ->add('mostraindex', null, array('label' => 'Mostra in tabella'))
+                ->add('ordineindex', null, array('label' => 'Ordine in tabella'))
+                ->add('larghezzaindex', null, array('label' => 'Larghezza % in tabella', 'attr' => array(
+                        'min' => 0,
+                        'max' => 100
+            )))
+                ->add('etichettaindex', null, array('label' => 'Etichetta in tabella'))
+                ->add('registrastorico', null, array('label' => 'Registra in storico'))
                 ->add('operatori', EntityType::class, array('class' => Operatori::class, 'required' => false))
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -42,4 +44,5 @@ class ColonnetabelleType extends AbstractType
             'parametriform' => array()
         ]);
     }
+
 }

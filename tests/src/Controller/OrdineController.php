@@ -34,7 +34,8 @@ class OrdineController extends FiController
         $entityclass = $this->getEntityClassName();
 
         $formclass = str_replace("Entity", "Form", $entityclass);
-
+        
+        //La larghezza deve essere in percentuale
         $modellocolonne = array(
             array("nometabella" => $controller, "nomecampo" => "Ordine.quantita",  "larghezza" => 10),
             array("nometabella" => $controller, "nomecampo" => "Ordine.data",  "larghezza" => 15),
