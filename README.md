@@ -3,9 +3,9 @@ BiCoreBundle
 [![Build Status](https://travis-ci.org/ComuneFI/BiCoreBundle.svg?branch=master)](https://travis-ci.org/ComuneFI/BiCoreBundle)
 [![Coverage Status](https://coveralls.io/repos/github/ComuneFI/BiCoreBundle/badge.svg?branch=master)](https://coveralls.io/github/ComuneFI/BiCoreBundle?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/?branch=master)
-
 Intro:
 -------------
+> ⚠️ **WORK IN PROGRESS** ⚠️
 BiCoreBundle è un bundle per symfony (3.4 o superiori) che poggia su framework Open Source (JQuery e Bootstrap e <a href="https://github.com/italia/bootstrap-italia" target="_blank">Bootstrap Italia</a>), costruito in modo da essere un accelleratore di produttività riusabile e ridistribuibile.
 I prodotti creati con BiCoreBundle sono facilmente manutenibili, la documentazione dei componenti è ampiamente diffusa on line.
 Le funzioni che servono ripetitivamente (p.e. login, creazione di interfacce per le tabelle, etc.) sono nativamente disponibili in tutti i programmi creati con questo prodotto.
