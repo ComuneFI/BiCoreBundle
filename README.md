@@ -6,7 +6,7 @@ BiCoreBundle
 
 > ⚠️ **WORK IN PROGRESS** ⚠️
 
-#Intro:
+# Intro:
 -------------
 BiCoreBundle è un bundle per symfony (3.4 o superiori) che poggia su framework Open Source (JQuery e Bootstrap e <a href="https://github.com/italia/bootstrap-italia" target="_blank">Bootstrap Italia</a>), costruito in modo da essere un accelleratore di produttività riusabile e ridistribuibile.
 I prodotti creati con BiCoreBundle sono facilmente manutenibili, la documentazione dei componenti è ampiamente diffusa on line.
@@ -15,18 +15,18 @@ Utilizzando doctrine si può generare velocemente una base dati su Mysql, Postgr
 BiCoreBundle è in grado di convertire uno schema database creato tramite Mysqlworkbench in entity class gestite da symfony tramite doctrine (indipendentemete dal tipo di database scelto).
 BiCoreBundle è inoltre dotato di un proprio pannello di amministrazione che permette velocemente di pubblicare aggiornamenti (tramite Git/Svn), di creare nuovi form per la procedura che si intende sviluppare, aggiornare lo schema database partendo dal file generato tramite Mysqlworkbench, pulizia della cache, e lancio di comandi shell (con le limitazione dell'utente con cui è in esecuzione il servizio web) tutto tramite pochi click.
 
-#Obiettivi, destinatari e contesto: 
+# Obiettivi, destinatari e contesto: 
 -------------
 I software sviluppati internamente al Comune di Firenze sono fruiti da due tipi di soggetti: da una parte i colleghi del Comune di Firenze hanno bisogno di accedere a una interfaccia che sia coerente, di semplice utilizzo e pratica. 
 Dall’altra parte i cittadini hanno la necessità di accedere ai servizi che il Comune mette a disposizione in modo semplice e intuitivo. 
 Per esempio, il software di gestione del Patrimonio Immobiliare è composto da molti moduli, sia rivolti a chi si occupa di gestire il patrimonio internamente, sia ai colleghi che si occupano di gestire i Bandi, sia ai cittadini che possono immettere la domanda direttamente attraverso una semplice interfaccia fruibile anche da tablet e smartphone. 
 
-#Installazione:
+# Installazione:
 -------------
 
 - Prendere il <a href="https://github.com/ComuneFI/BiCoreTemplate" target="_blank">template</a> già pronto per essere utilizzato.
 
-#Test
+# Test
 
 ```
     rm -rf composer.lock
@@ -62,7 +62,7 @@ Per esempio, il software di gestione del Patrimonio Immobiliare è composto da m
     #php bin/console server:stop > /dev/null 2>&1 &
 
 ```
-##code check
+## code check
 
 ```
     vendor/bin/phpmd src text tools/phpmd/ruleset.xml
