@@ -114,7 +114,7 @@ $(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_
     var nuovotipoordinamento = 'ASC';
     var parametri = getParametriTabellaDataset(nomecontroller);
     var colonneordinamento = JSON.parse(getTabellaParameter(parametri.colonneordinamento));
-    if (colonneordinamento[nomecampo] != 'undefined') {
+    if (typeof colonneordinamento[nomecampo] != 'undefined') {
         if (colonneordinamento[nomecampo] == 'ASC') {
             nuovotipoordinamento = 'DESC';
         } else {
