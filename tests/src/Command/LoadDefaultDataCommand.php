@@ -48,12 +48,10 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         $tabella->setNomecampo("nominativo");
         $tabella->setMostraindex(true);
         $tabella->setOrdineindex(100);
-        $tabella->setLarghezzaindex(200);
+        $tabella->setLarghezzaindex(30);
         $tabella->setEtichettaindex("Nominativo");
-        $tabella->setMostrastampa(true);
-        $tabella->setOrdinestampa(100);
-        $tabella->setLarghezzastampa(200);
         $tabella->setRegistrastorico(true);
+        $tabella->setEditabile(true);
         $em->persist($tabella);
         $em->flush();
 

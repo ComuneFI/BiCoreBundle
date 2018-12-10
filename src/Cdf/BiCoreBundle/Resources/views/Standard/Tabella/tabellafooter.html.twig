@@ -5,7 +5,7 @@
             <small>{{parametri.traduzionefiltri}}</small><br/><button id="birimuovifiltri{{parametri.nomecontroller|getparametrotabella}}" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" class="badge birimuovifiltri {{parametri.traduzionefiltri?'':'sr-only'}}">Rimuovi filtri</button>
         </td>
     </tr>
-    <tr class="d-flex">
+    <tr>
         <td id="bitollbarbottoni{{parametri.nomecontroller|getparametrotabella}}" scope="col" class="text-center" >
             <div class="bitoolbarazioni pull-left">
                 {% if (json_decode(parametri.permessi|getparametrotabella).create) %}

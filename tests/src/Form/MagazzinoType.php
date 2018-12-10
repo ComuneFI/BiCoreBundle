@@ -21,6 +21,7 @@ class MagazzinoType extends AbstractType
         $builder
                 ->add('ordine')
                 ->add('evaso')
+                ->add('giornodellasettimana')
                 ->add('dataspedizione', DateTimeType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy HH:mm',

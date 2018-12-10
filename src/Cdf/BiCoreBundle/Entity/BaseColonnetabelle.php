@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BaseColonnetabelle
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -34,7 +35,7 @@ class BaseColonnetabelle
     protected $nomecampo;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
      */
     protected $mostraindex;
 
@@ -54,24 +55,14 @@ class BaseColonnetabelle
     protected $etichettaindex;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    protected $mostrastampa;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $ordinestampa;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $larghezzastampa;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     protected $registrastorico;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
+     */
+    protected $editabile;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -250,75 +241,6 @@ class BaseColonnetabelle
     }
 
     /**
-     * Set the value of mostrastampa.
-     *
-     * @param boolean $mostrastampa
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
-     */
-    public function setMostrastampa($mostrastampa)
-    {
-        $this->mostrastampa = $mostrastampa;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of mostrastampa.
-     *
-     * @return boolean
-     */
-    public function getMostrastampa()
-    {
-        return $this->mostrastampa;
-    }
-
-    /**
-     * Set the value of ordinestampa.
-     *
-     * @param integer $ordinestampa
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
-     */
-    public function setOrdinestampa($ordinestampa)
-    {
-        $this->ordinestampa = $ordinestampa;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of ordinestampa.
-     *
-     * @return integer
-     */
-    public function getOrdinestampa()
-    {
-        return $this->ordinestampa;
-    }
-
-    /**
-     * Set the value of larghezzastampa.
-     *
-     * @param integer $larghezzastampa
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
-     */
-    public function setLarghezzastampa($larghezzastampa)
-    {
-        $this->larghezzastampa = $larghezzastampa;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of larghezzastampa.
-     *
-     * @return integer
-     */
-    public function getLarghezzastampa()
-    {
-        return $this->larghezzastampa;
-    }
-
-    /**
      * Set the value of registrastorico.
      *
      * @param boolean $registrastorico
@@ -339,6 +261,29 @@ class BaseColonnetabelle
     public function getRegistrastorico()
     {
         return $this->registrastorico;
+    }
+
+    /**
+     * Set the value of editabile.
+     *
+     * @param boolean $editabile
+     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     */
+    public function setEditabile($editabile)
+    {
+        $this->editabile = $editabile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of editabile.
+     *
+     * @return boolean
+     */
+    public function getEditabile()
+    {
+        return $this->editabile;
     }
 
     /**
@@ -389,6 +334,6 @@ class BaseColonnetabelle
 
     public function __sleep()
     {
-        return array('id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'mostrastampa', 'ordinestampa', 'larghezzastampa', 'registrastorico', 'operatori_id');
+        return array('id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'editabile', 'registrastorico', 'operatori_id');
     }
 }

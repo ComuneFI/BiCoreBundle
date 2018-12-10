@@ -158,10 +158,10 @@ class MenuExtension extends \Twig_Extension
     {
         if ($this->routeExists($percorso)) {
             $percorso = $this->urlgenerator->generate($percorso);
-        }else{
+        } else {
             $percorso = "#";
         }
-        if (!$target){
+        if (!$target) {
             $target = '_self';
         }
         return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);

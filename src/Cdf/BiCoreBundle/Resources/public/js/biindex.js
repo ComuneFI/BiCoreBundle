@@ -24,7 +24,7 @@ $(document).ready(function () {
         var parametri = getParametriTabellaDataset(nomecontroller);
         var parametriform = [];
         if (typeof parametri.parametriform !== "undefined") {
-            parametriform = getTabellaParameter(parametri.parametriform);
+            parametriform.push(getTabellaParameter(parametri.parametriform));
         }
         var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
         $.ajax({
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     e.preventDefault();
     var nomecontroller = getMainTabella();
     ricaricatabella(nomecontroller);
-    //dumpParametriTabella();
+    //dumpParametriTabella(nomecontroller);
 });
 
 //Funzione per modificare il valore di un parametro della tabella

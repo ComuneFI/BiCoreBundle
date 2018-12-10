@@ -1,11 +1,16 @@
 $(document).on("click", '.filterable .btn-filter', function (e) {
     var $panel = $(this).parents('.filterable');
     $filters = $panel.find('.filters input.colonnatabellafiltro');
-    if ($filters.prop('disabled') == true) {
-        $filters.prop('disabled', false);
+    if ($filters.prop('readonly') == true) {
+        $filters.prop('readonly', false);
+
+        $.each($filters, function (key, value) {
+            $(this).attr('placeholder', $(this).attr('placeholder').trim());
+            $(this).closest("th").removeClass("sorting sorting_asc sorting_desc");
+        });
         $filters.first().focus();
     } else {
-        $filters.val('').prop('disabled', true);
+        $filters.val('').prop('readonly', true);
     }
 });
 

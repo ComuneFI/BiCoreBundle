@@ -20,7 +20,7 @@ function formlabeladjust()
             format: 'L'
         });
         $('.bidatetimepicker').datetimepicker({
-            locale: 'it',
+            locale: 'it'
         });
     });
 }

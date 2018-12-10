@@ -30,7 +30,7 @@ trait TabellaOpzioniTrait
         $this->setOpzioniTabellaFromModellocolonne($opzionibuilder);
         $this->setOpzioniTabellaFromCore($colonnadatabase, $opzionibuilder);
         $this->setOrdinaColonneTabella($opzionibuilder);
-        $this->setSetLarghezzaColonneTabella($opzionibuilder);
+        $this->setLarghezzaColonneTabella($opzionibuilder);
         return $opzionibuilder;
     }
 
@@ -38,18 +38,44 @@ trait TabellaOpzioniTrait
     {
         foreach ($this->modellocolonne as $modellocolonna) {
             $campo = $this->bonificaNomeCampo($modellocolonna["nomecampo"]);
+            $this->getOpzionitabellaCampiExtra($campo, $modellocolonna, $opzionibuilder);
             foreach ($modellocolonna as $key => $value) {
                 if (!array_key_exists($campo, $opzionibuilder)) {
-                    $ex = "Fifree: " . $campo . " field table option not found, did you mean one of these:\n" .
-                            implode("\n", array_keys($opzionibuilder)) .
-                            " ?";
-                    throw new \Exception($ex);
+                    if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
+                        // tuttapposto
+                    } else {
+                        $ex = "Fifree: " . $campo . " field table option not found, did you mean one of these:\n" .
+                                implode("\n", array_keys($opzionibuilder)) .
+                                " ?";
+                        throw new \Exception($ex);
+                    }
                 }
                 if ($key == 'ordine') {
                     $this->setMaxOrdine($value);
                 }
                 $opzionibuilder[$campo][$key] = $value;
             }
+        }
+    }
+
+    private function getOpzionitabellaCampiExtra($campo, $modellocolonna, &$opzionibuilder)
+    {
+        if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
+            $opzionibuilder[$campo] = array(
+                "tipocampo" => $modellocolonna["tipocampo"],
+                "nomecampo" => $campo,
+                "nometabella" => $modellocolonna["nometabella"],
+                "entityclass" => null,
+                "sourceentityclass" => null,
+                "ordine" => null,
+                "etichetta" => $campo,
+                "larghezza" => 5,
+                "editabile" => false,
+                "campoextra" => true,
+                "association" => null,
+                "associationtable" => null,
+                "escluso" => false,
+            );
         }
     }
 
@@ -71,10 +97,14 @@ trait TabellaOpzioniTrait
             if (null !== ($colonnatabellacore->getMostraindex())) {
                 $opzionibuilder[$campo]["escluso"] = !$colonnatabellacore->getMostraindex();
             }
+            if (null !== ($colonnatabellacore->getEditabile())) {
+                $opzionibuilder[$campo]["editabile"] = $colonnatabellacore->getEditabile();
+            }
             if (null !== ($colonnatabellacore->getOrdineindex())) {
                 $opzionibuilder[$campo]["ordine"] = $colonnatabellacore->getOrdineindex();
                 $this->setMaxOrdine($colonnatabellacore->getOrdineindex());
             }
+            $opzionibuilder[$campo]["campoextra"] = false;
         }
     }
 
@@ -104,6 +134,8 @@ trait TabellaOpzioniTrait
             "ordine" => null,
             "etichetta" => ucfirst($colonnadatabase["columnName"]),
             "larghezza" => 10,
+            "editabile" => true,
+            "campoextra" => false,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
             "decodifiche" => null,
@@ -111,7 +143,7 @@ trait TabellaOpzioniTrait
         );
     }
 
-    private function setSetLarghezzaColonneTabella(&$opzionibuilder)
+    private function getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder)
     {
         $larghezzatotalepercentuale = 0;
         foreach ($opzionibuilder as $opzione) {
@@ -119,12 +151,24 @@ trait TabellaOpzioniTrait
                 $larghezzatotalepercentuale += $opzione["larghezza"];
             }
         }
+        return $larghezzatotalepercentuale;
+    }
+
+    private function getLarghezzaColonneTabellaPercentualeFinale()
+    {
         // il 5% si lascia per la ruzzolina in fondo alla riga, il 3% si lascia per il checkbox in testa alla riga,
         // quindi per le colonne dati resta il 92%
         $percentualefinale = 95; // il 5% si lascia per la ruzzolina in fondo
         if ($this->getTabellaParameter("multiselezione") === true) {
             $percentualefinale -= 3;
         }
+        return $percentualefinale;
+    }
+
+    private function setLarghezzaColonneTabella(&$opzionibuilder)
+    {
+        $larghezzatotalepercentuale = $this->getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder);
+        $percentualefinale = $this->getLarghezzaColonneTabellaPercentualeFinale();
         $percentualerelativatotale = $percentualefinale * 100 / $larghezzatotalepercentuale;
         if ($percentualefinale - $larghezzatotalepercentuale != 0) {
             foreach ($opzionibuilder as $key => $opzione) {
@@ -161,6 +205,8 @@ trait TabellaOpzioniTrait
                 "ordine" => null,
                 "etichetta" => ucfirst($colonnacorrente["columnName"]),
                 "larghezza" => 0,
+                "editabile" => false,
+                "campoextra" => false,
                 "association" => null,
                 "associationtable" => null,
                 "escluso" => true,

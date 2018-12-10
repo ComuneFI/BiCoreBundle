@@ -14,10 +14,6 @@ class Colonnetabelle extends BaseColonnetabelle
     {
         return $this->mostraindex;
     }
-    public function hasMostrastampa()
-    {
-        return $this->mostrastampa;
-    }
     public function isRegistrastorico()
     {
         return $this->getRegistrastorico();
