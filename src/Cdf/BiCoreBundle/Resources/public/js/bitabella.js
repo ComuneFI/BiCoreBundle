@@ -107,6 +107,23 @@ function afterTabellaLoadComplete(nomecontroller)
         $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", $(this).prop("checked"));
     });
 }
+$(document).on("click", ".colonnatabellafiltro", function (e) {
+    var nomecampo = this.dataset["nomecampo"];
+    var nomecontroller = this.dataset["nomecontroller"];
+    var nuovotipoordinamento = 'ASC';
+    var parametri = getParametriTabellaDataset(nomecontroller);
+    var colonneordinamento = JSON.parse(getTabellaParameter(parametri.colonneordinamento));
+    if (colonneordinamento[nomecampo] != 'undefined') {
+        if (colonneordinamento[nomecampo] == 'ASC') {
+            nuovotipoordinamento = 'DESC';
+        } else {
+            nuovotipoordinamento = 'ASC';
+        }
+    }
+    setDataParameterTabella(nomecontroller, "colonneordinamento", '{"' + nomecampo + '": "' + nuovotipoordinamento + '" }');
+    ricaricatabella(nomecontroller);
+});
+
 
 function aggiustafootertabella(nomecontroller)
 {

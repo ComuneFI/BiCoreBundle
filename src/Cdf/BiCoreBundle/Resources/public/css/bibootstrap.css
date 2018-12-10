@@ -39,6 +39,16 @@
     font-weight: normal;
 }
 
+.filterable .filters input[readonly] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+    font-weight: bold;
+}
+
 .biw-0{width:0%!important}
 .biw-1{width:1%!important}
 .biw-2{width:2%!important}
