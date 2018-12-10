@@ -38,23 +38,7 @@ trait TabellaOpzioniTrait
     {
         foreach ($this->modellocolonne as $modellocolonna) {
             $campo = $this->bonificaNomeCampo($modellocolonna["nomecampo"]);
-            if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
-                $opzionibuilder[$campo] = array(
-                    "tipocampo" => $modellocolonna["tipocampo"],
-                    "nomecampo" => $campo,
-                    "nometabella" => $modellocolonna["nometabella"],
-                    "entityclass" => null,
-                    "sourceentityclass" => null,
-                    "ordine" => null,
-                    "etichetta" => $campo,
-                    "larghezza" => 5,
-                    "editabile" => false,
-                    "campoextra" => true,
-                    "association" => null,
-                    "associationtable" => null,
-                    "escluso" => false,
-                );
-            }
+            $this->getOpzionitabellaCampiExtra($campo, $modellocolonna, $opzionibuilder);
             foreach ($modellocolonna as $key => $value) {
                 if (!array_key_exists($campo, $opzionibuilder)) {
                     if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
@@ -71,6 +55,27 @@ trait TabellaOpzioniTrait
                 }
                 $opzionibuilder[$campo][$key] = $value;
             }
+        }
+    }
+
+    private function getOpzionitabellaCampiExtra($campo, $modellocolonna, &$opzionibuilder)
+    {
+        if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
+            $opzionibuilder[$campo] = array(
+                "tipocampo" => $modellocolonna["tipocampo"],
+                "nomecampo" => $campo,
+                "nometabella" => $modellocolonna["nometabella"],
+                "entityclass" => null,
+                "sourceentityclass" => null,
+                "ordine" => null,
+                "etichetta" => $campo,
+                "larghezza" => 5,
+                "editabile" => false,
+                "campoextra" => true,
+                "association" => null,
+                "associationtable" => null,
+                "escluso" => false,
+            );
         }
     }
 
