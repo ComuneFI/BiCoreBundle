@@ -10,6 +10,7 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 trait FiCoreCrudControllerTrait
 {
+
     /**
      * Displays a form to create a new table entity.
      */
@@ -72,6 +73,7 @@ trait FiCoreCrudControllerTrait
             );
         }
     }
+
     /**
      * Displays a form to edit an existing table entity.
      */
@@ -123,6 +125,7 @@ trait FiCoreCrudControllerTrait
                         )
         );
     }
+
     /**
      * Edits an existing table entity.
      */
@@ -191,6 +194,7 @@ trait FiCoreCrudControllerTrait
                         )
         );
     }
+
     private function checkAggiornaRight($id)
     {
         if ($id === 0) {
@@ -203,6 +207,7 @@ trait FiCoreCrudControllerTrait
             }
         }
     }
+
     /**
      * Inline existing table entity.
      */
@@ -255,7 +260,8 @@ trait FiCoreCrudControllerTrait
                 }
                 if ($insert) {
                     $queryBuilder->setValue($field, ':' . $field);
-                    $queryBuilder->setParameter($field, $value["fieldvalue"]);
+                    $fieldvalue = $this->getValueAggiorna($value);
+                    $queryBuilder->setParameter($field, $fieldvalue);
                     $querydaeseguire = true;
                 } else {
                     $entityutils = new EntityUtils($em);
@@ -263,8 +269,9 @@ trait FiCoreCrudControllerTrait
                     $nomefunzioneget = $property["get"];
                     if ($nomefunzioneget != $value["fieldvalue"]) {
                         $querydaeseguire = true;
+                        $fieldvalue = $this->getValueAggiorna($value);
                         $queryBuilder->set("u." . $field, ':' . $field);
-                        $queryBuilder->setParameter($field, $value["fieldvalue"]);
+                        $queryBuilder->setParameter($field, $fieldvalue);
                     }
                 }
             } else {
@@ -277,6 +284,20 @@ trait FiCoreCrudControllerTrait
 
         return new \Symfony\Component\HttpFoundation\JsonResponse(array("errcode" => 0, "message" => "Registrazione eseguita"));
     }
+
+    private function getValueAggiorna($field)
+    {
+        $fieldvalue = $field["fieldvalue"];
+        $fieldtype = $field["fieldtype"];
+        if ($fieldtype == "date") {
+            $fieldvalue = \DateTime::createFromFormat("d/m/Y", $field["fieldvalue"]);
+        }
+        if ($fieldtype == "datetime") {
+            $fieldvalue = \DateTime::createFromFormat("d/m/Y H:i", $field["fieldvalue"]);
+        }
+        return $fieldvalue;
+    }
+
     /**
      * Deletes a table entity.
      */
@@ -316,6 +337,7 @@ trait FiCoreCrudControllerTrait
 
         return new Response('Operazione eseguita con successo');
     }
+
     private function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
