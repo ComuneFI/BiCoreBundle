@@ -132,8 +132,8 @@ class ClienteController extends FiController
         $formclass = str_replace("Entity", "Form", $entityclass);
 
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "$controller.nominativo", "etichetta" => "Nominativo", "ordine" => 10, "larghezza" => 200, "escluso" => false),
-            array("nometabella" => $controller, "nomecampo" => "$controller.datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 100, "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "$controller.nominativo", "etichetta" => "Nominativo", "ordine" => 10, "larghezza" => 20, "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "$controller.datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 12, "escluso" => false),
         );
 
         $colonneordinamento = array($controller . '.id' => "ASC");

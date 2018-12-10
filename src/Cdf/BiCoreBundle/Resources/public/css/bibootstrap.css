@@ -150,3 +150,80 @@
 .biw-98{width:98%!important}
 .biw-99{width:99%!important}
 .biw-100{width:100%!important}
+
+
+
+
+
+  table thead {
+    cursor: pointer
+  }
+
+  table thead>tr>td:active,
+  table thead>tr>th:active {
+    /*outline: 0*/
+  }
+
+  table thead>tr>td.sorting,
+  table thead>tr>td.sorting_asc,
+  table thead>tr>td.sorting_desc,
+  table thead>tr>th.sorting,
+  table thead>tr>th.sorting_asc,
+  table thead>tr>th.sorting_desc {
+    padding-right: 30px;
+  }
+
+  table thead .sorting,
+  table thead .sorting_asc,
+  table thead .sorting_asc_disabled,
+  table thead .sorting_desc,
+  table thead .sorting_desc_disabled {
+    cursor: pointer;
+    position: relative;
+  }
+
+  table thead .sorting:after,
+  table thead .sorting:before,
+  table thead .sorting_asc:after,
+  table thead .sorting_asc:before,
+  table thead .sorting_asc_disabled:after,
+  table thead .sorting_asc_disabled:before,
+  table thead .sorting_desc:after,
+  table thead .sorting_desc:before,
+  table thead .sorting_desc_disabled:after,
+  table thead .sorting_desc_disabled:before {
+    position: absolute;
+    bottom: .1em;
+    display: block;
+    opacity: .3
+  }
+
+  table thead .sorting:before,
+  table thead .sorting_asc:before,
+  table thead .sorting_asc_disabled:before,
+  table thead .sorting_desc:before,
+  table thead .sorting_desc_disabled:before {
+    content: "\f0de";
+    font-family: FontAwesome;
+    font-size: 1rem
+  }
+
+  table thead .sorting:after,
+  table thead .sorting_asc:after,
+  table thead .sorting_asc_disabled:after,
+  table thead .sorting_desc:after,
+  table thead .sorting_desc_disabled:after {
+    content: "\f0dd";
+    font-family: FontAwesome;
+    font-size: 1rem
+  }
+
+  table thead .sorting_asc:before,
+  table thead .sorting_desc:after {
+    opacity: 1
+  }
+
+  table thead .sorting_asc_disabled:before,
+  table thead .sorting_desc_disabled:after {
+    opacity: 0
+  }
