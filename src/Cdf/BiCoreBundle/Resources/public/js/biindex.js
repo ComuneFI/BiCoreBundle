@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     e.preventDefault();
     var nomecontroller = getMainTabella();
     ricaricatabella(nomecontroller);
-    //dumpParametriTabella();
+    //dumpParametriTabella(nomecontroller);
 });
 
 //Funzione per modificare il valore di un parametro della tabella

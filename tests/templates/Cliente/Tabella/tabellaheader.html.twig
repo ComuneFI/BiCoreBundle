@@ -4,15 +4,17 @@
             {{parametri.titolotabella|getparametrotabella}}
         </th>
     </tr>
-    <tr class="filters">
-        <th scope="col" class="text-center">
+    <tr class="filters d-flex">
+        <th scope="col" class="biw-3 {% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
             <input type="checkbox" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}bitabellacheckboxselectall{% endif %}">
         </th>
         {% for colonnatabella in parametri.parametritabella %}
             {% if (colonnatabella.escluso == false) %}
-                <th scope="col" class="col-auto"><input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" {{colonnatabella.decodifiche is defined?'data-decodifiche='~colonnatabella.decodifiche|json_encode():""}} data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" placeholder="{{colonnatabella.etichetta}}" disabled></th>
+                <th scope="col" class="{{colonnatabella.larghezza|larghezzacolonna}} {{sort_class(parametri.colonneordinamento|getparametrotabella,colonnatabella)}}">
+                    <input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" {{colonnatabella.decodifiche is defined?'data-decodifiche='~colonnatabella.decodifiche|json_encode():""}} data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" placeholder="{{colonnatabella.association or colonnatabella.campoextra?"":'&emsp;'}}{{colonnatabella.etichetta}}" readonly>
+                </th>
             {% endif %}
         {% endfor%}
-        <th></th>
+        <th scope="col" class="biw-5"></th>
     </tr>
 </thead>

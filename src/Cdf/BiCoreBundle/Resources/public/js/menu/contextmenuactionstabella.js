@@ -112,10 +112,26 @@ function editmenu(biid, parametri)
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
             var editable = object.closest("td").dataset["editabile"];
+            var soggettoadecodifica = object.closest("td").dataset["soggettoadecodifica"];
+            var decodifiche;
+            var modellocolonne = JSON.parse(getTabellaParameter(parametri.modellocolonne));
+
+            if (soggettoadecodifica) {
+                $(modellocolonne).each(function (colidx, colobj) {
+                    if (colobj.nomecampo == fieldname) {
+                        if (typeof colobj.decodifiche !== "undefined") {
+                            decodifiche = colobj.decodifiche;
+                            fieldtype = "decodifiche";
+                        }
+                    }
+                });
+            } else {
+                fieldtype = object.closest("td").dataset["tipocampo"];
+            }
             var input;
             var div = $('<div />', {class: 'form-group'});
             $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
-            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella"+getTabellaParameter(parametri.nomecontroller)+"[data-biid='" + biid + "']").addClass("sr-only");
+            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + getTabellaParameter(parametri.nomecontroller) + "[data-biid='" + biid + "']").addClass("sr-only");
             if (fieldname && editable == true) {
                 if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
                     //Id e campi di tabelle collegate non devono essere modificabili
@@ -123,6 +139,9 @@ function editmenu(biid, parametri)
                 } else {
                     //fieldvalue = $(object).val();
                     switch (fieldtype) {
+                        case 'decodifiche':
+                            input = riempiselectdecodifiche(fieldname, decodifiche, $(object).val());
+                            break;
                         case 'boolean':
                             input = $('<input />', {type: 'checkbox', class: 'form-control'});
                             if ($(object).val() == 'SI') {
@@ -154,16 +173,6 @@ function editmenu(biid, parametri)
             }
             $(input).appendTo(div);
             $(object).closest("td").html(div);
-            //$( ".inner" ).wrap( "<div class='new'></div>" );
-            //$(object).wrap(div);
-            //$(object).replaceWith(input);
-            //div.append($(input));
-            //console.log(div);
-            //$(object).wrap(div);
-            //$(object).closest("div.form-group").wrap(div);
-            //$(object).closest("div.form-group").replaceWith(div);
-            //$(object).replaceWith(div);
-            //$(object).replaceWith(div);
             formlabeladjust();
         });
 

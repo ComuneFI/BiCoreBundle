@@ -48,6 +48,13 @@ services:
         tags:
           - { name: twig.extension }
 
+    cdf.bicorebundle.twig.extension.headertabella:
+        class: Cdf\BiCoreBundle\Twig\Extension\HeaderTabellaExtension
+        properties:
+            container: "@service_container"
+        tags:
+          - { name: twig.extension }
+
     #Informazioni connessione database su Web Debug Toolbar
     cdf.bicorebundle.collector.databaseinfo:
         class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
