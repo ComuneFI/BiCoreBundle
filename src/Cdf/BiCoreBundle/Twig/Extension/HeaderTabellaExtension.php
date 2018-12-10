@@ -21,7 +21,7 @@ class HeaderTabellaExtension extends \Twig_Extension
 
     public function sortClass($colonneordinamento, $modellocampo)
     {
-        if ($modellocampo["association"]) {
+        if ($modellocampo["association"] === true || $modellocampo["campoextra"] === true) {
             $sorttype = "";
         } else {
             $cursort = json_decode($colonneordinamento, true);

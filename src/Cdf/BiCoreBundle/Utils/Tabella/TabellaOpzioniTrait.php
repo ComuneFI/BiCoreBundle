@@ -9,6 +9,7 @@ use Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils;
 
 trait TabellaOpzioniTrait
 {
+
     protected function getOpzionitabellaFromCore()
     {
         $repoopzionitabelle = $this->em->getRepository(Opzionitabelle::class);
@@ -18,6 +19,7 @@ trait TabellaOpzioniTrait
 
         return array("opzionitabella" => $opzionitabella, "colonnetabella" => $colonnetabella);
     }
+
     protected function getAllOpzioniTabella()
     {
         $opzionibuilder = array();
@@ -31,16 +33,38 @@ trait TabellaOpzioniTrait
         $this->setLarghezzaColonneTabella($opzionibuilder);
         return $opzionibuilder;
     }
+
     protected function setOpzioniTabellaFromModellocolonne(&$opzionibuilder)
     {
         foreach ($this->modellocolonne as $modellocolonna) {
             $campo = $this->bonificaNomeCampo($modellocolonna["nomecampo"]);
+            if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
+                $opzionibuilder[$campo] = array(
+                    "tipocampo" => $modellocolonna["tipocampo"],
+                    "nomecampo" => $campo,
+                    "nometabella" => $modellocolonna["nometabella"],
+                    "entityclass" => null,
+                    "sourceentityclass" => null,
+                    "ordine" => null,
+                    "etichetta" => $campo,
+                    "larghezza" => 5,
+                    "editabile" => false,
+                    "campoextra" => true,
+                    "association" => null,
+                    "associationtable" => null,
+                    "escluso" => false,
+                );
+            }
             foreach ($modellocolonna as $key => $value) {
                 if (!array_key_exists($campo, $opzionibuilder)) {
-                    $ex = "Fifree: " . $campo . " field table option not found, did you mean one of these:\n" .
-                            implode("\n", array_keys($opzionibuilder)) .
-                            " ?";
-                    throw new \Exception($ex);
+                    if ((isset($modellocolonna["campoextra"]) && $modellocolonna["campoextra"] == true)) {
+                        // tuttapposto
+                    } else {
+                        $ex = "Fifree: " . $campo . " field table option not found, did you mean one of these:\n" .
+                                implode("\n", array_keys($opzionibuilder)) .
+                                " ?";
+                        throw new \Exception($ex);
+                    }
                 }
                 if ($key == 'ordine') {
                     $this->setMaxOrdine($value);
@@ -49,6 +73,7 @@ trait TabellaOpzioniTrait
             }
         }
     }
+
     protected function setOpzioniTabellaFromCore($colonnadatabase, &$opzionibuilder)
     {
 
@@ -74,8 +99,10 @@ trait TabellaOpzioniTrait
                 $opzionibuilder[$campo]["ordine"] = $colonnatabellacore->getOrdineindex();
                 $this->setMaxOrdine($colonnatabellacore->getOrdineindex());
             }
+            $opzionibuilder[$campo]["campoextra"] = false;
         }
     }
+
     protected function setOpzioniTabellaDefault($infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = array())
     {
         $nometabella = ((isset($jointable)) ? $jointable : $this->tablename);
@@ -90,6 +117,7 @@ trait TabellaOpzioniTrait
             $this->elaboraJoin($opzionibuilder, $infoentity, $ancestors);
         }
     }
+
     private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione)
     {
         $opzionibuilder[$nomecolonna] = array(
@@ -102,12 +130,14 @@ trait TabellaOpzioniTrait
             "etichetta" => ucfirst($colonnadatabase["columnName"]),
             "larghezza" => 10,
             "editabile" => true,
+            "campoextra" => false,
             "association" => isset($colonnadatabase["association"]) ? $colonnadatabase["association"] : false,
             "associationtable" => isset($colonnadatabase["associationtable"]) ? $colonnadatabase["associationtable"] : null,
             "decodifiche" => null,
             "escluso" => ($ricursione === true) ? true : substr($colonnadatabase["fieldName"], -3) == "_id" ? true : false,
         );
     }
+
     private function getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder)
     {
         $larghezzatotalepercentuale = 0;
@@ -118,6 +148,7 @@ trait TabellaOpzioniTrait
         }
         return $larghezzatotalepercentuale;
     }
+
     private function getLarghezzaColonneTabellaPercentualeFinale()
     {
         // il 5% si lascia per la ruzzolina in fondo alla riga, il 3% si lascia per il checkbox in testa alla riga,
@@ -128,6 +159,7 @@ trait TabellaOpzioniTrait
         }
         return $percentualefinale;
     }
+
     private function setLarghezzaColonneTabella(&$opzionibuilder)
     {
         $larghezzatotalepercentuale = $this->getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder);
@@ -142,6 +174,7 @@ trait TabellaOpzioniTrait
             }
         }
     }
+
     private function elaboraJoin(&$opzionibuilder, $colonnadatabase, $ancestors)
     {
         $entitycollegata = $colonnadatabase["associationtable"]["targetEntity"];
@@ -168,12 +201,14 @@ trait TabellaOpzioniTrait
                 "etichetta" => ucfirst($colonnacorrente["columnName"]),
                 "larghezza" => 0,
                 "editabile" => false,
+                "campoextra" => false,
                 "association" => null,
                 "associationtable" => null,
                 "escluso" => true,
             );
         }
     }
+
     protected function setOrdinaColonneTabella(&$opzionibuilder)
     {
         foreach ($opzionibuilder as $key => $opzione) {
@@ -186,6 +221,7 @@ trait TabellaOpzioniTrait
         // Ordinamento per colonna ordine
         ArrayUtils::sortMultiAssociativeArray($opzionibuilder, "ordine", true);
     }
+
     private function bonificaNomeCampo($nomecampo)
     {
         $parti = explode(".", $nomecampo);

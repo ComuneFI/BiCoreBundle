@@ -107,7 +107,8 @@ function afterTabellaLoadComplete(nomecontroller)
         $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", $(this).prop("checked"));
     });
 }
-$(document).on("click", ".colonnatabellafiltro[readonly]", function (e) {
+//, .colonnatabellafiltro[readonly]
+$(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_asc .colonnatabellafiltro[readonly], th.sorting_desc .colonnatabellafiltro[readonly]", function (e) {
     var nomecampo = this.dataset["nomecampo"];
     var nomecontroller = this.dataset["nomecontroller"];
     var nuovotipoordinamento = 'ASC';

@@ -11,7 +11,7 @@
         {% for colonnatabella in parametri.parametritabella %}
             {% if (colonnatabella.escluso == false) %}
                 <th scope="col" class="{{colonnatabella.larghezza|larghezzacolonna}} {{sort_class(parametri.colonneordinamento|getparametrotabella,colonnatabella)}}">
-                    <input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" {{colonnatabella.decodifiche is defined?'data-decodifiche='~colonnatabella.decodifiche|json_encode():""}} data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" placeholder="{{colonnatabella.association?"":'&emsp;'}}{{colonnatabella.etichetta}}" readonly>
+                    <input type="text" class="form-control {{colonnatabella.association?"":'colonnatabellafiltro'}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" {{colonnatabella.decodifiche is defined?'data-decodifiche='~colonnatabella.decodifiche|json_encode():""}} data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" placeholder="{{colonnatabella.association or colonnatabella.campoextra?"":'&emsp;'}}{{colonnatabella.etichetta}}" readonly>
                 </th>
             {% endif %}
         {% endfor%}

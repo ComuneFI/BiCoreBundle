@@ -24,4 +24,8 @@ class Cliente extends BaseCliente
     {
         return $this->getNominativo() . ", data di nascita: " . $this->getDatanascita()->format("d/m/Y");
     }
+    public function getSaluto()
+    {
+        return "Ciao " . $this->getNominativo() . "!";
+    }
 }

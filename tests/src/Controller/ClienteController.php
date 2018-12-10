@@ -34,60 +34,60 @@ class ClienteController extends FiController
           $ret = $qb->getQuery()->getResult();
           echo count($ret); // 0
          */
-        
-        /*$datestrchk = "1980-02-05";
 
-        $datedtchk = \DateTime::createFromFormat("Y-m-d H:i:s", $datestrchk . " 00:00:00");
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.datanascita = :data")
-                ->setParameter("data", $datedtchk);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret); // NOT FOUND
+        /* $datestrchk = "1980-02-05";
 
-        $datedtchk = \DateTime::createFromFormat("Y-m-d", $datestrchk);
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.datanascita = :data")
-                ->setParameter("data", $datedtchk);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret); // NOT FOUND
+          $datedtchk = \DateTime::createFromFormat("Y-m-d H:i:s", $datestrchk . " 00:00:00");
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.datanascita = :data")
+          ->setParameter("data", $datedtchk);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); // NOT FOUND
 
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.datanascita = :data")
-                ->setParameter("data", $datestrchk);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret); // OK
+          $datedtchk = \DateTime::createFromFormat("Y-m-d", $datestrchk);
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.datanascita = :data")
+          ->setParameter("data", $datedtchk);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); // NOT FOUND
 
-        $date1start = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-04 23:59:59");
-        $date1end = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:00");
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.datanascita = :data")
+          ->setParameter("data", $datestrchk);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); // OK
 
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.datanascita >= :data1start AND Cliente.datanascita <= :data1end")
-                ->setParameter("data1start", $date1start)
-                ->setParameter("data1end", $date1end);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret); // OK
+          $date1start = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-04 23:59:59");
+          $date1end = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:00");
 
-        $date2start = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:00");
-        $date2end = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:01");
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.datanascita >= :data1start AND Cliente.datanascita <= :data1end")
+          ->setParameter("data1start", $date1start)
+          ->setParameter("data1end", $date1end);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); // OK
 
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.datanascita >= :data2start AND Cliente.datanascita <= :data2end")
-                ->setParameter("data2start", $date2start)
-                ->setParameter("data2end", $date2end);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret); // NOT FOUND
+          $date2start = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:00");
+          $date2end = \DateTime::createFromFormat("Y-m-d H:i:s", "1980-02-05 00:00:01");
 
-        /* $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.datanascita >= :data2start AND Cliente.datanascita <= :data2end")
+          ->setParameter("data2start", $date2start)
+          ->setParameter("data2end", $date2end);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); // NOT FOUND
+
+          /* $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
           ->from("App:Cliente", "Cliente")
@@ -97,24 +97,24 @@ class ClienteController extends FiController
           echo count($ret); // OK
          */
 
-        /*$datestrchk = '1999-01-01 13:15:00';
-        $datestrftimechk = strftime("%Y-%m-%d %H:%i:%s", strtotime($datestrchk));
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.iscrittoil = :data")
-                ->setParameter("data", $datestrchk);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret);
+        /* $datestrchk = '1999-01-01 13:15:00';
+          $datestrftimechk = strftime("%Y-%m-%d %H:%i:%s", strtotime($datestrchk));
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.iscrittoil = :data")
+          ->setParameter("data", $datestrchk);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret);
 
-        $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
-        $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
-                ->select(array("Cliente"))
-                ->from("App:Cliente", "Cliente")
-                ->where("Cliente.iscrittoil = :data")
-                ->setParameter("data", $datestrchk);
-        $ret = $qb->getQuery()->getResult();
-        echo count($ret);*/
+          $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
+          $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
+          ->select(array("Cliente"))
+          ->from("App:Cliente", "Cliente")
+          ->where("Cliente.iscrittoil = :data")
+          ->setParameter("data", $datestrchk);
+          $ret = $qb->getQuery()->getResult();
+          echo count($ret); */
 
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -134,6 +134,8 @@ class ClienteController extends FiController
         $modellocolonne = array(
             array("nometabella" => $controller, "nomecampo" => "$controller.nominativo", "etichetta" => "Nominativo", "ordine" => 10, "larghezza" => 20, "escluso" => false),
             array("nometabella" => $controller, "nomecampo" => "$controller.datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 12, "escluso" => false),
+            array("nometabella" => $controller, "nomecampo" => "$controller.saluto", "etichetta" => "Salutami", "ordine" => 30, "tipocampo" => "string", "campoextra" => true),
+                //, "escluso" => false, "larghezza" => 15, "association" => false, "tipocampo"=>"string", "editabile"=>false
         );
 
         $colonneordinamento = array($controller . '.id' => "ASC");
@@ -207,10 +209,11 @@ class ClienteController extends FiController
         );
 
         return $this->render(
-            $template,
-            array(
-                    'parametritabella' => $parametritabella,
+                        $template,
+                        array(
+                            'parametritabella' => $parametritabella,
                         )
         );
     }
+
 }
