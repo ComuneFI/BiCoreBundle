@@ -1,9 +1,9 @@
 <tbody>
     {% for record in parametri.recordstabella %}
 
-        <tr data-bitableid='{{record.id}}' data-token="{{ csrf_token(record.id) }}" class="{{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
+        <tr data-bitableid='{{record.id}}' data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" data-token="{{ csrf_token(record.id) }}" class="d-flex {{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
 
-            <td scope="row" class="{% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
+            <td scope="row" class="biw-3 {% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
                 <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">
             </td>
 
@@ -12,20 +12,22 @@
                 <!--<td scope="row" class="{#{colonnatabella.escluso?"sr-only":""}}">{{record[colonnatabella.nomecampo]}#}</td>-->
                 {%if (colonnatabella.escluso == false ) %}
                     {% set decodifiche = (colonnatabella.decodifiche is defined)?colonnatabella.decodifiche:null%}
-                    <td scope="row" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}">
+                    {% set fieldvalue = object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo)  %}
+                    <td scope="row" data-idtabella="{{colonnatabella.tipocampo == 'join'?joinfieldid(field2object(colonnatabella.nomecampo,record,decodifiche)):''}}" data-nomecampo="{{colonnatabella.nomecampo}}" data-tipocampo="{{colonnatabella.tipocampo}}" data-editabile="{{colonnatabella.editabile}}" class="{{colonnatabella.larghezza|larghezzacolonna}} text-truncate" title="{{fieldvalue}}">
                         {%if (parametri.editinline|getparametrotabella == true)%}
-                            <input type="text" class="form-control" value="{{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}" disabled/>
+                            <input type="text" class="form-control" value="{{fieldvalue}}" disabled/>
                         {%else%}
-                            {{ object2view(field2object(colonnatabella.nomecampo,record,decodifiche),colonnatabella.tipocampo) }}
+                            {{fieldvalue}}
                         {%endif%}
                     </td>
                 {%endif%}
             {% endfor%} 
 
-            <td>
+            <td class="colonnazionitabella biw-5">
                 <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="conferma" data-biid="{{record.id}}"><span class="it-check"></span></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="annulla" data-biid="{{record.id}}"><span class="it-close"></span></a>
             </td>
-
         </tr>
 
     {%endfor%}
