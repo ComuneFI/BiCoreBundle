@@ -109,7 +109,7 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
   
   - if [[ $SYMFONY == "4.2" ]]; then sed -i -e "s,\^3.4,\^4.2,g" $TRAVIS_BUILD_DIR/composer.json; fi
-  - if [[ $SYMFONY == "4.2" ]]; then sed -i '\|"symfony\/lts": "^3"|d' $TRAVIS_BUILD_DIR/composer.json; fi
+  - if [[ $SYMFONY == "4.2" ]]; then sed -i '\|"symfony/lts": "^3"|d' $TRAVIS_BUILD_DIR/composer.json; fi
 
   - chmod +x bin/console
   - "export DISPLAY=:99.0"
