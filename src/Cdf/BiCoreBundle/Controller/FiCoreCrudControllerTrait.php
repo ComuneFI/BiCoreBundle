@@ -291,9 +291,15 @@ trait FiCoreCrudControllerTrait
         $fieldtype = $field["fieldtype"];
         if ($fieldtype == "date") {
             $fieldvalue = \DateTime::createFromFormat("d/m/Y", $field["fieldvalue"]);
+            if ($fieldvalue === false) {
+                throw new \Exception("Formato data non valido");
+            }
         }
         if ($fieldtype == "datetime") {
             $fieldvalue = \DateTime::createFromFormat("d/m/Y H:i", $field["fieldvalue"]);
+            if ($fieldvalue === false) {
+                throw new \Exception("Formato data ora non valido");
+            }
         }
         return $fieldvalue;
     }

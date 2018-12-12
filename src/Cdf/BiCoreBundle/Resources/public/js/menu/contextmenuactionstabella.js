@@ -154,12 +154,12 @@ function editmenu(biid, parametri)
                             var jointableid = object.closest("td").dataset["idtabella"];
                             input = riempiselect(fieldname, jointableid);
                             break;
-                        case 'date':
+                        /*case 'date':
                             input = $('<input />', {type: 'text', class: 'bidatepicker form-control', value: $(object).val()});
                             break;
                         case 'datetime':
                             input = $('<input />', {type: 'text', class: 'bidatetimepicker form-control', value: $(object).val()});
-                            break;
+                            break;*/
                         default:
                             $(object).attr("disabled", false);
                             //input = object;
