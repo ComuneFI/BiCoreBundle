@@ -108,73 +108,7 @@ function editmenu(biid, parametri)
 {
     if (getTabellaParameter(parametri.editinline) == 1) {
         var elencocampi = $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
-        elencocampi.each(function (index, object) {
-            var fieldname = object.closest("td").dataset["nomecampo"];
-            var fieldtype = object.closest("td").dataset["tipocampo"];
-            var editable = object.closest("td").dataset["editabile"];
-            var soggettoadecodifica = object.closest("td").dataset["soggettoadecodifica"];
-            var decodifiche;
-            var modellocolonne = JSON.parse(getTabellaParameter(parametri.modellocolonne));
-
-            if (soggettoadecodifica) {
-                $(modellocolonne).each(function (colidx, colobj) {
-                    if (colobj.nomecampo == fieldname) {
-                        if (typeof colobj.decodifiche !== "undefined") {
-                            decodifiche = colobj.decodifiche;
-                            fieldtype = "decodifiche";
-                        }
-                    }
-                });
-            } else {
-                fieldtype = object.closest("td").dataset["tipocampo"];
-            }
-            var input;
-            var div = $('<div />', {class: 'form-group'});
-            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
-            $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + getTabellaParameter(parametri.nomecontroller) + "[data-biid='" + biid + "']").addClass("sr-only");
-            if (fieldname && editable == true) {
-                if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
-                    //Id e campi di tabelle collegate non devono essere modificabili
-                    input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
-                } else {
-                    //fieldvalue = $(object).val();
-                    switch (fieldtype) {
-                        case 'decodifiche':
-                            input = riempiselectdecodifiche(fieldname, decodifiche, $(object).val());
-                            break;
-                        case 'boolean':
-                            input = $('<input />', {type: 'checkbox', class: 'form-control'});
-                            if ($(object).val() == 'SI') {
-                                input.attr("checked", true);
-                            } else {
-                                input.attr("checked", false);
-                            }
-                            break;
-                        case 'join':
-                            var jointableid = object.closest("td").dataset["idtabella"];
-                            input = riempiselect(fieldname, jointableid);
-                            break;
-                        case 'date':
-                            input = $('<input />', {type: 'text', class: 'bidatepicker form-control', value: $(object).val()});
-                            break;
-                        case 'datetime':
-                            input = $('<input />', {type: 'text', class: 'bidatetimepicker form-control', value: $(object).val()});
-                            break;
-                        default:
-                            $(object).attr("disabled", false);
-                            //input = object;
-                            input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val()});
-                            break;
-                    }
-                }
-            } else {
-                input = $(object).clone().attr("disabled", true);
-
-            }
-            $(input).appendTo(div);
-            $(object).closest("td").html(div);
-            formlabeladjust();
-        });
+        abilitainputinline(parametri, elencocampi, biid);
 
     } else {
         var editurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + biid + "/edit";
@@ -204,4 +138,76 @@ function editmenu(biid, parametri)
             }
         });
     }
+}
+
+
+function abilitainputinline(parametri, elencocampi, biid) {
+    elencocampi.each(function (index, object) {
+        var fieldname = object.closest("td").dataset["nomecampo"];
+        var fieldtype = object.closest("td").dataset["tipocampo"];
+        var editable = object.closest("td").dataset["editabile"];
+        var soggettoadecodifica = object.closest("td").dataset["soggettoadecodifica"];
+        var decodifiche;
+        var modellocolonne = JSON.parse(getTabellaParameter(parametri.modellocolonne));
+
+        if (soggettoadecodifica) {
+            $(modellocolonne).each(function (colidx, colobj) {
+                if (colobj.nomecampo == fieldname) {
+                    if (typeof colobj.decodifiche !== "undefined") {
+                        decodifiche = colobj.decodifiche;
+                        fieldtype = "decodifiche";
+                    }
+                }
+            });
+        } else {
+            fieldtype = object.closest("td").dataset["tipocampo"];
+        }
+        var input;
+        var div = $('<div />', {class: 'form-group'});
+        $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
+        $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + getTabellaParameter(parametri.nomecontroller) + "[data-biid='" + biid + "']").addClass("sr-only");
+        if (fieldname && editable == true) {
+            if (fieldname == getTabellaParameter(parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
+                //Id e campi di tabelle collegate non devono essere modificabili
+                input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
+            } else {
+                //fieldvalue = $(object).val();
+                switch (fieldtype) {
+                    case 'decodifiche':
+                        input = riempiselectdecodifiche(fieldname, decodifiche, $(object).val());
+                        break;
+                    case 'boolean':
+                        input = $('<input />', {type: 'checkbox', class: 'form-control'});
+                        if ($(object).val() == 'SI') {
+                            input.attr("checked", true);
+                        } else {
+                            input.attr("checked", false);
+                        }
+                        break;
+                    case 'join':
+                        var jointableid = object.closest("td").dataset["idtabella"];
+                        input = riempiselect(fieldname, jointableid);
+                        break;
+                        /*case 'date':
+                         input = $('<input />', {type: 'text', class: 'bidatepicker form-control', value: $(object).val()});
+                         break;
+                         case 'datetime':
+                         input = $('<input />', {type: 'text', class: 'bidatetimepicker form-control', value: $(object).val()});
+                         break;*/
+                    default:
+                        $(object).attr("disabled", false);
+                        //input = object;
+                        input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val()});
+                        break;
+                }
+            }
+        } else {
+            input = $(object).clone().attr("disabled", true);
+
+        }
+        $(input).appendTo(div);
+        $(object).closest("td").html(div);
+        formlabeladjust();
+    });
+
 }

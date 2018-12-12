@@ -5,7 +5,6 @@ namespace Cdf\BiCoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 trait FiCoreCrudControllerTrait
@@ -193,109 +192,6 @@ trait FiCoreCrudControllerTrait
                             'nomecontroller' => ParametriTabella::setParameter($controller),
                         )
         );
-    }
-
-    private function checkAggiornaRight($id)
-    {
-        if ($id === 0) {
-            if (!$this->getPermessi()->canCreate()) {
-                throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
-            }
-        } else {
-            if (!$this->getPermessi()->canUpdate()) {
-                throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
-            }
-        }
-    }
-
-    /**
-     * Inline existing table entity.
-     */
-    public function aggiorna(Request $request, $id, $token)
-    {
-        $this->checkAggiornaRight($id);
-
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $controller = $this->getController();
-        $entityclass = $this->getEntityClassName();
-
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->createQueryBuilder();
-        $insert = ($id === 0);
-
-        if ($insert) {
-            //Insert
-            $entity = new $entityclass();
-            $queryBuilder
-                    ->insert($entityclass)
-            ;
-        } else {
-            //Update
-            $entity = $em->getRepository($entityclass)->find($id);
-            if (!$entity) {
-                throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
-            }
-            $queryBuilder
-                    ->update($entityclass, "u")
-                    ->where("u.id = :id")
-                    ->setParameter("id", $id);
-        }
-        $values = $request->get("values");
-        $isValidToken = $this->isCsrfTokenValid($id, $token);
-
-        if (!$isValidToken) {
-            throw $this->createNotFoundException('Token non valido');
-        }
-
-        $querydaeseguire = false;
-
-        foreach ($values as $value) {
-            $fieldpieces = explode(".", $value["fieldname"]);
-            $table = $fieldpieces[0];
-            //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && count($fieldpieces) == 2) {
-                $field = $fieldpieces[1];
-                if ($value["fieldtype"] == 'join') {
-                    $field = lcfirst($field . "_id");
-                }
-                if ($insert) {
-                    $queryBuilder->setValue($field, ':' . $field);
-                    $fieldvalue = $this->getValueAggiorna($value);
-                    $queryBuilder->setParameter($field, $fieldvalue);
-                    $querydaeseguire = true;
-                } else {
-                    $entityutils = new EntityUtils($em);
-                    $property = $entityutils->getEntityProperties($field, $entity);
-                    $nomefunzioneget = $property["get"];
-                    if ($nomefunzioneget != $value["fieldvalue"]) {
-                        $querydaeseguire = true;
-                        $fieldvalue = $this->getValueAggiorna($value);
-                        $queryBuilder->set("u." . $field, ':' . $field);
-                        $queryBuilder->setParameter($field, $fieldvalue);
-                    }
-                }
-            } else {
-                continue;
-            }
-        }
-        if ($querydaeseguire) {
-            $queryBuilder->getQuery()->execute();
-        }
-
-        return new \Symfony\Component\HttpFoundation\JsonResponse(array("errcode" => 0, "message" => "Registrazione eseguita"));
-    }
-
-    private function getValueAggiorna($field)
-    {
-        $fieldvalue = $field["fieldvalue"];
-        $fieldtype = $field["fieldtype"];
-        if ($fieldtype == "date") {
-            $fieldvalue = \DateTime::createFromFormat("d/m/Y", $field["fieldvalue"]);
-        }
-        if ($fieldtype == "datetime") {
-            $fieldvalue = \DateTime::createFromFormat("d/m/Y H:i", $field["fieldvalue"]);
-        }
-        return $fieldvalue;
     }
 
     /**

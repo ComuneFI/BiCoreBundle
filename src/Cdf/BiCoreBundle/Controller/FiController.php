@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FiController extends AbstractController
 {
-    use FiCoreControllerTrait, FiCoreCrudControllerTrait, FiCoreTabellaControllerTrait;
+    use FiCoreControllerTrait, FiCoreCrudControllerTrait, FiCoreCrudInlineControllerTrait, FiCoreTabellaControllerTrait;
 
     protected $bundle;
     protected $controller;
