@@ -96,7 +96,11 @@ $(document).on("click", '.bibottonieditinline', function (e) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
             var disabled = $(object).attr("disabled");
-            fieldvalue = $(object).val();
+            if (fieldtype == "boolean") {
+                fieldvalue = $(object).is(":checked");
+            } else {
+                fieldvalue = $(object).val();
+            }
             if (fieldname && typeof disabled === "undefined") {
                 values.push({fieldname: fieldname, fieldvalue: fieldvalue, fieldtype: fieldtype});
             }
@@ -125,6 +129,7 @@ $(document).on("click", '.bibottonieditinline', function (e) {
                 reseteditinline(inputs);
                 $("#table" + nomecontroller + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").addClass("sr-only");
                 $("#table" + nomecontroller + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + nomecontroller + "[data-biid='" + biid + "']").removeClass("sr-only");
+                ricaricatabella(nomecontroller);
             }
         });
 

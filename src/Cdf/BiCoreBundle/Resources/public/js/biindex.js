@@ -22,38 +22,49 @@ $(document).ready(function () {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];
         var parametri = getParametriTabellaDataset(nomecontroller);
-        var parametriform = [];
-        if (typeof parametri.parametriform !== "undefined") {
-            parametriform.push(getTabellaParameter(parametri.parametriform));
-        }
-        var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
-        $.ajax({
-            url: newurl,
-            type: "GET",
-            data: {parametriform: parametriform},
-            async: true,
-            error: function (xhr, textStatus, errorThrown) {
-                bootbox.alert({
-                    size: "large",
-                    closeButton: false,
-                    title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
-                });
-                return false;
-            },
-            beforeSend: function (xhr) {
 
-            },
-            success: function (response) {
-                $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
-                var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
-                form.replaceWith(response).promise().done(function () {
-                    formlabeladjust();
-                    $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').click();
-                });
+        if (getTabellaParameter(parametri.editinline) == 1) {
+            var elencocampinuovariga = $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
+            var nuovariga = elencocampinuovariga.closest("tr");
+            nuovariga.removeClass("sr-only");
+            abilitainputinline(parametri, elencocampinuovariga, 0);
+        } else {
+            var parametriform = [];
+            if (typeof parametri.parametriform !== "undefined") {
+                parametriform.push(getTabellaParameter(parametri.parametriform));
             }
-        });
+            var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
+            $.ajax({
+                url: newurl,
+                type: "GET",
+                data: {parametriform: parametriform},
+                async: true,
+                error: function (xhr, textStatus, errorThrown) {
+                    bootbox.alert({
+                        size: "large",
+                        closeButton: false,
+                        title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
+                        message: divboxerrori(xhr.responseText)
+                    });
+                    return false;
+                },
+                beforeSend: function (xhr) {
+
+                },
+                success: function (response) {
+                    $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
+                    var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
+                    form.replaceWith(response).promise().done(function () {
+                        formlabeladjust();
+                        $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').click();
+                    });
+                }
+            });
+        }
+
+
     });
+
     $(document).on("click", ".tabelladownload", function (e) {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];
