@@ -23,7 +23,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         //Elenco valori entity
         $crawler = $this->client->request('GET', '/' . $nomecontroller . '/lista');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $ec = count($this->em->getRepository("App:".$nomecontroller)->findAll());
+        $ec = count($this->em->getRepository("App:" . $nomecontroller)->findAll());
         $response = $this->client->getResponse();
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
@@ -144,5 +144,41 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $parametriagiorna = array("values" => array(array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => "Andrea Manzi")));
         $this->client->request('POST', '/Cliente/1/TokenNonValido/aggiorna', $parametriagiorna);
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+    }
+    public function testSecuredClienteInsertInline()
+    {
+        $this->logInAdmin();
+        $nomecontroller = 'Cliente';
+        $nominativo = "Manzi Andrea";
+        //aggiorna ajax
+        $csrfTokenInserisci = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("0");
+        $parametriinsert = array("values" => array(
+                array("fieldname" => "Cliente.nominativo", "fieldtype" => "string", "fieldvalue" => $nominativo),
+                array("fieldname" => "Cliente.datanascita", "fieldtype" => "date", "fieldvalue" => "07/01/1990"),
+                array("fieldname" => "Cliente.attivo", "fieldtype" => "boolean", "fieldvalue" => "1"),
+                array("fieldname" => "Cliente.punti", "fieldtype" => "integer", "fieldvalue" => "1")
+        ));
+        $this->client->request('POST', '/Cliente/0/' . $csrfTokenInserisci . '/aggiorna', $parametriinsert);
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
+        $this->assertJson($response->getContent());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertTrue($responseData["errcode"] == "0");
+        $this->assertTrue($responseData["message"] == "Registrazione eseguita");
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+
+        $entity = $this->em->getRepository("App:" . $nomecontroller)->findByNominativo($nominativo);
+        $this->assertSame(1, count($entity));
+
+        foreach ($entity as $clientemodificato) {
+            $this->em->remove($clientemodificato);
+            $this->em->flush();
+            $this->em->clear();
+        }
+        $entitybis = $this->em->getRepository("App:" . $nomecontroller)->findByNominativo($nominativo);
+        $this->assertSame(0, count($entitybis));
     }
 }
