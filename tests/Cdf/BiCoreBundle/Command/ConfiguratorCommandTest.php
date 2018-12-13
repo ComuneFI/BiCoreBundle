@@ -21,6 +21,8 @@ class ConfiguratorCommandTest extends WebTestCase
     public function testConfigurator()
     {
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        $conexp = static::$kernel->getContainer()->get('cdf.bicorebundle.configuratorexport');
+        $conimp = static::$kernel->getContainer()->get('cdf.bicorebundle.configuratorimport');
 
         $entity = 'Permessi';
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
@@ -28,8 +30,8 @@ class ConfiguratorCommandTest extends WebTestCase
         $kernel = static::$kernel;
         $application = new Application($kernel);
 
-        $application->add(new \Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand());
-        $application->add(new \Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand());
+        $application->add($conexp);
+        $application->add($conimp);
 
         //Test per fallimento import se non è stato fatto un export
         $commandimport = $application->find('bicorebundle:configuratorimport');

@@ -67,7 +67,10 @@ services:
         class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         public: true
         arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
-            
+    
+    Cdf\BiCoreBundle\Utils\Database\DatabaseUtils:
+        alias: cdf.bicorebundle.utility.database
+        
     #Utility entities
     cdf.bicorebundle.utility.entity:
         class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
@@ -75,7 +78,7 @@ services:
         arguments: [ '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Entity\EntityUtils:
-        public: false
+        alias: cdf.bicorebundle.utility.entity
             
     #Utility tabelle di sistema bi
     cdf.bicorebundle.utility.entity.system:
@@ -83,6 +86,9 @@ services:
         public: true
         arguments: [ '@doctrine.orm.entity_manager' ]
     
+    Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils:
+        alias: cdf.bicorebundle.utility.entity.system
+        
     #Utility export excel tabelle
     cdf.bicorebundle.utils.export.tabellaxls:
         class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
@@ -127,6 +133,9 @@ services:
         alias: fos_user.util.user_manipulator
         public: true
     
+    FOS\UserBundle\Util\UserManipulator:
+        alias: cdf.bicorebundle.fos_user.util.user_manipulator
+        
     #listener
     cdf.bicorebundle.kernel.listener.maintenance:
         class: Cdf\BiCoreBundle\Listener\MaintenanceListener
@@ -185,12 +194,20 @@ services:
         tags:
             -  { name: console.command }
             
+    cdf.bicorebundle.droptables:
+        alias: cdf.bicorebundle.command.droptables
+        public: true
+
     cdf.bicorebundle.command.install:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
         public: false
         tags:
-            -  { name: console.command }
+            -  { name: console.command, command: bicorebundle:install }
             
+    cdf.bicorebundle.install:
+        alias: cdf.bicorebundle.command.install
+        public: true
+
     cdf.bicorebundle.command.pubblicamanuale:
         class: Cdf\BiCoreBundle\Command\BiCoreBundlePubblicamanualeCommand
         public: false
@@ -201,10 +218,19 @@ services:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
         public: false
         tags:
-            -  { name: console.command }
-            
+            -  { name: console.command, command: bicorebundle:configuratorimport }
+
+    cdf.bicorebundle.configuratorimport:
+        alias: cdf.bicorebundle.command.configuratorimport
+        public: true
+
     cdf.bicorebundle.command.configuratorexport:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
         public: false
         tags:
-            -  { name: console.command }
+            -  { name: console.command, command: bicorebundle:configuratorexport }
+
+    cdf.bicorebundle.configuratorexport:
+        alias: cdf.bicorebundle.command.configuratorexport
+        public: true
+            

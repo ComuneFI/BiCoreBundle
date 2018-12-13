@@ -12,16 +12,18 @@ class ProjectPath
      *
      * @return array Ritorna l'array contenente i path
      */
-    private $container;
     private $rootdir;
     private $prjdir;
+    private $cacheDir;
+    private $logsDir;
 
-    public function __construct($container)
+    public function __construct($projectDir, $cacheDir, $logsDir)
     {
-        $this->container = $container;
-        $rootdir = dirname($this->container->get('kernel')->getRootDir());
+        $rootdir = $projectDir;
         $this->rootdir = $rootdir;
         $this->prjdir = $rootdir;
+        $this->cacheDir = $cacheDir;
+        $this->logsDir = $logsDir;
     }
     public function getRootPath()
     {
@@ -89,7 +91,7 @@ class ProjectPath
     }
     public function getCachePath()
     {
-        $cachedir = $this->container->get('kernel')->getCacheDir();
+        $cachedir = $this->cacheDir;
         if (!file_exists($cachedir)) {
             throw new \Exception("Cache non trovata", -100);
         }
@@ -97,7 +99,7 @@ class ProjectPath
     }
     public function getLogsPath()
     {
-        $logsdir = $this->container->get('kernel')->getLogDir();
+        $logsdir = $this->logsDir;
         if (!file_exists($logsdir)) {
             throw new \Exception("Logs non trovata", -100);
         }

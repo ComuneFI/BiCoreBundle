@@ -2,14 +2,23 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Doctrine\Common\Persistence\ObjectManager;
 
-class BiCoreBundleCreatedatabaseCommand extends ContainerAwareCommand
+class BiCoreBundleCreatedatabaseCommand extends Command
 {
+    private $em;
+    
+    public function __construct(ObjectManager $em)
+    {
+        $this->em = $em;
 
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
     protected function configure()
     {
         $this
@@ -17,11 +26,10 @@ class BiCoreBundleCreatedatabaseCommand extends ContainerAwareCommand
                 ->setDescription('Creazione database bi')
                 ->setHelp('Creazione di un nuovo database di bi');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->em;
         $driver = $em->getConnection()->getDriver()->getName();
 
 

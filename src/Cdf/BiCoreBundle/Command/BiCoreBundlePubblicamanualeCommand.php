@@ -2,12 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-class BiCoreBundlePubblicamanualeCommand extends ContainerAwareCommand
+class BiCoreBundlePubblicamanualeCommand extends Command
 {
 
     protected function configure()
@@ -27,7 +27,7 @@ class BiCoreBundlePubblicamanualeCommand extends ContainerAwareCommand
     {
         $filesystem = $this->getContainer()->get('filesystem');
 
-        $projectDir = $this->getContainer()->get('kernel')->getRootDir() .DIRECTORY_SEPARATOR . '..' ;
+        $projectDir = $this->getContainer()->get('kernel')->getProjectDir() .DIRECTORY_SEPARATOR . '..' ;
         $originDir = $projectDir . '/doc/manuale';
         $targetDir = $projectDir . '/public';
 

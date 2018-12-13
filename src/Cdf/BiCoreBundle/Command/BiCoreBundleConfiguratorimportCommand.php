@@ -2,16 +2,20 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Persistence\ObjectManager;
+use Cdf\BiCoreBundle\Utils\Database\DatabaseUtils;
+use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportInsertTrait;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportUpdateTrait;
 
-class BiCoreBundleConfiguratorimportCommand extends ContainerAwareCommand
+class BiCoreBundleConfiguratorimportCommand extends Command
 {
 
     use ConfiguratorimportInsertTrait,
@@ -36,16 +40,22 @@ class BiCoreBundleConfiguratorimportCommand extends ContainerAwareCommand
                 ->addOption('truncatetables', null, InputOption::VALUE_NONE, 'Esegue una truncate della tabelle')
                 ->addOption('verboso', null, InputOption::VALUE_NONE, 'Visualizza tutti i messaggi di importazione');
     }
+    public function __construct(ObjectManager $em, DatabaseUtils $dbutility, EntityUtils $entityutility, FifreeSystemTablesUtils $systementity)
+    {
+        $this->em = $em;
+        $this->dbutility = $dbutility;
+        $this->entityutility = $entityutility;
+        $this->systementity = $systementity;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');
         $this->verboso = $input->getOption('verboso');
         $this->truncatetables = $input->getOption('truncatetables');
-        $this->dbutility = $this->getContainer()->get("cdf.bicorebundle.utility.database");
-        $this->entityutility = $this->getContainer()->get("cdf.bicorebundle.utility.entity");
-        $this->systementity = $this->getContainer()->get("cdf.bicorebundle.utility.entity.system");
-        $this->em = $this->getContainer()->get("doctrine")->getManager();
 
         $this->checkSchemaStatus();
 

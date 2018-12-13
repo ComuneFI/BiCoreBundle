@@ -2,16 +2,15 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 
-class GenerateFormCommand extends ContainerAwareCommand
+class GenerateFormCommand extends Command
 {
 
     protected $apppaths;

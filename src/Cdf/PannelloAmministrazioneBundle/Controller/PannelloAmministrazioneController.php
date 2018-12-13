@@ -2,7 +2,7 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
@@ -13,7 +13,7 @@ use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazion
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Store\FlockStore;
 
-class PannelloAmministrazioneController extends AbstractController
+class PannelloAmministrazioneController extends Controller
 {
 
     protected $apppaths;

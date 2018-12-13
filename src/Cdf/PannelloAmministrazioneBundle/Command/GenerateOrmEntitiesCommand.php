@@ -2,13 +2,16 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
 
-class GenerateOrmEntitiesCommand extends ContainerAwareCommand
+class GenerateOrmEntitiesCommand extends Command
 {
 
     protected $apppaths;
@@ -24,12 +27,19 @@ class GenerateOrmEntitiesCommand extends ContainerAwareCommand
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')
         ;
     }
+    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, PannelloAmministrazioneUtils $pammutils)
+    {
+        $this->apppaths = $projectpath;
+        $this->genhelper = $genhelper;
+        $this->pammutils = $pammutils;
+        
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
-        $this->genhelper = $this->getContainer()->get("pannelloamministrazione.generatorhelper");
-        $this->pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
+
         $mwbfile = $input->getArgument('mwbfile');
 
         $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;

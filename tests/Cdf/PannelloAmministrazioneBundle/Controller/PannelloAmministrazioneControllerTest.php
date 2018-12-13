@@ -39,6 +39,7 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
 
         //Restart client per caricare il nuovo bundle
         $client->request('GET', $urlge, array("file" => "wbadmintest.mwb"));
+        dump($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 

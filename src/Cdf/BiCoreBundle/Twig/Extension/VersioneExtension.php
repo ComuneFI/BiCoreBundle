@@ -30,7 +30,7 @@ class VersioneExtension extends \Twig_Extension
         if ($cache->has("git_tag")) {
             $version = $cache->get("git_tag");
         } else {
-            $projectDir = substr($this->container->get('kernel')->getRootDir(), 0, -4);
+            $projectDir = substr($this->container->get('kernel')->getProjectDir(), 0, -4);
 
             $cmd = 'cd ' . $projectDir;
             $process = new Process($cmd . ';git describe --tags');
