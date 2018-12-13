@@ -13,7 +13,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = new \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($this->container);
+        $apppath = new \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath(self::$container);
         $checkentityprova = $apppath->getSrcPath() .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
         $checktypeprova = $apppath->getSrcPath() .
@@ -78,7 +78,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
 
 
         $this->visit($url);
-        $this->login('admin', 'admin');
+        //$this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
