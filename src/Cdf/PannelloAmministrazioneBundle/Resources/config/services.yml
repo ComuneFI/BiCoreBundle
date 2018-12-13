@@ -50,3 +50,11 @@ services:
         public: false
         tags:
             -  { name: console.command }
+
+    #Controllers
+    pannelloamministrazione.controller:
+        class: Cdf\PannelloAmministrazioneBundle\Controller\PannelloAmministrazioneController
+        public: true
+        arguments: 
+            $appname: "%bi_core.appname%"
+            $lockfile: "%bi_core.lockfile%"
