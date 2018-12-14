@@ -6,24 +6,24 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class PannelloAmministrazioneUtils
 {
 
-    private $container;
     private $apppaths;
+    private $kernel;
 
-    public function __construct($container)
+    public function __construct($kernel, ProjectPath $projectpath)
     {
-        $this->container = $container;
-        $this->apppaths = $container->get("pannelloamministrazione.projectpath");
+        $this->apppaths = $projectpath;
+        $this->kernel = $kernel;
     }
 
     public function clearcache($env = "")
     {
         if (!$env) {
-            $env = $this->container->get('kernel')->getEnvironment();
+            $env = $this->kernel->getEnvironment();
         }
 
         $command = $this->apppaths->getConsole();
@@ -59,7 +59,7 @@ class PannelloAmministrazioneUtils
 
     public function runSymfonyCommand($command, array $options = array())
     {
-        $application = new Application($this->container->get('kernel'));
+        $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
         $cmdoptions = array_merge(array('command' => $command), $options);

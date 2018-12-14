@@ -15,17 +15,15 @@ services:
             
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands:
         public: false
-        arguments:
-            ['@service_container']
 
     pannelloamministrazione.utils:
         alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
         public: true
         
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils:
-        public: true
-        arguments:
-            ['@service_container']
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        arguments: ["@kernel"]
+        public: false
 
     pannelloamministrazione.projectpath:
         alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
@@ -44,8 +42,6 @@ services:
 
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper:
         public: false
-        arguments:
-            ['@service_container']
 
     pannelloamministrazione.command.generateormentities:
         class: Cdf\PannelloAmministrazioneBundle\Command\GenerateOrmEntitiesCommand

@@ -5,17 +5,16 @@ namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use MwbExporter\Model\Table;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class GeneratorHelper
 {
 
-    private $container;
     private $apppaths;
 
-    public function __construct($container)
+    public function __construct(ProjectPath $projectpath)
     {
-        $this->container = $container;
-        $this->apppaths = $container->get("pannelloamministrazione.projectpath");
+        $this->apppaths = $projectpath;
     }
 
     public function getDestinationEntityOrmPath()
