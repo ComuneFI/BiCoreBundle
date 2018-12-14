@@ -110,6 +110,7 @@ before_script:
   
   - if [[ $SYMFONY == "4.2" ]]; then sed -i -e "s,\^3.4,\^4.2,g" $TRAVIS_BUILD_DIR/composer.json; fi
   - if [[ $SYMFONY == "4.2" ]]; then sed -i '\|"sensio\/distribution-bundle"|d' $TRAVIS_BUILD_DIR/composer.json; fi
+  - if [[ $SYMFONY == "4.2" ]]; then sed -i '\|"SensioDistributionBundle"|d' $TRAVIS_BUILD_DIR/tests/config/bundles.php; fi
 
   - chmod +x bin/console
   - "export DISPLAY=:99.0"
