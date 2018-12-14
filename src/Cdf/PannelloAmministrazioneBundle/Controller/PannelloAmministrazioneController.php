@@ -128,7 +128,7 @@ class PannelloAmministrazioneController extends Controller
             'comandishell' => $comandishell,
             'comandisymfony' => $comandisymfony,
             'iswindows' => $windows,
-            'appname'=> $this->appname
+            'appname' => $this->appname
         );
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
@@ -307,7 +307,16 @@ class PannelloAmministrazioneController extends Controller
     {
         set_time_limit(0);
         $pammutils = new PannelloAmministrazioneUtils($this->container);
-        $command = $request->get('unixcommand');
+        $unixcommand = $request->get('unixcommand');
+        $parametri = explode(" ", $unixcommand);
+        $arguments = array();
+        $command = $unixcommand;
+        if (count($parametri) > 1) {
+            $command = $parametri[0];
+            for ($index = 1; $index < count($parametri); $index++) {
+                $arguments[] = $parametri[$index];
+            }
+        }
         //Se viene lanciato il comando per cancellare il file di lock su bypassa tutto e si lancia
         $dellockfile = "DELETELOCK";
         if ($command == $dellockfile) {
@@ -319,7 +328,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $result = $pammutils->runCommand($command);
+            $result = $pammutils->runCommand($command, $arguments);
 
             $this->locksystem->release();
             // eseguito deopo la fine del comando
