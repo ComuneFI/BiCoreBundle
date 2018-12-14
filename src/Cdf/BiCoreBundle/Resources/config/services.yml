@@ -43,28 +43,24 @@ services:
             
     cdf.bicorebundle.twig.extension.versione:
         class: Cdf\BiCoreBundle\Twig\Extension\VersioneExtension
-        arguments: ['@service_container']
+        arguments: ['@kernel']
         tags:
           - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.utilita:
         class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
-        properties:
-            container: "@service_container"
+        arguments: ["@service_container"]
         tags:
           - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.headertabella:
         class: Cdf\BiCoreBundle\Twig\Extension\HeaderTabellaExtension
-        properties:
-            container: "@service_container"
         tags:
           - { name: twig.extension }
 
     #Informazioni connessione database su Web Debug Toolbar
     cdf.bicorebundle.collector.databaseinfo:
         class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
-        arguments: [ '@service_container' ]
         tags:
             - { name: data_collector , template: "BiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
             
@@ -112,17 +108,16 @@ services:
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
         class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
-        properties:
-            container: "@service_container"
-
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
         tags:
             - { name: doctrine.event_subscriber }
             
     #subscriber per aggiungere uno schema alle tabelle di bi
     cdf.bicorebundle.subscriber.schemaprefix:
         class: Cdf\BiCoreBundle\Subscriber\TableSchemaSubscriber
-        properties:
-            container: "@service_container"
+        arguments: 
+            $schemaprefix: "%bi_core.table_schema%"
         tags:
             - { name: doctrine.event_subscriber }
 

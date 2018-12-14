@@ -2,12 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-
 class HeaderTabellaExtension extends \Twig_Extension
 {
-
-    public $container;
 
     /**
      * {@inheritdoc}

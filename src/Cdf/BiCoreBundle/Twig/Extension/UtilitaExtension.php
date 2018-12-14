@@ -7,9 +7,13 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 class UtilitaExtension extends \Twig_Extension
 {
 
-    public $container;
-
-    /**
+    private $container;
+    
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+        /**
      * {@inheritdoc}
      */
     public function getFunctions()
