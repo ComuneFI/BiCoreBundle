@@ -17,11 +17,11 @@ services:
         public: false
 
     pannelloamministrazione.utils:
-        alias: Cdf\PannelloAmministrazioneBundle\Utils\Utils
+        alias: Cdf\PannelloAmministrazioneBundle\Utils\Utility
         public: true
         
-    Cdf\PannelloAmministrazioneBundle\Utils\Utils:
-        class: Cdf\PannelloAmministrazioneBundle\Utils\Utils
+    Cdf\PannelloAmministrazioneBundle\Utils\Utility:
+        class: Cdf\PannelloAmministrazioneBundle\Utils\Utility
         arguments: ["@kernel"]
         public: false
 

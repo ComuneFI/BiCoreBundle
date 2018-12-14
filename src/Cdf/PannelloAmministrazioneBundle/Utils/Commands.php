@@ -5,17 +5,17 @@ namespace Cdf\PannelloAmministrazioneBundle\Utils;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\Utils\Utils;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class Commands
 {
 
     /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
     private $apppaths;
-    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utils */
+    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utility */
     private $pammutils;
 
-    public function __construct(ProjectPath $projectpath, Utils $pautils)
+    public function __construct(ProjectPath $projectpath, Utility $pautils)
     {
         $this->apppaths = $projectpath;
         $this->pammutils = $pautils;

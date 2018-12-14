@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
-class Utils
+class Utility
 {
 
     private $apppaths;

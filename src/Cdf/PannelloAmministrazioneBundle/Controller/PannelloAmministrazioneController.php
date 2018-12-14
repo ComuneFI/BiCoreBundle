@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Store\FlockStore;
-use Cdf\PannelloAmministrazioneBundle\Utils\Utils as Pautils;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
 

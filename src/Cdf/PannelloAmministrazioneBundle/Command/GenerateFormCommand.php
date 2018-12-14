@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\Utils\Utils;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class GenerateFormCommand extends Command
@@ -32,7 +32,7 @@ class GenerateFormCommand extends Command
                 ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
     }
 
-    public function __construct($kernel, ProjectPath $projectpath, Utils $pammutils, ObjectManager $em)
+    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, ObjectManager $em)
     {
         $this->kernel = $kernel;
         $this->apppaths = $projectpath;
