@@ -26,12 +26,11 @@ class PannelloAmministrazioneUtils
             $env = $this->container->get('kernel')->getEnvironment();
         }
 
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
+        $command = $this->apppaths->getConsole();
+        $parametri = array('cache:clear','--env=' . $env);
+                
 
-        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' cache:clear '
-                . '--env=' . $env;
-
-        return self::runCommand($command);
+        return self::runCommand($command, $parametri);
     }
 
     public static function runCommand($command, $parametri = array(), $workingdir = "")
