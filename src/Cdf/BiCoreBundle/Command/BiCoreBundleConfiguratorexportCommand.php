@@ -14,6 +14,8 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 class BiCoreBundleConfiguratorexportCommand extends Command
 {
 
+    protected static $defaultName = 'bicorebundle:configuratorexport';
+
     private $entities = array();
     private $em;
     private $systementity;
@@ -22,7 +24,6 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:configuratorexport')
                 ->setDescription('Configuratore per Fifree')
                 ->setHelp('Esporta la configurazione di bi');
     }

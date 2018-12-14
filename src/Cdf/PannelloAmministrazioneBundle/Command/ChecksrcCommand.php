@@ -10,11 +10,11 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
 class ChecksrcCommand extends Command
 {
+    protected static $defaultName = 'pannelloamministrazione:checksrc';
 
     protected function configure()
     {
         $this
-                ->setName('pannelloamministrazione:checksrc')
                 ->setDescription('Controlla i sorgenti')
                 ->setHelp('Usa phpcs, phpmd, ecc per controllare il codice in src');
     }

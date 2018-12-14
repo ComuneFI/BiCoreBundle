@@ -47,7 +47,7 @@ services:
         class: Cdf\PannelloAmministrazioneBundle\Command\GenerateOrmEntitiesCommand
         public: false
         tags:
-            -  { name: console.command, command: pannelloamministrazione:generateormentities  }
+            -  { name: console.command  }
             
     pannelloamministrazione.generateormentities:
         alias: pannelloamministrazione.command.generateormentities
@@ -58,7 +58,7 @@ services:
         public: false
         arguments: ["@kernel"]
         tags:
-            -  { name: console.command, command: pannelloamministrazione:generateformcrud }
+            -  { name: console.command }
 
     pannelloamministrazione.generateform:
         alias: pannelloamministrazione.command.generateform

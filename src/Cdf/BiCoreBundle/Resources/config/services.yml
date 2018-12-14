@@ -64,34 +64,44 @@ services:
             
     #Utility database
     cdf.bicorebundle.utility.database:
-        class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
+        alias: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         public: true
-        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Database\DatabaseUtils:
-        alias: cdf.bicorebundle.utility.database
+        class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
+        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+        public: false
         
     #Utility entities
     cdf.bicorebundle.utility.entity:
-        class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
+        alias: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
         public: true
-        arguments: [ '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Entity\EntityUtils:
-        alias: cdf.bicorebundle.utility.entity
+        class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
             
     #Utility tabelle di sistema bi
     cdf.bicorebundle.utility.entity.system:
-        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        alias: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
         public: true
-        arguments: [ '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils:
-        alias: cdf.bicorebundle.utility.entity.system
+        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        public: false
+        arguments: [ '@doctrine.orm.entity_manager' ]
         
     #Utility export excel tabelle
     cdf.bicorebundle.utils.export.tabellaxls:
+        alias: Cdf\BiCoreBundle\Utils\Export\TabellaXls
+        public: true
+        
+    Cdf\BiCoreBundle\Utils\Export\TabellaXls:
         class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
+        public: false
+        bind:
+            $container: "@service_container"
 
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
@@ -189,24 +199,24 @@ services:
             -  { name: console.command }
             
     cdf.bicorebundle.command.droptables:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
+        public: true
+            
+    Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
         public: false
         tags:
             -  { name: console.command }
-            
-    cdf.bicorebundle.droptables:
-        alias: cdf.bicorebundle.command.droptables
-        public: true
 
     cdf.bicorebundle.command.install:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
+        public: true
+            
+    Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:install }
-            
-    cdf.bicorebundle.install:
-        alias: cdf.bicorebundle.command.install
-        public: true
+            -  { name: console.command}
 
     cdf.bicorebundle.command.pubblicamanuale:
         class: Cdf\BiCoreBundle\Command\BiCoreBundlePubblicamanualeCommand
@@ -215,22 +225,22 @@ services:
             -  { name: console.command }
             
     cdf.bicorebundle.command.configuratorimport:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
+        public: true
+
+    Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:configuratorimport }
-
-    cdf.bicorebundle.configuratorimport:
-        alias: cdf.bicorebundle.command.configuratorimport
-        public: true
+            -  { name: console.command }
 
     cdf.bicorebundle.command.configuratorexport:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
+        public: true
+
+    Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:configuratorexport }
-
-    cdf.bicorebundle.configuratorexport:
-        alias: cdf.bicorebundle.command.configuratorexport
-        public: true
+            -  { name: console.command }
             

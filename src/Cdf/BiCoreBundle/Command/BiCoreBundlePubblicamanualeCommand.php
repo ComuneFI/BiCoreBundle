@@ -10,10 +10,11 @@ use Symfony\Component\Finder\Finder;
 class BiCoreBundlePubblicamanualeCommand extends Command
 {
 
+    protected static $defaultName = 'bicorebundle:pubblicamanuale';
+    
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:pubblicamanuale')
                 ->setDescription('Copia il manuale dalla cartella Doc alla cartella Web')
                 ->setHelp('Estende la pubblicazione degli assets al manuale');
     }

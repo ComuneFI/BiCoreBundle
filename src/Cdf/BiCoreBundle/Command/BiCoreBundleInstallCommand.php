@@ -13,13 +13,14 @@ use FOS\UserBundle\Util\UserManipulator;
 class BiCoreBundleInstallCommand extends Command
 {
 
+    protected static $defaultName = 'bicorebundle:install';
+    
     protected $fixtureFile;
     private $usermanipulator;
 
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:install')
                 ->setDescription('Installazione ambiente bi')
                 ->setHelp('Crea il database, un utente amministratore e i dati di default')
                 ->addArgument('admin', InputArgument::REQUIRED, 'Username per amministratore')

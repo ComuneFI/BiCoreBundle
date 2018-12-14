@@ -22,12 +22,6 @@ class FifreeinstallCommandTest extends WebTestCase
     {
         $kernel = static::$kernel;
         $application = new Application($kernel);
-        $cominstall = static::$kernel->getContainer()->get('cdf.bicorebundle.install');
-        $comdroptables = static::$kernel->getContainer()->get('cdf.bicorebundle.droptables');
-
-        $application->add($cominstall);
-        $application->add(new \Cdf\BiCoreBundle\Command\BiCoreBundleDropdatabaseCommand());
-        $application->add($comdroptables);
 
         $commandimport = $application->find('bicorebundle:droptables');
         $commandTesterImport = new CommandTester($commandimport);

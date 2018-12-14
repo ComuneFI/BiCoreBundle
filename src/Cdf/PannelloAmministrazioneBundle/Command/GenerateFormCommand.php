@@ -15,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class GenerateFormCommand extends Command
 {
+    protected static $defaultName = 'pannelloamministrazione:generateformcrud';
 
     protected $apppaths;
     protected $em;
@@ -25,7 +26,6 @@ class GenerateFormCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('pannelloamministrazione:generateformcrud')
                 ->setDescription('Genera le views per il crud')
                 ->setHelp('Genera le views per il crud, <br/>bi.mwb AppBundle default [--schemaupdate]<br/>')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare')

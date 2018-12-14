@@ -13,6 +13,7 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class GenerateOrmEntitiesCommand extends Command
 {
+    protected static $defaultName = 'pannelloamministrazione:generateormentities';
 
     protected $apppaths;
     protected $genhelper;
@@ -21,7 +22,6 @@ class GenerateOrmEntitiesCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('pannelloamministrazione:generateormentities')
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
                 ->setHelp('Genera i file orm per le entities partendo da un modello workbeanch mwb, <br/>bi.mwb Fi/BiCoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')

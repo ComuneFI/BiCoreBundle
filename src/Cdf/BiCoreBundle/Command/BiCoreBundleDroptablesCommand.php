@@ -10,10 +10,11 @@ use \Doctrine\Common\Persistence\ObjectManager;
 
 class BiCoreBundleDroptablesCommand extends Command
 {
+    protected static $defaultName = 'bicorebundle:droptables';
+    
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:droptables')
                 ->setDescription('Eliminazione di tutte le tabelle bicorebundle')
                 ->setHelp('ATTENZIONE, questo comando cancellerà tutte le informazioni presenti nel database!!')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
