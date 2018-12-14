@@ -72,5 +72,4 @@ class PannelloAmministrazioneUtils
 
         return array('errcode' => ($returncode == 0 ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
     }
-
 }

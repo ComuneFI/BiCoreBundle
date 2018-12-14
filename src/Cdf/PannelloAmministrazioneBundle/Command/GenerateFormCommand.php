@@ -51,7 +51,6 @@ class GenerateFormCommand extends Command
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
 
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
         $command = $this->apppaths->getConsole();
         $arguments[] = '--env=dev';
         $arguments[] = 'make:form';
@@ -256,5 +255,4 @@ EOF;
 
         return $code;
     }
-
 }

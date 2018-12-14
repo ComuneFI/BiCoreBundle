@@ -61,7 +61,6 @@ class GenerateOrmEntitiesCommand extends Command
         $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);
 
         file_put_contents($exportJson, $exportjsonreplaced);
-        $sepchr = OsFunctions::getSeparator();
         if (OsFunctions::isWindows()) {
             $workingdir = $this->apppaths->getRootPath();
             $command = $scriptGenerator . '.bat';
@@ -69,7 +68,6 @@ class GenerateOrmEntitiesCommand extends Command
             $arguments[] = $wbFile;
             $arguments[] = $destinationPathEscaped;
         } else {
-            $phpPath = OsFunctions::getPHPExecutableFromPath();
             $workingdir = $this->apppaths->getRootPath();
             $command = $scriptGenerator;
             $arguments[] = '--config=' . $exportJson;
@@ -95,5 +93,4 @@ class GenerateOrmEntitiesCommand extends Command
         $output->writeln('<info>Entities yml create</info>');
         return 0;
     }
-
 }
