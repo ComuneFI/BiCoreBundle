@@ -15,12 +15,14 @@ class VersioneExtension extends \Twig_Extension
     {
         $this->container = $container;
     }
+
     public function getFunctions()
     {
         return array(
             new \Twig_SimpleFunction('versione_tag_git', array($this, 'versioneTagGit', 'is_safe' => array('html'))),
         );
     }
+
     public function versioneTagGit()
     {
         if ($this->isWindows()) {
@@ -31,9 +33,8 @@ class VersioneExtension extends \Twig_Extension
             $version = $cache->get("git_tag");
         } else {
             $projectDir = substr($this->container->get('kernel')->getProjectDir(), 0, -4);
-
-            $cmd = 'cd ' . $projectDir;
-            $process = new Process($cmd . ';git describe --tags');
+            $process = new Process(array("git", "describe", "--tags"));
+            $process->setWorkingDirectory($projectDir);
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
@@ -47,6 +48,7 @@ class VersioneExtension extends \Twig_Extension
         }
         return $version;
     }
+
     private function isWindows()
     {
         {

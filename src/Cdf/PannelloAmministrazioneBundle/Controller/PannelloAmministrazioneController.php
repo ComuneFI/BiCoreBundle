@@ -283,7 +283,7 @@ class PannelloAmministrazioneController extends AbstractController
     public function symfonyCommand(Request $request)
     {
         set_time_limit(0);
-        
+
         $simfonycommand = $request->get('symfonycommand');
         $comando = explode(" ", $simfonycommand);
         if (!$this->locksystem->acquire()) {
@@ -364,13 +364,10 @@ class PannelloAmministrazioneController extends AbstractController
             if (!OsFunctions::isWindows()) {
                 $this->locksystem->acquire();
                 //$phpPath = OsFunctions::getPHPExecutableFromPath();
-                $sepchr = OsFunctions::getSeparator();
-                $phpPath = OsFunctions::getPHPExecutableFromPath();
+                $command = 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
+                $process = new Process(array($command));
+                $process->setWorkingDirectory($this->apppaths->getRootPath());
 
-                $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr .
-                        $phpPath . ' ' . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
-
-                $process = new Process($command);
                 $process->run();
 
                 $this->locksystem->release();
