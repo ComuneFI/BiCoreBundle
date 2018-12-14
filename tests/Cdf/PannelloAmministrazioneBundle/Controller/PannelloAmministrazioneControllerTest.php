@@ -23,12 +23,16 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
-        $client->request('GET', $urluc, array("unixcommand" => "ls -all"));
+        $client->request('GET', $urluc, array("unixcommand" => "ls", "arguments"=> "-all"));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
         $client->request('GET', $urluc, array("unixcommand" => "lsssss -all"));
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+
+        $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
+        $client->request('GET', $urluc, array("unixcommand" => "lsss", "arguments"=> "-all"));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         $client->reload();
@@ -51,7 +55,7 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $urlgf = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateformcrud');
         $client->request('GET', $urlgf, array("entityform" => "Prova"));
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $apppath = new \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath($client->getContainer());
+        $apppath = $client->getContainer()->get('pannelloamministrazione.projectpath');
         $appbundlepath = $apppath->getSrcPath() . DIRECTORY_SEPARATOR;
         $checkentitybaseprova = $appbundlepath . "Entity" . DIRECTORY_SEPARATOR . "BaseProva.php";
         $checkentityprova = $appbundlepath . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";

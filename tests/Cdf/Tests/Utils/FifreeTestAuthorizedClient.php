@@ -13,7 +13,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
     const TIMEOUT = 4;
 
     protected $client;
-    protected $container;
+    static $container;
     
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
@@ -23,10 +23,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
 
         $this->client = static::createPantherClient();
         
-        $this->container = static::$kernel->getContainer();
-        $username4test = $this->container->getParameter('bi_core.admin4test');
-        $password4test = $this->container->getParameter('bi_core.adminpwd4test');
-        $this->em = $this->container->get("doctrine")->getManager();
+        self::$container = static::$kernel->getContainer();
+        $username4test = self::$container->getParameter('bi_core.admin4test');
+        $password4test = self::$container->getParameter('bi_core.adminpwd4test');
+        $this->em = self::$container->get("doctrine")->getManager();
         
         $testUrl = '/';
         $this->client->request('GET', $testUrl);
@@ -40,7 +40,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
-        return $this->container->get('router')->generate($name, $variables, $absolutepath);
+        return self::$container->get('router')->generate($name, $variables, $absolutepath);
     }
     protected function getContainer()
     {

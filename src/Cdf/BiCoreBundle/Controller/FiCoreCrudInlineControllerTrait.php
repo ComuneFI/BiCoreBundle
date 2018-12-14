@@ -10,8 +10,7 @@ use Cdf\BiCoreBundle\Utils\Entity\Finder;
 
 trait FiCoreCrudInlineControllerTrait
 {
-
-    private function checkAggiornaRight($id)
+    private function checkAggiornaRight($id, $token)
     {
         if ($id === 0) {
             if (!$this->getPermessi()->canCreate()) {
@@ -22,14 +21,18 @@ trait FiCoreCrudInlineControllerTrait
                 throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
             }
         }
-    }
+                $isValidToken = $this->isCsrfTokenValid($id, $token);
 
+        if (!$isValidToken) {
+            throw $this->createNotFoundException('Token non valido');
+        }
+    }
     /**
      * Inline existing table entity.
      */
     public function aggiorna(Request $request, $id, $token)
     {
-        $this->checkAggiornaRight($id);
+        $this->checkAggiornaRight($id, $token);
         $values = $request->get("values");
 
         if ($id == 0) {
@@ -40,11 +43,11 @@ trait FiCoreCrudInlineControllerTrait
 
         return $risultato;
     }
-
+    
     protected function insertinline($values, $token)
     {
 
-        $this->checkAggiornaRight(0);
+        $this->checkAggiornaRight(0, $token);
 
         /* @var $em \Doctrine\ORM\EntityManager */
         $controller = $this->getController();
@@ -55,14 +58,6 @@ trait FiCoreCrudInlineControllerTrait
         //Insert
         $entity = new $entityclass();
 
-
-        $isValidToken = $this->isCsrfTokenValid(0, $token);
-
-        if (!$isValidToken) {
-            throw $this->createNotFoundException('Token non valido');
-        }
-
-        $querydaeseguire = false;
         $accessor = PropertyAccess::createPropertyAccessor();
         foreach ($values as $value) {
             $fieldpieces = explode(".", $value["fieldname"]);
@@ -83,25 +78,20 @@ trait FiCoreCrudInlineControllerTrait
                 } else {
                     throw new \Exception($field . ' non modificabile');
                 }
-
-                $querydaeseguire = true;
             } else {
                 continue;
             }
         }
-        if ($querydaeseguire) {
-            $em->persist($entity);
-            $em->flush();
-            $em->clear();
-        }
+        $em->persist($entity);
+        $em->flush();
+        $em->clear();
 
         return new \Symfony\Component\HttpFoundation\JsonResponse(array("errcode" => 0, "message" => "Registrazione eseguita"));
     }
-
+    
     protected function updateinline($id, $values, $token)
     {
-
-        $this->checkAggiornaRight($id);
+        $this->checkAggiornaRight($id, $token);
 
         /* @var $em \Doctrine\ORM\EntityManager */
         $controller = $this->getController();
@@ -119,12 +109,6 @@ trait FiCoreCrudInlineControllerTrait
                 ->update($entityclass, "u")
                 ->where("u.id = :id")
                 ->setParameter("id", $id);
-
-        $isValidToken = $this->isCsrfTokenValid($id, $token);
-
-        if (!$isValidToken) {
-            throw $this->createNotFoundException('Token non valido');
-        }
 
         $querydaeseguire = false;
 
@@ -156,7 +140,6 @@ trait FiCoreCrudInlineControllerTrait
 
         return new \Symfony\Component\HttpFoundation\JsonResponse(array("errcode" => 0, "message" => "Registrazione eseguita"));
     }
-
     private function getValueAggiorna($field)
     {
         $fieldvalue = $field["fieldvalue"];

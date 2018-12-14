@@ -24,7 +24,7 @@ class AssetExtension extends \Twig_Extension
 
     public function assetExists($path)
     {
-        $publicRoot = realpath($this->kernel->getRootDir() . '/../public/') . DIRECTORY_SEPARATOR;
+        $publicRoot = realpath($this->kernel->getProjectDir() . '/../public/') . DIRECTORY_SEPARATOR;
         $toCheck = realpath($publicRoot . $path);
         
         // check if the file exists

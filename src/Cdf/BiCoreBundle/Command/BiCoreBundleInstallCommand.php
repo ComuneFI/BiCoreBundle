@@ -2,17 +2,19 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use FOS\UserBundle\Util\UserManipulator;
 
-class BiCoreBundleInstallCommand extends ContainerAwareCommand
+class BiCoreBundleInstallCommand extends Command
 {
 
     protected $fixtureFile;
+    private $usermanipulator;
 
     protected function configure()
     {
@@ -24,6 +26,14 @@ class BiCoreBundleInstallCommand extends ContainerAwareCommand
                 ->addArgument('adminpass', InputArgument::REQUIRED, 'Password per amministratore')
                 ->addArgument('adminemail', InputArgument::REQUIRED, 'Email per amministratore')
         ;
+    }
+
+    public function __construct(UserManipulator $usermanipulator)
+    {
+        $this->usermanipulator = $usermanipulator;
+
+        // you *must* call the parent constructor
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -67,7 +77,7 @@ class BiCoreBundleInstallCommand extends ContainerAwareCommand
         $fs = new Filesystem();
         $fs->remove($this->fixtureFile);
 
-        $userManipulator = $this->getContainer()->get('cdf.bicorebundle.fos_user.util.user_manipulator');
+        $userManipulator = $this->usermanipulator;
 
         $userManipulator->changePassword($admin, $adminpass);
     }

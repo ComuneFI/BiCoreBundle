@@ -2,13 +2,16 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\Common\Persistence\ObjectManager;
+use Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils;
+use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
-class BiCoreBundleConfiguratorexportCommand extends ContainerAwareCommand
+class BiCoreBundleConfiguratorexportCommand extends Command
 {
 
     private $entities = array();
@@ -24,14 +27,21 @@ class BiCoreBundleConfiguratorexportCommand extends ContainerAwareCommand
                 ->setHelp('Esporta la configurazione di bi');
     }
 
+    public function __construct(ObjectManager $em, EntityUtils $entityutility, FifreeSystemTablesUtils $systementity)
+    {
+        $this->em = $em;
+        $this->entityutility = $entityutility;
+        $this->systementity = $systementity;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fs = new Filesystem;
-        $this->em = $this->getContainer()->get("doctrine")->getManager();
-        $this->systementity = $this->getContainer()->get("cdf.bicorebundle.utility.entity.system");
         $this->output = $output;
 
         try {
@@ -68,9 +78,8 @@ class BiCoreBundleConfiguratorexportCommand extends ContainerAwareCommand
 
     private function exportEntity($fixturefile, $entityclass)
     {
-        $entityutility = $this->getContainer()->get("cdf.bicorebundle.utility.entity");
         $this->output->writeln("<info>Export Entity: " . $entityclass . "</info>");
-        if ($entityutility->entityExists($entityclass)) {
+        if ($this->entityutility->entityExists($entityclass)) {
             /* $hasEntityCollegate = $entityutility->entityHasJoinTables($entityclass);
               if ($hasEntityCollegate) {
               $this->output->writeln("<info>Entity " . $entityclass . " ha tabelle in join</info>");

@@ -9,7 +9,7 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 trait FiCoreCrudControllerTrait
 {
-
+    use FiCoreCrudInlineControllerTrait;
     /**
      * Displays a form to create a new table entity.
      */

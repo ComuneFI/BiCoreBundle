@@ -19,13 +19,17 @@ class PannelloAmministrazioneController extends Controller
     protected $apppaths;
     protected $locksystem;
     protected $factory;
+    private $appname;
+    private $lockfile;
 
-    public function __construct()
+    public function __construct($appname, $lockfile)
     {
         $store = new FlockStore(sys_get_temp_dir());
         $factory = new Factory($store);
         $this->locksystem = $factory->createLock('pannelloamministrazione-command');
         $this->locksystem->release();
+        $this->appname = $appname;
+        $this->lockfile = $lockfile;
     }
 
     private function findEntities()
@@ -44,7 +48,7 @@ class PannelloAmministrazioneController extends Controller
         return $entitiesprogetto;
     }
 
-    public function indexAction()
+    public function index()
     {
         $finder = new Finder();
         $fs = new Filesystem();
@@ -64,17 +68,15 @@ class PannelloAmministrazioneController extends Controller
         sort($mwbs);
         $svn = $fs->exists($projectDir . '/.svn');
         $git = $fs->exists($projectDir . '/.git');
-        $appname = $this->getParameter("bi_core.appname");
-        
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $setfilelock = "touch " . $this->getParameter("bi_core.lockfile");
-            $remfilelock = "rm " . $this->getParameter("bi_core.lockfile");
+            $setfilelock = "touch " . $this->lockfile;
+            $remfilelock = "rm " . $this->lockfile;
             $windows = false;
         } else {
             $delcmd = 'del';
-            $setfilelock = 'echo $null >> ' . $this->getParameter("bi_core.lockfile");
-            $remfilelock = "del " . $this->getParameter("bi_core.lockfile");
+            $setfilelock = 'echo $null >> ' . $this->lockfile;
+            $remfilelock = "del " . $this->lockfile;
             $windows = true;
         }
 
@@ -126,7 +128,7 @@ class PannelloAmministrazioneController extends Controller
             'comandishell' => $comandishell,
             'comandisymfony' => $comandisymfony,
             'iswindows' => $windows,
-            'appname'=> $appname
+            'appname' => $this->appname
         );
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
@@ -142,7 +144,7 @@ class PannelloAmministrazioneController extends Controller
         return "<h2 style='color: orange;'>E' già in esecuzione un comando, riprova tra qualche secondo!</h2>";
     }
 
-    public function aggiornaSchemaDatabaseAction()
+    public function aggiornaSchemaDatabase()
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -165,7 +167,7 @@ class PannelloAmministrazioneController extends Controller
 
     /* FORMS */
 
-    public function generateFormCrudAction(Request $request)
+    public function generateFormCrud(Request $request)
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -196,7 +198,7 @@ class PannelloAmministrazioneController extends Controller
 
     /* ENTITIES */
 
-    public function generateEntityAction(Request $request)
+    public function generateEntity(Request $request)
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -223,7 +225,7 @@ class PannelloAmministrazioneController extends Controller
     /**
      * @codeCoverageIgnore
      */
-    public function getVcsAction()
+    public function getVcs()
     {
         set_time_limit(0);
         $this->apppaths = $this->get("pannelloamministrazione.projectpath");
@@ -247,7 +249,7 @@ class PannelloAmministrazioneController extends Controller
      *
      * @//SuppressWarnings(PHPMD)
      */
-    public function clearCacheAction(Request $request)
+    public function clearCache(Request $request)
     {
         set_time_limit(0);
         if (!$this->locksystem->acquire()) {
@@ -272,7 +274,7 @@ class PannelloAmministrazioneController extends Controller
 
     /* CLEAR CACHE */
 
-    public function symfonyCommandAction(Request $request)
+    public function symfonyCommand(Request $request)
     {
         set_time_limit(0);
         $comando = $request->get('symfonycommand');
@@ -282,8 +284,7 @@ class PannelloAmministrazioneController extends Controller
             $this->locksystem->acquire();
             $this->apppaths = $this->get("pannelloamministrazione.projectpath");
             $pammutils = new PannelloAmministrazioneUtils($this->container);
-            $phpPath = OsFunctions::getPHPExecutableFromPath();
-            $result = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' ' . $comando);
+            $result = $pammutils->runCommand($this->apppaths->getConsole(), array($comando));
 
             $this->locksystem->release();
             if ($result['errcode'] != 0) {
@@ -302,11 +303,20 @@ class PannelloAmministrazioneController extends Controller
      *
      * @SuppressWarnings(PHPMD)
      */
-    public function unixCommandAction(Request $request)
+    public function unixCommand(Request $request)
     {
         set_time_limit(0);
         $pammutils = new PannelloAmministrazioneUtils($this->container);
-        $command = $request->get('unixcommand');
+        $unixcommand = $request->get('unixcommand');
+        $parametri = explode(" ", $unixcommand);
+        $arguments = array();
+        $command = $unixcommand;
+        if (count($parametri) > 1) {
+            $command = $parametri[0];
+            for ($index = 1; $index < count($parametri); $index++) {
+                $arguments[] = $parametri[$index];
+            }
+        }
         //Se viene lanciato il comando per cancellare il file di lock su bypassa tutto e si lancia
         $dellockfile = "DELETELOCK";
         if ($command == $dellockfile) {
@@ -318,7 +328,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $result = $pammutils->runCommand($command);
+            $result = $pammutils->runCommand($command, $arguments);
 
             $this->locksystem->release();
             // eseguito deopo la fine del comando
@@ -336,7 +346,7 @@ class PannelloAmministrazioneController extends Controller
     /**
      * @codeCoverageIgnore
      */
-    public function phpunittestAction(Request $request)
+    public function phpunittest(Request $request)
     {
         set_time_limit(0);
         $this->apppaths = $this->get("pannelloamministrazione.projectpath");

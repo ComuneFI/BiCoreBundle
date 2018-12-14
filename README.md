@@ -29,6 +29,7 @@ Per esempio, il software di gestione del Patrimonio Immobiliare è composto da m
 # Test
 
 ```
+    rm -rf symfony.lock
     rm -rf composer.lock
     rm -rf vendor
     #Scarico dipendenze

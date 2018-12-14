@@ -2,6 +2,12 @@ services:
 #    fi_pannello_amministrazione.example:
 #        class: %fi_pannello_amministrazione.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
             
     pannelloamministrazione.commands:
         class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
@@ -10,20 +16,34 @@ services:
             ['@service_container']
 
     pannelloamministrazione.utils:
+        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        public: true
+        
+    Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils:
         class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
         public: true
         arguments:
             ['@service_container']
 
     pannelloamministrazione.projectpath:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
         public: true
+    
+    Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        public: false
         arguments:
-            ['@service_container']
+            $projectDir: '%kernel.root_dir%'
+            $cacheDir: '%kernel.cache_dir%'
+            $logsDir: '%kernel.logs_dir%'
 
     pannelloamministrazione.generatorhelper:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
         public: true
+
+    Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper:
+        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        public: false
         arguments:
             ['@service_container']
 
@@ -31,13 +51,22 @@ services:
         class: Cdf\PannelloAmministrazioneBundle\Command\GenerateOrmEntitiesCommand
         public: false
         tags:
-            -  { name: console.command }
+            -  { name: console.command, command: pannelloamministrazione:generateormentities  }
             
+    pannelloamministrazione.generateormentities:
+        alias: pannelloamministrazione.command.generateormentities
+        public: true
+
     pannelloamministrazione.command.generateform:
         class: Cdf\PannelloAmministrazioneBundle\Command\GenerateFormCommand
         public: false
+        arguments: ["@kernel"]
         tags:
-            -  { name: console.command }            
+            -  { name: console.command, command: pannelloamministrazione:generateformcrud }
+
+    pannelloamministrazione.generateform:
+        alias: pannelloamministrazione.command.generateform
+        public: true
 
     pannelloamministrazione.command.checkgitversion:
         class: Cdf\PannelloAmministrazioneBundle\Command\CheckgitversionCommand
@@ -50,3 +79,11 @@ services:
         public: false
         tags:
             -  { name: console.command }
+
+    #Controllers
+    pannelloamministrazione.controller:
+        class: Cdf\PannelloAmministrazioneBundle\Controller\PannelloAmministrazioneController
+        public: true
+        arguments: 
+            $appname: "%bi_core.appname%"
+            $lockfile: "%bi_core.lockfile%"

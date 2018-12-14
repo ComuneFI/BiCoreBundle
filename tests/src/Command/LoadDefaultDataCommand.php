@@ -2,12 +2,9 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
 use App\Entity\Cliente;
 use App\Entity\Fornitore;
 use App\Entity\Prodottofornitore;
@@ -15,8 +12,9 @@ use App\Entity\Ordine;
 use App\Entity\Magazzino;
 use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
+use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadDefaultDataCommand extends ContainerAwareCommand
+class LoadDefaultDataCommand extends Command
 {
 
     protected function configure()
@@ -27,10 +25,18 @@ class LoadDefaultDataCommand extends ContainerAwareCommand
         ;
     }
 
+    public function __construct(ObjectManager $em)
+    {
+        $this->em = $em;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->em;
 
         $this->truncateTables($em, Magazzino::class);
         $this->truncateTables($em, Ordine::class);

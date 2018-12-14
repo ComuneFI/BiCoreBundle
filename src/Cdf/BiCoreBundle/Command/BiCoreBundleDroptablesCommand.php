@@ -2,12 +2,13 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use \Doctrine\Common\Persistence\ObjectManager;
 
-class BiCoreBundleDroptablesCommand extends ContainerAwareCommand
+class BiCoreBundleDroptablesCommand extends Command
 {
     protected function configure()
     {
@@ -17,10 +18,19 @@ class BiCoreBundleDroptablesCommand extends ContainerAwareCommand
                 ->setHelp('ATTENZIONE, questo comando cancellerà tutte le informazioni presenti nel database!!')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
+    
+    public function __construct(ObjectManager $em)
+    {
+        $this->em = $em;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $em = $this->em;
         $driver = $em->getConnection()->getDatabasePlatform()->getName();
 
         $force = $input->getOption('force');

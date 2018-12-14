@@ -2,22 +2,25 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
+use Doctrine\Common\Persistence\ObjectManager;
 
-class GenerateFormCommand extends ContainerAwareCommand
+class GenerateFormCommand extends Command
 {
 
     protected $apppaths;
-    protected $genhelper;
+    protected $em;
     protected $pammutils;
     private $generatemplate;
+    private $kernel;
 
     protected function configure()
     {
@@ -29,19 +32,31 @@ class GenerateFormCommand extends ContainerAwareCommand
                 ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
     }
 
+    public function __construct($kernel, ProjectPath $projectpath, PannelloAmministrazioneUtils $pammutils, ObjectManager $em)
+    {
+        $this->kernel = $kernel;
+        $this->apppaths = $projectpath;
+        $this->pammutils = $pammutils;
+        $this->em = $em;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-        $this->apppaths = $this->getContainer()->get("pannelloamministrazione.projectpath");
-        $pammutils = $this->getContainer()->get("pannelloamministrazione.utils");
 
         $bundlename = "App";
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
 
-        $phpPath = OsFunctions::getPHPExecutableFromPath();
-        $command = $phpPath . ' ' . $this->apppaths->getConsole() . ' --env=dev make:form ';
-        $resultcrud = $pammutils->runCommand($command . $entityform . "Type" . " " . $entityform);
+        $command = $this->apppaths->getConsole();
+        $arguments[] = '--env=dev';
+        $arguments[] = 'make:form';
+        $arguments[] = $entityform . "Type";
+        $arguments[] = $entityform;
+        $resultcrud = $this->pammutils->runCommand($command, $arguments);
         if ($resultcrud['errcode'] == 0) {
             $fs = new Filesystem();
             //Controller
@@ -50,12 +65,12 @@ class GenerateFormCommand extends ContainerAwareCommand
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
-            
+
             array_splice($lines, 8, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
-            
+
             array_splice($lines, 14, 0, "        \$submitparms = array("
                     . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));");
-            
+
             array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
 
             array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
@@ -110,20 +125,20 @@ class GenerateFormCommand extends ContainerAwareCommand
     private function copyTableStructureWiew($entityform)
     {
         $fs = new Filesystem();
-        /*$publicfolder = $this->apppaths->getPublicPath();
+        /* $publicfolder = $this->apppaths->getPublicPath();
 
-        if (!$fs->exists($publicfolder . "/js")) {
-            $fs->mkdir($publicfolder . "/js", 0777);
-        }
+          if (!$fs->exists($publicfolder . "/js")) {
+          $fs->mkdir($publicfolder . "/js", 0777);
+          }
 
-        if (!$fs->exists($publicfolder . "/css")) {
-            $fs->mkdir($publicfolder . "/css", 0777);
-        }*/
+          if (!$fs->exists($publicfolder . "/css")) {
+          $fs->mkdir($publicfolder . "/css", 0777);
+          } */
 
         $templatetablefolder = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
-        $crudfolder = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle')
+        $crudfolder = $this->kernel->locateResource('@BiCoreBundle')
                 . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Crud';
-        $tabellafolder = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle')
+        $tabellafolder = $this->kernel->locateResource('@BiCoreBundle')
                 . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Tabella';
 
         $fs->mirror($crudfolder, $templatetablefolder . '/Crud');
@@ -138,20 +153,19 @@ class GenerateFormCommand extends ContainerAwareCommand
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $ruoloAmm = $em->getRepository('BiCoreBundle:Ruoli')->findOneBy(array('superadmin' => true)); //SuperAdmin
+        $ruoloAmm = $this->em->getRepository('BiCoreBundle:Ruoli')->findOneBy(array('superadmin' => true)); //SuperAdmin
 
         $newPermesso = new \Cdf\BiCoreBundle\Entity\Permessi();
         $newPermesso->setCrud('crud');
         $newPermesso->setModulo($entityform);
         $newPermesso->setRuoli($ruoloAmm);
-        $em->persist($newPermesso);
-        $em->flush();
+        $this->em->persist($newPermesso);
+        $this->em->flush();
 
         $tabelle = new \Cdf\BiCoreBundle\Entity\Colonnetabelle();
         $tabelle->setNometabella($entityform);
-        $em->persist($tabelle);
-        $em->flush();
+        $this->em->persist($tabelle);
+        $this->em->flush();
     }
 
     private function getControllerCode($bundlename, $tabella)
