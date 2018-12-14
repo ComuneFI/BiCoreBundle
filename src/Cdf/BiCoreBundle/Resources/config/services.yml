@@ -75,7 +75,7 @@ services:
     
     Cdf\BiCoreBundle\Utils\Database\DatabaseUtils:
         class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
-        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
+        arguments: [ '@kernel', '@doctrine.orm.entity_manager' ]
         public: false
         
     #Utility entities
