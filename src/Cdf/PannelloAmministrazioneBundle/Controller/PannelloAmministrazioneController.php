@@ -284,8 +284,7 @@ class PannelloAmministrazioneController extends Controller
             $this->locksystem->acquire();
             $this->apppaths = $this->get("pannelloamministrazione.projectpath");
             $pammutils = new PannelloAmministrazioneUtils($this->container);
-            $phpPath = OsFunctions::getPHPExecutableFromPath();
-            $result = $pammutils->runCommand($phpPath . ' ' . $this->apppaths->getConsole() . ' ' . $comando);
+            $result = $pammutils->runCommand($this->apppaths->getConsole(), array($comando));
 
             $this->locksystem->release();
             if ($result['errcode'] != 0) {
