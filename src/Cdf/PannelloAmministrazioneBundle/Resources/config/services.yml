@@ -33,7 +33,7 @@ services:
         class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
         public: false
         arguments:
-            $projectDir: '%kernel.project_dir%'
+            $projectDir: '%kernel.root_dir%'
             $cacheDir: '%kernel.cache_dir%'
             $logsDir: '%kernel.logs_dir%'
 
@@ -53,15 +53,20 @@ services:
         tags:
             -  { name: console.command, command: pannelloamministrazione:generateormentities  }
             
-    cdf.bicorebundle.generateormentities:
+    pannelloamministrazione.generateormentities:
         alias: pannelloamministrazione.command.generateormentities
         public: true
 
     pannelloamministrazione.command.generateform:
         class: Cdf\PannelloAmministrazioneBundle\Command\GenerateFormCommand
         public: false
+        arguments: ["@kernel"]
         tags:
-            -  { name: console.command }            
+            -  { name: console.command, command: pannelloamministrazione:generateformcrud }
+
+    pannelloamministrazione.generateform:
+        alias: pannelloamministrazione.command.generateform
+        public: true
 
     pannelloamministrazione.command.checkgitversion:
         class: Cdf\PannelloAmministrazioneBundle\Command\CheckgitversionCommand

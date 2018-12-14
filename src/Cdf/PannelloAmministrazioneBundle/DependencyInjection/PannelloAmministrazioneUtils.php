@@ -19,6 +19,7 @@ class PannelloAmministrazioneUtils
         $this->container = $container;
         $this->apppaths = $container->get("pannelloamministrazione.projectpath");
     }
+
     public function clearcache($env = "")
     {
         if (!$env) {
@@ -32,10 +33,14 @@ class PannelloAmministrazioneUtils
 
         return self::runCommand($command);
     }
-    public static function runCommand($command)
+
+    public static function runCommand($command, $parametri = array(), $workingdir = "")
     {
         /* @var $process \Symfony\Component\Process\Process */
-        $process = new Process($command);
+        $process = new Process(array_merge(array($command), $parametri));
+        if ($workingdir) {
+            $process->setWorkingDirectory($workingdir);
+        }
         $process->setTimeout(60 * 60 * 24);
         $process->run();
 
@@ -52,6 +57,7 @@ class PannelloAmministrazioneUtils
 
         return $return;
     }
+
     public function runSymfonyCommand($command, array $options = array())
     {
         $application = new Application($this->container->get('kernel'));
@@ -66,4 +72,5 @@ class PannelloAmministrazioneUtils
 
         return array('errcode' => ($returncode == 0 ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
     }
+
 }

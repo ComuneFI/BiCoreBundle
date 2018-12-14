@@ -19,9 +19,8 @@ class ProjectPath
 
     public function __construct($projectDir, $cacheDir, $logsDir)
     {
-        $rootdir = $projectDir;
-        $this->rootdir = $rootdir;
-        $this->prjdir = $rootdir;
+        $this->prjdir = dirname($projectDir);
+        $this->rootdir = dirname($projectDir);
         $this->cacheDir = $cacheDir;
         $this->logsDir = $logsDir;
     }

@@ -27,15 +27,17 @@ class GenerateOrmEntitiesCommand extends Command
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')
         ;
     }
+
     public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, PannelloAmministrazioneUtils $pammutils)
     {
         $this->apppaths = $projectpath;
         $this->genhelper = $genhelper;
         $this->pammutils = $pammutils;
-        
+
         // you *must* call the parent constructor
         parent::__construct();
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
@@ -51,9 +53,31 @@ class GenerateOrmEntitiesCommand extends Command
 
         $destinationPath = $this->genhelper->getDestinationEntityOrmPath();
 
-        $command = $this->getExportJsonCommand($wbFile);
-        
-        $schemaupdateresult = $this->pammutils->runCommand($command);
+        $exportJson = $this->genhelper->getExportJsonFile();
+        $scriptGenerator = $this->genhelper->getScriptGenerator();
+        $destinationPathEscaped = $this->genhelper->getDestinationEntityOrmPath();
+        $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
+
+        $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);
+
+        file_put_contents($exportJson, $exportjsonreplaced);
+        $sepchr = OsFunctions::getSeparator();
+        if (OsFunctions::isWindows()) {
+            $workingdir = $this->apppaths->getRootPath();
+            $command = $scriptGenerator . '.bat';
+            $arguments[] = '--config=' . $exportJson;
+            $arguments[] = $wbFile;
+            $arguments[] = $destinationPathEscaped;
+        } else {
+            $phpPath = OsFunctions::getPHPExecutableFromPath();
+            $workingdir = $this->apppaths->getRootPath();
+            $command = $scriptGenerator;
+            $arguments[] = '--config=' . $exportJson;
+            $arguments[] = $wbFile;
+            $arguments[] = $destinationPathEscaped;
+        }
+
+        $schemaupdateresult = $this->pammutils->runCommand($command, $arguments, $workingdir);
         if ($schemaupdateresult["errcode"] < 0) {
             $output->writeln($schemaupdateresult["message"]);
             return 1;
@@ -62,7 +86,6 @@ class GenerateOrmEntitiesCommand extends Command
         }
 
         $this->genhelper->removeExportJsonFile();
-
         $tablecheck = $this->genhelper->checktables($destinationPath, $wbFile, $output);
 
         if ($tablecheck < 0) {
@@ -72,30 +95,5 @@ class GenerateOrmEntitiesCommand extends Command
         $output->writeln('<info>Entities yml create</info>');
         return 0;
     }
-    private function getExportJsonCommand($wbFile)
-    {
-        $exportJson = $this->genhelper->getExportJsonFile();
-        $scriptGenerator = $this->genhelper->getScriptGenerator();
-        $destinationPathEscaped = $this->genhelper->getDestinationEntityOrmPath();
-        $exportjsonfile = $this->genhelper->getJsonMwbGenerator();
-        
-        $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);
-        
-        file_put_contents($exportJson, $exportjsonreplaced);
-        $sepchr = OsFunctions::getSeparator();
-        if (OsFunctions::isWindows()) {
-            $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                    . $scriptGenerator . '.bat '
-                    . ' --config=' .
-                    $exportJson . ' ' . $wbFile . ' ' . $destinationPathEscaped;
-        } else {
-            $phpPath = OsFunctions::getPHPExecutableFromPath();
-            $command = 'cd ' . $this->apppaths->getRootPath() . $sepchr
-                    . $phpPath . ' ' . $scriptGenerator . ' '
-                    . ' --config=' .
-                    $exportJson . ' ' . $wbFile . ' ' . $destinationPathEscaped;
-        }
 
-        return $command;
-    }
 }

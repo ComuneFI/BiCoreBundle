@@ -21,7 +21,7 @@
         "version": "v2.10.0"
     },
     "doctrine/dbal": {
-        "version": "v2.9.0"
+        "version": "v2.9.1"
     },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
@@ -75,7 +75,7 @@
         "version": "1.6.0"
     },
     "fi/bootstrapitaliabundle": {
-        "version": "v0.27.1"
+        "version": "v0.27.1.1"
     },
     "fi/osbundle": {
         "version": "2.0.5"
