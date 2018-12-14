@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
 
 class ChecksrcCommand extends Command
 {
@@ -19,16 +20,23 @@ class ChecksrcCommand extends Command
     }
 
     // @codeCoverageIgnoreStart
+    public function __construct(ProjectPath $projectpath)
+    {
+        $this->apppaths = $projectpath;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
-        $prjpath = $container->get("pannelloamministrazione.projectpath");
+        $prjpath = $this->apppaths;
         $vendorBin = $prjpath->getVendorBinPath() . "/";
         $srcPath = $prjpath->getSrcPath();
         $rootPath = $prjpath->getRootPath();
 
         /* phpcpd */
-        $phpcpdcmd = $vendorBin . "phpcpd " . $srcPath;
+        $phpcpdcmd = array($vendorBin . "phpcpd", $srcPath);
         $phpcpdoutput = $this->runcmd($phpcpdcmd);
         if (!$phpcpdoutput) {
             $output->writeln("phpmd: OK");
@@ -42,7 +50,7 @@ class ChecksrcCommand extends Command
         /* phpcpd */
 
         /* phpcs */
-        $phpcscmd = $vendorBin . "phpcs --standard=" . $rootPath . "/tools/phpcs/ruleset.xml  --extensions=php " . $srcPath;
+        $phpcscmd = array($vendorBin . "phpcs", "--standard=" . $rootPath. "/../tools/phpcs/ruleset.xml", "--extensions=php", $srcPath);
         $phpcsoutput = $this->runcmd($phpcscmd);
         if (!$phpcsoutput) {
             $output->writeln("phpcs: OK");
@@ -54,7 +62,7 @@ class ChecksrcCommand extends Command
         /* phpcs */
 
         /* phpmd */
-        $phpmdcmd = $vendorBin . "phpmd " . $srcPath . " text " . $rootPath . "/tools/phpmd/ruleset.xml";
+        $phpmdcmd = array($vendorBin . "phpmd", $srcPath , "text", $rootPath . "/../tools/phpmd/ruleset.xml");
         $phpmdoutput = $this->runcmd($phpmdcmd);
         if (!$phpmdoutput) {
             $output->writeln("phpmd: OK");
@@ -76,5 +84,6 @@ class ChecksrcCommand extends Command
         }
         return $out;
     }
+
     // @codeCoverageIgnoreEnd
 }
