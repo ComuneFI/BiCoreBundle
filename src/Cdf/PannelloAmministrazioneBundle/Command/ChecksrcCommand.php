@@ -72,7 +72,7 @@ class ChecksrcCommand extends Command
         /* phpmd */
     }
 
-    private function runcmd($cmd)
+    private function runcmd(Array $cmd)
     {
         $process = new Process($cmd);
         $process->setTimeout(60 * 100);
