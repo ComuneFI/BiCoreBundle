@@ -22,6 +22,15 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
+        $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
+        $client->request('GET', $urlsc, array("symfonycommand" => "list --env=test"));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
+        $client->request('GET', $urlsc, array("symfonycommand" => "lista --env=test"));
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
         $client->request('GET', $urluc, array("unixcommand" => "ls", "arguments"=> "-all"));
         $this->assertTrue($client->getResponse()->isSuccessful());
