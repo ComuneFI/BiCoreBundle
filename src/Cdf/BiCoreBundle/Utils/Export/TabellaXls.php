@@ -8,9 +8,11 @@ use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 
 class TabellaXls
 {
-    public function __construct($container)
+    private $tableprefix;
+
+    public function __construct($tableprefix)
     {
-        $this->container = $container;
+        $this->tableprefix = $tableprefix;
     }
     
     public function esportaexcel($parametri = array())
@@ -89,7 +91,7 @@ class TabellaXls
             $col = 1;
             foreach ($header as $colonnatestata => $valorecolonnatestata) {
                 if ($valorecolonnatestata["escluso"] === false) {
-                    $dfr = new DoctrineFieldReader($this->container);
+                    $dfr = new DoctrineFieldReader($this->tableprefix);
 
                     $decodiche = isset($valorecolonnatestata["decodifiche"])?$valorecolonnatestata["decodifiche"]:null;
                     $oggetto = $dfr->getField2Object($colonnatestata, $riga, $decodiche);

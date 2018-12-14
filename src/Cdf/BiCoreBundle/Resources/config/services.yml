@@ -7,14 +7,14 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
     #cache
-    Cdf\BiCoreBundle\Cache\CacheClearer:
-        tags: [kernel.cache_clearer]
-        public: false
-
     cdf.bicorebundle.cache.clearer:
         alias: Cdf\BiCoreBundle\Cache\CacheClearer
         public: true
         
+    Cdf\BiCoreBundle\Cache\CacheClearer:
+        tags: [kernel.cache_clearer]
+        public: false
+
     #twig extension
     cdf.bicorebundle.twig.extension.asset:
         class: Cdf\BiCoreBundle\Twig\Extension\AssetExtension
@@ -29,9 +29,15 @@ services:
             - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.objecttotabella:
+        alias: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
+        public: true
+            
+    Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension:
         class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
-        properties:
-            container: "@service_container"
+        public: false
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
+
         tags:
             - { name: twig.extension }
             
@@ -100,8 +106,8 @@ services:
     Cdf\BiCoreBundle\Utils\Export\TabellaXls:
         class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
         public: false
-        bind:
-            $container: "@service_container"
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
 
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
@@ -128,8 +134,15 @@ services:
         - { name: form.type, alias: entity_hidden }
         
     cdf.bicorebundle.utils.entity.doctrinefieldreader:
+        alias: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
+        public: true
+        
+    Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader:
         class: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
-
+        public: false
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
+        
     #Servizi fos user bundle usato principalmente per i test
     cdf.bicorebundle.fos_user.security.login_manager:
         alias: fos_user.security.login_manager

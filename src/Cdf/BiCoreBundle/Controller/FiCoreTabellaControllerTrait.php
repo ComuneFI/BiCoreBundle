@@ -89,7 +89,7 @@ trait FiCoreTabellaControllerTrait
                 'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
                 'nomecontroller' => ParametriTabella::getParameter($parametripassati["nomecontroller"]),
             );
-            $xls = new TabellaXls($this->container);
+            $xls = $this->get("cdf.bicorebundle.utils.export.tabellaxls");
             $filexls = $xls->esportaexcel($parametritabella);
             if (file_exists($filexls)) {
                 $response = array(

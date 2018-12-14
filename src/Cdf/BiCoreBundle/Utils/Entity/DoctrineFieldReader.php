@@ -5,11 +5,11 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 class DoctrineFieldReader
 {
 
-    public $container;
-    
-    public function __construct($container)
+    private $tableprefix;
+
+    public function __construct($tableprefix)
     {
-        $this->container = $container;
+        $this->tableprefix = $tableprefix;
     }
     
     public function getField2Object($fieldname, $object, $decodifiche = null)
@@ -17,7 +17,7 @@ class DoctrineFieldReader
         $property = "";
         $field = "";
         $propertyfound = false;
-        $subfields = explode(".", str_replace($this->container->getParameter("bi_core.table_prefix"), "", $fieldname));
+        $subfields = explode(".", str_replace($this->tableprefix, "", $fieldname));
         foreach ($subfields as $field) {
             $property = $this->getObjectProperty($field, $object);
             if ($property) {
