@@ -10,8 +10,11 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
             
     pannelloamministrazione.commands:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
         public: true
+            
+    Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands:
+        public: false
         arguments:
             ['@service_container']
 
@@ -20,7 +23,6 @@ services:
         public: true
         
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
         public: true
         arguments:
             ['@service_container']
@@ -30,7 +32,6 @@ services:
         public: true
     
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
         public: false
         arguments:
             $projectDir: '%kernel.root_dir%'
@@ -42,7 +43,6 @@ services:
         public: true
 
     Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
         public: false
         arguments:
             ['@service_container']

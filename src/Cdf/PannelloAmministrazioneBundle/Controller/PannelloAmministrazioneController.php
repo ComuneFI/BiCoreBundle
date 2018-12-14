@@ -2,27 +2,31 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils as Pautils;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Store\FlockStore;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands as Pacmd;
 
-class PannelloAmministrazioneController extends Controller
+class PannelloAmministrazioneController extends AbstractController
 {
 
-    protected $apppaths;
+    private $apppaths;
+    private $pacommands;
+    private $pautils;
     protected $locksystem;
     protected $factory;
     private $appname;
     private $lockfile;
 
-    public function __construct($appname, $lockfile)
+    public function __construct($appname, $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils)
     {
         $store = new FlockStore(sys_get_temp_dir());
         $factory = new Factory($store);
@@ -30,6 +34,9 @@ class PannelloAmministrazioneController extends Controller
         $this->locksystem->release();
         $this->appname = $appname;
         $this->lockfile = $lockfile;
+        $this->apppaths = $projectpath;
+        $this->pacommands = $pacommands;
+        $this->pautils = $pautils;
     }
 
     private function findEntities()
@@ -52,7 +59,6 @@ class PannelloAmministrazioneController extends Controller
     {
         $finder = new Finder();
         $fs = new Filesystem();
-        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
 
         $projectDir = $this->apppaths->getRootPath();
         $docDir = $this->apppaths->getDocPath();
@@ -150,7 +156,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->get("pannelloamministrazione.commands");
+            $command = $this->pacommands;
             $result = $command->aggiornaSchemaDatabase();
 
             $this->locksystem->release();
@@ -176,7 +182,7 @@ class PannelloAmministrazioneController extends Controller
             $generatemplate = $request->get('generatemplate') === 'true' ? true : false;
             $this->locksystem->acquire();
 
-            $command = $this->get("pannelloamministrazione.commands");
+            $command = $this->pacommands;
             $result = $command->generateFormCrud($entityform, $generatemplate);
 
             $this->locksystem->release();
@@ -205,7 +211,7 @@ class PannelloAmministrazioneController extends Controller
         } else {
             $this->locksystem->acquire();
             $wbFile = $request->get('file');
-            $command = $this->get("pannelloamministrazione.commands");
+            $command = $this->pacommands;
             $result = $command->generateEntity($wbFile);
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
             $this->locksystem->release();
@@ -228,12 +234,12 @@ class PannelloAmministrazioneController extends Controller
     public function getVcs()
     {
         set_time_limit(0);
-        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
+        $this->apppaths = $this->apppaths;
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->get("pannelloamministrazione.commands");
+            $command = $this->pacommands;
             $result = $command->getVcs();
             $this->locksystem->release();
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
@@ -256,7 +262,7 @@ class PannelloAmministrazioneController extends Controller
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $command = $this->get("pannelloamministrazione.commands");
+            $command = $this->pacommands;
             $result = $command->clearcache();
 
             $this->locksystem->release();
@@ -277,14 +283,16 @@ class PannelloAmministrazioneController extends Controller
     public function symfonyCommand(Request $request)
     {
         set_time_limit(0);
-        $comando = $request->get('symfonycommand');
+        
+        $simfonycommand = $request->get('symfonycommand');
+        $comando = explode(" ", $simfonycommand);
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $this->apppaths = $this->get("pannelloamministrazione.projectpath");
-            $pammutils = new PannelloAmministrazioneUtils($this->container);
-            $result = $pammutils->runCommand($this->apppaths->getConsole(), array($comando));
+            $this->apppaths = $this->apppaths;
+            $pammutils = $this->pautils;
+            $result = $pammutils->runCommand($this->apppaths->getConsole(), $comando);
 
             $this->locksystem->release();
             if ($result['errcode'] != 0) {
@@ -306,7 +314,7 @@ class PannelloAmministrazioneController extends Controller
     public function unixCommand(Request $request)
     {
         set_time_limit(0);
-        $pammutils = new PannelloAmministrazioneUtils($this->container);
+        $pammutils = $this->pautils;
         $unixcommand = $request->get('unixcommand');
         $parametri = explode(" ", $unixcommand);
         $arguments = array();
@@ -349,7 +357,7 @@ class PannelloAmministrazioneController extends Controller
     public function phpunittest(Request $request)
     {
         set_time_limit(0);
-        $this->apppaths = $this->get("pannelloamministrazione.projectpath");
+        $this->apppaths = $this->apppaths;
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
