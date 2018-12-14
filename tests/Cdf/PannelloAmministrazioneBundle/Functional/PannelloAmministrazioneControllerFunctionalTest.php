@@ -13,7 +13,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = new \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath(self::$container);
+        $apppath = self::$container->get("pannelloamministrazione.projectpath");
         $checkentityprova = $apppath->getSrcPath() .
                 DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
         $checktypeprova = $apppath->getSrcPath() .
