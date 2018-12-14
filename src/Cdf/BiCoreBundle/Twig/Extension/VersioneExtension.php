@@ -50,13 +50,13 @@ class VersioneExtension extends \Twig_Extension
     }
 
     private function isWindows()
-    { {
-            if (PHP_OS == 'WINNT') {
-                return true;
-            } else {
-                return false;
-            }
+    {
+        {
+        if (PHP_OS == 'WINNT') {
+            return true;
+        } else {
+            return false;
+        }
         }
     }
-
 }
