@@ -1,21 +1,21 @@
 <?php
 
-namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utils;
 
-class PannelloamministrazioneCommands
+class Commands
 {
 
-    /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath */
+    /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
     private $apppaths;
-    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils */
+    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utils */
     private $pammutils;
 
-    public function __construct(ProjectPath $projectpath, PannelloAmministrazioneUtils $pautils)
+    public function __construct(ProjectPath $projectpath, Utils $pautils)
     {
         $this->apppaths = $projectpath;
         $this->pammutils = $pautils;

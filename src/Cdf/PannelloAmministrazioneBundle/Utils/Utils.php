@@ -1,14 +1,14 @@
 <?php
 
-namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
-class PannelloAmministrazioneUtils
+class Utils
 {
 
     private $apppaths;

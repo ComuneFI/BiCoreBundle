@@ -10,26 +10,26 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
             
     pannelloamministrazione.commands:
-        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands
+        alias: Cdf\PannelloAmministrazioneBundle\Utils\Commands
         public: true
             
-    Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloamministrazioneCommands:
+    Cdf\PannelloAmministrazioneBundle\Utils\Commands:
         public: false
 
     pannelloamministrazione.utils:
-        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+        alias: Cdf\PannelloAmministrazioneBundle\Utils\Utils
         public: true
         
-    Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils:
-        class: Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils
+    Cdf\PannelloAmministrazioneBundle\Utils\Utils:
+        class: Cdf\PannelloAmministrazioneBundle\Utils\Utils
         arguments: ["@kernel"]
         public: false
 
     pannelloamministrazione.projectpath:
-        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath
+        alias: Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath
         public: true
     
-    Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath:
+    Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath:
         public: false
         arguments:
             $projectDir: '%kernel.root_dir%'
@@ -37,10 +37,10 @@ services:
             $logsDir: '%kernel.logs_dir%'
 
     pannelloamministrazione.generatorhelper:
-        alias: Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper
+        alias: Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper
         public: true
 
-    Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper:
+    Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper:
         public: false
 
     pannelloamministrazione.command.generateormentities:

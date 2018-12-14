@@ -1,11 +1,11 @@
 <?php
 
-namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use MwbExporter\Model\Table;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
 class GeneratorHelper
 {

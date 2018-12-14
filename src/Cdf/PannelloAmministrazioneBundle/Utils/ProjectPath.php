@@ -1,6 +1,6 @@
 <?php
 
-namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 class ProjectPath
 {

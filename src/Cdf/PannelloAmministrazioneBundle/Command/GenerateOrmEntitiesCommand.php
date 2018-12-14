@@ -7,9 +7,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utils;
 
 class GenerateOrmEntitiesCommand extends Command
 {
@@ -28,7 +28,7 @@ class GenerateOrmEntitiesCommand extends Command
         ;
     }
 
-    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, PannelloAmministrazioneUtils $pammutils)
+    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, Utils $pammutils)
     {
         $this->apppaths = $projectpath;
         $this->genhelper = $genhelper;
