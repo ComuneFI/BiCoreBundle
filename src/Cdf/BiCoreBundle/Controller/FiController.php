@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils;
+use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +15,7 @@ class FiController extends AbstractController
     protected $controller;
     protected $permessi;
 
-    public function __construct(TokenStorageInterface $user, PermessiUtils $permessi)
+    public function __construct(TokenStorageInterface $user, PermessiManager $permessi)
     {
         $matches = array();
         $controllo = new \ReflectionClass(get_class($this));

@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
 /**
  * @property \Doctrine\ORM\EntityManager $em
- * @property \Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils $permessi
+ * @property \Cdf\BiCoreBundle\Service\Permessi\PermessiManager $permessi
  * @property \Symfony\Component\Security\Core\Security $user
  */
 

@@ -6,13 +6,13 @@
  * and open the template in the editor.
  */
 
-namespace Cdf\BiCoreBundle\Utils\Permessi;
+namespace Cdf\BiCoreBundle\Service\Permessi;
 
 use Cdf\BiCoreBundle\Entity\Permessi;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class PermessiUtils
+class PermessiManager
 {
     public function __construct(ObjectManager $em, TokenStorageInterface $user)
     {
