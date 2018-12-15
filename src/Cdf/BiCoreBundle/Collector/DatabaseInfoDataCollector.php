@@ -5,26 +5,27 @@ namespace Cdf\BiCoreBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
-    protected $container;
+    /* @var $em \Doctrine\ORM\EntityManager */
+    private $em;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ObjectManager $em)
     {
-        $this->container = $container;
+        $this->em = $em;
     }
 
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'database_driver' => $this->container->get('database_connection')->getDriver()->getName(),
-            'database_host' => $this->container->get('database_connection')->getHost(),
-            'database_port' => $this->container->get('database_connection')->getPort(),
-            'database_name' => $this->container->get('database_connection')->getDatabase(),
-            'database_user' => $this->container->get('database_connection')->getUsername(),
-            'database_password' => $this->container->get('database_connection')->getPassword(),
+            'database_driver' => $this->em->getConnection()->getDriver()->getName(),
+            'database_host' => $this->em->getConnection()->getHost(),
+            'database_port' => $this->em->getConnection()->getPort(),
+            'database_name' => $this->em->getConnection()->getDatabase(),
+            'database_user' => $this->em->getConnection()->getUsername(),
+            'database_password' => $this->em->getConnection()->getPassword(),
         );
     }
 

@@ -10,6 +10,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BiCoreBundleCreatedatabaseCommand extends Command
 {
+    protected static $defaultName = 'bicorebundle:createdatabase';
+
     private $em;
     
     public function __construct(ObjectManager $em)
@@ -22,7 +24,6 @@ class BiCoreBundleCreatedatabaseCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:createdatabase')
                 ->setDescription('Creazione database bi')
                 ->setHelp('Creazione di un nuovo database di bi');
     }

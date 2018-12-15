@@ -6,18 +6,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class DatabaseUtils
 {
 
-    private $container;
     /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
+    private $kernel;
 
-    public function __construct(Container $container)
+    public function __construct($kernel, ObjectManager $em)
     {
-        $this->container = $container;
-        $this->em = $this->container->get("doctrine")->getManager();
+        $this->kernel = $kernel;
+        $this->em = $em;
     }
 
     public function getFieldType($entity, $field)
@@ -105,15 +106,14 @@ class DatabaseUtils
 
     public function isSchemaChanged()
     {
-        $kernel = $this->container->get("kernel");
-        $application = new Application($kernel);
+        $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput(array(
             'command' => 'doctrine:schema:update',
             '--dump-sql' => true,
             '--no-debug' => true,
-            '--env' => $kernel->getEnvironment(),
+            '--env' => $this->kernel->getEnvironment(),
         ));
 
         // You can use NullOutput() if you don't need the output

@@ -9,11 +9,11 @@ use Symfony\Component\Cache\Simple\FilesystemCache;
 class VersioneExtension extends \Twig_Extension
 {
 
-    protected $container;
+    private $kernel;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct($kernel)
     {
-        $this->container = $container;
+        $this->kernel = $kernel;
     }
 
     public function getFunctions()
@@ -32,7 +32,7 @@ class VersioneExtension extends \Twig_Extension
         if ($cache->has("git_tag")) {
             $version = $cache->get("git_tag");
         } else {
-            $projectDir = $this->container->get('kernel')->getProjectDir();
+            $projectDir = $this->kernel->getProjectDir();
             $process = new Process(array("git", "describe", "--tags"));
             $process->setWorkingDirectory($projectDir);
             $process->setTimeout(60 * 100);

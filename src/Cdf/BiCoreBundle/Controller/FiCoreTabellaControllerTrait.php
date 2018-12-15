@@ -5,12 +5,14 @@ namespace Cdf\BiCoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use Cdf\BiCoreBundle\Utils\Export\TabellaXls;
 use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Cdf\BiCoreBundle\Utils\Export\TabellaXls;
 
 trait FiCoreTabellaControllerTrait
 {
+    private $tabellaxls;
+    
     public function tabella(Request $request)
     {
         if (!$this->permessi->canRead()) {
@@ -72,6 +74,12 @@ trait FiCoreTabellaControllerTrait
                         )
         );
     }
+
+    public function setTabellaxls(TabellaXls $tabellaxls)
+    {
+        $this->tabellaxls = $tabellaxls;
+    }
+
     public function exportXls(Request $request)
     {
         $doctrine = $this->get("doctrine");
@@ -89,8 +97,7 @@ trait FiCoreTabellaControllerTrait
                 'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
                 'nomecontroller' => ParametriTabella::getParameter($parametripassati["nomecontroller"]),
             );
-            $xls = new TabellaXls($this->container);
-            $filexls = $xls->esportaexcel($parametritabella);
+            $filexls = $this->tabellaxls->esportaexcel($parametritabella);
             if (file_exists($filexls)) {
                 $response = array(
                     'status' => '200',

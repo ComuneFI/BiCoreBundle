@@ -1,25 +1,26 @@
 <?php
 
-namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
+namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
-class PannelloamministrazioneCommands
+class Commands
 {
 
-    private $container;
-    /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath */
+    /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
     private $apppaths;
-    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils */
+    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utility */
     private $pammutils;
 
-    public function __construct($container)
+    public function __construct(ProjectPath $projectpath, Utility $pautils)
     {
-        $this->container = $container;
-        $this->apppaths = $container->get("pannelloamministrazione.projectpath");
-        $this->pammutils = $container->get("pannelloamministrazione.utils");
+        $this->apppaths = $projectpath;
+        $this->pammutils = $pautils;
     }
+
 
     // @codeCoverageIgnoreStart
     public function getVcs()

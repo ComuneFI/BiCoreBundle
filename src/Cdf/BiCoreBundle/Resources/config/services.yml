@@ -7,14 +7,14 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
     #cache
-    Cdf\BiCoreBundle\Cache\CacheClearer:
-        tags: [kernel.cache_clearer]
-        public: false
-
     cdf.bicorebundle.cache.clearer:
         alias: Cdf\BiCoreBundle\Cache\CacheClearer
         public: true
         
+    Cdf\BiCoreBundle\Cache\CacheClearer:
+        tags: [kernel.cache_clearer]
+        public: false
+
     #twig extension
     cdf.bicorebundle.twig.extension.asset:
         class: Cdf\BiCoreBundle\Twig\Extension\AssetExtension
@@ -29,84 +29,94 @@ services:
             - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.objecttotabella:
+        alias: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
+        public: true
+            
+    Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension:
         class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
-        properties:
-            container: "@service_container"
+        public: false
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
+
         tags:
             - { name: twig.extension }
             
     cdf.bicorebundle.twig.extension.versione:
         class: Cdf\BiCoreBundle\Twig\Extension\VersioneExtension
-        arguments: ['@service_container']
+        arguments: ['@kernel']
         tags:
           - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.utilita:
         class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
-        properties:
-            container: "@service_container"
+        arguments: ["@service_container"]
         tags:
           - { name: twig.extension }
 
     cdf.bicorebundle.twig.extension.headertabella:
         class: Cdf\BiCoreBundle\Twig\Extension\HeaderTabellaExtension
-        properties:
-            container: "@service_container"
         tags:
           - { name: twig.extension }
 
     #Informazioni connessione database su Web Debug Toolbar
     cdf.bicorebundle.collector.databaseinfo:
         class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
-        arguments: [ '@service_container' ]
         tags:
             - { name: data_collector , template: "BiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
             
     #Utility database
     cdf.bicorebundle.utility.database:
-        class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
+        alias: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         public: true
-        arguments: [ '@service_container', '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Database\DatabaseUtils:
-        alias: cdf.bicorebundle.utility.database
+        class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
+        arguments: [ '@kernel', '@doctrine.orm.entity_manager' ]
+        public: false
         
     #Utility entities
     cdf.bicorebundle.utility.entity:
-        class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
+        alias: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
         public: true
-        arguments: [ '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Entity\EntityUtils:
-        alias: cdf.bicorebundle.utility.entity
+        class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
             
     #Utility tabelle di sistema bi
     cdf.bicorebundle.utility.entity.system:
-        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        alias: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
         public: true
-        arguments: [ '@doctrine.orm.entity_manager' ]
     
     Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils:
-        alias: cdf.bicorebundle.utility.entity.system
+        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        public: false
+        arguments: [ '@doctrine.orm.entity_manager' ]
         
     #Utility export excel tabelle
     cdf.bicorebundle.utils.export.tabellaxls:
-        class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
+        alias: Cdf\BiCoreBundle\Utils\Export\TabellaXls
+        public: true
+        
+    Cdf\BiCoreBundle\Utils\Export\TabellaXls:
+        public: false
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
 
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
         class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
-        properties:
-            container: "@service_container"
-
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
         tags:
             - { name: doctrine.event_subscriber }
             
     #subscriber per aggiungere uno schema alle tabelle di bi
     cdf.bicorebundle.subscriber.schemaprefix:
         class: Cdf\BiCoreBundle\Subscriber\TableSchemaSubscriber
-        properties:
-            container: "@service_container"
+        arguments: 
+            $schemaprefix: "%bi_core.table_schema%"
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -118,8 +128,15 @@ services:
         - { name: form.type, alias: entity_hidden }
         
     cdf.bicorebundle.utils.entity.doctrinefieldreader:
+        alias: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
+        public: true
+        
+    Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader:
         class: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
-
+        public: false
+        arguments: 
+            $tableprefix: "%bi_core.table_prefix%"
+        
     #Servizi fos user bundle usato principalmente per i test
     cdf.bicorebundle.fos_user.security.login_manager:
         alias: fos_user.security.login_manager
@@ -146,10 +163,15 @@ services:
             
     #Controllers
     cdf.bicorebundle.controller.ficontroller:
-        class: Cdf\BiCoreBundle\Controller\FiController
-        bind:
-            $container: '@service_container'
+        alias: Cdf\BiCoreBundle\Controller\FiController
+        public: true
 
+    Cdf\BiCoreBundle\Controller\FiController:
+        public: false
+        calls:
+             - [setTabellaxls, ['@cdf.bicorebundle.utils.export.tabellaxls']]
+        #tags: ['controller.service_arguments']
+        
     cdf.bicorebundle.controller.operatori:
         class: Cdf\BiCoreBundle\Controller\OperatoriController
         bind:
@@ -189,48 +211,49 @@ services:
             -  { name: console.command }
             
     cdf.bicorebundle.command.droptables:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
+        public: true
+            
+    Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
         public: false
         tags:
             -  { name: console.command }
-            
-    cdf.bicorebundle.droptables:
-        alias: cdf.bicorebundle.command.droptables
-        public: true
 
     cdf.bicorebundle.command.install:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
+        public: true
+            
+    Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:install }
-            
-    cdf.bicorebundle.install:
-        alias: cdf.bicorebundle.command.install
-        public: true
+            -  { name: console.command}
 
     cdf.bicorebundle.command.pubblicamanuale:
         class: Cdf\BiCoreBundle\Command\BiCoreBundlePubblicamanualeCommand
         public: false
+        arguments: ['%kernel.project_dir%']
         tags:
             -  { name: console.command }
             
     cdf.bicorebundle.command.configuratorimport:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
+        public: true
+
+    Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:configuratorimport }
-
-    cdf.bicorebundle.configuratorimport:
-        alias: cdf.bicorebundle.command.configuratorimport
-        public: true
+            -  { name: console.command }
 
     cdf.bicorebundle.command.configuratorexport:
+        alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
+        public: true
+
+    Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorexportCommand
         public: false
         tags:
-            -  { name: console.command, command: bicorebundle:configuratorexport }
-
-    cdf.bicorebundle.configuratorexport:
-        alias: cdf.bicorebundle.command.configuratorexport
-        public: true
+            -  { name: console.command }
             

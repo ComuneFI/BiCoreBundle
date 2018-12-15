@@ -11,10 +11,11 @@ use Symfony\Component\Console\Input\ArrayInput;
 class BiCoreBundleDropdatabaseCommand extends Command
 {
 
+    protected static $defaultName = 'bicorebundle:dropdatabase';
+    
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:dropdatabase')
                 ->setDescription('Cancellazione database bicorebundle')
                 ->setHelp('Cancella il database e tutti i dati di bicorebundle')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');

@@ -5,7 +5,12 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 
 class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
 {
-    public $container;
+    private $tableprefix;
+
+    public function __construct($tableprefix)
+    {
+        $this->tableprefix = $tableprefix;
+    }
     
     public function getSubscribedEvents()
     {
@@ -20,7 +25,7 @@ class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
             return;
         }
         if (false !== strpos($classMetadata->namespace, 'Cdf\BiCoreBundle')) {
-            $tableprefix = $this->container->getParameter('bi_core.table_prefix');
+            $tableprefix = $this->tableprefix;
             $classMetadata->setPrimaryTable(array('name' =>  $tableprefix . $classMetadata->getTableName()));
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
                 if ($mapping['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY &&

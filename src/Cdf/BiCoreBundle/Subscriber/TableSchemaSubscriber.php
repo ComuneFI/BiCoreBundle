@@ -8,7 +8,12 @@ use Doctrine\ORM\Id\SequenceGenerator;
 
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
-    public $container;
+    private $schemaprefix;
+
+    public function __construct($schemaprefix)
+    {
+        $this->schemaprefix = $schemaprefix;
+    }
     
     public function getSubscribedEvents()
     {
@@ -17,7 +22,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {
-        $tableschema = $this->container->getParameter('bi_core.table_schema');
+        $tableschema = $this->schemaprefix;
         if ($tableschema != '') {
             $classMetadata = $args->getClassMetadata();
 

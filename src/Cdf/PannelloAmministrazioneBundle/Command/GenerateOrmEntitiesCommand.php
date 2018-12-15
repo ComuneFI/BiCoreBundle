@@ -7,12 +7,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\GeneratorHelper;
-use Cdf\PannelloAmministrazioneBundle\DependencyInjection\PannelloAmministrazioneUtils;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class GenerateOrmEntitiesCommand extends Command
 {
+    protected static $defaultName = 'pannelloamministrazione:generateormentities';
 
     protected $apppaths;
     protected $genhelper;
@@ -21,14 +22,13 @@ class GenerateOrmEntitiesCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('pannelloamministrazione:generateormentities')
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
                 ->setHelp('Genera i file orm per le entities partendo da un modello workbeanch mwb, <br/>bi.mwb Fi/BiCoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')
         ;
     }
 
-    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, PannelloAmministrazioneUtils $pammutils)
+    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, Utility $pammutils)
     {
         $this->apppaths = $projectpath;
         $this->genhelper = $genhelper;

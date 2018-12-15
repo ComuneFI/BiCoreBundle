@@ -6,8 +6,13 @@ use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 
 class ObjectToTabellaExtension extends \Twig_Extension
 {
-    public $container;
+    private $tableprefix;
 
+    public function __construct($tableprefix)
+    {
+        $this->tableprefix = $tableprefix;
+    }
+    
     public function getFunctions()
     {
         return array(
@@ -19,13 +24,13 @@ class ObjectToTabellaExtension extends \Twig_Extension
 
     public function object2View($object, $type = null, $decodifiche = null)
     {
-        $dfr = new DoctrineFieldReader($this->container);
+        $dfr = new DoctrineFieldReader($this->tableprefix);
         return $dfr->object2View($object, $type, $decodifiche);
     }
 
     public function field2Object($fieldname, $object, $decodifiche = null)
     {
-        $dfr = new DoctrineFieldReader($this->container);
+        $dfr = new DoctrineFieldReader($this->tableprefix);
         return $dfr->getField2Object($fieldname, $object, $decodifiche);
     }
     public function joinFieldId($object)

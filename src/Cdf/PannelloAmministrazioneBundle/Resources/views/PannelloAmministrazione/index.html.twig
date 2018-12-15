@@ -30,29 +30,29 @@
             <div class="callout shadow-sm p-3 mb-5 bg-white">
                 <div class="callout-title"><i class="it-ico it-settings" aria-hidden="true"></i><span class="sr-only">Utilità</span> Utilità</div>
                 <div class="form-group">
-                    <button id="adminpanelcc" class="active btn btn-success" data-reactid=".3.0" type="button">Clear cache</button>
+                    <button id="adminpanelcc" class="active btn btn-success" type="button">Clear cache</button>
                     <br/><br/>
                     {% if (svn == true) %}
-                        <button id="adminpanelvcs" class="active btn btn-primary" data-reactid=".3.0" type="button">Prendi l'ultima versione da svn</button>
+                        <button id="adminpanelvcs" class="active btn btn-primary" type="button">Prendi l'ultima versione da svn</button>
                         <br/><br/>
                     {% endif %}
                     {% if (git == true) %}
-                        <button id="adminpanelvcs" class="active btn btn-primary" data-reactid=".3.0" type="button">Prendi l'ultima versione da Git</button>
+                        <button id="adminpanelvcs" class="active btn btn-primary" type="button">Prendi l'ultima versione da Git</button>
                         <br/><br/>
                     {% endif %}
-                    <button id="adminpanelphpunittest" class="active btn btn-default" data-reactid=".3.0" type="button">PHPUnit test</button>
+                    <button id="adminpanelphpunittest" class="active btn btn-default" type="button">PHPUnit test</button>
                 </div>
                 <div class="form-group">
                     <label for='symfonycommand'>Comando symfony</label>
                     <input class="form-control autocomplete" type="text" id="symfonycommand" data-db="comandisymfony" value="" />
                     <br/>
-                    <button id="adminpanelsymfonycommand" class="active btn btn-warning" data-reactid=".3.0" type="button">Esegue comando symfony</button>
+                    <button id="adminpanelsymfonycommand" class="active btn btn-warning" type="button">Esegue comando symfony</button>
                 </div>
                 <div class="form-group">
                     <label for='unixcommand'>Comando shell</label>
                     <input class="form-control autocomplete" type="text" id="unixcommand" value="" data-db="comandishell"/>
                     <br/>
-                    <button id="adminpanelunixcommand" class="active btn btn-danger" data-reactid=".3.0" type="button">Esegue comando da shell</button>
+                    <button id="adminpanelunixcommand" class="active btn btn-danger" type="button">Esegue comando da shell</button>
                 </div>
             </div>
         </div>
@@ -74,9 +74,9 @@
                     </div>                
                 </div>                
 
-                <button id="adminpanelgenerateentity" class="active btn btn-success" data-reactid=".3.0" type="button">Genera entity da modello workbench</button>
+                <button id="adminpanelgenerateentity" class="active btn btn-success" type="button">Genera entity da modello workbench</button>
                 <br/><br/>
-                <button id="adminpanelaggiornadatabase" class="active btn btn-danger" data-reactid=".3.0" type="button">Aggiorna schema database</button>
+                <button id="adminpanelaggiornadatabase" class="active btn btn-danger" type="button">Aggiorna schema database</button>
             </div>
         </div>
         <div class="adminpanel bundle">
@@ -102,7 +102,7 @@
                     </div>
                 </div>        
 
-                <button id="adminpanelgenerateformcrud" class="active btn btn-default" data-reactid=".3.0" type="button">Genera CRUD per il form</button>
+                <button id="adminpanelgenerateformcrud" class="active btn btn-default" type="button">Genera CRUD per il form</button>
 
             </div>
         </div>

@@ -50,6 +50,7 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $client->request('GET', $urlge, array("file" => "tabellaminuscola.mwb"));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
+        $client->reload();
         //Restart client per caricare il nuovo bundle
         $client->request('GET', $urlge, array("file" => "wbadmintest.mwb"));
         $this->assertTrue($client->getResponse()->isSuccessful());

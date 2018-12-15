@@ -12,14 +12,14 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 class CheckgitversionCommand extends Command
 {
 
+    protected static $defaultName = 'pannelloamministrazione:checkgitversion';
+
     protected function configure()
     {
         $this
-                ->setName('pannelloamministrazione:checkgitversion')
                 ->setDescription('Controllo versioni bundles')
                 ->setHelp('Controlla le versioni git dei bundles');
     }
-
     // @codeCoverageIgnoreStart
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -31,7 +31,7 @@ class CheckgitversionCommand extends Command
 
         $composerbundles = array();
         $papath = $this->getContainer()->get('pannelloamministrazione.projectpath');
-        $composerbundlespath =  $papath->getVendorBinPath(). '/../fi';
+        $composerbundlespath = $papath->getVendorBinPath() . '/../fi';
         $findercomposerbundle = new Finder();
         $findercomposerbundle->in($composerbundlespath)->sortByName()->directories()->depth('== 0');
 
@@ -55,7 +55,6 @@ class CheckgitversionCommand extends Command
 
         return 0;
     }
-
     private function getGitVersion($path, $remote = false)
     {
         if (self::isWindows()) {
@@ -90,7 +89,6 @@ class CheckgitversionCommand extends Command
             }
         }
     }
-
     private function getLocalVersionString($versions)
     {
         foreach ($versions as $line) {
@@ -101,7 +99,6 @@ class CheckgitversionCommand extends Command
         }
         return '?';
     }
-
     private function getLocalVersionStringDetail($versions)
     {
         if ($versions == 'master') {
@@ -113,7 +110,6 @@ class CheckgitversionCommand extends Command
         }
         return '?';
     }
-
     private function getRemoteVersionString($versions)
     {
         if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
@@ -121,7 +117,6 @@ class CheckgitversionCommand extends Command
         }
         return '?';
     }
-
     public static function isWindows()
     {
         if (PHP_OS == 'WINNT') {

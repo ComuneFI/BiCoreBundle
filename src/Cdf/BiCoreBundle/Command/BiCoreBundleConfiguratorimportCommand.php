@@ -21,6 +21,8 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     use ConfiguratorimportInsertTrait,
         ConfiguratorimportUpdateTrait;
 
+    protected static $defaultName = 'bicorebundle:configuratorimport';
+
     private $forceupdate = false;
     private $verboso = false;
     private $dbutility;
@@ -33,7 +35,6 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     protected function configure()
     {
         $this
-                ->setName('bicorebundle:configuratorimport')
                 ->setDescription('Configuratore per Fifree')
                 ->setHelp('Importa la configurazione di bi da file fixtures.yml')
                 ->addOption('forceupdate', null, InputOption::VALUE_NONE, 'Forza update di record con id già presente')
