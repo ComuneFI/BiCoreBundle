@@ -2,12 +2,12 @@
 
 {% block javascript %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabella.js') }}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellainline.js') }}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellafiltri.js') }}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/biindex.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabella.js') }}?ver={{versione_tag_git()}}" ></script>
+    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellainline.js') }}?ver={{versione_tag_git()}}" ></script>
+    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bitabellafiltri.js') }}?ver={{versione_tag_git()}}" ></script>
+    <script type="text/javascript" src="{{ asset('bundles/bicore/js/biindex.js') }}?ver={{versione_tag_git()}}" ></script>
     {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
-        <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}" ></script>
+        <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}?ver={{versione_tag_git()}}" ></script>
     {%endif%}
 {% endblock%}
 
@@ -15,7 +15,7 @@
 {% block css %}
     {{parent()}}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
-        <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}" >
+        <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}?ver={{versione_tag_git()}}" >
     {%endif%}
 {% endblock%}
 

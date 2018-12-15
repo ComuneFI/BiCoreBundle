@@ -2,19 +2,14 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 class AssetExtension extends \Twig_Extension
 {
 
-    private $kernel;
+    private $projectpath;
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct($projectpath)
     {
-        $this->kernel = $kernel;
+        $this->projectpath = $projectpath;
     }
 
     public function getFunctions()
@@ -24,14 +19,14 @@ class AssetExtension extends \Twig_Extension
 
     public function assetExists($path)
     {
-        $publicRoot = realpath($this->kernel->getProjectDir() . '/../public/') . DIRECTORY_SEPARATOR;
-        $toCheck = realpath($publicRoot . $path);
+        $publicRoot = realpath($this->projectpath . '/public/') . DIRECTORY_SEPARATOR;
+        $toCheck = $publicRoot . $path;
         
         // check if the file exists
         if (!is_file($toCheck)) {
             return false;
         }
-
+        
         // check if file is well contained in web/ directory (prevents ../ in paths)
         if (strncmp($publicRoot, $toCheck, strlen($publicRoot)) !== 0) {
             return false;

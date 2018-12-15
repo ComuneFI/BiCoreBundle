@@ -7,10 +7,6 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
     #cache
-    cdf.bicorebundle.cache.clearer:
-        alias: Cdf\BiCoreBundle\Cache\CacheClearer
-        public: true
-        
     Cdf\BiCoreBundle\Cache\CacheClearer:
         tags: [kernel.cache_clearer]
         public: false
@@ -18,7 +14,7 @@ services:
     #twig extension
     cdf.bicorebundle.twig.extension.asset:
         class: Cdf\BiCoreBundle\Twig\Extension\AssetExtension
-        arguments: ['@kernel']
+        arguments: ['%kernel.project_dir%']
         tags:
             - { name: twig.extension }
 
@@ -137,21 +133,8 @@ services:
         arguments: 
             $tableprefix: "%bi_core.table_prefix%"
         
-    #Servizi fos user bundle usato principalmente per i test
-    cdf.bicorebundle.fos_user.security.login_manager:
-        alias: fos_user.security.login_manager
-        public: true
-            
-    cdf.bicorebundle.fos_user.user_manager:
-        alias: fos_user.user_manager
-        public: true
-            
-    cdf.bicorebundle.fos_user.util.user_manipulator:
-        alias: fos_user.util.user_manipulator
-        public: true
-    
     FOS\UserBundle\Util\UserManipulator:
-        alias: cdf.bicorebundle.fos_user.util.user_manipulator
+        alias: fos_user.util.user_manipulator
         
     #listener
     cdf.bicorebundle.kernel.listener.maintenance:
@@ -177,7 +160,7 @@ services:
         bind:
             # for any $logger argument, pass this specific service
             $logger: '@logger'
-            $usermanipulator: '@cdf.bicorebundle.fos_user.util.user_manipulator'
+            $usermanipulator: '@fos_user.util.user_manipulator'
             
     cdf.bicorebundle.controller.permessi:
         class: Cdf\BiCoreBundle\Controller\PermessiController
