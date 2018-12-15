@@ -72,10 +72,10 @@ services:
     
     #Permessi Utils
     cdf.bicorebundle.permessi:
-        alias: Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils
+        alias: Cdf\BiCoreBundle\Service\Permessi\PermessiManager
         public: true
         
-    Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils:
+    Cdf\BiCoreBundle\Service\Permessi\PermessiManager:
         arguments: [ '@doctrine.orm.entity_manager', '@security.token_storage' ]
         public: false
         

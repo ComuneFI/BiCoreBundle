@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Psr\Log\LoggerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils;
+use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 
 /**
  * Operatori controller.
@@ -25,7 +25,7 @@ class OperatoriController extends FiController
     private $logger;
     private $usermanipulator;
 
-    public function __construct(TokenStorageInterface $user, PermessiUtils $permessi, LoggerInterface $logger, $usermanipulator)
+    public function __construct(TokenStorageInterface $user, PermessiManager $permessi, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
         $this->permessi = $permessi;
