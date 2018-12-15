@@ -232,7 +232,7 @@ trait FiCoreControllerTrait
     protected function getEntityClassName()
     {
         $em = $this->get("doctrine")->getManager();
-        $entityfinder = new Finder($em, $this->controller);
-        return $entityfinder->getClassNameFromEntityName();
+        $entityfinder = new Finder($em);
+        return $entityfinder->getClassNameFromEntityName($this->controller);
     }
 }

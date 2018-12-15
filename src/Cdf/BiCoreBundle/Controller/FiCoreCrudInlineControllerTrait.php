@@ -67,8 +67,8 @@ trait FiCoreCrudInlineControllerTrait
                 $field = ucfirst($fieldpieces[1]);
                 $fieldvalue = $this->getValueAggiorna($value);
                 if ($value["fieldtype"] == 'join') {
-                    $entityfinder = new Finder($em, $field);
-                    $joinclass = $entityfinder->getClassNameFromEntityName();
+                    $entityfinder = new Finder($em);
+                    $joinclass = $entityfinder->getClassNameFromEntityName($field);
                     $fieldvalue = $em->getRepository($joinclass)->find($fieldvalue);
                 }
 

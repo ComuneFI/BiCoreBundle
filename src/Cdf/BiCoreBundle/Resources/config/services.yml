@@ -80,6 +80,13 @@ services:
         arguments: [ '@doctrine.orm.entity_manager' ]
         public: false
             
+    Cdf\BiCoreBundle\Utils\Entity\Finder:
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+
+    Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils:
+        public: false
+
     #Utility tabelle di sistema bi
     cdf.bicorebundle.utility.entity.system:
         alias: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
@@ -90,6 +97,9 @@ services:
         public: false
         arguments: [ '@doctrine.orm.entity_manager' ]
         
+    Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils:
+        public: false
+
     #Utility export excel tabelle
     cdf.bicorebundle.utils.export.tabellaxls:
         alias: Cdf\BiCoreBundle\Utils\Export\TabellaXls
