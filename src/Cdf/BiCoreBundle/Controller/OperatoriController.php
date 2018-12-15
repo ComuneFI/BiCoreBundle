@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Psr\Log\LoggerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils;
 
 /**
  * Operatori controller.
@@ -24,11 +25,12 @@ class OperatoriController extends FiController
     private $logger;
     private $usermanipulator;
 
-    public function __construct(ObjectManager $em, TokenStorageInterface $user, LoggerInterface $logger, $usermanipulator)
+    public function __construct(TokenStorageInterface $user, PermessiUtils $permessi, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
+        $this->permessi = $permessi;
         $this->usermanipulator = $usermanipulator;
-        parent::__construct($em, $user);
+        parent::__construct($user, $permessi);
     }
 
         /**
@@ -39,7 +41,7 @@ class OperatoriController extends FiController
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
-        if (!$this->getPermessi()->canCreate()) {
+        if (!$this->getPermessi()->canCreate($controller)) {
             throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());

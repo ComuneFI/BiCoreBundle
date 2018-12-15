@@ -69,6 +69,15 @@ services:
         class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         arguments: [ '@kernel', '@doctrine.orm.entity_manager' ]
         public: false
+    
+    #Permessi Utils
+    cdf.bicorebundle.permessi:
+        alias: Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils
+        public: true
+        
+    Cdf\BiCoreBundle\Utils\Permessi\PermessiUtils:
+        arguments: [ '@doctrine.orm.entity_manager', '@security.token_storage' ]
+        public: false
         
     #Utility entities
     cdf.bicorebundle.utility.entity:
@@ -170,6 +179,7 @@ services:
         bind:
             # for any $logger argument, pass this specific service
             $logger: '@logger'
+            $permessi: '@cdf.bicorebundle.permessi'
             $usermanipulator: '@fos_user.util.user_manipulator'
             
     cdf.bicorebundle.controller.permessi:

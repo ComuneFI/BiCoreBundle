@@ -13,11 +13,11 @@ trait FiCoreCrudInlineControllerTrait
     private function checkAggiornaRight($id, $token)
     {
         if ($id === 0) {
-            if (!$this->getPermessi()->canCreate()) {
+            if (!$this->getPermessi()->canCreate($this->getController())) {
                 throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
             }
         } else {
-            if (!$this->getPermessi()->canUpdate()) {
+            if (!$this->getPermessi()->canUpdate($this->getController())) {
                 throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
             }
         }

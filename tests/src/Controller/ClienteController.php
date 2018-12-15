@@ -5,13 +5,7 @@ namespace App\Controller;
 use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use App\Entity\Cliente;
-use App\Form\ClienteType;
-use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
-use Doctrine\Common\Collections\Expr\Comparison;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Tabella\DatetimeTabella;
 
 /**
  * Cliente controller.
@@ -119,7 +113,7 @@ class ClienteController extends FiController
         $bundle = $this->getBundle();
         $controller = $this->getController();
         $idpassato = $request->get('id');
-        if (!$this->getPermessi()->canRead()) {
+        if (!$this->getPermessi()->canRead($controller)) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
         $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
@@ -190,7 +184,7 @@ class ClienteController extends FiController
             'entityclass' => ParametriTabella::setParameter($entityclass),
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
-            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
+            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
             'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),

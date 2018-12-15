@@ -9,64 +9,83 @@
 namespace Cdf\BiCoreBundle\Utils\Permessi;
 
 use Cdf\BiCoreBundle\Entity\Permessi;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class PermessiUtils implements \JsonSerializable
+class PermessiUtils
 {
-
-    private $read = false;
-    private $create = false;
-    private $delete = false;
-    private $edit = false;
-
-    public function __construct($em, $modulo, $operatore)
+    public function __construct(ObjectManager $em, TokenStorageInterface $user)
     {
-        $permessi = $em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $operatore);
-
+        $this->em = $em;
+        $this->user = $user->getToken()->getUser();
+    }
+    public function canRead($modulo)
+    {
+        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $canread = false;
         if ($permessi) {
-            if (stripos(strtoupper($permessi->getCrud()), 'C') !== false) {
-                $this->create = true;
-            }
             if (stripos(strtoupper($permessi->getCrud()), 'R') !== false) {
-                $this->read = true;
-            }
-            if (stripos(strtoupper($permessi->getCrud()), 'U') !== false) {
-                $this->edit = true;
-            }
-            if (stripos(strtoupper($permessi->getCrud()), 'D') !== false) {
-                $this->delete = true;
+                $canread = true;
             }
         } else {
-            /* Per il superadmin si restituisce sempre tutti i permessi a true */
-            if ($operatore->isSuperadmin()) {
-                $this->create = true;
-                $this->read = true;
-                $this->edit = true;
-                $this->delete = true;
+            if ($this->user->isSuperadmin()) {
+                $canread = true;
             }
         }
+        return $canread;
     }
-    public function canRead()
+    public function canCreate($modulo)
     {
-        return $this->read;
+        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $cancreate = false;
+        if ($permessi) {
+            if (stripos(strtoupper($permessi->getCrud()), 'C') !== false) {
+                $cancreate = true;
+            }
+        } else {
+            if ($this->user->isSuperadmin()) {
+                $cancreate = true;
+            }
+        }
+        return $cancreate;
     }
-    public function canCreate()
+    public function canUpdate($modulo)
     {
-        return $this->create;
+        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $canupdate = false;
+        if ($permessi) {
+            if (stripos(strtoupper($permessi->getCrud()), 'U') !== false) {
+                $canupdate = true;
+            }
+        } else {
+            if ($this->user->isSuperadmin()) {
+                $canupdate = true;
+            }
+        }
+        return $canupdate;
     }
-    public function canUpdate()
+    public function canDelete($modulo)
     {
-        return $this->edit;
+        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $candelete = false;
+        if ($permessi) {
+            if (stripos(strtoupper($permessi->getCrud()), 'D') !== false) {
+                $candelete = true;
+            }
+        } else {
+            if ($this->user->isSuperadmin()) {
+                $candelete = true;
+            }
+        }
+        return $candelete;
     }
-    public function canDelete()
+    public function toJson($modulo)
     {
-        return $this->delete;
-    }
-    public function jsonSerialize()
-    {
-        return array("read" => $this->canRead(), "create" => $this->canCreate(), "delete" => $this->canDelete(), "update" => $this->canUpdate());
-    }
-    public function __toString()
-    {
-        return json_encode($this);
+        return array(
+            "read" => $this->canRead($modulo),
+            "create" => $this->canCreate($modulo),
+            "delete" => $this->canDelete($modulo),
+            "update" => $this->canUpdate($modulo)
+        );
     }
 }
