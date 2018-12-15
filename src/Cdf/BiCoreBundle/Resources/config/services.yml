@@ -39,7 +39,7 @@ services:
             
     cdf.bicorebundle.twig.extension.versione:
         class: Cdf\BiCoreBundle\Twig\Extension\VersioneExtension
-        arguments: ['@kernel']
+        arguments: ['%kernel.project_dir%']
         tags:
           - { name: twig.extension }
 
