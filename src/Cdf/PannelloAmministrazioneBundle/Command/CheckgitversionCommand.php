@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
 class CheckgitversionCommand extends Command
 {
@@ -21,6 +22,13 @@ class CheckgitversionCommand extends Command
                 ->setHelp('Controlla le versioni git dei bundles');
     }
     // @codeCoverageIgnoreStart
+    public function __construct(ProjectPath $projectpath)
+    {
+        $this->projectpath = $projectpath;
+
+        // you *must* call the parent constructor
+        parent::__construct();
+    }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (self::isWindows()) {
@@ -30,8 +38,8 @@ class CheckgitversionCommand extends Command
         }
 
         $composerbundles = array();
-        $papath = $this->getContainer()->get('pannelloamministrazione.projectpath');
-        $composerbundlespath = $papath->getVendorBinPath() . '/../fi';
+        $papath = $this->projectpath;
+        $composerbundlespath = $papath->getVendorBinPath() . "/../fi";
         $findercomposerbundle = new Finder();
         $findercomposerbundle->in($composerbundlespath)->sortByName()->directories()->depth('== 0');
 
