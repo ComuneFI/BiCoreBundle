@@ -15,7 +15,7 @@ class FiController extends AbstractController
     protected $controller;
     protected $permessi;
 
-    public function __construct(ObjectManager $em, TokenStorageInterface $user)
+    public function __construct(TokenStorageInterface $user, PermessiUtils $permessi)
     {
         $matches = array();
         $controllo = new \ReflectionClass(get_class($this));
@@ -27,7 +27,8 @@ class FiController extends AbstractController
 
         $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
         $this->controller = $matches[count($matches) - 1];
-        $this->permessi = new PermessiUtils($em, $this->getController(), $user->getToken()->getUser());
+        $this->permessi = $permessi;
+        $this->user = $user;
     }
     protected function getBundle()
     {
@@ -40,5 +41,9 @@ class FiController extends AbstractController
     protected function getPermessi()
     {
         return $this->permessi;
+    }
+    protected function getUser()
+    {
+        return $this->user->getToken()->getUser();
     }
 }

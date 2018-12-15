@@ -31,10 +31,10 @@ services:
     
     Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath:
         public: false
-        arguments:
-            $projectDir: '%kernel.root_dir%'
-            $cacheDir: '%kernel.cache_dir%'
-            $logsDir: '%kernel.logs_dir%'
+        calls:
+             - [setRootDir, ['%kernel.root_dir%']]
+             - [setCacheDir, ['%kernel.cache_dir%']]
+             - [setLogsDir, ['%kernel.logs_dir%']]
 
     pannelloamministrazione.generatorhelper:
         alias: Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper

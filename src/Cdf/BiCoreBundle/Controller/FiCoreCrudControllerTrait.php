@@ -18,7 +18,7 @@ trait FiCoreCrudControllerTrait
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
-        if (!$this->getPermessi()->canCreate()) {
+        if (!$this->getPermessi()->canCreate($this->getController())) {
             throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
         }
 
@@ -82,7 +82,7 @@ trait FiCoreCrudControllerTrait
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        if (!$this->getPermessi()->canUpdate()) {
+        if (!$this->getPermessi()->canUpdate($this->getController())) {
             throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
@@ -133,7 +133,7 @@ trait FiCoreCrudControllerTrait
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
-        if (!$this->getPermessi()->canUpdate()) {
+        if (!$this->getPermessi()->canUpdate($this->getController())) {
             throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, "edit");
@@ -200,7 +200,7 @@ trait FiCoreCrudControllerTrait
     public function delete(Request $request, $token)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
-        if (!$this->getPermessi()->canDelete()) {
+        if (!$this->getPermessi()->canDelete($this->getController())) {
             throw new AccessDeniedException("Non si hanno i permessi per eliminare questo contenuto");
         }
         $entityclass = $this->getEntityClassName();

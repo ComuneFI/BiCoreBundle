@@ -13,24 +13,33 @@ class ProjectPath
      * @return array Ritorna l'array contenente i path
      */
     private $rootdir;
-    private $prjdir;
+    private $projectdir;
     private $cacheDir;
     private $logsDir;
 
-    public function __construct($projectDir, $cacheDir, $logsDir)
+    public function setRootDir($projectDir)
     {
-        $this->prjdir = dirname($projectDir);
+        $this->projectdir = dirname($projectDir);
         $this->rootdir = dirname($projectDir);
+    }
+
+    public function setCacheDir($cacheDir)
+    {
         $this->cacheDir = $cacheDir;
+    }
+
+    public function setLogsDir($logsDir)
+    {
         $this->logsDir = $logsDir;
     }
+
     public function getRootPath()
     {
         return $this->rootdir;
     }
     public function getProjectPath()
     {
-        return $this->prjdir;
+        return $this->projectdir;
     }
     public function getBinPath()
     {

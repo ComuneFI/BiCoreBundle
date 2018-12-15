@@ -31,7 +31,7 @@ class MagazzinoController extends FiController
         $controller = $this->getController();
         $idpassato = $request->get('id');
 
-        if (!$this->getPermessi()->canRead()) {
+        if (!$this->getPermessi()->canRead($controller)) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
@@ -61,7 +61,7 @@ class MagazzinoController extends FiController
             'entityclass' => ParametriTabella::setParameter($entityclass),
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
-            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
+            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
             'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),

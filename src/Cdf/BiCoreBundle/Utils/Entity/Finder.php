@@ -8,26 +8,24 @@ use Doctrine\Common\Persistence\ObjectManager;
 class Finder
 {
 
-    private $entityname;
     private $em;
 
-    public function __construct(ObjectManager $em, $entityname)
+    public function __construct(ObjectManager $em)
     {
         $this->em = $em;
-        $this->entityname = $entityname;
     }
-    public function getClassNameFromEntityName()
+    public function getClassNameFromEntityName($entityname)
     {
         $entities = $this->em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
         $entityclassname = "";
         foreach ($entities as $entity) {
             $parti = explode("\\", $entity);
-            if ($parti[count($parti) - 1] == $this->entityname) {
+            if ($parti[count($parti) - 1] == $entityname) {
                 $entityclassname = $entity;
             }
         }
         if (!$entityclassname) {
-            throw new \Exception("Non riesco a trovare l'entità '" . $this->entityname . "', è stata generata?");
+            throw new \Exception("Non riesco a trovare l'entità '" . $entityname . "', è stata generata?");
         }
         return $entityclassname;
     }

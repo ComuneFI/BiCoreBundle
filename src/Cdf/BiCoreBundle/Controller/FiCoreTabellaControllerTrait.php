@@ -15,7 +15,7 @@ trait FiCoreTabellaControllerTrait
     
     public function tabella(Request $request)
     {
-        if (!$this->permessi->canRead()) {
+        if (!$this->permessi->canRead($this->getController())) {
             throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
         }
         $doctrine = $this->get("doctrine");
