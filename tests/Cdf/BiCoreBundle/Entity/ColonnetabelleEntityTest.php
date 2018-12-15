@@ -6,14 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ColonnetabelleEntityTest extends KernelTestCase
 {
-
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -35,7 +34,7 @@ class ColonnetabelleEntityTest extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

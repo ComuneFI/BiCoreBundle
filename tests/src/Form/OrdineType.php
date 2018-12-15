@@ -12,20 +12,19 @@ use App\Entity\Cliente;
 
 class OrdineType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
             'label' => 'Aggiorna ordine',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
-        if (isset($options["parametriform"]["cliente_id"]) && $options["parametriform"]["cliente_id"]) {
-            $builder->add('cliente', null, array('required' => TRUE, 'class' => Cliente::class, 
-                'query_builder' => function(\Doctrine\ORM\EntityRepository $er) use ($options) {
-                return $er->createQueryBuilder('c')->where('c.id = :id')->setParameter('id', $options["parametriform"]["cliente_id"]);
-            }));            
+        if (isset($options['parametriform']['cliente_id']) && $options['parametriform']['cliente_id']) {
+            $builder->add('cliente', null, array('required' => true, 'class' => Cliente::class,
+                'query_builder' => function (\Doctrine\ORM\EntityRepository $er) use ($options) {
+                    return $er->createQueryBuilder('c')->where('c.id = :id')->setParameter('id', $options['parametriform']['cliente_id']);
+                }, ));
         } else {
             $builder->add('cliente');
         }
@@ -35,7 +34,7 @@ class OrdineType extends AbstractType
                 ->add('data', DateTimeType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy HH:mm',
-                    "attr" => array("class" => "bidatetimepicker")
+                    'attr' => array('class' => 'bidatetimepicker'),
                 ))
                 ->add('submit', SubmitType::class, $submitparms)
         ;
@@ -48,8 +47,7 @@ class OrdineType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Ordine::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ));
     }
-
 }

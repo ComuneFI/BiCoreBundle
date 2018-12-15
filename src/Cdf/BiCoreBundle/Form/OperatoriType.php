@@ -7,21 +7,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Cdf\BiCoreBundle\Entity\Operatori;
 
 class OperatoriType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('operatore')
@@ -53,11 +51,12 @@ class OperatoriType extends AbstractType
         //->add('operatore')
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Operatori::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

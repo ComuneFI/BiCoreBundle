@@ -2,7 +2,6 @@
 
 namespace Cdf\BiCoreBundle\Utils\Database;
 
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -10,7 +9,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class DatabaseUtils
 {
-
     /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
     private $kernel;
@@ -27,23 +25,24 @@ class DatabaseUtils
         $fieldMetadata = $metadata->fieldMappings[$field];
 
         $fieldType = $fieldMetadata['type'];
+
         return $fieldType;
     }
 
     public function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
     {
         $fieldtype = $this->getFieldType(new $entity(), $fieldname);
-        if ($fieldtype === 'boolean') {
+        if ('boolean' === $fieldtype) {
             return $oldvalue !== $newvalue;
         }
-        if ($fieldtype === 'datetime' || $fieldtype === 'date') {
+        if ('datetime' === $fieldtype || 'date' === $fieldtype) {
             return $this->isDateChanged($oldvalue, $newvalue);
         }
         if (is_array($oldvalue)) {
             return $this->isArrayChanged($oldvalue, $newvalue);
         }
 
-        return ($oldvalue !== $newvalue);
+        return $oldvalue !== $newvalue;
     }
 
     public function isDateChanged($oldvalue, $newvalue)
@@ -59,6 +58,7 @@ class DatabaseUtils
             return true;
         }
         $changed = ($oldvalue != $datenewvalue);
+
         return $changed;
     }
 
@@ -73,6 +73,7 @@ class DatabaseUtils
             return true;
         }
         $numdiff = array_diff($oldvalue, $newvalue);
+
         return count($numdiff) > 0;
     }
 
@@ -92,8 +93,8 @@ class DatabaseUtils
                 $connection->query('SET FOREIGN_KEY_CHECKS=1');
                 break;
             case 'postgresql':
-                $cascadesql = $cascade ? "CASCADE" : "";
-                $retval = $connection->executeQuery(sprintf('TRUNCATE TABLE %s ' . $cascadesql, $cmd->getTableName()));
+                $cascadesql = $cascade ? 'CASCADE' : '';
+                $retval = $connection->executeQuery(sprintf('TRUNCATE TABLE %s '.$cascadesql, $cmd->getTableName()));
                 break;
             default:
                 $q = $dbPlatform->getTruncateTableSql($cmd->getTableName(), $cascade);
@@ -101,6 +102,7 @@ class DatabaseUtils
                 break;
         }
         $this->em->clear();
+
         return $retval;
     }
 
@@ -123,6 +125,7 @@ class DatabaseUtils
         // return the output, don't use if you used NullOutput()
         $content = $output->fetch();
         $changed = strpos($content, 'Nothing to update');
-        return ($changed !== 0);
+
+        return 0 !== $changed;
     }
 }

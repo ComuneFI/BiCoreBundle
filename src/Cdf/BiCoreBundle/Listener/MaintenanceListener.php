@@ -2,14 +2,11 @@
 
 namespace Cdf\BiCoreBundle\Listener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class MaintenanceListener
 {
-
     private $lockFilePath;
 
     public function __construct($lockFilePath)

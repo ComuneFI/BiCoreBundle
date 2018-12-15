@@ -10,6 +10,7 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 trait FiCoreCrudControllerTrait
 {
     use FiCoreCrudInlineControllerTrait;
+
     /**
      * Displays a form to create a new table entity.
      */
@@ -19,23 +20,23 @@ trait FiCoreCrudControllerTrait
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canCreate($this->getController())) {
-            throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per creare questo contenuto');
         }
 
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
-        $parametriform = $request->get("parametriform") ? json_decode($request->get("parametriform"), true) : array();
+        $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : array();
 
         $entityclass = $this->getEntityClassName();
-        $formclass = str_replace("Entity", "Form", $entityclass);
+        $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass . 'Type';
+        $formType = $formclass.'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-                'id' => 'formdati' . $controller,
+                'id' => 'formdati'.$controller,
             ),
-            'action' => $this->generateUrl($controller . '_new'), "parametriform" => $parametriform
+            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
         ));
 
         $form->handleRequest($request);
@@ -43,7 +44,7 @@ trait FiCoreCrudControllerTrait
         $twigparms = array(
             'form' => $form->createView(),
             'nomecontroller' => ParametriTabella::setParameter($controller),
-            'tabellatemplate' => $tabellatemplate
+            'tabellatemplate' => $tabellatemplate,
         );
 
         if ($form->isSubmitted()) {
@@ -53,6 +54,7 @@ trait FiCoreCrudControllerTrait
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($entity);
                 $entityManager->flush();
+
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     200
@@ -83,15 +85,15 @@ trait FiCoreCrudControllerTrait
         $controller = $this->getController();
 
         if (!$this->getPermessi()->canUpdate($this->getController())) {
-            throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
         $entityclass = $this->getEntityClassName();
-        $formclass = str_replace("Entity", "Form", $entityclass);
+        $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $formType = $formclass . 'Type';
+        $formType = $formclass.'Type';
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -100,16 +102,16 @@ trait FiCoreCrudControllerTrait
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
+            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati' . $controller,
+                        'id' => 'formdati'.$controller,
                     ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -134,29 +136,29 @@ trait FiCoreCrudControllerTrait
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
-            throw new AccessDeniedException("Non si hanno i permessi per modificare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
-        $crudtemplate = $this->getCrudTemplate($bundle, $controller, "edit");
+        $crudtemplate = $this->getCrudTemplate($bundle, $controller, 'edit');
 
         $entityclass = $this->getEntityClassName();
-        $formclass = str_replace("Entity", "Form", $entityclass);
-        $formType = $formclass . 'Type';
+        $formclass = str_replace('Entity', 'Form', $entityclass);
+        $formType = $formclass.'Type';
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati' . $controller,
+                        'id' => 'formdati'.$controller,
                     ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -169,7 +171,7 @@ trait FiCoreCrudControllerTrait
             $em->flush();
 
             $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $em->getRepository("BiCoreBundle:Storicomodifiche");
+            $repoStorico = $em->getRepository('BiCoreBundle:Storicomodifiche');
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
@@ -177,10 +179,10 @@ trait FiCoreCrudControllerTrait
             }
 
             $continua = (int) $request->get('continua');
-            if ($continua === 0) {
+            if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $id)));
             }
         }
 
@@ -201,7 +203,7 @@ trait FiCoreCrudControllerTrait
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         if (!$this->getPermessi()->canDelete($this->getController())) {
-            throw new AccessDeniedException("Non si hanno i permessi per eliminare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per eliminare questo contenuto');
         }
         $entityclass = $this->getEntityClassName();
 
@@ -224,10 +226,12 @@ trait FiCoreCrudControllerTrait
         } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
             $response = new Response($e->getMessage());
             $response->setStatusCode('501');
+
             return $response;
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
             $response->setStatusCode('200');
+
             return $response;
         }
 

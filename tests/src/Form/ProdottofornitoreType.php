@@ -15,8 +15,8 @@ class ProdottofornitoreType extends AbstractType
         $submitparms = array(
             'label' => 'Aggiorna prodotto',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
         $builder
                 ->add('fornitore')
                 ->add('descrizione')
@@ -24,6 +24,7 @@ class ProdottofornitoreType extends AbstractType
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     /**
      * @param OptionsResolver $resolver
      */
@@ -31,7 +32,7 @@ class ProdottofornitoreType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Prodottofornitore::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ));
     }
 }

@@ -7,5 +7,4 @@ namespace Cdf\BiCoreBundle\Controller;
  */
 class ColonnetabelleController extends FiController
 {
-    
 }

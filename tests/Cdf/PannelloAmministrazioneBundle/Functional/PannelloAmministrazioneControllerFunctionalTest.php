@@ -13,28 +13,28 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = self::$container->get("pannelloamministrazione.projectpath");
-        $checkentityprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
-        $checktypeprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
-        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . ".." .
-                DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . "Prova";
-        $checkindexprova = $checkviewsprova .
-                DIRECTORY_SEPARATOR . "Crud" . DIRECTORY_SEPARATOR . "index.html.twig";
+        $apppath = self::$container->get('pannelloamministrazione.projectpath');
+        $checkentityprova = $apppath->getSrcPath().
+                DIRECTORY_SEPARATOR.'Entity'.DIRECTORY_SEPARATOR.'Prova.php';
+        $checktypeprova = $apppath->getSrcPath().
+                DIRECTORY_SEPARATOR.'Form'.DIRECTORY_SEPARATOR.'ProvaType.php';
+        $checkviewsprova = $apppath->getSrcPath().DIRECTORY_SEPARATOR.'..'.
+                DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Prova';
+        $checkindexprova = $checkviewsprova.
+                DIRECTORY_SEPARATOR.'Crud'.DIRECTORY_SEPARATOR.'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
         $client = $this->getClient();
 
         $client->request('GET', $url);
-        $client->waitFor("#adminpanelgenerateentity");
+        $client->waitFor('#adminpanelgenerateentity');
         $this->executeScript('$("#entityfile").val("wbadmintest.mwb")');
         $this->pressButton('adminpanelgenerateentity');
 
-        $client->waitFor(".biconfirmyes");
+        $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
 
-        $client->waitFor("#corebundlemodalinfo");
+        $client->waitFor('#corebundlemodalinfo');
         $this->pressButton('biconfirmok');
 
         clearcache();
@@ -45,21 +45,21 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         $this->assertTrue(file_exists($checkentityprova));
 
         $this->pressButton('adminpanelaggiornadatabase');
-        $client->waitFor(".biconfirmyes");
+        $client->waitFor('.biconfirmyes');
 
         $this->pressButton('biconfirmyes');
 
-        $client->waitFor(".biconfirmok");
+        $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
         $this->executeScript('$("#entityform").val("Prova")');
 
         $this->pressButton('adminpanelgenerateformcrud');
 
-        $client->waitFor(".biconfirmyes");
+        $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
 
-        $client->waitFor(".biconfirmok");
+        $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
         $this->assertTrue(file_exists($checktypeprova));
@@ -71,11 +71,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         try {
             $urlRouting = $this->router->generate('Prova_container');
         } catch (\Exception $exc) {
-            $urlRouting = "/Prova";
+            $urlRouting = '/Prova';
         }
 
         $url = $urlRouting;
-
 
         $this->visit($url);
         //$this->login('admin', 'admin');
@@ -125,25 +124,25 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         $fieldhtml = 'prova_descrizione';
 //        }
 
-        $client->waitFor("#" . $fieldhtml);
+        $client->waitFor('#'.$fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
 
-        $client->waitFor("#prova_submit");
+        $client->waitFor('#prova_submit');
         $this->clickElement('prova_submit');
         sleep(2);
 
         $qb1 = $this->em->createQueryBuilder()
-                        ->select(array("Prova"))
-                        ->from("App:Prova", "Prova")
-                        ->where("Prova.descrizione = :descrizione")
-                        ->setParameter("descrizione", $descrizionetest1)
+                        ->select(array('Prova'))
+                        ->from('App:Prova', 'Prova')
+                        ->where('Prova.descrizione = :descrizione')
+                        ->setParameter('descrizione', $descrizionetest1)
                         ->getQuery()->getResult();
 
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor(".btn.btn-sm.h-100.d-flex.align-items-center.it-file");
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
+        $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
         $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
 
         $this->assertEquals($provaobj1->getDescrizione(), $descrizionetest1);
@@ -151,7 +150,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         //Modifica
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
-        $client->waitFor("#" . $fieldhtml);
+        $client->waitFor('#'.$fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
 
@@ -170,19 +169,19 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
 
           $this->assertEquals($provaobj2->getDescrizione(), $descrizionetest2); */
 
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor(".btn.btn-sm.h-100.d-flex.align-items-center.it-cancel");
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
+        $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
         $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
 
-        $client->waitFor(".biconfirmyes");
+        $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         $this->ajaxWait(6000);
 
         $qb3 = $this->em->createQueryBuilder()
-                        ->select(array("Prova"))
-                        ->from("App:Prova", "Prova")
-                        ->where("Prova.descrizione = :descrizione")
-                        ->setParameter("descrizione", $descrizionetest2)
+                        ->select(array('Prova'))
+                        ->from('App:Prova', 'Prova')
+                        ->where('Prova.descrizione = :descrizione')
+                        ->setParameter('descrizione', $descrizionetest2)
                         ->getQuery()->getResult();
 
         $this->assertEquals(count($qb3), 0);
@@ -198,5 +197,4 @@ class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthoriz
         removecache();
         clearcache();
     }
-
 }

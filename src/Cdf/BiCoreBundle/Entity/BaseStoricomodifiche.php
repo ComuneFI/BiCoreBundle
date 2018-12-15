@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cdf\BiCoreBundle\Storicomodifiche
+ * Cdf\BiCoreBundle\Storicomodifiche.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Storicomodifiche", indexes={@ORM\Index(name="fk_Storicomodifiche_Operatori1_idx", columns={"operatori_id"})})
@@ -65,7 +65,8 @@ class BaseStoricomodifiche
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setId($id)
@@ -78,7 +79,7 @@ class BaseStoricomodifiche
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -89,6 +90,7 @@ class BaseStoricomodifiche
      * Set the value of nometabella.
      *
      * @param string $nometabella
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setNometabella($nometabella)
@@ -112,6 +114,7 @@ class BaseStoricomodifiche
      * Set the value of nomecampo.
      *
      * @param string $nomecampo
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setNomecampo($nomecampo)
@@ -134,7 +137,8 @@ class BaseStoricomodifiche
     /**
      * Set the value of idtabella.
      *
-     * @param integer $idtabella
+     * @param int $idtabella
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setIdtabella($idtabella)
@@ -147,7 +151,7 @@ class BaseStoricomodifiche
     /**
      * Get the value of idtabella.
      *
-     * @return integer
+     * @return int
      */
     public function getIdtabella()
     {
@@ -158,6 +162,7 @@ class BaseStoricomodifiche
      * Set the value of giorno.
      *
      * @param \DateTime $giorno
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setGiorno($giorno)
@@ -181,6 +186,7 @@ class BaseStoricomodifiche
      * Set the value of valoreprecedente.
      *
      * @param string $valoreprecedente
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setValoreprecedente($valoreprecedente)
@@ -203,7 +209,8 @@ class BaseStoricomodifiche
     /**
      * Set the value of operatori_id.
      *
-     * @param integer $operatori_id
+     * @param int $operatori_id
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setOperatoriId($operatori_id)
@@ -216,7 +223,7 @@ class BaseStoricomodifiche
     /**
      * Get the value of operatori_id.
      *
-     * @return integer
+     * @return int
      */
     public function getOperatoriId()
     {
@@ -227,6 +234,7 @@ class BaseStoricomodifiche
      * Set Operatori entity (many to one).
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
+     *
      * @return \Cdf\BiCoreBundle\Storicomodifiche
      */
     public function setOperatori(Operatori $operatori = null)

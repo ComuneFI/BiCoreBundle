@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 class OpzionitabelleRepository extends EntityRepository
 {
-
     public function findOpzioniTabella($tabella)
     {
         $em = $this->getEntityManager();
@@ -18,6 +17,7 @@ class OpzionitabelleRepository extends EntityRepository
         $qb->setParameter('tabella', $tabella);
         //$opzioni = $qb->getQuery()->useQueryCache(true)->useResultCache(true, null, 'Opzionitabella')->getResult();
         $opzioni = $qb->getQuery()->getResult();
+
         return $opzioni;
     }
 }

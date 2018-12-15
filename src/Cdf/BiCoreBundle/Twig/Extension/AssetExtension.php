@@ -4,7 +4,6 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 
 class AssetExtension extends \Twig_Extension
 {
-
     private $projectpath;
 
     public function __construct($projectpath)
@@ -19,16 +18,16 @@ class AssetExtension extends \Twig_Extension
 
     public function assetExists($path)
     {
-        $publicRoot = realpath($this->projectpath . '/public/') . DIRECTORY_SEPARATOR;
-        $toCheck = $publicRoot . $path;
-        
+        $publicRoot = realpath($this->projectpath.'/public/').DIRECTORY_SEPARATOR;
+        $toCheck = $publicRoot.$path;
+
         // check if the file exists
         if (!is_file($toCheck)) {
             return false;
         }
-        
+
         // check if file is well contained in web/ directory (prevents ../ in paths)
-        if (strncmp($publicRoot, $toCheck, strlen($publicRoot)) !== 0) {
+        if (0 !== strncmp($publicRoot, $toCheck, strlen($publicRoot))) {
             return false;
         }
 

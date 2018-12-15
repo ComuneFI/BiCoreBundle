@@ -12,9 +12,8 @@ use FOS\UserBundle\Util\UserManipulator;
 
 class BiCoreBundleInstallCommand extends Command
 {
-
     protected static $defaultName = 'bicorebundle:install';
-    
+
     protected $fixtureFile;
     private $usermanipulator;
 
@@ -42,7 +41,7 @@ class BiCoreBundleInstallCommand extends Command
         $admin = $input->getArgument('admin');
         $adminpass = $input->getArgument('adminpass');
         $adminemail = $input->getArgument('adminemail');
-        $this->fixtureFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
+        $this->fixtureFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fixtures.yml';
 
         if (!$admin) {
             echo "Inserire il nome utente dell'amministratore";
@@ -70,7 +69,7 @@ class BiCoreBundleInstallCommand extends Command
         $commanddata = $this->getApplication()->find('bicorebundle:configuratorimport');
         $argumentsdata = array(
             'command' => 'bicorebundle:configuratorimport',
-            array("--truncatetables" => true)
+            array('--truncatetables' => true),
         );
         $inputd = new ArrayInput($argumentsdata);
         $commanddata->run($inputd, $output);
@@ -85,7 +84,7 @@ class BiCoreBundleInstallCommand extends Command
 
     /**
      * This will suppress UnusedLocalVariable
-     * warnings in this method
+     * warnings in this method.
      *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -93,7 +92,7 @@ class BiCoreBundleInstallCommand extends Command
     {
         //$todaydt = new \DateTime();
         //$today = $todaydt->format("Y-m-d") . "T00:00:00+01:00";
-        
+
         $defaultData = <<<EOF
 Cdf\BiCoreBundle\Entity\Ruoli:
     -

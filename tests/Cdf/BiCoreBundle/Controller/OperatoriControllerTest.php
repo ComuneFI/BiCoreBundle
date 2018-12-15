@@ -11,10 +11,11 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredOperatoriIndex()
     {
         $nomecontroller = 'Operatori';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -34,7 +35,7 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertTrue($responseData["status"] == "200");
+        $this->assertTrue('200' == $responseData['status']);
 
         //New
         $crawler = $this->client->request('GET', '/Operatori/new');
@@ -42,18 +43,18 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provaooperatori = "testoperatore";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("operatori_item");
-        $username = "operatori[username]";
-        $password1 = "operatori[password][first]";
-        $password2 = "operatori[password][second]";
-        $email = "operatori[email]";
+        $provaooperatori = 'testoperatore';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('operatori_item');
+        $username = 'operatori[username]';
+        $password1 = 'operatori[password][first]';
+        $password2 = 'operatori[password][second]';
+        $email = 'operatori[email]';
         $form = $crawler->filter('form[id=formdatiOperatori]')->form(
                 array(
                     $username => $provaooperatori,
                     $password1 => $provaooperatori,
                     $password2 => $provaooperatori,
-                    $email => $provaooperatori . "@" . $provaooperatori,
+                    $email => $provaooperatori.'@'.$provaooperatori,
                 )
         );
         // submit that form
@@ -62,20 +63,20 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
                 $provaooperatori, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Operatori")->findByUsername($provaooperatori);
+        $entity = $this->em->getRepository('BiCoreBundle:Operatori')->findByUsername($provaooperatori);
         $operatoriinserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Operatori/' . $operatoriinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Operatori/'.$operatoriinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("operatori_item");
-        $username = "operatori[username]";
-        $form = $crawler->filter('form[id=formdatiOperatori]')->form(array("$username" => "Provaoperatori2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('operatori_item');
+        $username = 'operatori[username]';
+        $form = $crawler->filter('form[id=formdatiOperatori]')->form(array("$username" => 'Provaoperatori2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Operatori/' . $operatoriinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Operatori/'.$operatoriinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Provaoperatori2', $this->client->getResponse()->getContent()
@@ -86,8 +87,8 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
         $qb = $this->em->createQueryBuilder();
         $qb->delete();
         $qb->from('BiCoreBundle:Operatori', 'o');
-        $qb->where("o.username= :username");
-        $qb->setParameter('username', "Provaoperatori2");
+        $qb->where('o.username= :username');
+        $qb->setParameter('username', 'Provaoperatori2');
         $qb->getQuery()->execute();
         $this->em->clear();
     }

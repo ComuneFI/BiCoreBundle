@@ -6,16 +6,15 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class FifreeWebtestcaseNorolesAuthorizedClient extends FifreeWebtestcaseAuthorizedClient
 {
-
     public function setUp()
     {
         $this->client = static::createClient();
         $this->logInUser();
-        $this->em = $this->client->getContainer()->get("doctrine")->getManager();
+        $this->em = $this->client->getContainer()->get('doctrine')->getManager();
     }
+
     protected function logInUser()
     {
-
         $container = $this->client->getContainer();
         $session = $container->get('session');
 
@@ -30,7 +29,7 @@ abstract class FifreeWebtestcaseNorolesAuthorizedClient extends FifreeWebtestcas
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }

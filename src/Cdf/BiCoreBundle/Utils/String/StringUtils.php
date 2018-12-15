@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Utils\String;
 class StringUtils
 {
     private $string;
-    
+
     public function __construct($string)
     {
         $this->string = $string;
@@ -14,7 +14,7 @@ class StringUtils
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
      *
-     * @param array  $parametri
+     * @param array $parametri
      *
      * @return string $str translated into camel caps
      */

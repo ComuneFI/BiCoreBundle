@@ -15,8 +15,8 @@ class RuoliType extends AbstractType
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('ruolo')
@@ -27,11 +27,12 @@ class RuoliType extends AbstractType
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Ruoli::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

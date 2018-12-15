@@ -12,14 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ColonnetabelleType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('nometabella', null, array('label' => 'Tabella'))
@@ -28,7 +27,7 @@ class ColonnetabelleType extends AbstractType
                 ->add('ordineindex', null, array('label' => 'Ordine in tabella'))
                 ->add('larghezzaindex', null, array('label' => 'Larghezza % in tabella', 'attr' => array(
                         'min' => 0,
-                        'max' => 100
+                        'max' => 100,
                 )))
                 ->add('etichettaindex', null, array('label' => 'Etichetta in tabella'))
                 ->add('registrastorico', null, array('label' => 'Registra in storico'))
@@ -42,7 +41,7 @@ class ColonnetabelleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Colonnetabelle::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

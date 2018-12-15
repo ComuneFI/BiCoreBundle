@@ -11,10 +11,11 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredColonnetabelleIndex()
     {
         $nomecontroller = 'Colonnetabelle';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -33,9 +34,9 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provacolonnatabella = "Provacolonnatabella";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("colonnetabelle_item");
-        $camporuolo = "colonnetabelle[nometabella]";
+        $provacolonnatabella = 'Provacolonnatabella';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('colonnetabelle_item');
+        $camporuolo = 'colonnetabelle[nometabella]';
         $form = $crawler->filter('form[id=formdatiColonnetabelle]')->form(array("$camporuolo" => $provacolonnatabella));
         // submit that form
         $crawler = $this->client->submit($form);
@@ -44,20 +45,20 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
             $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Colonnetabelle")->findByNometabella($provacolonnatabella);
+        $entity = $this->em->getRepository('BiCoreBundle:Colonnetabelle')->findByNometabella($provacolonnatabella);
         $colonnatabellainserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Colonnetabelle/'.$colonnatabellainserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("colonnetabelle_item");
-        $camporuolo = "colonnetabelle[nometabella]";
-        $form = $crawler->filter('form[id=formdatiColonnetabelle]')->form(array("$camporuolo" => "Provacolonnatabella2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('colonnetabelle_item');
+        $camporuolo = 'colonnetabelle[nometabella]';
+        $form = $crawler->filter('form[id=formdatiColonnetabelle]')->form(array("$camporuolo" => 'Provacolonnatabella2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Colonnetabelle/'.$colonnatabellainserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
             'Provacolonnatabella2',
@@ -66,8 +67,8 @@ class ColonnetabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Colonnetabelle");
-        $crawler = $this->client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() .'/'.$csrfDeleteToken .'/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Colonnetabelle');
+        $crawler = $this->client->request('GET', '/Colonnetabelle/'.$colonnatabellainserito->getId().'/'.$csrfDeleteToken.'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

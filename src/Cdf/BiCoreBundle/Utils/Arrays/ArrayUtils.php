@@ -30,20 +30,22 @@ class ArrayUtils
                 return false;
             }
         }
+
         return false;
     }
+
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
-     * e restituisce l'indice
+     * e restituisce l'indice.
      *
      * @param $elem mixed Elemento da cercare nell'array
      * @param $array Array nel quale cercare
      * @param $key mixed Nome della chiave nella quale cercare $elem
-     * @return Mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
+     *
+     * @return mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
     public static function inMultiarrayTutti($elem, $array, $key)
     {
-
         $trovato = array();
 
         foreach ($array as $indice => $value) {
@@ -60,15 +62,18 @@ class ArrayUtils
                 return false;
             }
         }
-        return (count($trovato) > 0 ? $trovato : false);
+
+        return count($trovato) > 0 ? $trovato : false;
     }
+
     /**
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
-     * e restituisce l'indice
+     * e restituisce l'indice.
      *
      * @param $array Array nel quale cercare
      * @param $search array Chiave-valore da cercare
-     * @return Mixed False se non trovato l'elemento, altrimenti l'indice in cui si trova il valore
+     *
+     * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si trova il valore
      */
     public static function multiInMultiarray($array, $search, $debug = false, $tutti = false)
     {
@@ -78,7 +83,7 @@ class ArrayUtils
         foreach ($search as $key => $singolaricerca) {
             $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key, $debug);
 
-            if ($trovato === false) {
+            if (false === $trovato) {
                 $vettorerisultati = false;
                 break;
             }
@@ -92,9 +97,9 @@ class ArrayUtils
             $primo = false;
         }
 
-        if ($vettorerisultati === false) {
+        if (false === $vettorerisultati) {
             $risposta = false;
-        } elseif ($tutti === false) {
+        } elseif (false === $tutti) {
             $risposta = reset($vettorerisultati);
         } else {
             $risposta = $vettorerisultati;
@@ -102,6 +107,7 @@ class ArrayUtils
 
         return $risposta;
     }
+
     /**
      * La funzione ordina un array multidimensionale $array.
      *
@@ -135,8 +141,10 @@ class ArrayUtils
         }
         $args[] = &$data;
         call_user_func_array('array_multisort', $args);
+
         return array_pop($args);
     }
+
     public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
@@ -147,6 +155,7 @@ class ArrayUtils
 
         return false;
     }
+
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
@@ -187,7 +196,7 @@ class ArrayUtils
                         );
                         $found = true;
                     }
-                    $offset++;
+                    ++$offset;
                 }
                 if (!$found) {
                     $temp_array = array_merge($temp_array, array($key => $val));
@@ -196,11 +205,12 @@ class ArrayUtils
             $array = self::executeSortMultiAssociativeArray($temp_array, $sort_ascending);
         }
     }
+
     private static function isSortArray($array, $subkey)
     {
         $check = null;
         $diff = false;
-        $key = "";
+        $key = '';
         //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
         foreach ($array as $key => $val) {
             if (isset($check) && $check != $val[$subkey]) {
@@ -210,8 +220,10 @@ class ArrayUtils
                 $check = $val[$subkey];
             }
         }
+
         return !$diff;
     }
+
     private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending)
     {
         if ($sort_ascending) {
@@ -219,6 +231,7 @@ class ArrayUtils
         } else {
             $array = $temp_array;
         }
+
         return $array;
     }
 }

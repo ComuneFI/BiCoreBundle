@@ -6,15 +6,12 @@ use Doctrine\ORM\EntityRepository;
 
 class StoricomodificheRepository extends EntityRepository
 {
-
     /**
-     * save field modification in history table
+     * save field modification in history table.
      *
      * @string $nometabella
      * @string $controller
      * @array $changes
-     *
-     *
      */
     public function saveHistory($nometabella, $changes, $id, $user)
     {
@@ -34,37 +31,39 @@ class StoricomodificheRepository extends EntityRepository
         $em->flush();
         $em->clear();
     }
+
     private function getValoreprecedenteImpostare($change)
     {
         if (is_object($change)) {
             if ($change instanceof \DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
-                $risposta = $change->__toString() . " (" . $change->getId() . ")";
+                $risposta = $change->__toString().' ('.$change->getId().')';
             }
         } else {
             $risposta = $change;
         }
+
         return $risposta;
     }
+
     /**
-     * check if field is historicized
+     * check if field is historicized.
+     *
      * @string $entitclass
      * @string $indicedato fieldname
      *
      * return @boolean
-     *
      */
     private function isHistoricized($nometabella, $indiceDato)
     {
-
         $risposta = false;
 
         $em = $this->getEntityManager();
         $entity = $em->getRepository('BiCoreBundle:Colonnetabelle')->findOneBy(
             array(
                     'nometabella' => $nometabella,
-                    'nomecampo' => $indiceDato
+                    'nomecampo' => $indiceDato,
                 )
         );
 
@@ -74,38 +73,37 @@ class StoricomodificheRepository extends EntityRepository
 
         return $risposta;
     }
+
     /**
-     * check if single data is  changed
+     * check if single data is  changed.
      *
      * @array $originalData
      * @array $newData
      *
      * return @string
-     *
      */
     private function isDataChanged($nometabella, $datooriginale, $singoloDato, $indiceDato, &$changes)
     {
-
         if (($datooriginale !== $singoloDato) && $this->isHistoricized($nometabella, $indiceDato)) {
             $changes[$indiceDato] = $datooriginale;
         }
     }
+
     /**
-     * check if something changes
+     * check if something changes.
      *
      * @array $originalData
      * @array $newData
      *
      * return @array
-     *
      */
     public function isRecordChanged($nometabella, $originalData, $newData)
     {
-
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {
             $this->isDataChanged($nometabella, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
         }
+
         return $changes;
     }
 }

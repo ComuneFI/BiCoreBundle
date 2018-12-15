@@ -11,10 +11,11 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredPermessiIndex()
     {
         $nomecontroller = 'Permessi';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -35,7 +36,7 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertTrue($responseData["status"] == "200");
+        $this->assertTrue('200' == $responseData['status']);
 
         //New
         $crawler = $this->client->request('GET', '/Permessi/new');
@@ -43,9 +44,9 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provaopermessi = "testpermessi";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("permessi_item");
-        $camporuolo = "permessi[modulo]";
+        $provaopermessi = 'testpermessi';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('permessi_item');
+        $camporuolo = 'permessi[modulo]';
         $form = $crawler->filter('form[id=formdatiPermessi]')->form(array("$camporuolo" => $provaopermessi));
         // submit that form
         $crawler = $this->client->submit($form);
@@ -54,20 +55,20 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
             $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Permessi")->findByModulo($provaopermessi);
+        $entity = $this->em->getRepository('BiCoreBundle:Permessi')->findByModulo($provaopermessi);
         $permessiinserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Permessi/'.$permessiinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("permessi_item");
-        $camporuolo = "permessi[modulo]";
-        $form = $crawler->filter('form[id=formdatiPermessi]')->form(array("$camporuolo" => "Provapermessi2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('permessi_item');
+        $camporuolo = 'permessi[modulo]';
+        $form = $crawler->filter('form[id=formdatiPermessi]')->form(array("$camporuolo" => 'Provapermessi2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Permessi/'.$permessiinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
             'Provapermessi2',
@@ -76,8 +77,8 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Permessi");
-        $crawler = $this->client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/' . $csrfDeleteToken . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Permessi');
+        $crawler = $this->client->request('GET', '/Permessi/'.$permessiinserito->getId().'/'.$csrfDeleteToken.'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

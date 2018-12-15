@@ -7,8 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -19,8 +17,8 @@ class ClienteType extends AbstractType
         $submitparms = array(
             'label' => 'Aggiorna cliente',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('nominativo')
@@ -28,19 +26,20 @@ class ClienteType extends AbstractType
                 ->add('datanascita', DateTimeType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy',
-                    "attr" => array("class" => "bidatepicker")
+                    'attr' => array('class' => 'bidatepicker'),
                 ))
                 ->add('punti', NumberType::class)
                 ->add('iscrittoil', DateTimeType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy HH:mm',
-                    "attr" => array("class" => "bidatetimepicker")
+                    'attr' => array('class' => 'bidatetimepicker'),
                 ))
                 ->add('creditoresiduo', NumberType::class)
                 ->add('note')
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

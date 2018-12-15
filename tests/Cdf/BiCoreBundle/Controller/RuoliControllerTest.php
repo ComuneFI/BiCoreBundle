@@ -11,10 +11,11 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredRuoliIndex()
     {
         $nomecontroller = 'Ruoli';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -32,9 +33,9 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provaruolo = "Provaruolo";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("ruoli_item");
-        $camporuolo = "ruoli[ruolo]";
+        $provaruolo = 'Provaruolo';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('ruoli_item');
+        $camporuolo = 'ruoli[ruolo]';
         $form = $crawler->filter('form[id=formdatiRuoli]')->form(array("$camporuolo" => $provaruolo));
         // submit that form
         $crawler = $this->client->submit($form);
@@ -42,20 +43,20 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
                 'Provaruolo', $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Ruoli")->findByRuolo($provaruolo);
+        $entity = $this->em->getRepository('BiCoreBundle:Ruoli')->findByRuolo($provaruolo);
         $ruoloinserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Ruoli/'.$ruoloinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("ruoli_item");
-        $camporuolo = "ruoli[ruolo]";
-        $form = $crawler->filter('form[id=formdatiRuoli]')->form(array("$camporuolo" => "Provaruolo2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('ruoli_item');
+        $camporuolo = 'ruoli[ruolo]';
+        $form = $crawler->filter('form[id=formdatiRuoli]')->form(array("$camporuolo" => 'Provaruolo2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Ruoli/'.$ruoloinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Provaruolo2', $this->client->getResponse()->getContent()
@@ -63,8 +64,8 @@ class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Ruoli");
-        $crawler = $this->client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/' . $csrfDeleteToken . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Ruoli');
+        $crawler = $this->client->request('GET', '/Ruoli/'.$ruoloinserito->getId().'/'.$csrfDeleteToken.'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

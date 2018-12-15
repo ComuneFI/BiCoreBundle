@@ -14,7 +14,7 @@ class TabellaXls
     {
         $this->tableprefix = $tableprefix;
     }
-    
+
     public function esportaexcel($parametri = array())
     {
         set_time_limit(960);
@@ -29,12 +29,11 @@ class TabellaXls
         $spreadsheet->getProperties()->setCreator('Comune di Firenze');
         $spreadsheet->getProperties()->setLastModifiedBy('Comune di Firenze');
 
-
         $header = $parametri['parametritabella'];
         $rows = $parametri['recordstabella'];
         //Scrittura su file
         $sheet = $spreadsheet->getActiveSheet();
-        $titolosheet = 'Esportazione ' . $parametri['nomecontroller'];
+        $titolosheet = 'Esportazione '.$parametri['nomecontroller'];
         $sheet->setTitle(substr($titolosheet, 0, 30));
         $sheet->getParent()->getDefaultStyle()->getFont()->setName('Verdana');
 
@@ -46,9 +45,9 @@ class TabellaXls
         $todaydate = date('d-m-y');
 
         $filename = 'Exportazione';
-        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
-        $filename = $filename . '.xls';
-        $filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+        $filename = $filename.'-'.$todaydate.'-'.strtoupper(md5(uniqid(rand(), true)));
+        $filename = $filename.'.xls';
+        $filename = sys_get_temp_dir().DIRECTORY_SEPARATOR.$filename;
 
         if (file_exists($filename)) {
             unlink($filename);
@@ -64,7 +63,7 @@ class TabellaXls
         $indicecolonnaheader = 1;
         $letteracolonna = 0;
         foreach ($testata as $modellocolonna) {
-            if ($modellocolonna["escluso"] === false) {
+            if (false === $modellocolonna['escluso']) {
                 //Si imposta la larghezza delle colonne
                 $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonnaheader);
                 $width = (int) $modellocolonna['larghezza'] / 7;
@@ -80,7 +79,6 @@ class TabellaXls
         //Imposta lo stile per l'intestazione un po più decente
         $this->setHeaderStyle($sheet, $indicecolonnaheader - 1);
 
-
         $sheet->getRowDimension('1')->setRowHeight(20);
     }
 
@@ -90,17 +88,17 @@ class TabellaXls
         foreach ($rows as $riga) {
             $col = 1;
             foreach ($header as $colonnatestata => $valorecolonnatestata) {
-                if ($valorecolonnatestata["escluso"] === false) {
+                if (false === $valorecolonnatestata['escluso']) {
                     $dfr = new DoctrineFieldReader($this->tableprefix);
 
-                    $decodiche = isset($valorecolonnatestata["decodifiche"])?$valorecolonnatestata["decodifiche"]:null;
+                    $decodiche = isset($valorecolonnatestata['decodifiche']) ? $valorecolonnatestata['decodifiche'] : null;
                     $oggetto = $dfr->getField2Object($colonnatestata, $riga, $decodiche);
-                    $valorecampo = $dfr->object2view($oggetto, $valorecolonnatestata["tipocampo"]);
-                    if ($valorecampo === '' || $valorecampo === null) {
+                    $valorecampo = $dfr->object2view($oggetto, $valorecolonnatestata['tipocampo']);
+                    if ('' === $valorecampo || null === $valorecampo) {
                         $col = $col + 1;
                         continue;
                     }
-                    $sheet->setCellValueByColumnAndRow($col, $row, $this->getValueCell($valorecolonnatestata["tipocampo"], $valorecampo));
+                    $sheet->setCellValueByColumnAndRow($col, $row, $this->getValueCell($valorecolonnatestata['tipocampo'], $valorecampo));
                     $col = $col + 1;
                 }
             }
@@ -111,8 +109,8 @@ class TabellaXls
         $col = 1;
         //Si impostano i formati cella in base al tipo di dato contenuto
         foreach ($header as $colonnatestata => $valorecolonnatestata) {
-            if ($valorecolonnatestata["escluso"] === false) {
-                $this->setCellColumnFormat($sheet, $col, $row - 1, $valorecolonnatestata["tipocampo"]);
+            if (false === $valorecolonnatestata['escluso']) {
+                $this->setCellColumnFormat($sheet, $col, $row - 1, $valorecolonnatestata['tipocampo']);
                 $this->setColumnAutowidth($sheet, $col);
                 $col = $col + 1;
             }
@@ -142,7 +140,7 @@ class TabellaXls
             ],
         ];
 
-        $sheet->getStyle('A1:' . $letteraultimacolonna . '1')->applyFromArray($styleArray);
+        $sheet->getStyle('A1:'.$letteraultimacolonna.'1')->applyFromArray($styleArray);
     }
 
     private function getValueCell($tipocampo, $valorecella)
@@ -169,6 +167,7 @@ class TabellaXls
                 $valore = $valorecella;
                 break;
         }
+
         return $valore;
     }
 
@@ -177,50 +176,50 @@ class TabellaXls
         $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonna);
         switch ($tipocampo) {
             case 'text':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
-                        ->setFormatCode("@");
+                        ->setFormatCode('@');
                 break;
             case 'string':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
-                        ->setFormatCode("@");
+                        ->setFormatCode('@');
                 break;
             case 'integer':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
                         ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
                 break;
             case 'float':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'decimal':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'number':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'datetime':
                 //\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYYSLASH
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
-                        ->setFormatCode("dd/mm/yyyy hh:mm:ss");
+                        ->setFormatCode('dd/mm/yyyy hh:mm:ss');
                 break;
             case 'date':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
-                        ->setFormatCode("dd/mm/yyyy");
+                        ->setFormatCode('dd/mm/yyyy');
                 break;
             default:
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $sheet->getStyle($letteracolonna.'2:'.$letteracolonna.$lastrow)
                         ->getNumberFormat()
-                        ->setFormatCode("@");
+                        ->setFormatCode('@');
                 break;
         }
     }

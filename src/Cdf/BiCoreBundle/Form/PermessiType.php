@@ -15,8 +15,8 @@ class PermessiType extends AbstractType
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('modulo')
@@ -26,11 +26,12 @@ class PermessiType extends AbstractType
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Permessi::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

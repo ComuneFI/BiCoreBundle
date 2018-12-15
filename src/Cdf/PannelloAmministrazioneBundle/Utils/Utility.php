@@ -6,11 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
-use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
 class Utility
 {
-
     private $apppaths;
     private $kernel;
 
@@ -20,20 +18,19 @@ class Utility
         $this->kernel = $kernel;
     }
 
-    public function clearcache($env = "")
+    public function clearcache($env = '')
     {
         if (!$env) {
             $env = $this->kernel->getEnvironment();
         }
 
         $command = $this->apppaths->getConsole();
-        $parametri = array('cache:clear','--env=' . $env);
-                
+        $parametri = array('cache:clear', '--env='.$env);
 
         return self::runCommand($command, $parametri);
     }
 
-    public static function runCommand($command, $parametri = array(), $workingdir = "")
+    public static function runCommand($command, $parametri = array(), $workingdir = '')
     {
         /* @var $process \Symfony\Component\Process\Process */
         $process = new Process(array_merge(array($command), $parametri));
@@ -44,13 +41,13 @@ class Utility
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $return = array("errcode" => -1,
-                "command" => $command,
-                "message" => 'Errore nel comando ' . $command . "\n" . $process->getErrorOutput() . "\n" . $process->getOutput());
+            $return = array('errcode' => -1,
+                'command' => $command,
+                'message' => 'Errore nel comando '.$command."\n".$process->getErrorOutput()."\n".$process->getOutput(), );
         } else {
-            $return = array("errcode" => 0,
-                "command" => $command,
-                "message" => $process->getOutput()
+            $return = array('errcode' => 0,
+                'command' => $command,
+                'message' => $process->getOutput(),
             );
         }
 
@@ -69,6 +66,6 @@ class Utility
         $returncode = $application->run(new ArrayInput($cmdoptions), $outputbuf);
         $output = $outputbuf->fetch();
 
-        return array('errcode' => ($returncode == 0 ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
+        return array('errcode' => (0 == $returncode ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
     }
 }

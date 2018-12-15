@@ -19,12 +19,13 @@ class PermessiManager
         $this->em = $em;
         $this->user = $user->getToken()->getUser();
     }
+
     public function canRead($modulo)
     {
         $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
         $canread = false;
         if ($permessi) {
-            if (stripos(strtoupper($permessi->getCrud()), 'R') !== false) {
+            if (false !== stripos(strtoupper($permessi->getCrud()), 'R')) {
                 $canread = true;
             }
         } else {
@@ -32,14 +33,16 @@ class PermessiManager
                 $canread = true;
             }
         }
+
         return $canread;
     }
+
     public function canCreate($modulo)
     {
         $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
         $cancreate = false;
         if ($permessi) {
-            if (stripos(strtoupper($permessi->getCrud()), 'C') !== false) {
+            if (false !== stripos(strtoupper($permessi->getCrud()), 'C')) {
                 $cancreate = true;
             }
         } else {
@@ -47,14 +50,16 @@ class PermessiManager
                 $cancreate = true;
             }
         }
+
         return $cancreate;
     }
+
     public function canUpdate($modulo)
     {
         $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
         $canupdate = false;
         if ($permessi) {
-            if (stripos(strtoupper($permessi->getCrud()), 'U') !== false) {
+            if (false !== stripos(strtoupper($permessi->getCrud()), 'U')) {
                 $canupdate = true;
             }
         } else {
@@ -62,14 +67,16 @@ class PermessiManager
                 $canupdate = true;
             }
         }
+
         return $canupdate;
     }
+
     public function canDelete($modulo)
     {
         $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
         $candelete = false;
         if ($permessi) {
-            if (stripos(strtoupper($permessi->getCrud()), 'D') !== false) {
+            if (false !== stripos(strtoupper($permessi->getCrud()), 'D')) {
                 $candelete = true;
             }
         } else {
@@ -77,15 +84,17 @@ class PermessiManager
                 $candelete = true;
             }
         }
+
         return $candelete;
     }
+
     public function toJson($modulo)
     {
         return array(
-            "read" => $this->canRead($modulo),
-            "create" => $this->canCreate($modulo),
-            "delete" => $this->canDelete($modulo),
-            "update" => $this->canUpdate($modulo)
+            'read' => $this->canRead($modulo),
+            'create' => $this->canCreate($modulo),
+            'delete' => $this->canDelete($modulo),
+            'update' => $this->canUpdate($modulo),
         );
     }
 }

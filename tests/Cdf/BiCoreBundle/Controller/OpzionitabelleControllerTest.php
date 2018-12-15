@@ -11,10 +11,11 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredOpzionitabelleIndex()
     {
         $nomecontroller = 'Opzionitabelle';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -32,9 +33,9 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provaopzionitabelle = "testopzionitabelle";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("opzionitabelle_item");
-        $camporuolo = "opzionitabelle[nometabella]";
+        $provaopzionitabelle = 'testopzionitabelle';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('opzionitabelle_item');
+        $camporuolo = 'opzionitabelle[nometabella]';
         $form = $crawler->filter('form[id=formdatiOpzionitabelle]')->form(array("$camporuolo" => $provaopzionitabelle));
         // submit that form
         $crawler = $this->client->submit($form);
@@ -42,20 +43,20 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
                 $provaopzionitabelle, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Opzionitabelle")->findByNometabella($provaopzionitabelle);
+        $entity = $this->em->getRepository('BiCoreBundle:Opzionitabelle')->findByNometabella($provaopzionitabelle);
         $opzionitabelleinserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Opzionitabelle/'.$opzionitabelleinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("opzionitabelle_item");
-        $camporuolo = "opzionitabelle[nometabella]";
-        $form = $crawler->filter('form[id=formdatiOpzionitabelle]')->form(array("$camporuolo" => "Provaopzionitabella2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('opzionitabelle_item');
+        $camporuolo = 'opzionitabelle[nometabella]';
+        $form = $crawler->filter('form[id=formdatiOpzionitabelle]')->form(array("$camporuolo" => 'Provaopzionitabella2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Opzionitabelle/'.$opzionitabelleinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Provaopzionitabella2', $this->client->getResponse()->getContent()
@@ -63,8 +64,8 @@ class OpzionitabelleControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Opzionitabelle");
-        $crawler = $this->client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/' . $csrfDeleteToken . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Opzionitabelle');
+        $crawler = $this->client->request('GET', '/Opzionitabelle/'.$opzionitabelleinserito->getId().'/'.$csrfDeleteToken.'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

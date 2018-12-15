@@ -2,17 +2,11 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Cdf\BiCoreBundle\Controller\FiController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Psr\Log\LoggerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 
@@ -21,7 +15,6 @@ use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
  */
 class OperatoriController extends FiController
 {
-
     private $logger;
     private $usermanipulator;
 
@@ -33,29 +26,29 @@ class OperatoriController extends FiController
         parent::__construct($user, $permessi);
     }
 
-        /**
-         * Displays a form to create a new table entity.
-         */
+    /**
+     * Displays a form to create a new table entity.
+     */
     public function new(Request $request)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canCreate($controller)) {
-            throw new AccessDeniedException("Non si hanno i permessi per creare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per creare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
         $entityclass = $this->getEntityClassName();
-        $formclass = str_replace("Entity", "Form", $entityclass);
+        $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass . 'Type';
+        $formType = $formclass.'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-            'id' => 'formdati' . $controller,
+            'id' => 'formdati'.$controller,
         ),
-        'action' => $this->generateUrl($controller . '_new'),
+        'action' => $this->generateUrl($controller.'_new'),
         ));
 
         $form->handleRequest($request);
@@ -63,7 +56,7 @@ class OperatoriController extends FiController
         $twigparms = array(
         'form' => $form->createView(),
         'nomecontroller' => ParametriTabella::setParameter($controller),
-        'tabellatemplate' => $tabellatemplate
+        'tabellatemplate' => $tabellatemplate,
         );
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -73,7 +66,7 @@ class OperatoriController extends FiController
                 $password = $entity->getPassword();
                 $entity->setOperatore($username);
                 $entity->setEnabled(true);
-                $logger->info('Inserimento nuovo utente ' . $username);
+                $logger->info('Inserimento nuovo utente '.$username);
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($entity);
@@ -81,21 +74,21 @@ class OperatoriController extends FiController
 
                 $content = $this->usermanipulator->changePassword($username, $password);
 
-                $logger->info('Esito inserimento nuovo utente ' . $username . " : " . $content);
+                $logger->info('Esito inserimento nuovo utente '.$username.' : '.$content);
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     200
                 );
             } else {
-//Quando non passa la validazione
+                //Quando non passa la validazione
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     400
                 );
             }
         } else {
-//Quando viene richiesta una "nuova" new
+            //Quando viene richiesta una "nuova" new
             return new Response(
                 $this->renderView($crudtemplate, $twigparms),
                 200

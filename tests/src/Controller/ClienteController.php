@@ -9,11 +9,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Cliente controller.
- *
  */
 class ClienteController extends FiController
 {
-
     /**
      * Lists all tables entities.
      */
@@ -114,25 +112,25 @@ class ClienteController extends FiController
         $controller = $this->getController();
         $idpassato = $request->get('id');
         if (!$this->getPermessi()->canRead($controller)) {
-            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
-        $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
+        $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
         if (!$this->get('templating')->exists($template)) {
-            $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
+            $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
         $entityclassnotation = $this->getEntityClassNotation();
         $entityclass = $this->getEntityClassName();
-        $formclass = str_replace("Entity", "Form", $entityclass);
+        $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "$controller.nominativo", "etichetta" => "Nominativo", "ordine" => 10, "larghezza" => 20, "escluso" => false),
-            array("nometabella" => $controller, "nomecampo" => "$controller.datanascita", "etichetta" => "Data di nascita", "ordine" => 20, "larghezza" => 12, "escluso" => false),
-            array("nometabella" => $controller, "nomecampo" => "$controller.saluto", "etichetta" => "Salutami", "ordine" => 30, "tipocampo" => "string", "campoextra" => true),
+            array('nometabella' => $controller, 'nomecampo' => "$controller.nominativo", 'etichetta' => 'Nominativo', 'ordine' => 10, 'larghezza' => 20, 'escluso' => false),
+            array('nometabella' => $controller, 'nomecampo' => "$controller.datanascita", 'etichetta' => 'Data di nascita', 'ordine' => 20, 'larghezza' => 12, 'escluso' => false),
+            array('nometabella' => $controller, 'nomecampo' => "$controller.saluto", 'etichetta' => 'Salutami', 'ordine' => 30, 'tipocampo' => 'string', 'campoextra' => true),
                 //, "escluso" => false, "larghezza" => 15, "association" => false, "tipocampo"=>"string", "editabile"=>false
         );
 
-        $colonneordinamento = array($controller . '.id' => "ASC");
+        $colonneordinamento = array($controller.'.id' => 'ASC');
 
         $filtri = array(
                 /* array("nomecampo" => "Cliente.nominativo",
@@ -175,8 +173,8 @@ class ClienteController extends FiController
                   ), */
         );
         $prefiltri = array();
-//dump(json_encode($filtri));exit;
-        $parametritabella = array("em" => ParametriTabella::setParameter("default"),
+        //dump(json_encode($filtri));exit;
+        $parametritabella = array('em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($controller),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
@@ -185,21 +183,21 @@ class ClienteController extends FiController
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/').$controller.'/'.'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
-            'multiselezione' => ParametriTabella::setParameter("1"),
-            'editinline' => ParametriTabella::setParameter("0"),
-            'paginacorrente' => ParametriTabella::setParameter("1"),
-            'paginetotali' => ParametriTabella::setParameter(""),
-            'righetotali' => ParametriTabella::setParameter("0"),
-            'righeperpagina' => ParametriTabella::setParameter("15"),
+            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'multiselezione' => ParametriTabella::setParameter('1'),
+            'editinline' => ParametriTabella::setParameter('0'),
+            'paginacorrente' => ParametriTabella::setParameter('1'),
+            'paginetotali' => ParametriTabella::setParameter(''),
+            'righetotali' => ParametriTabella::setParameter('0'),
+            'righeperpagina' => ParametriTabella::setParameter('15'),
             'estraituttirecords' => ParametriTabella::setParameter(0),
             'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
-            'traduzionefiltri' => ParametriTabella::setParameter(""),
+            'traduzionefiltri' => ParametriTabella::setParameter(''),
         );
 
         return $this->render(
@@ -209,5 +207,4 @@ class ClienteController extends FiController
                         )
         );
     }
-
 }

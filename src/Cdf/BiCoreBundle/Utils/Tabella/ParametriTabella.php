@@ -8,6 +8,7 @@ class ParametriTabella
     {
         return base64_decode($parametro);
     }
+
     public static function setParameter($parametro)
     {
         return base64_encode($parametro);

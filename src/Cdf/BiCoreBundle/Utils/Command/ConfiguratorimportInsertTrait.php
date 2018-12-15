@@ -2,11 +2,6 @@
 
 namespace Cdf\BiCoreBundle\Utils\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 trait ConfiguratorimportInsertTrait
@@ -15,19 +10,19 @@ trait ConfiguratorimportInsertTrait
     {
         $objrecord = new $entityclass();
         foreach ($record as $key => $value) {
-            if ($key !== 'id') {
+            if ('id' !== $key) {
                 $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
-                $getfieldname = $propertyEntity["get"];
-                $setfieldname = $propertyEntity["set"];
-                if ($key == "discr") {
+                $getfieldname = $propertyEntity['get'];
+                $setfieldname = $propertyEntity['set'];
+                if ('discr' == $key) {
                     continue;
                 }
                 $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
-                if ($fieldtype === 'boolean') {
+                if ('boolean' === $fieldtype) {
                     $newval = FieldTypeUtils::getBooleanValue($value);
-                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                            . " per campo " . $key . " con valore "
-                            . var_export($newval, true) . " in formato Boolean</info>";
+                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
+                            .' per campo '.$key.' con valore '
+                            .var_export($newval, true).' in formato Boolean</info>';
                     $this->output->writeln($msgok);
                     $objrecord->$setfieldname($newval);
                     continue;
@@ -36,21 +31,21 @@ trait ConfiguratorimportInsertTrait
                 if (!$value) {
                     continue;
                 }
-                if ($fieldtype === 'datetime' || $fieldtype === 'date') {
+                if ('datetime' === $fieldtype || 'date' === $fieldtype) {
                     $date = FieldTypeUtils::getDateTimeValueFromTimestamp($value);
-                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                            . " per campo " . $key . " cambio valore da "
-                            . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "NULL")
-                            . " a " . $date->format("Y-m-d H:i:s") . " in formato DateTime</info>";
+                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
+                            .' per campo '.$key.' cambio valore da '
+                            .($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format('Y-m-d H:i:s') : 'NULL')
+                            .' a '.$date->format('Y-m-d H:i:s').' in formato DateTime</info>';
                     $this->output->writeln($msgok);
                     $objrecord->$setfieldname($date);
                     continue;
                 }
                 if (is_array($value)) {
-                    $msgarray = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                            . " per campo " . $key . " cambio valore da "
-                            . json_encode($objrecord->$getfieldname()) . " a "
-                            . json_encode($value) . " in formato array" . "</info>";
+                    $msgarray = '<info>Inserimento '.$entityclass.' con id '.$record['id']
+                            .' per campo '.$key.' cambio valore da '
+                            .json_encode($objrecord->$getfieldname()).' a '
+                            .json_encode($value).' in formato array'.'</info>';
                     $this->output->writeln($msgarray);
                     $objrecord->$setfieldname($value);
                     continue;
@@ -60,12 +55,12 @@ trait ConfiguratorimportInsertTrait
                 $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
                 if ($joincolumn && $joincolumnproperty) {
                     $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
-                    $msgok = "<info>Inserimento " . $entityclass . " con id " . $record["id"]
-                            . " per campo " . $key
-                            . " con valore " . print_r($value, true) . " tramite entity find</info>";
+                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
+                            .' per campo '.$key
+                            .' con valore '.print_r($value, true).' tramite entity find</info>';
                     $this->output->writeln($msgok);
                     $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
-                    $setfieldname = $joinobj["set"];
+                    $setfieldname = $joinobj['set'];
                     $objrecord->$setfieldname($joincolumnobj);
                     continue;
                 }
@@ -75,31 +70,35 @@ trait ConfiguratorimportInsertTrait
         $this->em->persist($objrecord);
         $this->em->flush();
 
-        $infomsg = "<info>" . $entityclass . " con id " . $objrecord->getId() . " aggiunta</info>";
+        $infomsg = '<info>'.$entityclass.' con id '.$objrecord->getId().' aggiunta</info>';
         $this->output->writeln($infomsg);
         $checkid = $this->changeRecordId($entityclass, $record, $objrecord);
+
         return $checkid;
     }
+
     private function changeRecordId($entityclass, $record, $objrecord)
     {
-        if ($record["id"] !== $objrecord->getId()) {
+        if ($record['id'] !== $objrecord->getId()) {
             try {
                 $qb = $this->em->createQueryBuilder();
                 $q = $qb->update($entityclass, 'u')
-                        ->set('u.id', ":newid")
+                        ->set('u.id', ':newid')
                         ->where('u.id = :oldid')
-                        ->setParameter("newid", $record["id"])
-                        ->setParameter("oldid", $objrecord->getId())
+                        ->setParameter('newid', $record['id'])
+                        ->setParameter('oldid', $objrecord->getId())
                         ->getQuery();
                 $q->execute();
-                $msgok = "<info>" . $entityclass . " con id " . $objrecord->getId() . " sistemata</info>";
+                $msgok = '<info>'.$entityclass.' con id '.$objrecord->getId().' sistemata</info>';
                 $this->output->writeln($msgok);
             } catch (\Exception $exc) {
                 echo $exc->getMessage();
+
                 return 1;
             }
             $this->em->flush();
         }
+
         return 0;
     }
 }

@@ -10,15 +10,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FornitoreType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
             'label' => 'Aggiorna fornitore',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
-        
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
+
         $builder
                 ->add('ragionesociale')
                 ->add('partitaiva')
@@ -31,7 +30,7 @@ class FornitoreType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Fornitore::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

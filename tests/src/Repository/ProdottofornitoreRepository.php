@@ -15,6 +15,7 @@ class ProdottofornitoreRepository extends EntityRepository
                         ->getQuery()
                         ->getResult();
     }
+
     public function findNonDisponibili()
     {
         return $this->getEntityManager()->createQueryBuilder()

@@ -4,7 +4,6 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 
 class HeaderTabellaExtension extends \Twig_Extension
 {
-
     /**
      * {@inheritdoc}
      */
@@ -17,18 +16,18 @@ class HeaderTabellaExtension extends \Twig_Extension
 
     public function sortClass($colonneordinamento, $modellocampo)
     {
-        if ($modellocampo["association"] === true || $modellocampo["campoextra"] === true) {
-            $sorttype = "";
+        if (true === $modellocampo['association'] || true === $modellocampo['campoextra']) {
+            $sorttype = '';
         } else {
             $cursort = json_decode($colonneordinamento, true);
-            if (array_key_exists($modellocampo["nomecampo"], $cursort)) {
-                if ($cursort[$modellocampo["nomecampo"]] == 'ASC') {
-                    $sorttype = "sorting_asc";
+            if (array_key_exists($modellocampo['nomecampo'], $cursort)) {
+                if ('ASC' == $cursort[$modellocampo['nomecampo']]) {
+                    $sorttype = 'sorting_asc';
                 } else {
-                    $sorttype = "sorting_desc";
+                    $sorttype = 'sorting_desc';
                 }
             } else {
-                $sorttype = "sorting";
+                $sorttype = 'sorting';
             }
         }
 

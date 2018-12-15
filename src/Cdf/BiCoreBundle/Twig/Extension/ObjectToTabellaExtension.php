@@ -12,7 +12,7 @@ class ObjectToTabellaExtension extends \Twig_Extension
     {
         $this->tableprefix = $tableprefix;
     }
-    
+
     public function getFunctions()
     {
         return array(
@@ -25,20 +25,24 @@ class ObjectToTabellaExtension extends \Twig_Extension
     public function object2View($object, $type = null, $decodifiche = null)
     {
         $dfr = new DoctrineFieldReader($this->tableprefix);
+
         return $dfr->object2View($object, $type, $decodifiche);
     }
 
     public function field2Object($fieldname, $object, $decodifiche = null)
     {
         $dfr = new DoctrineFieldReader($this->tableprefix);
+
         return $dfr->getField2Object($fieldname, $object, $decodifiche);
     }
+
     public function joinFieldId($object)
     {
         $valore = null;
         if ($object) {
             $valore = $object->getId();
         }
+
         return $valore;
     }
 }

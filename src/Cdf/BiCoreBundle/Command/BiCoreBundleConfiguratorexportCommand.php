@@ -13,7 +13,6 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
 class BiCoreBundleConfiguratorexportCommand extends Command
 {
-
     protected static $defaultName = 'bicorebundle:configuratorexport';
 
     private $entities = array();
@@ -37,28 +36,30 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
+
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fs = new Filesystem;
+        $fs = new Filesystem();
         $this->output = $output;
 
         try {
             //$fixturefile = $this->getContainer()->get('kernel')->locateResource('@BiCoreBundle/Resources/config/fixtures.yml');
-            $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "fixtures.yml";
+            $fixturefile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fixtures.yml';
             $fs->remove($fixturefile);
             $systementities = $this->systementity->getSystemEntities();
             foreach ($systementities as $entity => $details) {
                 $ret = $this->export($fixturefile, $entity);
-                if ($ret == 1) {
+                if (1 == $ret) {
                     return 1;
                 }
             }
+
             return 0;
         } catch (\Exception $exc) {
-            echo $exc->getMessage() . " at line " . $exc->getLine();
+            echo $exc->getMessage().' at line '.$exc->getLine();
         }
     }
 
@@ -66,20 +67,22 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     {
         $entityclass = $entity;
         $ret = $this->exportEntity($fixturefile, $entityclass);
-        if ($ret == 0) {
+        if (0 == $ret) {
             foreach ($this->entities as $entity) {
-                $this->output->writeln("<info>Esporto " . $entity . " su file</info>");
+                $this->output->writeln('<info>Esporto '.$entity.' su file</info>');
                 $this->exportEntityToFile($fixturefile, $entity);
             }
             $this->exportEntityToFile($fixturefile, $entityclass);
+
             return 0;
         }
+
         return 1;
     }
 
     private function exportEntity($fixturefile, $entityclass)
     {
-        $this->output->writeln("<info>Export Entity: " . $entityclass . "</info>");
+        $this->output->writeln('<info>Export Entity: '.$entityclass.'</info>');
         if ($this->entityutility->entityExists($entityclass)) {
             /* $hasEntityCollegate = $entityutility->entityHasJoinTables($entityclass);
               if ($hasEntityCollegate) {
@@ -92,9 +95,11 @@ class BiCoreBundleConfiguratorexportCommand extends Command
               }
               } */
         } else {
-            $this->output->writeln("<error>Entity not found: " . $entityclass . " </error>");
+            $this->output->writeln('<error>Entity not found: '.$entityclass.' </error>');
+
             return 1;
         }
+
         return 0;
     }
 
@@ -102,18 +107,16 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     {
         $entityDump = array();
 
-
         $query = $this->em->createQueryBuilder()
                 ->select('p')
                 ->from($entityclass, 'p')
-                ->orderBy("p.id", "asc")
+                ->orderBy('p.id', 'asc')
                 ->getQuery()
         ;
         $repo = $query->getArrayResult();
 
-
         //$repo = $this->em->getRepository($entityclass)->findAll();
-        $this->output->writeln("<info>Trovate " . count($repo) . " records per l'entity " . $entityclass . "</info>");
+        $this->output->writeln('<info>Trovate '.count($repo)." records per l'entity ".$entityclass.'</info>');
         foreach ($repo as $row) {
             $entityDump[$entityclass][] = $row;
         }

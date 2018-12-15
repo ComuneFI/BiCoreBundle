@@ -6,14 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class OperatoriEntityTest extends KernelTestCase
 {
-
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -60,7 +59,7 @@ class OperatoriEntityTest extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

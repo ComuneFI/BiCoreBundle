@@ -15,7 +15,7 @@ class PermessiRepository extends EntityRepository
             $operatore = $em
                     ->getRepository(Operatori::class)
                     ->findOneBy(array('username' => $operatorepassato));
-            if ($operatore === false) {
+            if (false === $operatore) {
                 return false;
             }
         } elseif (is_a($operatorepassato, Operatori::class)) {
@@ -39,6 +39,7 @@ class PermessiRepository extends EntityRepository
                         ->findOneBy(array('ruoli_id' => null, 'modulo' => $modulo, 'operatori_id' => null));
             }
         }
+
         return $permesso;
     }
 }

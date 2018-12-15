@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cdf\BiCoreBundle\Menuapplicazione
+ * Cdf\BiCoreBundle\Menuapplicazione.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Menuapplicazione")
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"base":"BaseMenuapplicazione", "extended":"Menuapplicazione"})
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class BaseMenuapplicazione
 {
     /**
@@ -80,7 +80,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setId($id)
@@ -93,7 +94,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -104,6 +105,7 @@ class BaseMenuapplicazione
      * Set the value of nome.
      *
      * @param string $nome
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setNome($nome)
@@ -127,6 +129,7 @@ class BaseMenuapplicazione
      * Set the value of percorso.
      *
      * @param string $percorso
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setPercorso($percorso)
@@ -149,7 +152,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of padre.
      *
-     * @param integer $padre
+     * @param int $padre
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setPadre($padre)
@@ -162,7 +166,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of padre.
      *
-     * @return integer
+     * @return int
      */
     public function getPadre()
     {
@@ -172,7 +176,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of ordine.
      *
-     * @param integer $ordine
+     * @param int $ordine
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setOrdine($ordine)
@@ -185,7 +190,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of ordine.
      *
-     * @return integer
+     * @return int
      */
     public function getOrdine()
     {
@@ -195,7 +200,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of attivo.
      *
-     * @param boolean $attivo
+     * @param bool $attivo
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setAttivo($attivo)
@@ -208,7 +214,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of attivo.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAttivo()
     {
@@ -219,6 +225,7 @@ class BaseMenuapplicazione
      * Set the value of target.
      *
      * @param string $target
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setTarget($target)
@@ -242,6 +249,7 @@ class BaseMenuapplicazione
      * Set the value of tag.
      *
      * @param string $tag
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setTag($tag)
@@ -264,7 +272,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of notifiche.
      *
-     * @param boolean $notifiche
+     * @param bool $notifiche
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setNotifiche($notifiche)
@@ -277,7 +286,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of notifiche.
      *
-     * @return boolean
+     * @return bool
      */
     public function getNotifiche()
     {
@@ -287,7 +296,8 @@ class BaseMenuapplicazione
     /**
      * Set the value of autorizzazionerichiesta.
      *
-     * @param boolean $autorizzazionerichiesta
+     * @param bool $autorizzazionerichiesta
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setAutorizzazionerichiesta($autorizzazionerichiesta)
@@ -300,7 +310,7 @@ class BaseMenuapplicazione
     /**
      * Get the value of autorizzazionerichiesta.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAutorizzazionerichiesta()
     {
@@ -311,6 +321,7 @@ class BaseMenuapplicazione
      * Set the value of percorsonotifiche.
      *
      * @param string $percorsonotifiche
+     *
      * @return \Cdf\BiCoreBundle\Menuapplicazione
      */
     public function setPercorsonotifiche($percorsonotifiche)

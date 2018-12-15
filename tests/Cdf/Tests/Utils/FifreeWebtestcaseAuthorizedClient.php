@@ -7,7 +7,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
 {
-
     protected $client = null;
     protected $em = null;
 
@@ -15,8 +14,9 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
     {
         $this->client = static::createClient();
         $this->logInAdmin();
-        $this->em = $this->client->getContainer()->get("doctrine")->getManager();
+        $this->em = $this->client->getContainer()->get('doctrine')->getManager();
     }
+
     protected function getParametriTabella($nomecontroller, $crawler)
     {
         $parametri = array();
@@ -24,16 +24,17 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
             'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
             'filtri', 'formclass', 'idpassato', 'modellocolonne', 'nomecontroller',
             'paginacorrente', 'paginetotali', 'permessi', 'prefiltri', 'righeperpagina', 'righetotali', 'estraituttirecords',
-            'tablename', 'titolotabella', 'multiselezione', 'editinline' ,'traduzionefiltri', 'urltabella'
+            'tablename', 'titolotabella', 'multiselezione', 'editinline', 'traduzionefiltri', 'urltabella',
         );
         foreach ($attributi as $attributo) {
-            $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
+            $parametri[$attributo] = $crawler->filter('#Parametri'.$nomecontroller.'.parametri-tabella')->attr('data-'.$attributo);
         }
+
         return $parametri;
     }
+
     protected function logInAdmin()
     {
-
         $container = $this->client->getContainer();
         $session = $container->get('session');
 
@@ -48,13 +49,13 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }
-        protected function logInUsernoreoles()
-    {
 
+    protected function logInUsernoreoles()
+    {
         $container = $this->client->getContainer();
         $session = $container->get('session');
 
@@ -69,13 +70,13 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }
-        protected function logInUserreadroles()
-    {
 
+    protected function logInUserreadroles()
+    {
         $container = $this->client->getContainer();
         $session = $container->get('session');
 
@@ -90,7 +91,7 @@ abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
         $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }

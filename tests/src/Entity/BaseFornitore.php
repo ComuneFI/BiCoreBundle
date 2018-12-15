@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * App\Entity\Fornitore
+ * App\Entity\Fornitore.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Fornitore")
@@ -52,7 +52,8 @@ class BaseFornitore
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \App\Entity\Fornitore
      */
     public function setId($id)
@@ -65,7 +66,7 @@ class BaseFornitore
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -76,6 +77,7 @@ class BaseFornitore
      * Set the value of ragionesociale.
      *
      * @param string $ragionesociale
+     *
      * @return \App\Entity\Fornitore
      */
     public function setRagionesociale($ragionesociale)
@@ -99,6 +101,7 @@ class BaseFornitore
      * Set the value of partitaiva.
      *
      * @param string $partitaiva
+     *
      * @return \App\Entity\Fornitore
      */
     public function setPartitaiva($partitaiva)
@@ -122,6 +125,7 @@ class BaseFornitore
      * Set the value of capitalesociale.
      *
      * @param float $capitalesociale
+     *
      * @return \App\Entity\Fornitore
      */
     public function setCapitalesociale($capitalesociale)
@@ -145,6 +149,7 @@ class BaseFornitore
      * Add Prodottofornitore entity to collection (one to many).
      *
      * @param \App\Entity\Prodottofornitore $prodottofornitore
+     *
      * @return \App\Entity\Fornitore
      */
     public function addProdottofornitore(Prodottofornitore $prodottofornitore)
@@ -158,6 +163,7 @@ class BaseFornitore
      * Remove Prodottofornitore entity from collection (one to many).
      *
      * @param \App\Entity\Prodottofornitore $prodottofornitore
+     *
      * @return \App\Entity\Fornitore
      */
     public function removeProdottofornitore(Prodottofornitore $prodottofornitore)

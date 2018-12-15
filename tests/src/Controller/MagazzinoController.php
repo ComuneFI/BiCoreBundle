@@ -17,11 +17,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Magazzino controller.
- *
  */
 class MagazzinoController extends FiController
 {
-
     /**
      * Lists all tables entities.
      */
@@ -32,28 +30,28 @@ class MagazzinoController extends FiController
         $idpassato = $request->get('id');
 
         if (!$this->getPermessi()->canRead($controller)) {
-            throw new AccessDeniedException("Non si hanno i permessi per visualizzare questo contenuto");
+            throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
 
         $entityclassnotation = $this->getEntityClassNotation();
         $entityclass = $this->getEntityClassName();
 
-        $formclass = str_replace("Entity", "Form", $entityclass);
+        $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $modellocolonne = array(
-            array("nometabella" => $controller, "nomecampo" => "$controller.giornodellasettimana", "etichetta" => "Giorno della settimana",
-                "ordine" => 10, "larghezza" => 10, "escluso" => false,
-                "decodifiche" => array("Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato")
+            array('nometabella' => $controller, 'nomecampo' => "$controller.giornodellasettimana", 'etichetta' => 'Giorno della settimana',
+                'ordine' => 10, 'larghezza' => 10, 'escluso' => false,
+                'decodifiche' => array('Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'),
             ),
         );
 
         $filtri = array();
         $prefiltri = array();
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get("doctrine")->getManager());
+        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $colonneordinamento = array($tablenamefromentity . '.id' => "DESC");
-        $parametritabella = array("em" => ParametriTabella::setParameter("default"),
+        $colonneordinamento = array($tablenamefromentity.'.id' => 'DESC');
+        $parametritabella = array('em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
@@ -62,24 +60,23 @@ class MagazzinoController extends FiController
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/').$controller.'/'.'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter("Elenco " . $controller),
-            'multiselezione' => ParametriTabella::setParameter("0"),
-            'editinline' => ParametriTabella::setParameter("0"),
-            'paginacorrente' => ParametriTabella::setParameter("1"),
-            'paginetotali' => ParametriTabella::setParameter(""),
-            'righetotali' => ParametriTabella::setParameter("0"),
-            'righeperpagina' => ParametriTabella::setParameter("15"),
-            'estraituttirecords' => ParametriTabella::setParameter("0"),
+            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'multiselezione' => ParametriTabella::setParameter('0'),
+            'editinline' => ParametriTabella::setParameter('0'),
+            'paginacorrente' => ParametriTabella::setParameter('1'),
+            'paginetotali' => ParametriTabella::setParameter(''),
+            'righetotali' => ParametriTabella::setParameter('0'),
+            'righeperpagina' => ParametriTabella::setParameter('15'),
+            'estraituttirecords' => ParametriTabella::setParameter('0'),
             'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
-            'traduzionefiltri' => ParametriTabella::setParameter(""),
+            'traduzionefiltri' => ParametriTabella::setParameter(''),
         );
 
-        return $this->render($crudtemplate, array('parametritabella' => $parametritabella,));
+        return $this->render($crudtemplate, array('parametritabella' => $parametritabella));
     }
-
 }

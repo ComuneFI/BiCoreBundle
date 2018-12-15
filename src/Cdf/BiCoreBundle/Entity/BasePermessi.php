@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cdf\BiCoreBundle\Permessi
+ * Cdf\BiCoreBundle\Permessi.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Permessi", indexes={@ORM\Index(name="fk_Permessi_Ruoli1_idx", columns={"ruoli_id"}), @ORM\Index(name="fk_Permessi_Operatori1_idx", columns={"operatori_id"})})
@@ -61,7 +61,8 @@ class BasePermessi
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setId($id)
@@ -74,7 +75,7 @@ class BasePermessi
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -85,6 +86,7 @@ class BasePermessi
      * Set the value of modulo.
      *
      * @param string $modulo
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setModulo($modulo)
@@ -108,6 +110,7 @@ class BasePermessi
      * Set the value of crud.
      *
      * @param string $crud
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setCrud($crud)
@@ -130,7 +133,8 @@ class BasePermessi
     /**
      * Set the value of ruoli_id.
      *
-     * @param integer $ruoli_id
+     * @param int $ruoli_id
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setRuoliId($ruoli_id)
@@ -143,7 +147,7 @@ class BasePermessi
     /**
      * Get the value of ruoli_id.
      *
-     * @return integer
+     * @return int
      */
     public function getRuoliId()
     {
@@ -153,7 +157,8 @@ class BasePermessi
     /**
      * Set the value of operatori_id.
      *
-     * @param integer $operatori_id
+     * @param int $operatori_id
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setOperatoriId($operatori_id)
@@ -166,7 +171,7 @@ class BasePermessi
     /**
      * Get the value of operatori_id.
      *
-     * @return integer
+     * @return int
      */
     public function getOperatoriId()
     {
@@ -177,6 +182,7 @@ class BasePermessi
      * Set Ruoli entity (many to one).
      *
      * @param \Cdf\BiCoreBundle\Ruoli $ruoli
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setRuoli(Ruoli $ruoli = null)
@@ -200,6 +206,7 @@ class BasePermessi
      * Set Operatori entity (many to one).
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
+     *
      * @return \Cdf\BiCoreBundle\Permessi
      */
     public function setOperatori(Operatori $operatori = null)
