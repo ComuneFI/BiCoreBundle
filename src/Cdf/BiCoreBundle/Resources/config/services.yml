@@ -100,7 +100,6 @@ services:
         public: true
         
     Cdf\BiCoreBundle\Utils\Export\TabellaXls:
-        class: Cdf\BiCoreBundle\Utils\Export\TabellaXls
         public: false
         arguments: 
             $tableprefix: "%bi_core.table_prefix%"
@@ -164,10 +163,15 @@ services:
             
     #Controllers
     cdf.bicorebundle.controller.ficontroller:
-        class: Cdf\BiCoreBundle\Controller\FiController
-        bind:
-            $container: '@service_container'
+        alias: Cdf\BiCoreBundle\Controller\FiController
+        public: true
 
+    Cdf\BiCoreBundle\Controller\FiController:
+        public: false
+        calls:
+             - [setTabellaxls, ['@cdf.bicorebundle.utils.export.tabellaxls']]
+        #tags: ['controller.service_arguments']
+        
     cdf.bicorebundle.controller.operatori:
         class: Cdf\BiCoreBundle\Controller\OperatoriController
         bind:
