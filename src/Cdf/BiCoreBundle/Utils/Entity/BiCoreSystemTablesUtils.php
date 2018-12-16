@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
-class FifreeSystemTablesUtils
+class BiCoreSystemTablesUtils
 {
     /* @var $em \Doctrine\ORM\EntityManager */
     private $em;

@@ -98,11 +98,11 @@ services:
 
     #Utility tabelle di sistema bi
     cdf.bicorebundle.utility.entity.system:
-        alias: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+        alias: Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils
         public: true
     
-    Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils:
-        class: Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils
+    Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils:
+        class: Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils
         public: false
         arguments: [ '@doctrine.orm.entity_manager' ]
         

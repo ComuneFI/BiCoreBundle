@@ -71,7 +71,7 @@ trait TabellaDecoderTrait
     protected function findAliasByTablename($tablename)
     {
         if (!array_key_exists($tablename, $this->decodificaAlias)) {
-            $ex = 'Fifree: table or association '.$tablename." not found, did you mean one of these:\n".
+            $ex = 'BiCore: table or association '.$tablename." not found, did you mean one of these:\n".
                     implode("\n", array_keys($this->decodificaAlias)).
                     ' ?';
             throw new \Exception($ex);
@@ -83,7 +83,7 @@ trait TabellaDecoderTrait
     protected function findFieldnameByAlias($nomecampo)
     {
         if (!array_key_exists($nomecampo, $this->configurazionecolonnetabella)) {
-            $ex = 'Fifree: field or association '.$nomecampo." not found, did you mean one of these:\n".
+            $ex = 'BiCore: field or association '.$nomecampo." not found, did you mean one of these:\n".
                     implode("\n", array_keys($this->configurazionecolonnetabella)).
                     ' ?';
             throw new \Exception($ex);
