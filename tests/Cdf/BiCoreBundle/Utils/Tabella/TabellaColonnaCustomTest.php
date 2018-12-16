@@ -9,7 +9,6 @@ use Cdf\BiCoreBundle\Utils\Tabella\DatetimeTabella;
 
 class TabellaColonnaCustomTest extends KernelTestCase
 {
-
     protected $doctrine;
     protected $templating;
     protected $bundle;
@@ -29,35 +28,35 @@ class TabellaColonnaCustomTest extends KernelTestCase
         $this->templating = static::$kernel->getContainer()->get('templating');
 
         //Parametri Tabella
-        $this->bundle = "App";
-        $this->controller = "Ordine";
-        $template = $this->bundle . ':' . $this->controller . ':.html.twig';
+        $this->bundle = 'App';
+        $this->controller = 'Ordine';
+        $template = $this->bundle.':'.$this->controller.':.html.twig';
         if (!$this->templating->exists($template)) {
-            $template = $this->controller . '/Crud/index.html.twig';
+            $template = $this->controller.'/Crud/index.html.twig';
         }
 
         $this->entityclassnotation = 'App:Ordine';
         $this->entityclass = 'App\Entity\Ordine';
-        $this->formclass = str_replace("Entity", "Form", $this->entityclass);
+        $this->formclass = str_replace('Entity', 'Form', $this->entityclass);
     }
 
     public function testTabellaOrdineIndex()
     {
         $elencotest = $this->elencoTests();
         foreach ($elencotest as $singolotest) {
-            $idpassato = $singolotest["idpassato"];
-            $modellocolonne = $singolotest["modellocolonne"];
-            $colonneordinamento = $singolotest["colonneordinamento"];
-            $filtri = $singolotest["filtri"];
-            $prefiltri = $singolotest["prefiltri"];
-            $permessi = $singolotest["permessi"];
-            $righetotali = $singolotest["righetotali"];
-            $righeperpagina = $singolotest["righeperpagina"];
-            $colonnetotaliordine = $singolotest["colonnetotaliordine"];
-            $assertfields = $singolotest["assertfield"];
+            $idpassato = $singolotest['idpassato'];
+            $modellocolonne = $singolotest['modellocolonne'];
+            $colonneordinamento = $singolotest['colonneordinamento'];
+            $filtri = $singolotest['filtri'];
+            $prefiltri = $singolotest['prefiltri'];
+            $permessi = $singolotest['permessi'];
+            $righetotali = $singolotest['righetotali'];
+            $righeperpagina = $singolotest['righeperpagina'];
+            $colonnetotaliordine = $singolotest['colonnetotaliordine'];
+            $assertfields = $singolotest['assertfield'];
 
-            $user = $singolotest["user"];
-            $errormsg = $singolotest["errormsg"];
+            $user = $singolotest['user'];
+            $errormsg = $singolotest['errormsg'];
             $parametritabella = $this->getParametriTabella($permessi, $modellocolonne, $colonneordinamento, $prefiltri, $filtri, $idpassato, $user);
 
             $tabella = new Tabella($this->doctrine, $parametritabella);
@@ -66,15 +65,14 @@ class TabellaColonnaCustomTest extends KernelTestCase
             //Controllo coerenza modellocolonne con configurazione colonne tabella
 
             foreach ($configurazionetabella as $colonna) {
-                if (isset($modellocolonne[$colonna["nometabella"] . "." . $colonna["nomecampo"]])) {
-                    $modellocolonna = $modellocolonne[$colonna["nometabella"] . "." . $colonna["nomecampo"]];
-                    $this->assertEquals($colonna["etichetta"], $modellocolonna["etichetta"], $errormsg);
-                    $this->assertEquals($colonna["escluso"], $modellocolonna["escluso"], $errormsg);
-                    $this->assertEquals($colonna["larghezza"], $modellocolonna["larghezza"], $errormsg);
-                    $this->assertEquals($colonna["ordine"], $modellocolonna["ordine"], $errormsg);
+                if (isset($modellocolonne[$colonna['nometabella'].'.'.$colonna['nomecampo']])) {
+                    $modellocolonna = $modellocolonne[$colonna['nometabella'].'.'.$colonna['nomecampo']];
+                    $this->assertEquals($colonna['etichetta'], $modellocolonna['etichetta'], $errormsg);
+                    $this->assertEquals($colonna['escluso'], $modellocolonna['escluso'], $errormsg);
+                    $this->assertEquals($colonna['larghezza'], $modellocolonna['larghezza'], $errormsg);
+                    $this->assertEquals($colonna['ordine'], $modellocolonna['ordine'], $errormsg);
                 }
             }
-
 
             foreach ($assertfields as $keyct => $assertfield) {
                 foreach ($assertfield as $keysc => $value) {
@@ -91,14 +89,14 @@ class TabellaColonnaCustomTest extends KernelTestCase
         }
     }
 
-    private function getParametriTabella($permessi = array(), $modellocolonne = array(), $colonneordinamento = array(), $prefiltri = array(), $filtri = array(), $idpassato = "", $user = null, $righeperpagina = 15)
+    private function getParametriTabella($permessi = array(), $modellocolonne = array(), $colonneordinamento = array(), $prefiltri = array(), $filtri = array(), $idpassato = '', $user = null, $righeperpagina = 15)
     {
-
-        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername("admin");
+        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('admin');
         if (!$user) {
             $user = $useradmin;
         }
-        return array("em" => ParametriTabella::setParameter("default"),
+
+        return array('em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($this->controller),
             'nomecontroller' => ParametriTabella::setParameter($this->controller),
             'bundle' => ParametriTabella::setParameter($this->bundle),
@@ -107,53 +105,53 @@ class TabellaColonnaCustomTest extends KernelTestCase
             'formclass' => ParametriTabella::setParameter($this->formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($permessi)),
-            'urltabella' => ParametriTabella::setParameter('/' . $this->controller . '/' . 'Tabella'),
+            'urltabella' => ParametriTabella::setParameter('/'.$this->controller.'/'.'Tabella'),
             'baseurl' => ParametriTabella::setParameter('/'),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter("Elenco " . $this->controller),
-            'paginacorrente' => ParametriTabella::setParameter("1"),
-            'paginetotali' => ParametriTabella::setParameter(""),
+            'titolotabella' => ParametriTabella::setParameter('Elenco '.$this->controller),
+            'paginacorrente' => ParametriTabella::setParameter('1'),
+            'paginetotali' => ParametriTabella::setParameter(''),
             'righeperpagina' => ParametriTabella::setParameter($righeperpagina),
             'colonneordinamento' => ParametriTabella::setParameter(json_encode($colonneordinamento)),
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
-            'user' => $user
+            'user' => $user,
         );
     }
 
     private function elencoTests()
     {
-        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername("admin");
-        $usernoroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername("usernorole");
-        $userreadroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername("userreadrole");
+        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('admin');
+        $usernoroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('usernorole');
+        $userreadroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('userreadrole');
 
         $alltests = array();
         /* test */
         $alltests[] = array(
-            "idpassato" => "",
-            "modellocolonne" => array(
-                array("nometabella" => $this->controller, "nomecampo" => $this->controller . ".data", "etichetta" => "Data ordine", "ordine" => 10, "larghezza" => 200, "escluso" => false),
-                array("nometabella" => $this->controller, "nomecampo" => $this->controller . ".quantita", "etichetta" => "Quantità ordine", "ordine" => 20, "larghezza" => 100, "escluso" => false),
-                array("nometabella" => $this->controller, "nomecampo" => $this->controller . ".cliente", "escluso" => true),
-                array("nometabella" => $this->controller, "nomecampo" => $this->controller . ".prodottofornitore", "escluso" => true),
-                array("nometabella" => $this->controller, "nomecampo" => $this->controller . ".Prodottofornitore.Fornitore.ragionesociale", "etichetta" => "Ragione sociale fornitore", "escluso" => false),
+            'idpassato' => '',
+            'modellocolonne' => array(
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.data', 'etichetta' => 'Data ordine', 'ordine' => 10, 'larghezza' => 200, 'escluso' => false),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.quantita', 'etichetta' => 'Quantità ordine', 'ordine' => 20, 'larghezza' => 100, 'escluso' => false),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.cliente', 'escluso' => true),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.prodottofornitore', 'escluso' => true),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.Prodottofornitore.Fornitore.ragionesociale', 'etichetta' => 'Ragione sociale fornitore', 'escluso' => false),
             ),
-            "colonneordinamento" => array($this->controller . '.id' => "ASC"),
-            "filtri" => array(),
-            "prefiltri" => array(),
-            "permessi" => ["read" => true, "create" => true, "delete" => true, "update" => true],
-            "colonnetotaliordine" => 25,
-            "righeperpagina" => 14,
-            "righetotali" => 14,
-            "assertfield" => array(
-                "Ordine.data" => array("etichetta" => "Data ordine", "escluso" => false),
-                "Ordine.quantita" => array("etichetta" => "Quantità ordine", "escluso" => false),
-                "Ordine.cliente" => array("escluso" => true),
-                "Ordine.prodottofornitore" => array("escluso" => true),
-                "Ordine.Prodottofornitore.Fornitore.ragionesociale" => array("etichetta" => "Ragione sociale fornitore", "escluso" => false),
+            'colonneordinamento' => array($this->controller.'.id' => 'ASC'),
+            'filtri' => array(),
+            'prefiltri' => array(),
+            'permessi' => ['read' => true, 'create' => true, 'delete' => true, 'update' => true],
+            'colonnetotaliordine' => 25,
+            'righeperpagina' => 14,
+            'righetotali' => 14,
+            'assertfield' => array(
+                'Ordine.data' => array('etichetta' => 'Data ordine', 'escluso' => false),
+                'Ordine.quantita' => array('etichetta' => 'Quantità ordine', 'escluso' => false),
+                'Ordine.cliente' => array('escluso' => true),
+                'Ordine.prodottofornitore' => array('escluso' => true),
+                'Ordine.Prodottofornitore.Fornitore.ragionesociale' => array('etichetta' => 'Ragione sociale fornitore', 'escluso' => false),
             ),
-            "user" => $useradmin,
-            "errormsg" => 'Ordine senza filtri',
+            'user' => $useradmin,
+            'errormsg' => 'Ordine senza filtri',
         );
 
         return $alltests;

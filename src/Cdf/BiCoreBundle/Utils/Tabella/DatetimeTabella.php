@@ -6,6 +6,6 @@ class DatetimeTabella extends \DateTime implements \JsonSerializable
 {
     public function jsonSerialize()
     {
-        return $this->format("c");
+        return $this->format('c');
     }
 }

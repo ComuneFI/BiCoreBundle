@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DatabaseInfoDataCollectorTest extends WebTestCase
 {
-
     public function testAction()
     {
         $client = static::createClient();
@@ -16,7 +15,7 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
         $client->enableProfiler();
 
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $client->getKernel()->getContainer()->get("doctrine")->getManager();
+        $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
         $dbhostconnection = $em->getConnection()->getHost();
         $dbportconnection = $em->getConnection()->getPort();
         $dbdatabaseconnection = $em->getConnection()->getDatabase();
@@ -32,7 +31,7 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
             $this->assertEquals($dbdatabaseconnection, $profilerinfo->getDatabaseName());
             $this->assertEquals($dbpwdconnection, $profilerinfo->getDatabasePassword());
             $this->assertEquals($dbuserconnection, $profilerinfo->getDatabaseUser());
-            $dbdrivertext=$profilerinfo->getDatabaseDriver();
+            $dbdrivertext = $profilerinfo->getDatabaseDriver();
             $len = (strlen($dbdrivertext) > 0);
             $this->assertTrue($len);
         }

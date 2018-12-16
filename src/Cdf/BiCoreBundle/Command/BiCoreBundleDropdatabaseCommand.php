@@ -10,9 +10,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class BiCoreBundleDropdatabaseCommand extends Command
 {
-
     protected static $defaultName = 'bicorebundle:dropdatabase';
-    
+
     protected function configure()
     {
         $this

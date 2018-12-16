@@ -6,14 +6,14 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 class UtilitaExtension extends \Twig_Extension
 {
-
     private $container;
-    
+
     public function __construct($container)
     {
         $this->container = $container;
     }
-        /**
+
+    /**
      * {@inheritdoc}
      */
     public function getFunctions()
@@ -49,10 +49,11 @@ class UtilitaExtension extends \Twig_Extension
 
     public function getLarghezzacolonna($larghezza)
     {
-        $class = "biw-5";
+        $class = 'biw-5';
         if ($larghezza) {
-            $class = "biw-" . $larghezza;
+            $class = 'biw-'.$larghezza;
         }
+
         return $class;
     }
 }

@@ -12,7 +12,6 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
 class CheckgitversionCommand extends Command
 {
-
     protected static $defaultName = 'pannelloamministrazione:checkgitversion';
 
     protected function configure()
@@ -21,6 +20,7 @@ class CheckgitversionCommand extends Command
                 ->setDescription('Controllo versioni bundles')
                 ->setHelp('Controlla le versioni git dei bundles');
     }
+
     // @codeCoverageIgnoreStart
     public function __construct(ProjectPath $projectpath)
     {
@@ -29,6 +29,7 @@ class CheckgitversionCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (self::isWindows()) {
@@ -39,20 +40,20 @@ class CheckgitversionCommand extends Command
 
         $composerbundles = array();
         $papath = $this->projectpath;
-        $composerbundlespath = $papath->getVendorBinPath() . "/../fi";
+        $composerbundlespath = $papath->getVendorBinPath().'/../fi';
         $findercomposerbundle = new Finder();
         $findercomposerbundle->in($composerbundlespath)->sortByName()->directories()->depth('== 0');
 
         foreach ($findercomposerbundle as $file) {
-            $fullcomposerbundlepath = $composerbundlespath . DIRECTORY_SEPARATOR . $file->getBasename();
+            $fullcomposerbundlepath = $composerbundlespath.DIRECTORY_SEPARATOR.$file->getBasename();
             $local = $this->getGitVersion($fullcomposerbundlepath, false);
             $remote = $this->getGitVersion($fullcomposerbundlepath, true);
             $style = new OutputFormatterStyle('blue', 'white', array('bold', 'blink'));
             $output->getFormatter()->setStyle('warning', $style);
             if ($local !== $remote) {
-                $remote = '<warning> * ' . $remote . ' * </warning>';
+                $remote = '<warning> * '.$remote.' * </warning>';
             }
-            $output->writeln('<info>' . $file->getBasename() . '</info> ' . $local . ' -> ' . $remote);
+            $output->writeln('<info>'.$file->getBasename().'</info> '.$local.' -> '.$remote);
 
             $composerbundles[] = array(
                 'name' => $file->getBasename(),
@@ -63,6 +64,7 @@ class CheckgitversionCommand extends Command
 
         return 0;
     }
+
     private function getGitVersion($path, $remote = false)
     {
         if (self::isWindows()) {
@@ -71,25 +73,28 @@ class CheckgitversionCommand extends Command
 
         if ($remote) {
             //Remote
-            $cmd = 'cd ' . $path;
+            $cmd = 'cd '.$path;
             $remotetagscmd = "git ls-remote -t | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | sort --version-sort | tail -1";
-            $remotetag = $cmd . ";" . $remotetagscmd;
+            $remotetag = $cmd.';'.$remotetagscmd;
             $process = new Process($remotetag);
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
                 $versions = trim($process->getOutput());
+
                 return $this->getRemoteVersionString($versions);
             }
+
             return '?';
         } else {
             //Local
-            $cmd = 'cd ' . $path;
-            $process = new Process($cmd . ';git branch | ' . "grep ' * '");
+            $cmd = 'cd '.$path;
+            $process = new Process($cmd.';git branch | '."grep ' * '");
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
                 $versions = explode(chr(10), $process->getOutput());
+
                 return $this->getLocalVersionString($versions);
             } else {
                 //echo $process->getErrorOutput();
@@ -97,34 +102,42 @@ class CheckgitversionCommand extends Command
             }
         }
     }
+
     private function getLocalVersionString($versions)
     {
         foreach ($versions as $line) {
-            if (strpos($line, '* ') !== false) {
+            if (false !== strpos($line, '* ')) {
                 $version = trim(strtolower(str_replace('* ', '', $line)));
+
                 return $this->getLocalVersionStringDetail($version);
             }
         }
+
         return '?';
     }
+
     private function getLocalVersionStringDetail($versions)
     {
-        if ($versions == 'master') {
+        if ('master' == $versions) {
             return $versions;
         } else {
             if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
                 return $matches[0]; //returning the first match
             }
         }
+
         return '?';
     }
+
     private function getRemoteVersionString($versions)
     {
         if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
             return $matches[0]; //returning the first match
         }
+
         return '?';
     }
+
     public static function isWindows()
     {
         if (PHP_OS == 'WINNT') {
@@ -133,5 +146,6 @@ class CheckgitversionCommand extends Command
             return false;
         }
     }
-// @codeCoverageIgnoreEnd
+
+    // @codeCoverageIgnoreEnd
 }

@@ -2,13 +2,11 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class VersioneExtension extends \Twig_Extension
 {
-
     private $projectpath;
 
     public function __construct($projectpath)
@@ -29,34 +27,33 @@ class VersioneExtension extends \Twig_Extension
             return 0;
         }
         $cache = new FilesystemCache();
-        if ($cache->has("git_tag")) {
-            $version = $cache->get("git_tag");
+        if ($cache->has('git_tag')) {
+            $version = $cache->get('git_tag');
         } else {
             $projectDir = $this->projectpath;
-            $process = new Process(array("git", "describe", "--tags"));
+            $process = new Process(array('git', 'describe', '--tags'));
             $process->setWorkingDirectory($projectDir);
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
                 $out = explode(chr(10), $process->getOutput());
 
-                $version = isset($out[0]) ? $out[0] : "0";
-                $cache->set("git_tag", $version);
+                $version = isset($out[0]) ? $out[0] : '0';
+                $cache->set('git_tag', $version);
             } else {
-                $version = "0";
+                $version = '0';
             }
         }
+
         return $version;
     }
 
     private function isWindows()
     {
-        {
         if (PHP_OS == 'WINNT') {
             return true;
         } else {
             return false;
-        }
         }
     }
 }

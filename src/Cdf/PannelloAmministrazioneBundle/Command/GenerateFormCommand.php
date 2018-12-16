@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -47,29 +46,29 @@ class GenerateFormCommand extends Command
     {
         set_time_limit(0);
 
-        $bundlename = "App";
+        $bundlename = 'App';
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
 
         $command = $this->apppaths->getConsole();
         $arguments[] = '--env=dev';
         $arguments[] = 'make:form';
-        $arguments[] = $entityform . "Type";
+        $arguments[] = $entityform.'Type';
         $arguments[] = $entityform;
         $resultcrud = $this->pammutils->runCommand($command, $arguments);
-        if ($resultcrud['errcode'] == 0) {
+        if (0 == $resultcrud['errcode']) {
             $fs = new Filesystem();
             //Controller
-            $controlleFile = $this->apppaths->getSrcPath() . '/Controller/' . $entityform . 'Controller.php';
+            $controlleFile = $this->apppaths->getSrcPath().'/Controller/'.$entityform.'Controller.php';
 
-            $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
+            $formFile = $this->apppaths->getSrcPath().'/Form/'.$entityform.'Type.php';
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
 
             array_splice($lines, 8, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
 
-            array_splice($lines, 14, 0, "        \$submitparms = array("
-                    . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));");
+            array_splice($lines, 14, 0, '        $submitparms = array('
+                    ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));");
 
             array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
 
@@ -78,7 +77,7 @@ class GenerateFormCommand extends Command
 
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
             $fs->dumpFile($controlleFile, $code);
-            $output->writeln("<info>Creato " . $controlleFile . "</info>");
+            $output->writeln('<info>Creato '.$controlleFile.'</info>');
 
             //Routing
             $retmsg = $this->generateFormRouting($entityform);
@@ -86,10 +85,12 @@ class GenerateFormCommand extends Command
             $this->copyTableStructureWiew($entityform);
 
             $this->generateFormsDefaultTableValues($entityform);
-            $output->writeln("<info>" . $retmsg . "</info>");
+            $output->writeln('<info>'.$retmsg.'</info>');
+
             return 0;
         } else {
-            $output->writeln("<error>" . $resultcrud['message'] . "</error>");
+            $output->writeln('<error>'.$resultcrud['message'].'</error>');
+
             return 1;
         }
     }
@@ -99,22 +100,22 @@ class GenerateFormCommand extends Command
         //Routing del form
         $bundlename = 'App';
         $fs = new Filesystem();
-        $routingFile = $this->apppaths->getSrcPath() . '/../config/routes/' . strtolower($entityform) . '.yml';
+        $routingFile = $this->apppaths->getSrcPath().'/../config/routes/'.strtolower($entityform).'.yml';
 
         $code = $this->getRoutingCode(str_replace('/', '', $bundlename), $entityform);
         $fs->dumpFile($routingFile, $code);
 
-        $dest = $this->apppaths->getSrcPath() . '/../config/routes.yaml';
+        $dest = $this->apppaths->getSrcPath().'/../config/routes.yaml';
 
-        $routingContext = str_replace('/', '', $bundlename) . '_' . $entityform . ':' . "\n" .
-                '  resource: routes/' . strtolower($entityform) . '.yml' . "\n" .
-                '  prefix: /' . $entityform . "\n\n";
+        $routingContext = str_replace('/', '', $bundlename).'_'.$entityform.':'."\n".
+                '  resource: routes/'.strtolower($entityform).'.yml'."\n".
+                '  prefix: /'.$entityform."\n\n";
 
         //Si fa l'append nel file routing del bundle per aggiungerci le rotte della tabella che stiamo gestendo
         $fh = file_get_contents($dest);
-        if ($fh !== false) {
-            file_put_contents($dest, $routingContext . $fh);
-            $retmsg = 'Routing ' . $dest . " generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
+        if (false !== $fh) {
+            file_put_contents($dest, $routingContext.$fh);
+            $retmsg = 'Routing '.$dest." generato automaticamente da pannelloammonistrazionebundle\n\n* * * * CLEAR CACHE * * * *\n";
         } else {
             $retmsg = 'Impossibile generare il ruoting automaticamente da pannelloammonistrazionebundle\n';
         }
@@ -135,15 +136,15 @@ class GenerateFormCommand extends Command
           $fs->mkdir($publicfolder . "/css", 0777);
           } */
 
-        $templatetablefolder = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
+        $templatetablefolder = $this->apppaths->getTemplatePath().DIRECTORY_SEPARATOR.$entityform;
         $crudfolder = $this->kernel->locateResource('@BiCoreBundle')
-                . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Crud';
+                .DIRECTORY_SEPARATOR.'Resources/views/Standard/Crud';
         $tabellafolder = $this->kernel->locateResource('@BiCoreBundle')
-                . DIRECTORY_SEPARATOR . 'Resources/views/Standard/Tabella';
+                .DIRECTORY_SEPARATOR.'Resources/views/Standard/Tabella';
 
-        $fs->mirror($crudfolder, $templatetablefolder . '/Crud');
+        $fs->mirror($crudfolder, $templatetablefolder.'/Crud');
         if ($this->generatemplate) {
-            $fs->mirror($tabellafolder, $templatetablefolder . '/Tabella');
+            $fs->mirror($tabellafolder, $templatetablefolder.'/Tabella');
         }
 
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR . $entityform . ".js");

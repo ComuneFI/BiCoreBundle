@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * App\Entity\Magazzino
+ * App\Entity\Magazzino.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Magazzino", indexes={@ORM\Index(name="fk_Magazzino_Ordine1_idx", columns={"ordine_id"})})
@@ -55,7 +55,8 @@ class BaseMagazzino
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \App\Entity\Magazzino
      */
     public function setId($id)
@@ -68,7 +69,7 @@ class BaseMagazzino
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -78,7 +79,8 @@ class BaseMagazzino
     /**
      * Set the value of ordine_id.
      *
-     * @param integer $ordine_id
+     * @param int $ordine_id
+     *
      * @return \App\Entity\Magazzino
      */
     public function setOrdineId($ordine_id)
@@ -91,7 +93,7 @@ class BaseMagazzino
     /**
      * Get the value of ordine_id.
      *
-     * @return integer
+     * @return int
      */
     public function getOrdineId()
     {
@@ -101,7 +103,8 @@ class BaseMagazzino
     /**
      * Set the value of evaso.
      *
-     * @param boolean $evaso
+     * @param bool $evaso
+     *
      * @return \App\Entity\Magazzino
      */
     public function setEvaso($evaso)
@@ -114,7 +117,7 @@ class BaseMagazzino
     /**
      * Get the value of evaso.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEvaso()
     {
@@ -125,6 +128,7 @@ class BaseMagazzino
      * Set the value of dataspedizione.
      *
      * @param \DateTime $dataspedizione
+     *
      * @return \App\Entity\Magazzino
      */
     public function setDataspedizione($dataspedizione)
@@ -148,6 +152,7 @@ class BaseMagazzino
      * Set the value of giornodellasettimana.
      *
      * @param \integer $giornodellasettimana
+     *
      * @return \App\Entity\Magazzino
      */
     public function setGiornodellasettimana($giornodellasettimana)
@@ -171,6 +176,7 @@ class BaseMagazzino
      * Set Ordine entity (many to one).
      *
      * @param \App\Entity\Ordine $ordine
+     *
      * @return \App\Entity\Magazzino
      */
     public function setOrdine(Ordine $ordine = null)

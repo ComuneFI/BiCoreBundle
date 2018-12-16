@@ -10,18 +10,17 @@ use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 class StoricomodificheType extends AbstractType
 {
-
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
 
         $builder
                 ->add('nometabella')
@@ -39,7 +38,7 @@ class StoricomodificheType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Storicomodifiche::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

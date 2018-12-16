@@ -1,14 +1,13 @@
 <?php
+
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class MenuExtension extends \Twig_Extension
 {
-
     protected $em;
     protected $urlgenerator;
     protected $user;
@@ -26,8 +25,8 @@ class MenuExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
                 'needs_environment' => true,
-                'is_safe' => ['html']
-                ])
+                'is_safe' => ['html'],
+                ]),
         ];
     }
 
@@ -53,22 +52,22 @@ class MenuExtension extends \Twig_Extension
 
         $risposta = array_merge($rispostahome, $this->getMenu($menu));
 
-        $pathmanuale = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'manuale.pdf';
-        $username = "";
-        $urlLogout = "";
+        $pathmanuale = $this->rootpath.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'manuale.pdf';
+        $username = '';
+        $urlLogout = '';
 
         if (file_exists($pathmanuale)) {
             $risposta[] = array(
                 'percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'),
-                'nome' => 'Manuale', 'target' => '_blank');
+                'nome' => 'Manuale', 'target' => '_blank', );
         }
 
-        if ($this->user->getToken()->getProviderKey() === 'ssocdf') {
+        if ('ssocdf' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
 
-        if ($this->user->getToken()->getProviderKey() === 'main') {
+        if ('main' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fos_user_security_logout');
         }
@@ -78,6 +77,7 @@ class MenuExtension extends \Twig_Extension
                 array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => '_self'),
             ),
         );
+
         return $environment->render('BiCoreBundle:Menu:menu.html.twig', array('risposta' => $risposta));
     }
 
@@ -93,7 +93,6 @@ class MenuExtension extends \Twig_Extension
                 $permessi = new \Cdf\BiCoreBundle\Service\Permessi\PermessiManager($this->em, $this->user);
                 $visualizzare = $permessi->canRead($item->getTag());
             }
-
 
             if ($visualizzare) {
                 $qb = $em->createQueryBuilder();
@@ -159,11 +158,12 @@ class MenuExtension extends \Twig_Extension
         if ($this->routeExists($percorso)) {
             $percorso = $this->urlgenerator->generate($percorso);
         } else {
-            $percorso = "#";
+            $percorso = '#';
         }
         if (!$target) {
             $target = '_self';
         }
+
         return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
     }
 
@@ -206,7 +206,7 @@ class MenuExtension extends \Twig_Extension
         curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
         curl_exec($ch);
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($retcode === 200 || $retcode === 401) {
+        if (200 === $retcode || 401 === $retcode) {
             $exist = true;
         } else {
             $exist = false;

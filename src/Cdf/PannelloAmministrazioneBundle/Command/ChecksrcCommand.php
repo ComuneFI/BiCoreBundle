@@ -31,18 +31,18 @@ class ChecksrcCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $prjpath = $this->apppaths;
-        $vendorBin = $prjpath->getVendorBinPath() . "/";
+        $vendorBin = $prjpath->getVendorBinPath().'/';
         $srcPath = $prjpath->getSrcPath();
         $rootPath = $prjpath->getRootPath();
 
         /* phpcpd */
-        $phpcpdcmd = array($vendorBin . "phpcpd", $srcPath);
+        $phpcpdcmd = array($vendorBin.'phpcpd', $srcPath);
         $phpcpdoutput = $this->runcmd($phpcpdcmd);
         if (!$phpcpdoutput) {
-            $output->writeln("phpmd: OK");
+            $output->writeln('phpmd: OK');
         } else {
-            if (strpos($phpcpdoutput, "0.00%")) {
-                $output->writeln("phpmd: OK");
+            if (strpos($phpcpdoutput, '0.00%')) {
+                $output->writeln('phpmd: OK');
             } else {
                 $output->writeln($phpcpdoutput);
             }
@@ -50,29 +50,29 @@ class ChecksrcCommand extends Command
         /* phpcpd */
 
         /* phpcs */
-        $phpcscmd = array($vendorBin . "phpcs", "--standard=" . $rootPath. "/../tools/phpcs/ruleset.xml", "--extensions=php", $srcPath);
+        $phpcscmd = array($vendorBin.'phpcs', '--standard='.$rootPath.'/../tools/phpcs/ruleset.xml', '--extensions=php', $srcPath);
         $phpcsoutput = $this->runcmd($phpcscmd);
         if (!$phpcsoutput) {
-            $output->writeln("phpcs: OK");
+            $output->writeln('phpcs: OK');
         } else {
             $output->writeln($phpcsoutput);
-            $output->writeln("Per correggere automaticamente un file eseguire:");
-            $output->writeln($vendorBin . "phpcbf --standard=PSR2 nomefile.php");
+            $output->writeln('Per correggere automaticamente un file eseguire:');
+            $output->writeln($vendorBin.'phpcbf --standard=PSR2 nomefile.php');
         }
         /* phpcs */
 
         /* phpmd */
-        $phpmdcmd = array($vendorBin . "phpmd", $srcPath , "text", $rootPath . "/../tools/phpmd/ruleset.xml");
+        $phpmdcmd = array($vendorBin.'phpmd', $srcPath, 'text', $rootPath.'/../tools/phpmd/ruleset.xml');
         $phpmdoutput = $this->runcmd($phpmdcmd);
         if (!$phpmdoutput) {
-            $output->writeln("phpmd: OK");
+            $output->writeln('phpmd: OK');
         } else {
             $output->writeln($phpmdoutput);
         }
         /* phpmd */
     }
 
-    private function runcmd(Array $cmd)
+    private function runcmd(array $cmd)
     {
         $process = new Process($cmd);
         $process->setTimeout(60 * 100);
@@ -82,6 +82,7 @@ class ChecksrcCommand extends Command
         } else {
             $out = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
         }
+
         return $out;
     }
 

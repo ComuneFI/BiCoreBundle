@@ -11,10 +11,11 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
     {
         parent::setUp();
     }
+
     public function testSecuredMenuapplicazioneIndex()
     {
         $nomecontroller = 'Menuapplicazione';
-        $this->client->request('GET', '/' . $nomecontroller);
+        $this->client->request('GET', '/'.$nomecontroller);
         $crawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
@@ -32,9 +33,9 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
 //        $this->assertContains(
 //                'Utente', $this->client->getResponse()->getContent()
 //        );
-        $provamenuapplicazione = "Provamenuapplicazione";
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("menuapplicazione_item");
-        $camporuolo = "menuapplicazione[nome]";
+        $provamenuapplicazione = 'Provamenuapplicazione';
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('menuapplicazione_item');
+        $camporuolo = 'menuapplicazione[nome]';
         $form = $crawler->filter('form[id=formdatiMenuapplicazione]')->form(array("$camporuolo" => $provamenuapplicazione));
         // submit that form
         $crawler = $this->client->submit($form);
@@ -42,20 +43,20 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
                 $provamenuapplicazione, $this->client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $entity = $this->em->getRepository("BiCoreBundle:Menuapplicazione")->findByNome($provamenuapplicazione);
+        $entity = $this->em->getRepository('BiCoreBundle:Menuapplicazione')->findByNome($provamenuapplicazione);
         $menuapplicazioneinserito = $entity[0];
 
         //Edit
-        $crawler = $this->client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Menuapplicazione/'.$menuapplicazioneinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("menuapplicazione_item");
-        $camporuolo = "menuapplicazione[nome]";
-        $form = $crawler->filter('form[id=formdatiMenuapplicazione]')->form(array("$camporuolo" => "Provamenuapplicazione2"));
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('menuapplicazione_item');
+        $camporuolo = 'menuapplicazione[nome]';
+        $form = $crawler->filter('form[id=formdatiMenuapplicazione]')->form(array("$camporuolo" => 'Provamenuapplicazione2'));
 
         // submit that form
         $crawler = $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/edit');
+        $crawler = $this->client->request('GET', '/Menuapplicazione/'.$menuapplicazioneinserito->getId().'/edit');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertContains(
                 'Provamenuapplicazione2', $this->client->getResponse()->getContent()
@@ -63,8 +64,8 @@ class MenuapplicazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken("Menuapplicazione");
-        $crawler = $this->client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/' . $csrfDeleteToken . '/delete');
+        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Menuapplicazione');
+        $crawler = $this->client->request('GET', '/Menuapplicazione/'.$menuapplicazioneinserito->getId().'/'.$csrfDeleteToken.'/delete');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 }

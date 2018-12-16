@@ -6,12 +6,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use \Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class BiCoreBundleDroptablesCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:droptables';
-    
+
     protected function configure()
     {
         $this
@@ -19,7 +19,7 @@ class BiCoreBundleDroptablesCommand extends Command
                 ->setHelp('ATTENZIONE, questo comando cancellerà tutte le informazioni presenti nel database!!')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
-    
+
     public function __construct(ObjectManager $em)
     {
         $this->em = $em;
@@ -38,6 +38,7 @@ class BiCoreBundleDroptablesCommand extends Command
 
         if (!$force) {
             $output->writeln("Specificare l'opzione --force per eseguire il comando");
+
             return 1;
         }
 
@@ -47,7 +48,7 @@ class BiCoreBundleDroptablesCommand extends Command
         foreach ($tables as $table) {
             $tableName = $table->getName();
             switch ($driver) {
-                case "postgresql":
+                case 'postgresql':
                     $em->getConnection()->executeQuery(sprintf('DROP TABLE %s CASCADE', $tableName));
                     $sequences = $em->getConnection()->getSchemaManager()->listSequences();
                     foreach ($sequences as $sequence) {
@@ -55,7 +56,7 @@ class BiCoreBundleDroptablesCommand extends Command
                         $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
                     }
                     break;
-                case "mysql":
+                case 'mysql':
                     $em->getConnection()->executeQuery('SET FOREIGN_KEY_CHECKS=0');
                     $em->getConnection()->executeQuery(sprintf('DROP TABLE %s', $tableName));
                     $em->getConnection()->executeQuery('SET FOREIGN_KEY_CHECKS=1');
@@ -67,6 +68,6 @@ class BiCoreBundleDroptablesCommand extends Command
             }
         }
 
-        $output->writeln("Done!");
+        $output->writeln('Done!');
     }
 }

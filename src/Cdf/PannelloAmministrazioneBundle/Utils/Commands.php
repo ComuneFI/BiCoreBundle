@@ -4,12 +4,9 @@ namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
-use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class Commands
 {
-
     /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
     private $apppaths;
     /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utility */
@@ -21,7 +18,6 @@ class Commands
         $this->pammutils = $pautils;
     }
 
-
     // @codeCoverageIgnoreStart
     public function getVcs()
     {
@@ -29,38 +25,39 @@ class Commands
 
         $sepchr = OsFunctions::getSeparator();
         $projectDir = $this->apppaths->getRootPath();
-        $vcscommand = "";
-        if ($fs->exists($projectDir . DIRECTORY_SEPARATOR . '.svn')) {
+        $vcscommand = '';
+        if ($fs->exists($projectDir.DIRECTORY_SEPARATOR.'.svn')) {
             $vcscommand = 'svn update';
         }
-        if ($fs->exists($projectDir . DIRECTORY_SEPARATOR . '.git')) {
+        if ($fs->exists($projectDir.DIRECTORY_SEPARATOR.'.git')) {
             $vcscommand = 'git pull';
         }
         if (!$vcscommand) {
-            throw new \Exception("Vcs non trovato", 100);
+            throw new \Exception('Vcs non trovato', 100);
         }
-        $command = 'cd ' . $projectDir . $sepchr . $vcscommand;
+        $command = 'cd '.$projectDir.$sepchr.$vcscommand;
+
         return $this->pammutils->runCommand($command);
     }
 
     // @codeCoverageIgnoreEnd
     public function generateEntity($wbFile)
     {
-        $command = "pannelloamministrazione:generateormentities";
+        $command = 'pannelloamministrazione:generateormentities';
         $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
 
-        if ($result["errcode"] != 0) {
+        if (0 != $result['errcode']) {
             return array(
                 'errcode' => -1,
                 'command' => $command,
-                'message' => 'Errore nel comando:' . $command . ';' . $result["message"],
+                'message' => 'Errore nel comando:'.$command.';'.$result['message'],
             );
         }
 
         return array(
             'errcode' => 0,
             'command' => $command,
-            'message' => 'Eseguito comando:' . $command . ';' . $result["message"]);
+            'message' => 'Eseguito comando:'.$command.';'.$result['message'], );
     }
 
     public function generateFormCrud($entityform, $generatemplate)
@@ -68,10 +65,10 @@ class Commands
         /* @var $fs \Symfony\Component\Filesystem\Filesystem */
         $resultchk = $this->checkFormCrud($entityform);
 
-        if ($resultchk["errcode"] !== 0) {
+        if (0 !== $resultchk['errcode']) {
             return $resultchk;
         }
-        $formcrudparms = array("entityform" => $entityform, "--generatemplate" => $generatemplate);
+        $formcrudparms = array('entityform' => $entityform, '--generatemplate' => $generatemplate);
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
@@ -91,30 +88,30 @@ class Commands
         $srcPath = $this->apppaths->getSrcPath();
         $appPath = $srcPath;
         if (!is_writable($appPath)) {
-            return array('errcode' => -1, 'message' => $appPath . ' non scrivibile');
+            return array('errcode' => -1, 'message' => $appPath.' non scrivibile');
         }
-        $formPath = $appPath . '/Form/' . $entityform . 'Type.php';
+        $formPath = $appPath.'/Form/'.$entityform.'Type.php';
 
-        $entityPath = $appPath . '/Entity' . DIRECTORY_SEPARATOR . $entityform . '.php';
+        $entityPath = $appPath.'/Entity'.DIRECTORY_SEPARATOR.$entityform.'.php';
 
         if (!$fs->exists($entityPath)) {
-            return array('errcode' => -1, 'message' => $entityPath . ' entity non trovata');
+            return array('errcode' => -1, 'message' => $entityPath.' entity non trovata');
         }
 
         if ($fs->exists($formPath)) {
-            return array('errcode' => -1, 'message' => $formPath . ' esistente');
+            return array('errcode' => -1, 'message' => $formPath.' esistente');
         }
 
-        $controllerPath = $appPath . '/Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
+        $controllerPath = $appPath.'/Controller'.DIRECTORY_SEPARATOR.$entityform.'Controller.php';
 
         if ($fs->exists($controllerPath)) {
-            return array('errcode' => -1, 'message' => $controllerPath . ' esistente');
+            return array('errcode' => -1, 'message' => $controllerPath.' esistente');
         }
 
-        $viewPathSrc = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
+        $viewPathSrc = $this->apppaths->getTemplatePath().DIRECTORY_SEPARATOR.$entityform;
 
         if ($fs->exists($viewPathSrc)) {
-            return array('errcode' => -1, 'message' => $viewPathSrc . ' esistente');
+            return array('errcode' => -1, 'message' => $viewPathSrc.' esistente');
         }
 
         return array('errcode' => 0, 'message' => 'OK');
@@ -122,16 +119,17 @@ class Commands
 
     public function clearcache()
     {
-        $cmdoutput = "";
-        $envs = array("dev", "test", "prod");
+        $cmdoutput = '';
+        $envs = array('dev', 'test', 'prod');
         foreach ($envs as $env) {
             $result = $this->pammutils->clearcache($env);
-            $cmdoutput = $cmdoutput . $result["message"];
-            if ($result["errcode"] !== 0) {
+            $cmdoutput = $cmdoutput.$result['message'];
+            if (0 !== $result['errcode']) {
                 return $result;
             }
-            $result["message"] = $cmdoutput;
+            $result['message'] = $cmdoutput;
         }
+
         return $result;
     }
 

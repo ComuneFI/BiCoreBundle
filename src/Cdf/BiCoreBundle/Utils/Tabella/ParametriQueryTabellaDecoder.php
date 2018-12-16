@@ -38,94 +38,101 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
                 break;
         }
     }
+
     protected function setEqCriteria()
     {
         $expr = new Expr();
 
-        if ($this->fieldvalue === null) {
+        if (null === $this->fieldvalue) {
             $this->criteria = $expr->isnull($this->fieldname);
         } else {
             if (is_a(FieldTypeUtils::extractDateTime($this->fieldvalue), "\DateTime")) {
-                $this->criteria = $expr->eq($this->fieldname, ":" . $this->fieldqueryparameter);
+                $this->criteria = $expr->eq($this->fieldname, ':'.$this->fieldqueryparameter);
             } else {
                 if (is_string($this->fieldvalue)) {
-                    $this->criteria = $expr->eq("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+                    $this->criteria = $expr->eq('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
                 } else {
-                    $this->criteria = $expr->eq($this->fieldname, ":" . $this->fieldqueryparameter);
+                    $this->criteria = $expr->eq($this->fieldname, ':'.$this->fieldqueryparameter);
                 }
             }
             $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
         }
     }
+
     protected function setNeqCriteria()
     {
         $expr = new Expr();
 
-        if ($this->fieldvalue === null) {
+        if (null === $this->fieldvalue) {
             $this->criteria = $expr->isnotnull($this->fieldname);
         } else {
             if (is_a(FieldTypeUtils::extractDateTime($this->fieldvalue), "\DateTime")) {
-                $this->criteria = $expr->neq($this->fieldname, ":" . $this->fieldqueryparameter);
+                $this->criteria = $expr->neq($this->fieldname, ':'.$this->fieldqueryparameter);
             } else {
                 if (is_string($this->fieldvalue)) {
-                    $this->criteria = $expr->neq("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+                    $this->criteria = $expr->neq('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
                 } else {
-                    $this->criteria = $expr->neq($this->fieldname, ":" . $this->fieldqueryparameter);
+                    $this->criteria = $expr->neq($this->fieldname, ':'.$this->fieldqueryparameter);
                 }
             }
             $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
         }
     }
+
     protected function setNinCriteria()
     {
         $expr = new Expr();
 
         if (is_string($this->fieldvalue)) {
-            $this->criteria = $expr->notin("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+            $this->criteria = $expr->notin('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
         } else {
-            $this->criteria = $expr->notin($this->fieldname, ":" . $this->fieldqueryparameter);
+            $this->criteria = $expr->notin($this->fieldname, ':'.$this->fieldqueryparameter);
         }
         $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
     }
+
     protected function setInCriteria()
     {
         $expr = new Expr();
 
         if (is_string($this->fieldvalue)) {
-            $this->criteria = $expr->in("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+            $this->criteria = $expr->in('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
         } else {
-            $this->criteria = $expr->in($this->fieldname, ":" . $this->fieldqueryparameter);
+            $this->criteria = $expr->in($this->fieldname, ':'.$this->fieldqueryparameter);
         }
         $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
     }
+
     protected function setContainsCriteria()
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {
-            $this->criteria = $expr->like("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+            $this->criteria = $expr->like('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
         } else {
-            $this->criteria = $expr->like($this->fieldname, ":" . $this->fieldqueryparameter);
+            $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => '%' . $this->fieldvalue . '%');
+        $this->parameters = array($this->fieldqueryparameter => '%'.$this->fieldvalue.'%');
     }
+
     protected function setStartswithCriteria()
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {
-            $this->criteria = $expr->like("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+            $this->criteria = $expr->like('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
         } else {
-            $this->criteria = $expr->like($this->fieldname, ":" . $this->fieldqueryparameter);
+            $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue . '%');
+        $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue.'%');
     }
+
     protected function setEndswithCriteria()
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {
-            $this->criteria = $expr->like("lower(" . $this->fieldname . ")", "lower(:" . $this->fieldqueryparameter . ")");
+            $this->criteria = $expr->like('lower('.$this->fieldname.')', 'lower(:'.$this->fieldqueryparameter.')');
         } else {
-            $this->criteria = $expr->like($this->fieldname, ":" . $this->fieldqueryparameter);
+            $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => '%' . $this->fieldvalue);
+        $this->parameters = array($this->fieldqueryparameter => '%'.$this->fieldvalue);
     }
 }

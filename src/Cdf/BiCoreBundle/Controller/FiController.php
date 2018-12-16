@@ -3,7 +3,6 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -21,7 +20,7 @@ class FiController extends AbstractController
         $controllo = new \ReflectionClass(get_class($this));
 
         preg_match('/(.*)\\\(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
-        if (count($matches) == 0) {
+        if (0 == count($matches)) {
             preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         }
 
@@ -30,18 +29,22 @@ class FiController extends AbstractController
         $this->permessi = $permessi;
         $this->user = $user;
     }
+
     protected function getBundle()
     {
         return $this->bundle;
     }
+
     protected function getController()
     {
         return $this->controller;
     }
+
     protected function getPermessi()
     {
         return $this->permessi;
     }
+
     protected function getUser()
     {
         return $this->user->getToken()->getUser();

@@ -14,7 +14,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
     {
         $this->schemaprefix = $schemaprefix;
     }
-    
+
     public function getSubscribedEvents()
     {
         return array('loadClassMetadata');
@@ -23,13 +23,13 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {
         $tableschema = $this->schemaprefix;
-        if ($tableschema != '') {
+        if ('' != $tableschema) {
             $classMetadata = $args->getClassMetadata();
 
             $classMetadata->setPrimaryTable(array('name' => $tableschema.'.'.$classMetadata->getTableName()));
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
                 $jointablename = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
-                if ($mapping['type'] == ClassMetadataInfo::MANY_TO_MANY && isset($jointablename)) {
+                if (ClassMetadataInfo::MANY_TO_MANY == $mapping['type'] && isset($jointablename)) {
                     $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
                     $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $tableschema.'.'.$mappedTableName;
                 }

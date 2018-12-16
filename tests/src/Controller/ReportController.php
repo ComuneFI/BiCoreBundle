@@ -4,17 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Cliente;
-use App\Entity\Fornitore;
 use App\Entity\Prodottofornitore;
 use App\Entity\Ordine;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Report controller.
- *
  */
 class ReportController extends AbstractController
 {
@@ -23,7 +19,7 @@ class ReportController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $anno = ($request->get("_anno") ? $request->get("_anno") : \date("Y"));
+        $anno = ($request->get('_anno') ? $request->get('_anno') : \date('Y'));
         //$this->addFlash("success", "Anno " . $anno);
 
         /* @var $em \Doctrine\ORM\EntityManager */
@@ -48,7 +44,7 @@ class ReportController extends AbstractController
 
         /* @var $ordinerepository \App\Repository\OrdineRepository */
         $ordinerepository = $em->getRepository(Ordine::class);
-        $ordinidelmese = $ordinerepository->findOrdiniAnnoMese(\date("Y"), \date("m"));
+        $ordinidelmese = $ordinerepository->findOrdiniAnnoMese(\date('Y'), \date('m'));
 
         $twigparms = array(
             'anno' => $anno,
@@ -57,7 +53,7 @@ class ReportController extends AbstractController
             'clientiattivi' => $clientiattivi,
             'clientidisattivati' => $clientidisattivati,
             'prodottidisponibili' => $prodottidisponibili,
-            'prodottinondisponibili' => $prodottinondisponibili
+            'prodottinondisponibili' => $prodottinondisponibili,
         );
 
         return $this->render('Report\index.html.twig', $twigparms);

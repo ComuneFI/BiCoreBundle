@@ -18,41 +18,41 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
-        $client->request('GET', $urlsc, array("symfonycommand" => "list"));
+        $client->request('GET', $urlsc, array('symfonycommand' => 'list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
-        $client->request('GET', $urlsc, array("symfonycommand" => "list --env=test"));
+        $client->request('GET', $urlsc, array('symfonycommand' => 'list --env=test'));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
-        $client->request('GET', $urlsc, array("symfonycommand" => "lista --env=test"));
+        $client->request('GET', $urlsc, array('symfonycommand' => 'lista --env=test'));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
-        $client->request('GET', $urluc, array("unixcommand" => "ls", "arguments"=> "-all"));
+        $client->request('GET', $urluc, array('unixcommand' => 'ls', 'arguments' => '-all'));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
-        $client->request('GET', $urluc, array("unixcommand" => "lsssss -all"));
+        $client->request('GET', $urluc, array('unixcommand' => 'lsssss -all'));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         $urluc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_unixcommand');
-        $client->request('GET', $urluc, array("unixcommand" => "lsss", "arguments"=> "-all"));
+        $client->request('GET', $urluc, array('unixcommand' => 'lsss', 'arguments' => '-all'));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         $client->reload();
         $urlge = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateentity');
 
-        $client->request('GET', $urlge, array("file" => "tabellaminuscola.mwb"));
+        $client->request('GET', $urlge, array('file' => 'tabellaminuscola.mwb'));
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
 
         $client->reload();
         //Restart client per caricare il nuovo bundle
-        $client->request('GET', $urlge, array("file" => "wbadmintest.mwb"));
+        $client->request('GET', $urlge, array('file' => 'wbadmintest.mwb'));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
@@ -63,15 +63,15 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
 
         $client->reload();
         $urlgf = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_generateformcrud');
-        $client->request('GET', $urlgf, array("entityform" => "Prova"));
+        $client->request('GET', $urlgf, array('entityform' => 'Prova'));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $apppath = $client->getContainer()->get('pannelloamministrazione.projectpath');
-        $appbundlepath = $apppath->getSrcPath() . DIRECTORY_SEPARATOR;
-        $checkentitybaseprova = $appbundlepath . "Entity" . DIRECTORY_SEPARATOR . "BaseProva.php";
-        $checkentityprova = $appbundlepath . "Entity" . DIRECTORY_SEPARATOR . "Prova.php";
-        $checktypeprova = $appbundlepath . "Form" . DIRECTORY_SEPARATOR . "ProvaType.php";
-        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . "Prova";
-        $checkindexprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . "Prova" . DIRECTORY_SEPARATOR . "Crud" . DIRECTORY_SEPARATOR . "index.html.twig";
+        $appbundlepath = $apppath->getSrcPath().DIRECTORY_SEPARATOR;
+        $checkentitybaseprova = $appbundlepath.'Entity'.DIRECTORY_SEPARATOR.'BaseProva.php';
+        $checkentityprova = $appbundlepath.'Entity'.DIRECTORY_SEPARATOR.'Prova.php';
+        $checktypeprova = $appbundlepath.'Form'.DIRECTORY_SEPARATOR.'ProvaType.php';
+        $checkviewsprova = $apppath->getSrcPath().DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Prova';
+        $checkindexprova = $apppath->getSrcPath().DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Prova'.DIRECTORY_SEPARATOR.'Crud'.DIRECTORY_SEPARATOR.'index.html.twig';
 
         $this->assertTrue(file_exists($checkentitybaseprova));
         $this->assertTrue(file_exists($checkentityprova));
@@ -86,7 +86,7 @@ class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedC
         $this->setUp();
         $client = $this->client;
         $client->request('GET', $url);
-        
+
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         cleanFilesystem();

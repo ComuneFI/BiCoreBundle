@@ -4,20 +4,19 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 
 class DoctrineFieldReader
 {
-
     private $tableprefix;
 
     public function __construct($tableprefix)
     {
         $this->tableprefix = $tableprefix;
     }
-    
+
     public function getField2Object($fieldname, $object, $decodifiche = null)
     {
-        $property = "";
-        $field = "";
+        $property = '';
+        $field = '';
         $propertyfound = false;
-        $subfields = explode(".", str_replace($this->tableprefix, "", $fieldname));
+        $subfields = explode('.', str_replace($this->tableprefix, '', $fieldname));
         foreach ($subfields as $field) {
             $property = $this->getObjectProperty($field, $object);
             if ($property) {
@@ -26,13 +25,14 @@ class DoctrineFieldReader
             }
         }
         if (!$propertyfound) {
-            throw new \Exception("Proprietà " . $field . " non trovata per " . $fieldname);
+            throw new \Exception('Proprietà '.$field.' non trovata per '.$fieldname);
         }
         if ($decodifiche) {
             if (key_exists($object, $decodifiche)) {
                 $object = $decodifiche[$object];
             }
         }
+
         return $object;
     }
 
@@ -41,11 +41,11 @@ class DoctrineFieldReader
         $risposta = null;
 
         if ($decodifiche) {
-            $type = "string";
+            $type = 'string';
         }
 
         if (!is_null($object)) {
-            if ($type === null) {
+            if (null === $type) {
                 $tipo = is_object($object) ?
                         get_class($object) :
                         gettype($object);
@@ -57,13 +57,13 @@ class DoctrineFieldReader
                     $risposta = print_r($object, true);
                     break;
                 case 'date':
-                    $risposta = $object->format("d/m/Y");
+                    $risposta = $object->format('d/m/Y');
                     break;
                 case 'datetime':
-                    $risposta = $object->format("d/m/Y H:i");
+                    $risposta = $object->format('d/m/Y H:i');
                     break;
                 case 'boolean':
-                    $risposta = $object ? "SI" : "NO";
+                    $risposta = $object ? 'SI' : 'NO';
                     break;
                 case 'string':
                 default:
@@ -71,20 +71,21 @@ class DoctrineFieldReader
                     break;
             }
         }
+
         return $risposta;
     }
 
     private function getObjectProperty($field, $object)
     {
-        $property = "get" . ucfirst($field);
+        $property = 'get'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = "is" . ucfirst($field);
+        $property = 'is'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = "has" . ucfirst($field);
+        $property = 'has'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }

@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cdf\BiCoreBundle\Opzionitabelle
+ * Cdf\BiCoreBundle\Opzionitabelle.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Opzionitabelle")
@@ -49,7 +49,8 @@ class BaseOpzionitabelle
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Opzionitabelle
      */
     public function setId($id)
@@ -62,7 +63,7 @@ class BaseOpzionitabelle
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -73,6 +74,7 @@ class BaseOpzionitabelle
      * Set the value of nometabella.
      *
      * @param string $nometabella
+     *
      * @return \Cdf\BiCoreBundle\Opzionitabelle
      */
     public function setNometabella($nometabella)
@@ -96,6 +98,7 @@ class BaseOpzionitabelle
      * Set the value of descrizione.
      *
      * @param string $descrizione
+     *
      * @return \Cdf\BiCoreBundle\Opzionitabelle
      */
     public function setDescrizione($descrizione)
@@ -119,6 +122,7 @@ class BaseOpzionitabelle
      * Set the value of parametro.
      *
      * @param string $parametro
+     *
      * @return \Cdf\BiCoreBundle\Opzionitabelle
      */
     public function setParametro($parametro)
@@ -142,6 +146,7 @@ class BaseOpzionitabelle
      * Set the value of valore.
      *
      * @param string $valore
+     *
      * @return \Cdf\BiCoreBundle\Opzionitabelle
      */
     public function setValore($valore)

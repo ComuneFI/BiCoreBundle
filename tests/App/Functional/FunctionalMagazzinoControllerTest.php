@@ -24,16 +24,15 @@ class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
     }*/
     public function testSecuredFunctionalMagazzinoIndex()
     {
-
         $url = $this->getRoute('Magazzino_container');
         $client = $this->getClient();
 
         $client->request('GET', $url);
-        $client->waitFor(".tabellasearch");
+        $client->waitFor('.tabellasearch');
 
         $this->pressButton('.tabellasearch');
-        $fieldhtml = "html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters.d-flex th.biw-19 input.form-control.colonnatabellafiltro";
-        $this->fillField($fieldhtml, "ed");
+        $fieldhtml = 'html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters.d-flex th.biw-19 input.form-control.colonnatabellafiltro';
+        $this->fillField($fieldhtml, 'ed');
 
         $crawler = $this->findField($fieldhtml)->sendKeys("\n");
         $this->ajaxWait(6000);

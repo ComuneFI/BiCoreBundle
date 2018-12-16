@@ -11,8 +11,8 @@ class CacheClearer implements CacheClearerInterface
     {
         //Qui si possono mettere operazioni da fare in caso di clear cache
         $cache = new FilesystemCache();
-        if ($cache->has("git_tag")) {
-            $cache->delete("git_tag");
+        if ($cache->has('git_tag')) {
+            $cache->delete('git_tag');
             $cache->clear();
         }
     }

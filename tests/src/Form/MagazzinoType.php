@@ -16,8 +16,8 @@ class MagazzinoType extends AbstractType
         $submitparms = array(
             'label' => 'Aggiorna record',
             'attr' => array(
-                "class" => "btn-outline-primary bisubmit"
-        ));
+                'class' => 'btn-outline-primary bisubmit',
+        ), );
         $builder
                 ->add('ordine')
                 ->add('evaso')
@@ -25,16 +25,17 @@ class MagazzinoType extends AbstractType
                 ->add('dataspedizione', DateTimeType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd/MM/yyyy HH:mm',
-                    "attr" => array("class" => "bidatetimepicker")
+                    'attr' => array('class' => 'bidatetimepicker'),
                 ))
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Magazzino::class,
-            'parametriform' => array()
+            'parametriform' => array(),
         ]);
     }
 }

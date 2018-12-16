@@ -8,9 +8,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class FifreeinstallCommandTest extends WebTestCase
 {
-
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -30,7 +29,7 @@ class FifreeinstallCommandTest extends WebTestCase
 
         $this->assertRegExp('/.../', $outputimport);
         //$this->assertContains('Cosa cercare', $outputimport);
-        /**/
+
         $commandimport = $application->find('bicorebundle:dropdatabase');
         $commandTesterImport = new CommandTester($commandimport);
         $commandTesterImport->execute(array('--force' => true));
@@ -38,10 +37,10 @@ class FifreeinstallCommandTest extends WebTestCase
 
         $this->assertRegExp('/.../', $outputimport);
         //$this->assertContains('Cosa cercare', $outputimport);
-        /**/
+
         $commandimport = $application->find('bicorebundle:install');
         $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(array('admin' => "admin",'adminpass' => "admin",'adminemail' => "admin@admin.it"));
+        $commandTesterImport->execute(array('admin' => 'admin', 'adminpass' => 'admin', 'adminemail' => 'admin@admin.it'));
         $outputimport = $commandTesterImport->getDisplay();
 
         $this->assertRegExp('/.../', $outputimport);

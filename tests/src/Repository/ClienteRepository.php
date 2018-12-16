@@ -11,17 +11,18 @@ class ClienteRepository extends EntityRepository
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
                         ->from('App:Cliente', 'a')
-                        ->where("a.attivo = true")
+                        ->where('a.attivo = true')
                         ->orderBy('a.nominativo', 'asc')
                         ->getQuery()
                         ->getResult();
     }
+
     public function findDisattivati()
     {
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
                         ->from('App:Cliente', 'a')
-                        ->where("a.attivo = false")
+                        ->where('a.attivo = false')
                         ->orderBy('a.nominativo', 'asc')
                         ->getQuery()
                         ->getResult();

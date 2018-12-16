@@ -17,7 +17,6 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
 
 class PannelloAmministrazioneController extends AbstractController
 {
-
     private $apppaths;
     private $pacommands;
     private $pautils;
@@ -44,7 +43,7 @@ class PannelloAmministrazioneController extends AbstractController
         $entitiesprogetto = array();
         $prefix = 'App\\Entity\\';
         $prefixBase = 'Base';
-        $entities = $this->get("doctrine")->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $entities = $this->get('doctrine')->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
         foreach ($entities as $entity) {
             if (substr($entity, 0, strlen($prefix)) == $prefix) {
                 if (substr(substr($entity, strlen($prefix)), 0, strlen($prefixBase)) != $prefixBase) {
@@ -52,6 +51,7 @@ class PannelloAmministrazioneController extends AbstractController
                 }
             }
         }
+
         return $entitiesprogetto;
     }
 
@@ -72,39 +72,39 @@ class PannelloAmministrazioneController extends AbstractController
             }
         }
         sort($mwbs);
-        $svn = $fs->exists($projectDir . '/.svn');
-        $git = $fs->exists($projectDir . '/.git');
+        $svn = $fs->exists($projectDir.'/.svn');
+        $git = $fs->exists($projectDir.'/.git');
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $setfilelock = "touch " . $this->lockfile;
-            $remfilelock = "rm " . $this->lockfile;
+            $setfilelock = 'touch '.$this->lockfile;
+            $remfilelock = 'rm '.$this->lockfile;
             $windows = false;
         } else {
             $delcmd = 'del';
-            $setfilelock = 'echo $null >> ' . $this->lockfile;
-            $remfilelock = "del " . $this->lockfile;
+            $setfilelock = 'echo $null >> '.$this->lockfile;
+            $remfilelock = 'del '.$this->lockfile;
             $windows = true;
         }
 
-        $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
-        $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
-        $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
+        $dellogsfiles = $delcmd.' '.$this->apppaths->getLogsPath().DIRECTORY_SEPARATOR.'*';
+        $delcacheprodfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'prod'.DIRECTORY_SEPARATOR.'*';
+        $delcachedevfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'dev'.DIRECTORY_SEPARATOR.'*';
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
-        $projectparentdir = $projectDir . '/../';
-        $envvars = $projectparentdir . "/" . "envvars";
-        $composercachedir = $projectparentdir . "/" . ".composer";
-        $composerinstall = "";
-        if ($windows == false) {
+        $projectparentdir = $projectDir.'/../';
+        $envvars = $projectparentdir.'/'.'envvars';
+        $composercachedir = $projectparentdir.'/'.'.composer';
+        $composerinstall = '';
+        if (false == $windows) {
             if (file_exists($envvars)) {
-                $composerinstall = $composerinstall . ". " . $envvars . " && ";
+                $composerinstall = $composerinstall.'. '.$envvars.' && ';
             }
             if (file_exists($composercachedir)) {
-                $composerinstall = $composerinstall . " export COMPOSER_HOME=" . $composercachedir . " && ";
+                $composerinstall = $composerinstall.' export COMPOSER_HOME='.$composercachedir.' && ';
             }
-            $composerinstall = $composerinstall . " cd " . $projectDir . " && composer install --no-interaction 2>&1";
-            $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' " . $projectDir . "/.env";
+            $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-interaction 2>&1';
+            $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' ".$projectDir.'/.env';
         }
 
         $comandishell = array(
@@ -114,15 +114,15 @@ class PannelloAmministrazioneController extends AbstractController
             $this->fixSlash($setmaintenancefile),
             $this->fixSlash($remmaintenancefile),
             $composerinstall,
-            $sed);
+            $sed, );
 
         $comandisymfony = array(
-            "list",
-            "cache:clear --env=prod --no-debug",
-            "fos:user:create admin pass admin@admin.it",
-            "fos:user:promote username ROLE_SUPER_ADMIN",
+            'list',
+            'cache:clear --env=prod --no-debug',
+            'fos:user:create admin pass admin@admin.it',
+            'fos:user:promote username ROLE_SUPER_ADMIN',
             "assets:install ' . $projectDir . ' /public",
-            "pannelloamministrazione:checkgitversion"
+            'pannelloamministrazione:checkgitversion',
         );
 
         $entities = $this->findEntities();
@@ -134,7 +134,7 @@ class PannelloAmministrazioneController extends AbstractController
             'comandishell' => $comandishell,
             'comandisymfony' => $comandisymfony,
             'iswindows' => $windows,
-            'appname' => $this->appname
+            'appname' => $this->appname,
         );
 
         return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
@@ -160,12 +160,14 @@ class PannelloAmministrazioneController extends AbstractController
             $result = $command->aggiornaSchemaDatabase();
 
             $this->locksystem->release();
-            if ($result['errcode'] != 0) {
+            if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
                 $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
                 return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
             }
         }
@@ -179,7 +181,7 @@ class PannelloAmministrazioneController extends AbstractController
             return new Response($this->getLockMessage());
         } else {
             $entityform = $request->get('entityform');
-            $generatemplate = $request->get('generatemplate') === 'true' ? true : false;
+            $generatemplate = 'true' === $request->get('generatemplate') ? true : false;
             $this->locksystem->acquire();
 
             $command = $this->pacommands;
@@ -188,7 +190,8 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->release();
             //$retcc = '';
             if ($result['errcode'] < 0) {
-                $twigparms = array('errcode' => $result['errcode'], 'command' => "Generazione Form Crud", 'message' => $result['message']);
+                $twigparms = array('errcode' => $result['errcode'], 'command' => 'Generazione Form Crud', 'message' => $result['message']);
+
                 return new Response(
                     $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms),
                     500
@@ -215,12 +218,14 @@ class PannelloAmministrazioneController extends AbstractController
             $result = $command->generateEntity($wbFile);
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
             $this->locksystem->release();
-            if ($result['errcode'] != 0) {
+            if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
                 $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
                 return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
             }
         }
@@ -267,12 +272,14 @@ class PannelloAmministrazioneController extends AbstractController
 
             $this->locksystem->release();
 
-            if ($result['errcode'] != 0) {
+            if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
                 $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
                 return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
             }
         }
@@ -285,7 +292,7 @@ class PannelloAmministrazioneController extends AbstractController
         set_time_limit(0);
 
         $simfonycommand = $request->get('symfonycommand');
-        $comando = explode(" ", $simfonycommand);
+        $comando = explode(' ', $simfonycommand);
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
@@ -295,12 +302,14 @@ class PannelloAmministrazioneController extends AbstractController
             $result = $pammutils->runCommand($this->apppaths->getConsole(), $comando);
 
             $this->locksystem->release();
-            if ($result['errcode'] != 0) {
+            if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
                 $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
                 return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
             }
         }
@@ -316,19 +325,20 @@ class PannelloAmministrazioneController extends AbstractController
         set_time_limit(0);
         $pammutils = $this->pautils;
         $unixcommand = $request->get('unixcommand');
-        $parametri = explode(" ", $unixcommand);
+        $parametri = explode(' ', $unixcommand);
         $arguments = array();
         $command = $unixcommand;
         if (count($parametri) > 1) {
             $command = $parametri[0];
-            for ($index = 1; $index < count($parametri); $index++) {
+            for ($index = 1; $index < count($parametri); ++$index) {
                 $arguments[] = $parametri[$index];
             }
         }
         //Se viene lanciato il comando per cancellare il file di lock su bypassa tutto e si lancia
-        $dellockfile = "DELETELOCK";
+        $dellockfile = 'DELETELOCK';
         if ($command == $dellockfile) {
             $this->locksystem->release();
+
             return new Response('File di lock cancellato');
         }
 
@@ -340,12 +350,14 @@ class PannelloAmministrazioneController extends AbstractController
 
             $this->locksystem->release();
             // eseguito deopo la fine del comando
-            if ($result['errcode'] != 0) {
+            if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
                 $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
+
                 return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
             }
         }
@@ -364,7 +376,7 @@ class PannelloAmministrazioneController extends AbstractController
             if (!OsFunctions::isWindows()) {
                 $this->locksystem->acquire();
                 //$phpPath = OsFunctions::getPHPExecutableFromPath();
-                $command = 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
+                $command = 'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'simple-phpunit';
                 $process = new Process(array($command));
                 $process->setWorkingDirectory($this->apppaths->getRootPath());
 
@@ -373,11 +385,13 @@ class PannelloAmministrazioneController extends AbstractController
                 $this->locksystem->release();
                 // eseguito dopo la fine del comando
                 if (!$process->isSuccessful()) {
-                    $twigparms = array('errcode' => -1, 'command' => $command, 'message' => $process->getOutput() . $process->getErrorOutput());
+                    $twigparms = array('errcode' => -1, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
                     $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+
                     return new Response($view, 500);
                 } else {
-                    $twigparms = array('errcode' => 0, 'command' => $command, 'message' => $process->getOutput() . $process->getErrorOutput());
+                    $twigparms = array('errcode' => 0, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
+
                     return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
                 }
             } else {

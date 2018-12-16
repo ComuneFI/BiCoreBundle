@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Cdf\BiCoreBundle\Ruoli
+ * Cdf\BiCoreBundle\Ruoli.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Ruoli")
@@ -70,7 +70,8 @@ class BaseRuoli
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setId($id)
@@ -83,7 +84,7 @@ class BaseRuoli
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -94,6 +95,7 @@ class BaseRuoli
      * Set the value of ruolo.
      *
      * @param string $ruolo
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setRuolo($ruolo)
@@ -117,6 +119,7 @@ class BaseRuoli
      * Set the value of paginainiziale.
      *
      * @param string $paginainiziale
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setPaginainiziale($paginainiziale)
@@ -139,7 +142,8 @@ class BaseRuoli
     /**
      * Set the value of superadmin.
      *
-     * @param boolean $superadmin
+     * @param bool $superadmin
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setSuperadmin($superadmin)
@@ -152,7 +156,7 @@ class BaseRuoli
     /**
      * Get the value of superadmin.
      *
-     * @return boolean
+     * @return bool
      */
     public function getSuperadmin()
     {
@@ -162,7 +166,8 @@ class BaseRuoli
     /**
      * Set the value of admin.
      *
-     * @param boolean $admin
+     * @param bool $admin
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setAdmin($admin)
@@ -175,7 +180,7 @@ class BaseRuoli
     /**
      * Get the value of admin.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAdmin()
     {
@@ -185,7 +190,8 @@ class BaseRuoli
     /**
      * Set the value of user.
      *
-     * @param boolean $user
+     * @param bool $user
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function setUser($user)
@@ -198,7 +204,7 @@ class BaseRuoli
     /**
      * Get the value of user.
      *
-     * @return boolean
+     * @return bool
      */
     public function getUser()
     {
@@ -209,6 +215,7 @@ class BaseRuoli
      * Add Operatori entity to collection (one to many).
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function addOperatori(Operatori $operatori)
@@ -222,6 +229,7 @@ class BaseRuoli
      * Remove Operatori entity from collection (one to many).
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function removeOperatori(Operatori $operatori)
@@ -245,6 +253,7 @@ class BaseRuoli
      * Add Permessi entity to collection (one to many).
      *
      * @param \Cdf\BiCoreBundle\Permessi $permessi
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function addPermessi(Permessi $permessi)
@@ -258,6 +267,7 @@ class BaseRuoli
      * Remove Permessi entity from collection (one to many).
      *
      * @param \Cdf\BiCoreBundle\Permessi $permessi
+     *
      * @return \Cdf\BiCoreBundle\Ruoli
      */
     public function removePermessi(Permessi $permessi)

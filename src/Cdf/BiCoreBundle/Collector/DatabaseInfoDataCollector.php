@@ -33,16 +33,16 @@ class DatabaseInfoDataCollector extends DataCollector
     {
         $driverName = 'Driver non gestito da questo pannello';
 
-        if ($this->data['database_driver'] === 'pdo_mysql') {
+        if ('pdo_mysql' === $this->data['database_driver']) {
             $driverName = 'MySql';
         }
-        if ($this->data['database_driver'] === 'pdo_pgsql') {
+        if ('pdo_pgsql' === $this->data['database_driver']) {
             $driverName = 'PostgreSQL';
         }
-        if ($this->data['database_driver'] === 'pdo_sqlite') {
+        if ('pdo_sqlite' === $this->data['database_driver']) {
             $driverName = 'SQLite';
         }
-        if ($this->data['database_driver'] === 'oci8') {
+        if ('oci8' === $this->data['database_driver']) {
             $driverName = 'Oracle';
         }
 
@@ -78,7 +78,7 @@ class DatabaseInfoDataCollector extends DataCollector
     {
         return true;
     }
-    
+
     public function getName()
     {
         return 'databaseInfo';

@@ -44,7 +44,7 @@ class GenerateOrmEntitiesCommand extends Command
 
         $mwbfile = $input->getArgument('mwbfile');
 
-        $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
+        $wbFile = $this->apppaths->getDocPath().DIRECTORY_SEPARATOR.$mwbfile;
         $checkprerequisiti = $this->genhelper->checkprerequisiti($mwbfile, $output);
 
         if ($checkprerequisiti < 0) {
@@ -63,24 +63,25 @@ class GenerateOrmEntitiesCommand extends Command
         file_put_contents($exportJson, $exportjsonreplaced);
         if (OsFunctions::isWindows()) {
             $workingdir = $this->apppaths->getRootPath();
-            $command = $scriptGenerator . '.bat';
-            $arguments[] = '--config=' . $exportJson;
+            $command = $scriptGenerator.'.bat';
+            $arguments[] = '--config='.$exportJson;
             $arguments[] = $wbFile;
             $arguments[] = $destinationPathEscaped;
         } else {
             $workingdir = $this->apppaths->getRootPath();
             $command = $scriptGenerator;
-            $arguments[] = '--config=' . $exportJson;
+            $arguments[] = '--config='.$exportJson;
             $arguments[] = $wbFile;
             $arguments[] = $destinationPathEscaped;
         }
 
         $schemaupdateresult = $this->pammutils->runCommand($command, $arguments, $workingdir);
-        if ($schemaupdateresult["errcode"] < 0) {
-            $output->writeln($schemaupdateresult["message"]);
+        if ($schemaupdateresult['errcode'] < 0) {
+            $output->writeln($schemaupdateresult['message']);
+
             return 1;
         } else {
-            $output->writeln($schemaupdateresult["message"]);
+            $output->writeln($schemaupdateresult['message']);
         }
 
         $this->genhelper->removeExportJsonFile();
@@ -91,6 +92,7 @@ class GenerateOrmEntitiesCommand extends Command
         }
 
         $output->writeln('<info>Entities yml create</info>');
+
         return 0;
     }
 }

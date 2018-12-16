@@ -4,11 +4,9 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 //use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Expr\Comparison;
-use Doctrine\ORM\Query\Expr;
 
 class BaseParametriQueryTabellaDecoder
 {
-
     protected $fieldname;
     protected $fieldoperator;
     protected $fieldvalue;
@@ -63,37 +61,38 @@ class BaseParametriQueryTabellaDecoder
                 break;
         }
         $nomecampo = substr($this->fieldname, stripos($this->fieldname, '.') + 1);
-        $filtro = $nomecampo . " " . $this->operatorToString($this->fieldoperator) . " " . $descrizionevalore;
+        $filtro = $nomecampo.' '.$this->operatorToString($this->fieldoperator).' '.$descrizionevalore;
 
         return $filtro;
     }
 
     protected function getDescrizioneFiltroAltro(&$descrizionevalore)
     {
-        if ($descrizionevalore == "") {
-            $descrizionevalore = "'" . $this->fieldvalue . "'";
+        if ('' == $descrizionevalore) {
+            $descrizionevalore = "'".$this->fieldvalue."'";
         }
     }
 
     protected function getDescrizioneFiltroDate(&$descrizionevalore)
     {
         $trovato = false;
-        if ($this->fieldinfo["tipocampo"] == 'date') {
+        if ('date' == $this->fieldinfo['tipocampo']) {
             if (is_a($this->fieldvalue, "\DateTime")) {
-                $descrizionevalore = $this->fieldvalue->format("d/m/Y");
+                $descrizionevalore = $this->fieldvalue->format('d/m/Y');
             } else {
-                $descrizionevalore = \DateTime::createFromFormat("Y-m-d", $this->fieldvalue)->format("d/m/Y");
+                $descrizionevalore = \DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
             }
             $trovato = true;
         }
-        if ($this->fieldinfo["tipocampo"] == 'datetime') {
+        if ('datetime' == $this->fieldinfo['tipocampo']) {
             if (is_a($this->fieldvalue, "\DateTime")) {
-                $descrizionevalore = $this->fieldvalue->format("d/m/Y H:i:s");
+                $descrizionevalore = $this->fieldvalue->format('d/m/Y H:i:s');
             } else {
-                $descrizionevalore = \DateTime::createFromFormat("Y-m-d", $this->fieldvalue)->format("d/m/Y");
+                $descrizionevalore = \DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
             }
             $trovato = true;
         }
+
         return $trovato;
     }
 
@@ -101,32 +100,34 @@ class BaseParametriQueryTabellaDecoder
     {
         $trovato = false;
         if (is_string($this->fieldvalue)) {
-            $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+            $descrizionevalore = $descrizionevalore = "'".$this->fieldvalue."'";
             $trovato = true;
         }
+
         return $trovato;
     }
 
     protected function getDescrizioneFiltroDecodifiche(&$descrizionevalore)
     {
         $trovato = false;
-        if (isset($this->fieldinfo["decodifiche"])) {
-            $decodifiche = $this->fieldinfo["decodifiche"];
+        if (isset($this->fieldinfo['decodifiche'])) {
+            $decodifiche = $this->fieldinfo['decodifiche'];
             if ($decodifiche) {
                 if (is_array($this->fieldvalue)) {
                     foreach ($this->fieldvalue as $value) {
-                        $descrizionevalore = $descrizionevalore . "'" . $decodifiche[$value] . "', ";
+                        $descrizionevalore = $descrizionevalore."'".$decodifiche[$value]."', ";
                     }
                 } else {
                     if (isset($decodifiche[$this->fieldvalue])) {
-                        $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
+                        $descrizionevalore = $descrizionevalore = "'".$decodifiche[$this->fieldvalue]."'";
                     } else {
-                        $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+                        $descrizionevalore = $descrizionevalore = "'".$this->fieldvalue."'";
                     }
                 }
                 $trovato = true;
             }
         }
+
         return $trovato;
     }
 
@@ -134,9 +135,10 @@ class BaseParametriQueryTabellaDecoder
     {
         $trovato = false;
         if (is_null($this->fieldvalue)) {
-            $descrizionevalore = "(vuoto)";
+            $descrizionevalore = '(vuoto)';
             $trovato = true;
         }
+
         return $trovato;
     }
 
@@ -144,9 +146,10 @@ class BaseParametriQueryTabellaDecoder
     {
         $trovato = false;
         if (is_bool($this->fieldvalue)) {
-            $descrizionevalore = $this->fieldvalue ? "SI" : "NO";
+            $descrizionevalore = $this->fieldvalue ? 'SI' : 'NO';
             $trovato = true;
         }
+
         return $trovato;
     }
 
@@ -156,32 +159,34 @@ class BaseParametriQueryTabellaDecoder
         if (is_array($this->fieldvalue)) {
             foreach ($this->fieldvalue as $value) {
                 if (is_numeric($value)) {
-                    $descrizionevalore = $descrizionevalore . ", " . $value;
+                    $descrizionevalore = $descrizionevalore.', '.$value;
                 } else {
-                    $descrizionevalore = $descrizionevalore . "'" . $value . "', ";
+                    $descrizionevalore = $descrizionevalore."'".$value."', ";
                 }
                 $trovato = true;
             }
             $descrizionevalore = substr($descrizionevalore, 0, -2);
         }
+
         return $trovato;
     }
 
     protected function operatorToString($operator)
     {
         $decoder = array(
-            Comparison::LT=>'minore di',
-            Comparison::LTE=>'minore o uguale di',
-            Comparison::GT=>'maggiore di',
-            Comparison::GTE=>'maggiore o uguale di',
-            Comparison::CONTAINS=>'contiene',
-            Comparison::STARTS_WITH=>'inizia con',
-            Comparison::ENDS_WITH=>'finisce con',
-            Comparison::IN=>'compreso tra',
-            Comparison::NIN=>'non compreso tra',
-            Comparison::EQ=>'uguale a',
-            Comparison::NEQ=>'diverso da',
+            Comparison::LT => 'minore di',
+            Comparison::LTE => 'minore o uguale di',
+            Comparison::GT => 'maggiore di',
+            Comparison::GTE => 'maggiore o uguale di',
+            Comparison::CONTAINS => 'contiene',
+            Comparison::STARTS_WITH => 'inizia con',
+            Comparison::ENDS_WITH => 'finisce con',
+            Comparison::IN => 'compreso tra',
+            Comparison::NIN => 'non compreso tra',
+            Comparison::EQ => 'uguale a',
+            Comparison::NEQ => 'diverso da',
             );
+
         return $decoder[$operator];
     }
 }

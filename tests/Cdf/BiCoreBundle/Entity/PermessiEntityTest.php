@@ -8,14 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class PermessiEntityTest extends KernelTestCase
 {
-
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -37,7 +36,7 @@ class PermessiEntityTest extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

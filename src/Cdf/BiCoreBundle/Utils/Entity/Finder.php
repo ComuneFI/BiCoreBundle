@@ -2,31 +2,31 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
-use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class Finder
 {
-
     private $em;
 
     public function __construct(ObjectManager $em)
     {
         $this->em = $em;
     }
+
     public function getClassNameFromEntityName($entityname)
     {
         $entities = $this->em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
-        $entityclassname = "";
+        $entityclassname = '';
         foreach ($entities as $entity) {
-            $parti = explode("\\", $entity);
+            $parti = explode('\\', $entity);
             if ($parti[count($parti) - 1] == $entityname) {
                 $entityclassname = $entity;
             }
         }
         if (!$entityclassname) {
-            throw new \Exception("Non riesco a trovare l'entità '" . $entityname . "', è stata generata?");
+            throw new \Exception("Non riesco a trovare l'entità '".$entityname."', è stata generata?");
         }
+
         return $entityclassname;
     }
 }

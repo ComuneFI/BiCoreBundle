@@ -3,86 +3,93 @@
 namespace Cdf\BiCoreBundle\Tests\Utils;
 
 use Symfony\Component\Panther\PantherTestCase;
-
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
 abstract class FifreeTestAuthorizedClient extends PantherTestCase
 {
-
     const TIMEOUT = 4;
 
     protected $client;
-    static $container;
-    
+    public static $container;
+
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
 
     protected function setUp()
     {
-
         $this->client = static::createPantherClient();
-        
+
         self::$container = static::$kernel->getContainer();
         $username4test = self::$container->getParameter('bi_core.admin4test');
         $password4test = self::$container->getParameter('bi_core.adminpwd4test');
-        $this->em = self::$container->get("doctrine")->getManager();
-        
+        $this->em = self::$container->get('doctrine')->getManager();
+
         $testUrl = '/';
         $this->client->request('GET', $testUrl);
         $this->client->waitFor('#Login');
         $this->login($username4test, $password4test);
     }
+
     protected function getRoute($name, $variables = array(), $absolutepath = false)
     {
-
         if ($absolutepath) {
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
         return self::$container->get('router')->generate($name, $variables, $absolutepath);
     }
+
     protected function getContainer()
     {
         return $this->container;
     }
+
     protected function getClient()
     {
         return $this->client;
     }
+
     public function getCurrentPage()
     {
         return $this->client;
     }
+
     public function getSession()
     {
         return $this->client;
     }
+
     public function getCurrentPageContent()
     {
         return $this->client->getPageSource();
     }
+
     public function visit($url)
     {
         $this->client->request('GET', $url);
     }
+
     public function login($user, $pass)
     {
         $this->fillField('username', $user);
         $this->fillField('password', $pass);
         $this->pressButton('_submit');
     }
+
     public function evaluateScript($script)
     {
         return $this->client->executeScript($script, array());
     }
+
     public function executeScript($script)
     {
         return $this->evaluateScript($script);
     }
+
     public function find($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -93,6 +100,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
+
                 return $element;
             } catch (\Exception $e) {
                 ++$i;
@@ -102,19 +110,22 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     private function getElementBySelector($selector)
     {
         return $this->getElementByWebDriverBy($selector);
     }
+
     private function getElementByWebDriver($webdriverby)
     {
         $elements = $this->client->findElements($webdriverby);
-        if (count($elements) === 0) {
+        if (0 === count($elements)) {
             return null;
         } else {
             return $elements[0];
         }
     }
+
     private function getElementByWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -148,6 +159,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
+
     private function getWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -181,9 +193,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
+
     public function findField($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -194,6 +207,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
+
                 return $element;
             } catch (\Exception $e) {
                 ++$i;
@@ -203,9 +217,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function fillField($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -218,6 +233,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                     } else {
                         $element->clear();
                         $element->sendKeys($value);
+
                         return;
                     }
                 }
@@ -234,9 +250,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function checkboxSelect($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -249,6 +266,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                         $select->click();
                         //$select->click();
                     }
+
                     return;
                 }
                 ++$i;
@@ -261,9 +279,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function checkboxIsChecked($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -282,17 +301,19 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function selectFieldOption($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 $this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
-                    $select->findElement(WebDriverBy::cssSelector("option[value='" . $value . "']"))
+                    $select->findElement(WebDriverBy::cssSelector("option[value='".$value."']"))
                             ->click();
+
                     return;
                 }
                 ++$i;
@@ -305,10 +326,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function pressButton($selector, $timeout = self::TIMEOUT)
     {
-
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -322,6 +343,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $button->click();
                 $this->ajaxWait();
+
                 return;
             } catch (\Exception $e) {
                 ++$i;
@@ -331,9 +353,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function clickLink($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -341,6 +364,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                 $page = $this->getCurrentPage();
                 $page->clickLink($selector);
                 $this->ajaxWait();
+
                 return;
             } catch (\Exception $e) {
                 ++$i;
@@ -352,6 +376,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function elementIsVisible($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
@@ -374,9 +399,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
 
         return false;
     }
+
     public function clickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -390,6 +416,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $element->click();
                 $this->ajaxWait();
+
                 return;
             } catch (\Exception $e) {
                 ++$i;
@@ -400,9 +427,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function dblClickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception("Impossibile trovare " . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -415,6 +443,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                 }
                 $element->doubleClick();
                 $this->ajaxWait();
+
                 return;
             } catch (\Exception $e) {
                 ++$i;
@@ -426,6 +455,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         $this->screenShot();
         throw($e);
     }
+
     public function rightClickElement($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
@@ -445,6 +475,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
                         perform();
 
                 $this->ajaxWait();
+
                 return true;
             } catch (\Exception $e) {
                 ++$i;
@@ -453,8 +484,10 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
         }
 
         $this->screenShot();
+
         return null;
     }
+
     public function screenShot()
     {
         /* $driver = $this->minkSession->getDriver();
@@ -474,19 +507,22 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
           file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
          */
     }
+
     public function logout()
     {
-        $this->visit("/logout");
+        $this->visit('/logout');
     }
+
     public function tearDown()
     {
         parent::tearDown();
     }
+
     /**
-     * waitForAjax : wait for all ajax request to close
-     * @param  integer $timeout  timeout in seconds
-     * @param  integer $interval interval in miliseconds
-     * @return void
+     * waitForAjax : wait for all ajax request to close.
+     *
+     * @param int $timeout  timeout in seconds
+     * @param int $interval interval in miliseconds
      */
     public function ajaxWait($timeout = 5, $interval = 200)
     {
@@ -495,6 +531,7 @@ abstract class FifreeTestAuthorizedClient extends PantherTestCase
             // Prototype: "Ajax.activeRequestCount"
             // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
             $condition = 'return ($.active == 0);';
+
             return $this->client->executeScript($condition);
         });
     }

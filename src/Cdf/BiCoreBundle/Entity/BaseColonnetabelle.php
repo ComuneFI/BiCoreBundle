@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cdf\BiCoreBundle\Entity\Colonnetabelle
+ * Cdf\BiCoreBundle\Entity\Colonnetabelle.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Colonnetabelle", indexes={@ORM\Index(name="fk_Colonnetabelle_Operatori1_idx", columns={"operatori_id"})})
@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BaseColonnetabelle
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -82,7 +81,8 @@ class BaseColonnetabelle
     /**
      * Set the value of id.
      *
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setId($id)
@@ -95,7 +95,7 @@ class BaseColonnetabelle
     /**
      * Get the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -106,6 +106,7 @@ class BaseColonnetabelle
      * Set the value of nometabella.
      *
      * @param string $nometabella
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setNometabella($nometabella)
@@ -129,6 +130,7 @@ class BaseColonnetabelle
      * Set the value of nomecampo.
      *
      * @param string $nomecampo
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setNomecampo($nomecampo)
@@ -151,7 +153,8 @@ class BaseColonnetabelle
     /**
      * Set the value of mostraindex.
      *
-     * @param boolean $mostraindex
+     * @param bool $mostraindex
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setMostraindex($mostraindex)
@@ -164,7 +167,7 @@ class BaseColonnetabelle
     /**
      * Get the value of mostraindex.
      *
-     * @return boolean
+     * @return bool
      */
     public function getMostraindex()
     {
@@ -174,7 +177,8 @@ class BaseColonnetabelle
     /**
      * Set the value of ordineindex.
      *
-     * @param integer $ordineindex
+     * @param int $ordineindex
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setOrdineindex($ordineindex)
@@ -187,7 +191,7 @@ class BaseColonnetabelle
     /**
      * Get the value of ordineindex.
      *
-     * @return integer
+     * @return int
      */
     public function getOrdineindex()
     {
@@ -197,7 +201,8 @@ class BaseColonnetabelle
     /**
      * Set the value of larghezzaindex.
      *
-     * @param integer $larghezzaindex
+     * @param int $larghezzaindex
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setLarghezzaindex($larghezzaindex)
@@ -210,7 +215,7 @@ class BaseColonnetabelle
     /**
      * Get the value of larghezzaindex.
      *
-     * @return integer
+     * @return int
      */
     public function getLarghezzaindex()
     {
@@ -221,6 +226,7 @@ class BaseColonnetabelle
      * Set the value of etichettaindex.
      *
      * @param string $etichettaindex
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setEtichettaindex($etichettaindex)
@@ -243,7 +249,8 @@ class BaseColonnetabelle
     /**
      * Set the value of registrastorico.
      *
-     * @param boolean $registrastorico
+     * @param bool $registrastorico
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setRegistrastorico($registrastorico)
@@ -256,7 +263,7 @@ class BaseColonnetabelle
     /**
      * Get the value of registrastorico.
      *
-     * @return boolean
+     * @return bool
      */
     public function getRegistrastorico()
     {
@@ -266,7 +273,8 @@ class BaseColonnetabelle
     /**
      * Set the value of editabile.
      *
-     * @param boolean $editabile
+     * @param bool $editabile
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setEditabile($editabile)
@@ -279,7 +287,7 @@ class BaseColonnetabelle
     /**
      * Get the value of editabile.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEditabile()
     {
@@ -289,7 +297,8 @@ class BaseColonnetabelle
     /**
      * Set the value of operatori_id.
      *
-     * @param integer $operatori_id
+     * @param int $operatori_id
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setOperatoriId($operatori_id)
@@ -302,7 +311,7 @@ class BaseColonnetabelle
     /**
      * Get the value of operatori_id.
      *
-     * @return integer
+     * @return int
      */
     public function getOperatoriId()
     {
@@ -313,6 +322,7 @@ class BaseColonnetabelle
      * Set Operatori entity (many to one).
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
+     *
      * @return \Cdf\BiCoreBundle\Colonnetabelle
      */
     public function setOperatori(Operatori $operatori = null)

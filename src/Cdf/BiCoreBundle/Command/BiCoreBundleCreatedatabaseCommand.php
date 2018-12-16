@@ -13,7 +13,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
     protected static $defaultName = 'bicorebundle:createdatabase';
 
     private $em;
-    
+
     public function __construct(ObjectManager $em)
     {
         $this->em = $em;
@@ -21,20 +21,21 @@ class BiCoreBundleCreatedatabaseCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
+
     protected function configure()
     {
         $this
                 ->setDescription('Creazione database bi')
                 ->setHelp('Creazione di un nuovo database di bi');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;
         $driver = $em->getConnection()->getDriver()->getName();
 
-
-        if ($driver != "pdo_sqlite") {
+        if ('pdo_sqlite' != $driver) {
             $command = $this->getApplication()->find('doctrine:database:create');
             $arguments = array('--if-not-exists' => true);
             $inputcmd = new ArrayInput($arguments);
