@@ -39,8 +39,6 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
             $newDefinition['sequenceName'] = $this->schemaprefix.'.'.$newDefinition['sequenceName'];
 
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
-            $newDefinition = $classMetadata->sequenceGeneratorDefinition;
-            dump($newDefinition);
             $em = $args->getEntityManager();
             if (isset($classMetadata->idGenerator)) {
                 $sequenceGenerator = new \Doctrine\ORM\Id\SequenceGenerator(
