@@ -59,6 +59,5 @@ class FifreeinstallCommandTest extends WebTestCase
         $outputcc = $commandTestercc->getDisplay();
 
         $this->assertRegExp('/.../', $outputcc);
-        dump($outputcc);
     }
 }

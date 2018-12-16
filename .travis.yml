@@ -90,6 +90,7 @@ before_script:
   
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/tests/.env; fi
+  - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/bicore.pgsql.yml $TRAVIS_BUILD_DIR/tests/config/packages/bicore.yml; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c 'create database unittest;' -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE USER biuser WITH PASSWORD 'biuserpwd';" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO biuser;" -U postgres; fi

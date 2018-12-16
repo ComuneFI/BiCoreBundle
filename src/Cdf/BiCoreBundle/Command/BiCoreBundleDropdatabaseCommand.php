@@ -30,8 +30,13 @@ class BiCoreBundleDropdatabaseCommand extends Command
             return 1;
         }
 
+        /*$command = $this->getApplication()->find('doctrine:database:drop');
+        $arguments = array('command' => 'doctrine:database:drop', '--force' => true, '--if-exists' => true);
+        $inputcmd = new ArrayInput($arguments);
+        $command->run($inputcmd, $output);*/
+
         $command = $this->getApplication()->find('doctrine:schema:drop');
-        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true);
+        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true, "--full-database" => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }

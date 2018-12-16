@@ -55,7 +55,7 @@
     </target>
   
     <target name="bicorebundle-drop-database">
-        <exec executable="php" failonerror="true">
+        <exec executable="php" failonerror="false">
             <arg line="bin/console bicorebundle:dropdatabase --force"/>
         </exec>
     </target>

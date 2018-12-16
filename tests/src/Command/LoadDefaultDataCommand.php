@@ -23,7 +23,6 @@ class LoadDefaultDataCommand extends Command
                 ->setDescription('Carica dei dati di default per il demo')
         ;
     }
-
     public function __construct(ObjectManager $em)
     {
         $this->em = $em;
@@ -31,7 +30,6 @@ class LoadDefaultDataCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $em \Doctrine\ORM\EntityManager */
@@ -73,7 +71,7 @@ class LoadDefaultDataCommand extends Command
         $clienti['apiceaccentato'] = array('nominativo' => "Niccolò Degl'Innocenti", 'datanascita' => '13/06/1968', 'attivo' => true, 'punti' => 500, 'creditoresiduo' => 6.18, 'iscrittoil' => '01/01/1990 00:01');
 
         for ($index = 0; $index < 200; ++$index) {
-            $clienti['nominativo'.$index] = array('nominativo' => 'Cognome'.$index.' Nome'.$index, 'datanascita' => '01/01/1950', 'attivo' => false, 'punti' => 0, 'creditoresiduo' => 0, 'iscrittoil' => '01/01/2018 00:00');
+            $clienti['nominativo' . $index] = array('nominativo' => 'Cognome' . $index . ' Nome' . $index, 'datanascita' => '01/01/1950', 'attivo' => false, 'punti' => 0, 'creditoresiduo' => 0, 'iscrittoil' => '01/01/2018 00:00');
         }
 
         foreach ($clienti as $key => $cliente) {
@@ -414,7 +412,6 @@ class LoadDefaultDataCommand extends Command
 
         $output->writeln('Done!');
     }
-
     private function createCliente($em, $cliente)
     {
         $newcliente = new Cliente();
@@ -429,7 +426,6 @@ class LoadDefaultDataCommand extends Command
 
         return $newcliente;
     }
-
     private function createFornitore($em, $fornitore)
     {
         $newfornitore = new Fornitore();
@@ -441,7 +437,6 @@ class LoadDefaultDataCommand extends Command
 
         return $newfornitore;
     }
-
     private function truncateTables($em, $className)
     {
         $cmd = $em->getClassMetadata($className);
@@ -452,7 +447,11 @@ class LoadDefaultDataCommand extends Command
         } catch (\Exception $exc) {
             //echo $exc->getMessage();
         }
-        $connection->query('DELETE FROM '.$cmd->getTableName());
+        $tablename = $cmd->getTableName();
+        if ($cmd->getSchemaName()) {
+            $tablename = $cmd->getSchemaName() . "." . $tablename;
+        }
+        $connection->query('DELETE FROM ' . $tablename);
         //$q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
         //$connection->executeUpdate($q);
         try {
