@@ -31,7 +31,7 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         $this->assertEquals(count($responseData), $ec);
 
         //Export xls
-        $crawler = $this->client->request('POST', '/'.$nomecontroller.'/exportxls', array('parametri' => $parametri));
+        $crawler = $this->client->request('POST', '/'.$nomecontroller.'/exportXls', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $response = $this->client->getResponse();

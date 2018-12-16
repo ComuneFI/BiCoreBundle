@@ -28,7 +28,7 @@ class OperatoriControllerTest extends FifreeWebtestcaseAuthorizedClient
         );
 
         //Export xls
-        $crawler = $this->client->request('POST', '/Operatori/exportxls', array('parametri' => $parametri));
+        $crawler = $this->client->request('POST', '/Operatori/exportXls', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $response = $this->client->getResponse();

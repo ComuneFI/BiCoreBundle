@@ -29,7 +29,7 @@ class PermessiControllerTest extends FifreeWebtestcaseAuthorizedClient
         );
 
         //Export xls
-        $crawler = $this->client->request('POST', '/Permessi/exportxls', array('parametri' => $parametri));
+        $crawler = $this->client->request('POST', '/Permessi/exportXls', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
         $response = $this->client->getResponse();
