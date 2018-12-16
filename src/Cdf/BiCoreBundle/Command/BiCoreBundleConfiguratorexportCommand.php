@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Common\Persistence\ObjectManager;
-use Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils;
+use Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
 class BiCoreBundleConfiguratorexportCommand extends Command
@@ -23,11 +23,11 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     protected function configure()
     {
         $this
-                ->setDescription('Configuratore per Fifree')
+                ->setDescription('Esporta configurazione per BiCore')
                 ->setHelp('Esporta la configurazione di bi');
     }
 
-    public function __construct(ObjectManager $em, EntityUtils $entityutility, FifreeSystemTablesUtils $systementity)
+    public function __construct(ObjectManager $em, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
     {
         $this->em = $em;
         $this->entityutility = $entityutility;

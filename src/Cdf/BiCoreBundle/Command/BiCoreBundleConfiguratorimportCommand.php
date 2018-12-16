@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Cdf\BiCoreBundle\Utils\Database\DatabaseUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
-use Cdf\BiCoreBundle\Utils\Entity\FifreeSystemTablesUtils;
+use Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportInsertTrait;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportUpdateTrait;
@@ -34,14 +34,14 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     protected function configure()
     {
         $this
-                ->setDescription('Configuratore per Fifree')
+                ->setDescription('Importa configurazione per BiCore')
                 ->setHelp('Importa la configurazione di bi da file fixtures.yml')
                 ->addOption('forceupdate', null, InputOption::VALUE_NONE, 'Forza update di record con id già presente')
                 ->addOption('truncatetables', null, InputOption::VALUE_NONE, 'Esegue una truncate della tabelle')
                 ->addOption('verboso', null, InputOption::VALUE_NONE, 'Visualizza tutti i messaggi di importazione');
     }
 
-    public function __construct(ObjectManager $em, DatabaseUtils $dbutility, EntityUtils $entityutility, FifreeSystemTablesUtils $systementity)
+    public function __construct(ObjectManager $em, DatabaseUtils $dbutility, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
     {
         $this->em = $em;
         $this->dbutility = $dbutility;
