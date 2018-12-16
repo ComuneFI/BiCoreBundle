@@ -70,7 +70,10 @@ Per esempio, il software di gestione del Patrimonio Immobiliare è composto da m
     vendor/bin/phpcs --standard=tools/phpcs/ruleset.xml --extensions=php src
     
     vendor/bin/phpcpd src
-
+    
+    #php-cs-fixer
+    #php /usr/local/bin/php-cs-fixer fix src/ --rules=@Symfony
+    
     #phpcbf fix
     #vendor/bin/phpcbf --extensions=php --standard=PSR2 src/
 ```
