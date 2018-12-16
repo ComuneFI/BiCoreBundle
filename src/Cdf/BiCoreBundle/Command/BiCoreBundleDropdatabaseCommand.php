@@ -36,7 +36,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
         $command->run($inputcmd, $output);*/
 
         $command = $this->getApplication()->find('doctrine:schema:drop');
-        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true, "--full-database" => true);
+        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true, '--full-database' => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }
