@@ -27,9 +27,11 @@ trait TabellaOpzioniFromCoreTrait
             $campo = $this->bonificaNomeCampo($campodabonificare);
             $this->buildOpzioneTabellaFromCore($campo, 'etichetta', 'getEtichettaindex', $colonnatabellacore, $opzionibuilder);
             $this->buildOpzioneTabellaFromCore($campo, 'larghezza', 'getLarghezzaindex', $colonnatabellacore, $opzionibuilder);
-            $this->buildOpzioneTabellaFromCore($campo, 'escluso', 'getMostraindex', $colonnatabellacore, $opzionibuilder);
             $this->buildOpzioneTabellaFromCore($campo, 'editabile', 'getEditabile', $colonnatabellacore, $opzionibuilder);
             $this->buildOpzioneTabellaFromCore($campo, 'ordine', 'getOrdineindex', $colonnatabellacore, $opzionibuilder);
+            if (null !== ($colonnatabellacore->getMostraindex())) {
+                $opzionibuilder[$campo]['escluso'] = !$colonnatabellacore->getMostraindex();
+            }
             $opzionibuilder[$campo]['campoextra'] = false;
         }
     }
