@@ -47,6 +47,7 @@ class BiCoreBundleDroptablesCommand extends Command
         //Cancellazione tabelle
         foreach ($tables as $table) {
             $tableName = $table->getName();
+
             switch ($driver) {
                 case 'postgresql':
                     $em->getConnection()->executeQuery(sprintf('DROP TABLE %s CASCADE', $tableName));

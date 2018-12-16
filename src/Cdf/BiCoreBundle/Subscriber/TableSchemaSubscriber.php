@@ -28,16 +28,14 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
             $classMetadata->setPrimaryTable(array('name' => $tableschema.'.'.$classMetadata->getTableName()));
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-                $jointablename = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
-                if (ClassMetadataInfo::MANY_TO_MANY == $mapping['type'] && isset($jointablename)) {
+                if (isset($classMetadata->associationMappings[$fieldName]['joinTable']) && ClassMetadataInfo::MANY_TO_MANY == $mapping['type']) {
                     $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
                     $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $tableschema.'.'.$mappedTableName;
                 }
             }
             if ($classMetadata->isIdGeneratorSequence()) {
                 $newDefinition = $classMetadata->sequenceGeneratorDefinition;
-                $newDefinition['sequenceName'] = $tableschema.'.'.$newDefinition['sequenceName'];
-
+                $newDefinition['sequenceName'] = $newDefinition['sequenceName'];
                 $classMetadata->setSequenceGeneratorDefinition($newDefinition);
                 $em = $args->getEntityManager();
                 if (isset($classMetadata->idGenerator)) {

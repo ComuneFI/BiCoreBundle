@@ -41,8 +41,8 @@ class BiCoreBundleCreatedatabaseCommand extends Command
             $inputcmd = new ArrayInput($arguments);
             $command->run($inputcmd, $output);
         }
-        $command = $this->getApplication()->find('doctrine:schema:create');
-        $arguments = array('');
+        $command = $this->getApplication()->find('doctrine:schema:update');
+        $arguments = array('--force' => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
     }

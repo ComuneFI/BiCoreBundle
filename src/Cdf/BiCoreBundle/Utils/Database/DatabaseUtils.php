@@ -94,7 +94,11 @@ class DatabaseUtils
                 break;
             case 'postgresql':
                 $cascadesql = $cascade ? 'CASCADE' : '';
-                $retval = $connection->executeQuery(sprintf('TRUNCATE TABLE %s '.$cascadesql, $cmd->getTableName()));
+                $tablename = $cmd->getTableName();
+                if ($cmd->getSchemaName()) {
+                    $tablename = $cmd->getSchemaName().'.'.$tablename;
+                }
+                $retval = $connection->executeQuery(sprintf('TRUNCATE TABLE %s '.$cascadesql, $tablename));
                 break;
             default:
                 $q = $dbPlatform->getTruncateTableSql($cmd->getTableName(), $cascade);

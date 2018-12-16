@@ -16,41 +16,48 @@ class FifreeinstallCommandTest extends WebTestCase
         static::$kernel = static::createKernel();
         static::$kernel->boot();
     }
-
     public function testFifreeinstall()
     {
         $kernel = static::$kernel;
         $application = new Application($kernel);
 
-        $commandimport = $application->find('bicorebundle:droptables');
-        $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(array('--force' => true));
-        $outputimport = $commandTesterImport->getDisplay();
+        $commanddroptables = $application->find('bicorebundle:droptables');
+        $commandTesterdroptables = new CommandTester($commanddroptables);
+        $commandTesterdroptables->execute(array('--force' => true));
+        $outputdroptables = $commandTesterdroptables->getDisplay();
 
-        $this->assertRegExp('/.../', $outputimport);
+        $this->assertRegExp('/.../', $outputdroptables);
         //$this->assertContains('Cosa cercare', $outputimport);
 
-        $commandimport = $application->find('bicorebundle:dropdatabase');
-        $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(array('--force' => true));
-        $outputimport = $commandTesterImport->getDisplay();
+        $commanddropdatabase = $application->find('bicorebundle:dropdatabase');
+        $commandTesterdropdatabase = new CommandTester($commanddropdatabase);
+        $commandTesterdropdatabase->execute(array('--force' => true));
+        $outputdropdatabase = $commandTesterdropdatabase->getDisplay();
 
-        $this->assertRegExp('/.../', $outputimport);
+        $this->assertRegExp('/.../', $outputdropdatabase);
+        //$this->assertContains('Cosa cercare', $outputdropdatabase);
+
+        $commandinstall = $application->find('bicorebundle:install');
+        $commandTesterinstall = new CommandTester($commandinstall);
+        $commandTesterinstall->execute(array('admin' => 'admin', 'adminpass' => 'admin', 'adminemail' => 'admin@admin.it'));
+        $outputinstall = $commandTesterinstall->getDisplay();
+
+        $this->assertRegExp('/.../', $outputinstall);
+
         //$this->assertContains('Cosa cercare', $outputimport);
+        $commandloaddata = $application->find('bicoredemo:loaddefauldata');
+        $commandTesterLoaddata = new CommandTester($commandloaddata);
+        $commandTesterLoaddata->execute(array());
+        $outputloaddata = $commandTesterLoaddata->getDisplay();
 
-        $commandimport = $application->find('bicorebundle:install');
-        $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(array('admin' => 'admin', 'adminpass' => 'admin', 'adminemail' => 'admin@admin.it'));
-        $outputimport = $commandTesterImport->getDisplay();
+        $this->assertRegExp('/.../', $outputloaddata);
+        $this->assertContains('Done', $outputloaddata);
 
-        $this->assertRegExp('/.../', $outputimport);
-        //$this->assertContains('Cosa cercare', $outputimport);
-        $commandimport = $application->find('bicoredemo:loaddefauldata');
-        $commandTesterImport = new CommandTester($commandimport);
-        $commandTesterImport->execute(array());
-        $outputimport = $commandTesterImport->getDisplay();
+        $commandcc = $application->find('cache:clear');
+        $commandTestercc = new CommandTester($commandcc);
+        $commandTestercc->execute(array('--env' => 'test'));
+        $outputcc = $commandTestercc->getDisplay();
 
-        $this->assertRegExp('/.../', $outputimport);
-        $this->assertContains('Done', $outputimport);
+        $this->assertRegExp('/.../', $outputcc);
     }
 }
