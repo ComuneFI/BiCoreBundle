@@ -135,13 +135,8 @@ class GeneratorHelper
 
     public function getScriptGenerator()
     {
-        $scriptGenerator = '';
         $scriptGenerator = $this->apppaths->getVendorBinPath().DIRECTORY_SEPARATOR.'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
-            $scriptGenerator = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.
-                    'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'mysql-workbench-schema-export';
-        }
-        if (!$scriptGenerator) {
             throw new \Exception('mysql-workbench-schema-export non trovato', -100);
         }
 
