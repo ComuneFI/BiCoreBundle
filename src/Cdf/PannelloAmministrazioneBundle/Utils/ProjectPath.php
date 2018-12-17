@@ -49,10 +49,6 @@ class ProjectPath
             $bindir = realpath($this->getProjectPath().'/../bin');
         }
         if (!file_exists($bindir)) {
-            $bindir = $this->getProjectPath().DIRECTORY_SEPARATOR.'vendor'.
-                    DIRECTORY_SEPARATOR.'bin';
-        }
-        if (!file_exists($bindir)) {
             throw new \Exception('Cartella Bin non trovata', -100);
         }
 
@@ -63,7 +59,7 @@ class ProjectPath
     {
         $vendorbindir = $this->getProjectPath().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin';
         if (!file_exists($vendorbindir)) {
-            $vendorbindir = realpath($this->getProjectPath().'/../vendor/bin');
+            $vendorbindir = dirname($this->getProjectPath()).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin';
             if (!file_exists($vendorbindir)) {
                 throw new \Exception('Cartella Bin in vendor non trovata', -100);
             }
@@ -84,13 +80,6 @@ class ProjectPath
         $publicdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'public';
 
         return $publicdir;
-    }
-
-    public function getAppPath()
-    {
-        $appdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'app';
-
-        return $appdir;
     }
 
     public function getTemplatePath()
