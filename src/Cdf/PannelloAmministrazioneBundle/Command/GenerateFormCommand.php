@@ -50,12 +50,8 @@ class GenerateFormCommand extends Command
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
 
-        $command = $this->apppaths->getConsole();
-        $arguments[] = '--env=dev';
-        $arguments[] = 'make:form';
-        $arguments[] = $entityform.'Type';
-        $arguments[] = $entityform;
-        $resultcrud = $this->pammutils->runCommand($command, $arguments);
+        $command = $this->apppaths->getConsole().' --env=dev'.' make:form '.$entityform.'Type '.$entityform;
+        $resultcrud = $this->pammutils->runCommand($command);
         if (0 == $resultcrud['errcode']) {
             $fs = new Filesystem();
             //Controller

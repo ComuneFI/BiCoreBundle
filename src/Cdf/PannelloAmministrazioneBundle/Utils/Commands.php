@@ -3,11 +3,11 @@
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Fi\OsBundle\DependencyInjection\OsFunctions;
 
 class Commands
 {
     /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
+
     private $apppaths;
     /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utility */
     private $pammutils;
@@ -23,21 +23,18 @@ class Commands
     {
         $fs = new Filesystem();
 
-        $sepchr = OsFunctions::getSeparator();
         $projectDir = $this->apppaths->getRootPath();
-        $vcscommand = '';
         if ($fs->exists($projectDir.DIRECTORY_SEPARATOR.'.svn')) {
-            $vcscommand = 'svn update';
+            $command = 'svn update';
         }
         if ($fs->exists($projectDir.DIRECTORY_SEPARATOR.'.git')) {
-            $vcscommand = 'git pull';
+            $command = 'git pull';
         }
-        if (!$vcscommand) {
+        if (!$command) {
             throw new \Exception('Vcs non trovato', 100);
         }
-        $command = 'cd '.$projectDir.$sepchr.$vcscommand;
 
-        return $this->pammutils->runCommand($command);
+        return $this->pammutils->runCommand($command, $projectDir);
     }
 
     // @codeCoverageIgnoreEnd

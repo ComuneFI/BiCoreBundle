@@ -85,16 +85,15 @@ class PannelloAmministrazioneController extends AbstractController
             $remfilelock = 'del '.$this->lockfile;
             $windows = true;
         }
-
         $dellogsfiles = $delcmd.' '.$this->apppaths->getLogsPath().DIRECTORY_SEPARATOR.'*';
         $delcacheprodfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'prod'.DIRECTORY_SEPARATOR.'*';
         $delcachedevfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'dev'.DIRECTORY_SEPARATOR.'*';
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
-        $projectparentdir = $projectDir.'/../';
-        $envvars = $projectparentdir.'/'.'envvars';
-        $composercachedir = $projectparentdir.'/'.'.composer';
+        $projectparentdir = dirname($projectDir);
+        $envvars = $projectparentdir.DIRECTORY_SEPARATOR.'envvars';
+        $composercachedir = $projectparentdir.DIRECTORY_SEPARATOR.'.composer';
         $composerinstall = '';
         if (false == $windows) {
             if (file_exists($envvars)) {
@@ -121,7 +120,7 @@ class PannelloAmministrazioneController extends AbstractController
             'cache:clear --env=prod --no-debug',
             'fos:user:create admin pass admin@admin.it',
             'fos:user:promote username ROLE_SUPER_ADMIN',
-            "assets:install ' . $projectDir . ' /public",
+            "assets:install $projectDir/public",
             'pannelloamministrazione:checkgitversion',
         );
 
@@ -292,14 +291,14 @@ class PannelloAmministrazioneController extends AbstractController
         set_time_limit(0);
 
         $simfonycommand = $request->get('symfonycommand');
-        $comando = explode(' ', $simfonycommand);
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
             $this->apppaths = $this->apppaths;
             $pammutils = $this->pautils;
-            $result = $pammutils->runCommand($this->apppaths->getConsole(), $comando);
+            $command = $this->apppaths->getConsole().' '.$simfonycommand;
+            $result = $pammutils->runCommand($command);
 
             $this->locksystem->release();
             if (0 != $result['errcode']) {
@@ -325,18 +324,9 @@ class PannelloAmministrazioneController extends AbstractController
         set_time_limit(0);
         $pammutils = $this->pautils;
         $unixcommand = $request->get('unixcommand');
-        $parametri = explode(' ', $unixcommand);
-        $arguments = array();
-        $command = $unixcommand;
-        if (count($parametri) > 1) {
-            $command = $parametri[0];
-            for ($index = 1; $index < count($parametri); ++$index) {
-                $arguments[] = $parametri[$index];
-            }
-        }
         //Se viene lanciato il comando per cancellare il file di lock su bypassa tutto e si lancia
         $dellockfile = 'DELETELOCK';
-        if ($command == $dellockfile) {
+        if ($unixcommand == $dellockfile) {
             $this->locksystem->release();
 
             return new Response('File di lock cancellato');
@@ -346,7 +336,7 @@ class PannelloAmministrazioneController extends AbstractController
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $result = $pammutils->runCommand($command, $arguments);
+            $result = $pammutils->runCommand($unixcommand);
 
             $this->locksystem->release();
             // eseguito deopo la fine del comando
