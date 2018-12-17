@@ -122,6 +122,16 @@ class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
         }
         $crawler = $this->client->request('GET', '/'.$nomecontroller.'/'.$nominativonserito->getId().'/'.$csrfToken.'/delete');
         $this->assertSame(501, $this->client->getResponse()->getStatusCode());
+        
+        //Parametri per errori
+        $parametripererrore = $parametri;
+        $parametripererrore["modellocolonne"]=\Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella::setParameter('[{"nometabella":"Cliente","nomecampo":"Cliente.errore","etichetta":"Errore"}]');
+        $this->client->request('POST', '/'.$nomecontroller.'/tabella', array('parametri' => $parametripererrore));
+        
+        $this->assertContains(
+                'Cliente.errore field table option not found', $this->client->getResponse()->getContent()
+        );
+        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSecuredClienteAggiorna()
