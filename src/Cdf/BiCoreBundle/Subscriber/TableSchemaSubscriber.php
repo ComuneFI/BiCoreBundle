@@ -21,7 +21,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {
         $classMetadata = $args->getClassMetadata();
-        if ($classMetadata->isInheritanceTypeSingleTable() && !$classMetadata->isRootEntity()) {
+        if (!$this->schemaprefix || ($classMetadata->isInheritanceTypeSingleTable() && !$classMetadata->isRootEntity())) {
             return;
         }
         $classMetadata->setPrimaryTable(array('name' => $this->schemaprefix.'.'.$classMetadata->getTableName()));

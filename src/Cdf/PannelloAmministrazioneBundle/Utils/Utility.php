@@ -30,10 +30,15 @@ class Utility
         return self::runCommand($command, $parametri);
     }
 
-    public static function runCommand($command, $parametri = array(), $workingdir = '')
+    public static function runCommand($command, $workingdir = '')
     {
         /* @var $process \Symfony\Component\Process\Process */
-        $process = new Process(array_merge(array($command), $parametri));
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '4.2.0') >= 0) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            $process = new Process($command, $workingdir);
+        }
+
         if ($workingdir) {
             $process->setWorkingDirectory($workingdir);
         }

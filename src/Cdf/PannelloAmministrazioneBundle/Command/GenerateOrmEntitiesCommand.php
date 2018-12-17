@@ -14,7 +14,6 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 class GenerateOrmEntitiesCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:generateormentities';
-
     protected $apppaths;
     protected $genhelper;
     protected $pammutils;
@@ -61,21 +60,14 @@ class GenerateOrmEntitiesCommand extends Command
         $exportjsonreplaced = str_replace('[dir]', $destinationPathEscaped, $exportjsonfile);
 
         file_put_contents($exportJson, $exportjsonreplaced);
+        $workingdir = $this->apppaths->getRootPath();
         if (OsFunctions::isWindows()) {
-            $workingdir = $this->apppaths->getRootPath();
-            $command = $scriptGenerator.'.bat';
-            $arguments[] = '--config='.$exportJson;
-            $arguments[] = $wbFile;
-            $arguments[] = $destinationPathEscaped;
+            $command = $scriptGenerator.'.bat'.' --config='.$exportJson.' '.$wbFile.' '.$destinationPathEscaped;
         } else {
-            $workingdir = $this->apppaths->getRootPath();
-            $command = $scriptGenerator;
-            $arguments[] = '--config='.$exportJson;
-            $arguments[] = $wbFile;
-            $arguments[] = $destinationPathEscaped;
+            $command = $scriptGenerator.' --config='.$exportJson.' '.$wbFile.' '.$destinationPathEscaped;
         }
 
-        $schemaupdateresult = $this->pammutils->runCommand($command, $arguments, $workingdir);
+        $schemaupdateresult = $this->pammutils->runCommand($command, $workingdir);
         if ($schemaupdateresult['errcode'] < 0) {
             $output->writeln($schemaupdateresult['message']);
 
