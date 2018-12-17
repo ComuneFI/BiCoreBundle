@@ -1,8 +1,8 @@
 <?php
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeWebtestcaseNorolesAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseNorolesAuthorizedClient;
 
-class TestTablesNotAuthorizedControllerTest extends FifreeWebtestcaseNorolesAuthorizedClient
+class TestTablesNotAuthorizedControllerTest extends BiWebtestcaseNorolesAuthorizedClient
 {
     /*
      * @test

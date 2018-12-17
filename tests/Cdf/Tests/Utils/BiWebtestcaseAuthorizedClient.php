@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
-abstract class FifreeWebtestcaseAuthorizedClient extends WebTestCase
+abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 {
     protected $client = null;
     protected $em = null;

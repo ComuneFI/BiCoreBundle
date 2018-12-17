@@ -2,9 +2,9 @@
 
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class PannelloAmministrazioneControllerFunctionalTest extends FifreeTestAuthorizedClient
+class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient
 {
     /*
      * @test

@@ -2,9 +2,9 @@
 
 namespace App\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalFornitoreControllerTest extends FifreeTestAuthorizedClient
+class FunctionalFornitoreControllerTest extends BiTestAuthorizedClient
 {
     public function testFunctionalFornitoreIndex()
     {

@@ -2,9 +2,9 @@
 
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalPermessiControllerTest extends FifreeTestAuthorizedClient
+class FunctionalPermessiControllerTest extends BiTestAuthorizedClient
 {
     public function testPermessiIndex()
     {

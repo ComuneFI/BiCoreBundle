@@ -3,9 +3,9 @@
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Cdf\BiCoreBundle\Tests\Utils\FifreeWebtestcaseAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class RuoliControllerTest extends FifreeWebtestcaseAuthorizedClient
+class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
 {
     public function setUp()
     {

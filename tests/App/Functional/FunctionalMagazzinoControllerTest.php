@@ -2,9 +2,9 @@
 
 namespace App\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalMagazzinoControllerTest extends FifreeTestAuthorizedClient
+class FunctionalMagazzinoControllerTest extends BiTestAuthorizedClient
 {
     /*public function testFunctionalMagazzinoIndex()
     {

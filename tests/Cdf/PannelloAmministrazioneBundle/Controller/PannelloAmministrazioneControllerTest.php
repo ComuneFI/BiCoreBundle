@@ -1,8 +1,8 @@
 <?php
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeWebtestcaseAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class PannelloAmministrazioneControllerTest extends FifreeWebtestcaseAuthorizedClient
+class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClient
 {
     /*
      * @test
