@@ -2,10 +2,10 @@
 
 namespace App\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeWebtestcaseAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 use Symfony\Component\HttpFoundation\Response;
 
-class ClienteControllerTest extends FifreeWebtestcaseAuthorizedClient
+class ClienteControllerTest extends BiWebtestcaseAuthorizedClient
 {
     public function testSecuredClienteIndex()
     {

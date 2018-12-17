@@ -21,7 +21,7 @@ class BiCoreBundlePubblicamanualeCommand extends Command
 
     public function __construct($projectdir, Filesystem $fs)
     {
-        $this->projectdir = $projectdir;
+        $this->projectdir = dirname($projectdir);
         $this->fs = $fs;
 
         // you *must* call the parent constructor
@@ -43,5 +43,6 @@ class BiCoreBundlePubblicamanualeCommand extends Command
         } else {
             throw new \Exception('Attenzione, non è presente il file '.$manualepath);
         }
+        $output->writeln('Done!');
     }
 }

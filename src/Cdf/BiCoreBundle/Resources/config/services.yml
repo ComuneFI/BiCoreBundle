@@ -236,7 +236,7 @@ services:
     cdf.bicorebundle.command.pubblicamanuale:
         class: Cdf\BiCoreBundle\Command\BiCoreBundlePubblicamanualeCommand
         public: false
-        arguments: ['%kernel.project_dir%']
+        arguments: ['%kernel.root_dir%']
         tags:
             -  { name: console.command }
             

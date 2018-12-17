@@ -22,12 +22,12 @@ class PubblicamanualeCommandTest extends WebTestCase
         $kernel = static::$kernel;
         $application = new Application($kernel);
 
-        $this->expectException(\Exception::class);
         //Test per fallimento import se non è stato fatto un export
         $commandpubblicamanuale = $application->find('bicorebundle:pubblicamanuale');
-        $commandTesterImport = new CommandTester($commandpubblicamanuale);
-        $commandTesterImport->execute(array());
-        $outputimport = $commandTesterImport->getDisplay();
+        $commandTesterPubblicamanuale = new CommandTester($commandpubblicamanuale);
+        $commandTesterPubblicamanuale->execute(array());
+        $outputpubblicamanuale = $commandTesterPubblicamanuale->getDisplay();
+        $this->assertRegExp('/.../', $outputpubblicamanuale);
 
     }
 }

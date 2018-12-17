@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Tests\Utils;
 
-abstract class FifreeTestNorolesAuthorizedClient extends FifreeTestAuthorizedClient
+abstract class BiTestReadrolesAuthorizedClient extends BiTestAuthorizedClient
 {
     protected function setUp()
     {

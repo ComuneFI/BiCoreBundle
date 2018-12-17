@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 
 use Symfony\Component\BrowserKit\Cookie;
 
-abstract class FifreeWebtestcaseReadrolesAuthorizedClient extends FifreeWebtestcaseAuthorizedClient
+abstract class BiWebtestcaseReadrolesAuthorizedClient extends BiWebtestcaseAuthorizedClient
 {
     public function setUp()
     {

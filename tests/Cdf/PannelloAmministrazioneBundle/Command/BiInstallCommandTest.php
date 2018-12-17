@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class FifreeinstallCommandTest extends WebTestCase
+class BiInstallCommandTest extends WebTestCase
 {
     /**
      * {@inheritdoc}
@@ -16,7 +16,7 @@ class FifreeinstallCommandTest extends WebTestCase
         static::$kernel = static::createKernel();
         static::$kernel->boot();
     }
-    public function testFifreeinstall()
+    public function testBiInstall()
     {
         $kernel = static::$kernel;
         $application = new Application($kernel);

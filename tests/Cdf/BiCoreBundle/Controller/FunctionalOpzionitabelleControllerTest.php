@@ -2,9 +2,9 @@
 
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
-use Cdf\BiCoreBundle\Tests\Utils\FifreeTestAuthorizedClient;
+use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalOpzionitabelleControllerTest extends FifreeTestAuthorizedClient
+class FunctionalOpzionitabelleControllerTest extends BiTestAuthorizedClient
 {
     public function testOpzionitabelleIndex()
     {

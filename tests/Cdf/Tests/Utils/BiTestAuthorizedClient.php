@@ -6,7 +6,7 @@ use Symfony\Component\Panther\PantherTestCase;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
-abstract class FifreeTestAuthorizedClient extends PantherTestCase
+abstract class BiTestAuthorizedClient extends PantherTestCase
 {
     const TIMEOUT = 4;
 
