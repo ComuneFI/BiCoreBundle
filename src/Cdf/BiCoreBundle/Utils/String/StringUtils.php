@@ -4,13 +4,6 @@ namespace Cdf\BiCoreBundle\Utils\String;
 
 class StringUtils
 {
-    private $string;
-
-    public function __construct($string)
-    {
-        $this->string = $string;
-    }
-
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
      *

@@ -33,9 +33,4 @@ class AssetExtension extends \Twig_Extension
 
         return true;
     }
-
-    public function getName()
-    {
-        return 'asset_exists';
-    }
 }
