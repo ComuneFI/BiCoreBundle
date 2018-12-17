@@ -266,6 +266,59 @@ class TabellaClienteConditionsTest extends KernelTestCase
             'filtri' => array(
                 array(
                     'nomecampo' => $this->controller.'.nominativo',
+                    'operatore' => \Doctrine\Common\Collections\Expr\Comparison::STARTS_WITH,
+                    'valore' => 'AN', ),
+            ),
+            'prefiltri' => array(
+                array(
+                    'nomecampo' => $this->controller.'.attivo',
+                    'operatore' => '=',
+                    'valore' => true,
+                ), ),
+            'permessi' => ['read' => true, 'create' => true, 'delete' => true, 'update' => true],
+            'righeperpagina' => 1,
+            'righetotali' => 2,
+            'estraituttirecords' => 0,
+            'user' => $useradmin,
+            'errormsg' => 'nominativo STARTSWITH "AN")',
+        );
+        $alltests[] = array(
+            'idpassato' => '',
+            'modellocolonne' => array(
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.nominativo', 'etichetta' => 'Nominativo', 'ordine' => 10, 'larghezza' => 200, 'escluso' => false),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.datanascita', 'etichetta' => 'Data di nascita', 'ordine' => 20, 'larghezza' => 100, 'escluso' => false),
+            ),
+            'colonneordinamento' => array($this->controller.'.id' => 'ASC'),
+            'filtri' => array(
+                array(
+                    'nomecampo' => $this->controller.'.nominativo',
+                    'operatore' => \Doctrine\Common\Collections\Expr\Comparison::NEQ,
+                    'valore' => 'ANDREA Manzi', ),
+            ),
+            'prefiltri' => array(
+                array(
+                    'nomecampo' => $this->controller.'.attivo',
+                    'operatore' => '=',
+                    'valore' => true,
+                ), ),
+            'permessi' => ['read' => true, 'create' => true, 'delete' => true, 'update' => true],
+            'righeperpagina' => 1,
+            'righetotali' => 8,
+            'estraituttirecords' => 0,
+            'user' => $useradmin,
+            'errormsg' => 'nominativo DIVERSO "Andrea Manzi")',
+        );
+        /* test */
+        $alltests[] = array(
+            'idpassato' => '',
+            'modellocolonne' => array(
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.nominativo', 'etichetta' => 'Nominativo', 'ordine' => 10, 'larghezza' => 200, 'escluso' => false),
+                array('nometabella' => $this->controller, 'nomecampo' => $this->controller.'.datanascita', 'etichetta' => 'Data di nascita', 'ordine' => 20, 'larghezza' => 100, 'escluso' => false),
+            ),
+            'colonneordinamento' => array($this->controller.'.id' => 'ASC'),
+            'filtri' => array(
+                array(
+                    'nomecampo' => $this->controller.'.nominativo',
                     'operatore' => \Doctrine\Common\Collections\Expr\Comparison::CONTAINS,
                     'valore' => "colò Degl'Inno", ),
             ),
