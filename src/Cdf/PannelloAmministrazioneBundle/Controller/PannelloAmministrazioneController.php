@@ -91,9 +91,6 @@ class PannelloAmministrazioneController extends AbstractController
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
-        $projectparentdir = dirname($projectDir);
-        $envvars = $projectparentdir.DIRECTORY_SEPARATOR.'envvars';
-        $composercachedir = $projectparentdir.DIRECTORY_SEPARATOR.'.composer';
         $composerinstall = '';
         if (false == $windows) {
             $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-interaction 2>&1';
