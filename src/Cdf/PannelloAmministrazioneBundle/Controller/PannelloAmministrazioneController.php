@@ -96,12 +96,6 @@ class PannelloAmministrazioneController extends AbstractController
         $composercachedir = $projectparentdir.DIRECTORY_SEPARATOR.'.composer';
         $composerinstall = '';
         if (false == $windows) {
-            if (file_exists($envvars)) {
-                $composerinstall = $composerinstall.'. '.$envvars.' && ';
-            }
-            if (file_exists($composercachedir)) {
-                $composerinstall = $composerinstall.' export COMPOSER_HOME='.$composercachedir.' && ';
-            }
             $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-interaction 2>&1';
             $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' ".$projectDir.'/.env';
         }
