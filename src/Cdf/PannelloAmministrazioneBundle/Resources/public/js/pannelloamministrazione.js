@@ -12,30 +12,44 @@ $(document).unbind("keyup").keyup(function (e) {
 $(document).ready(function () {
     //Per gestire l'enter
     $("#symfonycommand").focusin(
-        function () {
+            function () {
                 currentfunction = "symfonycommand";
-        }
+            }
     );
 
     $("#unixcommand").focusin(
-        function () {
+            function () {
                 currentfunction = "unixcommand";
-        }
+            }
     );
     $("#entityform").focusin(
-        function () {
+            function () {
                 currentfunction = "";
-        }
+            }
     );
     $("#entityfile").focusin(
-        function () {
+            function () {
                 currentfunction = "";
-        }
+            }
     );
 
 //Abilita tooltip bootstrap
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
+
+
 });
 
+$(document).on("click", ".autocomplete-list-text", function (e) {
+    e.preventDefault();
+    var cmd = "";
+    if ($(this).text().indexOf("Label")){
+        cmd = $(this).text().slice(0, -5);
+    }else{
+        cmd = $(this).text();
+    }
+    
+    $(this).closest("div").find(":input").val(cmd);
+    $(this).closest("ul").removeClass("autocomplete-list-show");
+});
