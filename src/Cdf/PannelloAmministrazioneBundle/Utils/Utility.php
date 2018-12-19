@@ -24,10 +24,9 @@ class Utility
             $env = $this->kernel->getEnvironment();
         }
 
-        $command = $this->apppaths->getConsole();
-        $parametri = array('cache:clear', '--env='.$env);
+        $command = $this->apppaths->getConsole().' cache:clear --env='.$env;
 
-        return self::runCommand($command, $parametri);
+        return self::runCommand($command);
     }
 
     public static function runCommand($command, $workingdir = '')
