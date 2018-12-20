@@ -10,6 +10,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CheckgitversionCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checkgitversion';
@@ -21,7 +24,6 @@ class CheckgitversionCommand extends Command
                 ->setHelp('Controlla le versioni git dei bundles');
     }
 
-    // @codeCoverageIgnoreStart
     public function __construct(ProjectPath $projectpath)
     {
         $this->projectpath = $projectpath;
@@ -146,6 +148,4 @@ class CheckgitversionCommand extends Command
             return false;
         }
     }
-
-    // @codeCoverageIgnoreEnd
 }

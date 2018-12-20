@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ChecksrcCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checksrc';
@@ -19,7 +22,6 @@ class ChecksrcCommand extends Command
                 ->setHelp('Usa phpcs, phpmd, ecc per controllare il codice in src');
     }
 
-    // @codeCoverageIgnoreStart
     public function __construct(ProjectPath $projectpath)
     {
         $this->apppaths = $projectpath;
@@ -85,6 +87,4 @@ class ChecksrcCommand extends Command
 
         return $out;
     }
-
-    // @codeCoverageIgnoreEnd
 }

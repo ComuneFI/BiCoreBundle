@@ -80,10 +80,12 @@ class PannelloAmministrazioneController extends AbstractController
             $remfilelock = 'rm '.$this->lockfile;
             $windows = false;
         } else {
+            // @codeCoverageIgnoreStart
             $delcmd = 'del';
             $setfilelock = 'echo $null >> '.$this->lockfile;
             $remfilelock = 'del '.$this->lockfile;
             $windows = true;
+            // @codeCoverageIgnoreEnd
         }
         $dellogsfiles = $delcmd.' '.$this->apppaths->getLogsPath().DIRECTORY_SEPARATOR.'*';
         $delcacheprodfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'prod'.DIRECTORY_SEPARATOR.'*';
@@ -164,7 +166,6 @@ class PannelloAmministrazioneController extends AbstractController
     }
 
     /* FORMS */
-
     public function generateFormCrud(Request $request)
     {
         if (!$this->locksystem->acquire()) {
@@ -196,7 +197,6 @@ class PannelloAmministrazioneController extends AbstractController
     }
 
     /* ENTITIES */
-
     public function generateEntity(Request $request)
     {
         if (!$this->locksystem->acquire()) {
@@ -276,7 +276,6 @@ class PannelloAmministrazioneController extends AbstractController
     }
 
     /* CLEAR CACHE */
-
     public function symfonyCommand(Request $request)
     {
         set_time_limit(0);
@@ -376,7 +375,9 @@ class PannelloAmministrazioneController extends AbstractController
                     return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
                 }
             } else {
+                // @codeCoverageIgnoreStart
                 return new Response('Non previsto in ambiente windows!', 500);
+                // @codeCoverageIgnoreEnd
             }
         }
     }
