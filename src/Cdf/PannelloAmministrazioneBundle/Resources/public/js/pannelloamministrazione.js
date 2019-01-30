@@ -45,11 +45,12 @@ $(document).on("click", ".autocomplete-list-text", function (e) {
     e.preventDefault();
     var cmd = "";
     if ($(this).text().indexOf("Label")){
-        cmd = $(this).text().slice(0, -5);
+        cmd = $(this).text().slice(0, -5).trim();
     }else{
-        cmd = $(this).text();
+        cmd = $(this).text().trim();
     }
     
     $(this).closest("div").find(":input").val(cmd);
     $(this).closest("ul").removeClass("autocomplete-list-show");
+    $(this).closest("div").find(":input").focus();
 });
