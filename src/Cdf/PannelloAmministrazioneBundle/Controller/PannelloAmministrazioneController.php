@@ -100,21 +100,23 @@ class PannelloAmministrazioneController extends AbstractController
         }
 
         $comandishell = array(
-            $this->fixSlash($dellogsfiles),
-            $this->fixSlash($delcacheprodfiles),
-            $this->fixSlash($delcachedevfiles),
-            $this->fixSlash($setmaintenancefile),
-            $this->fixSlash($remmaintenancefile),
-            $composerinstall,
-            $sed, );
+            array('text' => $this->fixSlash($dellogsfiles), 'link' => '#'),
+            array('text' => $this->fixSlash($delcacheprodfiles), 'link' => '#'),
+            array('text' => $this->fixSlash($delcachedevfiles), 'link' => '#'),
+            array('text' => $this->fixSlash($setmaintenancefile), 'link' => '#'),
+            array('text' => $this->fixSlash($remmaintenancefile), 'link' => '#'),
+            array('text' => $composerinstall, 'link' => '#'),
+            array('text' => $sed, 'link' => '#'),
+            //array("text"=>"prova", "link"=>"#"),
+            );
 
         $comandisymfony = array(
-            'list',
-            'cache:clear --env=prod --no-debug',
-            'fos:user:create admin pass admin@admin.it',
-            'fos:user:promote username ROLE_SUPER_ADMIN',
-            "assets:install $projectDir/public",
-            'pannelloamministrazione:checkgitversion',
+            array('text' => 'list', 'link' => '#'),
+            array('text' => 'cache:clear --env=prod --no-debug', 'link' => '#'),
+            array('text' => 'fos:user:create admin pass admin@admin.it', 'link' => '#'),
+            array('text' => 'fos:user:promote username ROLE_SUPER_ADMIN', 'link' => '#'),
+            array('text' => "assets:install $projectDir/public", 'link' => '#'),
+            array('text' => 'pannelloamministrazione:checkgitversion', 'link' => '#'),
         );
 
         $entities = $this->findEntities();

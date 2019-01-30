@@ -6,8 +6,6 @@
     {{parent()}}
     {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
     <script type="text/javascript">
-        comandishell = [{%for item in comandishell%}"{{item|raw}}",{%endfor%} ];
-        comandisymfony = [{%for item in comandisymfony%}"{{item|raw}}",{%endfor%} ];
         var currentfunction = "";
         var vcs = "";
         {% if (git == true) %}var vcs = "git";{% endif %}
@@ -43,14 +41,14 @@
                     <button id="adminpanelphpunittest" class="active btn btn-default" type="button">PHPUnit test</button>
                 </div>
                 <div class="form-group">
-                    <label for='symfonycommand'>Comando symfony</label>
-                    <input class="form-control autocomplete" type="text" id="symfonycommand" data-db="comandisymfony" value="" />
+                    <label class="active" for='symfonycommand'>Comando symfony</label>
+                    <input class="form-control autocomplete" type="text" id="symfonycommand" data-autocomplete='{{ comandisymfony|json_encode }}' value="" />
                     <br/>
                     <button id="adminpanelsymfonycommand" class="active btn btn-warning" type="button">Esegue comando symfony</button>
                 </div>
                 <div class="form-group">
-                    <label for='unixcommand'>Comando shell</label>
-                    <input class="form-control autocomplete" type="text" id="unixcommand" value="" data-db="comandishell"/>
+                    <label class="active" for='unixcommand'>Comando shell</label>
+                    <input class="form-control autocomplete" type="search" id="unixcommand" value="" data-autocomplete='{{ comandishell|json_encode }}'>
                     <br/>
                     <button id="adminpanelunixcommand" class="active btn btn-danger" type="button">Esegue comando da shell</button>
                 </div>
