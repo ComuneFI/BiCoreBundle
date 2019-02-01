@@ -41,7 +41,7 @@
     },
     "require": {
         "php": ">=7.2",
-        "fi/bootstrapitaliabundle": "~0.1",
+        "fi/bootstrapitaliabundle": "^1.0",
         "fi/osbundle": "~2.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "friendsofsymfony/user-bundle": "^2.1",
