@@ -41,16 +41,16 @@
                     <button id="adminpanelphpunittest" class="active btn btn-default" type="button">PHPUnit test</button>
                 </div>
                 <div class="form-group">
-                    <label class="active" for='symfonycommand'>Comando symfony</label>
+                    <label for='symfonycommand'>Comando symfony</label>
                     <input class="form-control autocomplete" type="text" id="symfonycommand" data-autocomplete='{{ comandisymfony|json_encode }}' value="" />
                     <br/>
-                    <button id="adminpanelsymfonycommand" class="active btn btn-warning" type="button">Esegue comando symfony</button>
+                    <button id="adminpanelsymfonycommand" class="btn btn-warning" type="button">Esegue comando symfony</button>
                 </div>
                 <div class="form-group">
-                    <label class="active" for='unixcommand'>Comando shell</label>
+                    <label for='unixcommand'>Comando shell</label>
                     <input class="form-control autocomplete" type="search" id="unixcommand" value="" data-autocomplete='{{ comandishell|json_encode }}'>
                     <br/>
-                    <button id="adminpanelunixcommand" class="active btn btn-danger" type="button">Esegue comando da shell</button>
+                    <button id="adminpanelunixcommand" class="btn btn-danger" type="button">Esegue comando da shell</button>
                 </div>
             </div>
         </div>
@@ -61,9 +61,8 @@
 
                 <div class="form-group">
                     <div class="bootstrap-select-wrapper">
-                        <label class="active">Seleziona il modello mysqlworkbench</label>
                         <div class="dropdown bootstrap-select">
-                            <select id="entityfile" title="Seleziona una opzione" data-live-search="true" data-live-search-placeholder="Cerca...">
+                            <select id="entityfile" title="Seleziona modello mysqlworkbench" data-live-search="true" data-live-search-placeholder="Cerca...">
                                 {% for mwb in mwbs %}
                                     <option value="{{mwb}}">{{mwb}}</option>
                                 {% endfor %}
@@ -83,9 +82,8 @@
 
                 <div class="form-group">
                     <div class="bootstrap-select-wrapper">
-                        <label class="active">Entità</label>
                         <div class="dropdown bootstrap-select">
-                            <select id="entityform" title="Seleziona una opzione" data-live-search="true" data-live-search-placeholder="Cerca...">
+                            <select id="entityform" title="Seleziona una entity" data-live-search="true" data-live-search-placeholder="Cerca...">
                                 {% for entity in entities %}
                                     <option value="{{entity}}">{{entity}}</option>
                                 {% endfor %}

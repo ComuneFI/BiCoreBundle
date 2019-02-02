@@ -32,12 +32,30 @@ $(document).ready(function () {
 
     $("#adminpanelgenerateentity").click(function () {
         var entityfile = $("#entityfile").val();
+        if (!entityfile) {
+            bootbox.alert({
+                size: "medium",
+                closeButton: false,
+                title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
+                message: "Specificare un modello mysqlworkbench"
+            });
+            return false;
+        }
         var domanda = "Vuoi creare i fle di configurazione per le entità partendo dal file: " + entityfile;
         eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateentity"), {file: entityfile});
     });
 
     $("#adminpanelgenerateformcrud").click(function () {
         var entityform = $("#entityform").val();
+        if (!entityform) {
+            bootbox.alert({
+                size: "medium",
+                closeButton: false,
+                title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
+                message: "Specificare una entity"
+            });
+            return false;
+        }
         var generatemplate = $("#generatemplate").prop("checked");
         var domanda = "Vuoi creare il crud per il form " + entityform;
         eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateformcrud"), {entityform: entityform, generatemplate: generatemplate});
