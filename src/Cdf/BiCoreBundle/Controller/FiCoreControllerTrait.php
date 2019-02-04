@@ -130,7 +130,7 @@ trait FiCoreControllerTrait
             'formclass' => ParametriTabella::setParameter($formclass),
             'parametriform' => ParametriTabella::setParameter(json_encode($parametriform)),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
-            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi())),
+            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
             'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/').$controller.'/'.'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter(0),
