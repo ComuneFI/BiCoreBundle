@@ -114,7 +114,7 @@
         <exec executable="vendor/bin/security-checker" failonerror="false">
             <arg value="security:check"/>
             <arg value="--verbose"/>
-            <arg value="--end-point=http://security.sensiolabs.org/check_lock"/>            
+            <arg value="--end-point=https://security.symfony.com/check_lock"/>            
             <arg value="composer.lock"/>
         </exec>
     </target>
