@@ -120,6 +120,7 @@ before_script:
 
 script:
   - travis_wait 20 ant
+  #- PANTHER_WEB_SERVER_DIR=/src/php/BiCoreBundle/tests/public PANTHER_NO_HEADLESS=1 vendor/bin/simple-phpunit -c tools/phpunit/phpunit.xml.dist --filter test20AdminpanelGenerateBundle
 
 after_success:
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then php vendor/bin/php-coveralls -v; fi
