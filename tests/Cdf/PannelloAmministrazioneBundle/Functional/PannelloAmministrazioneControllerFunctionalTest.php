@@ -52,6 +52,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
+        clearcache();
+
+        $this->visit($url);
+        $this->login('admin', 'admin');
         $this->executeScript('$("#entityform").val("Prova")');
 
         $this->pressButton('adminpanelgenerateformcrud');
@@ -77,12 +81,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $url = $urlRouting;
 
         $this->visit($url);
-        //$this->login('admin', 'admin');
+        $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
         //echo $page->getHtml();
-        //$this->crudoperation($session, $page);
+        $this->crudoperation($session, $page);
 
         $session->quit();
     }
