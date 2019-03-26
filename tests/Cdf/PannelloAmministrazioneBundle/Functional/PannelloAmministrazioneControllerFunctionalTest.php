@@ -81,7 +81,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $url = $urlRouting;
 
         $this->visit($url);
-        //$this->login('admin', 'admin');
+        $this->login('admin', 'admin');
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
