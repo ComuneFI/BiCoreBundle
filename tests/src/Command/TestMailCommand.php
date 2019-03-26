@@ -33,7 +33,7 @@ class TestMailCommand extends Command
 
         $message->setBody("Test email");
         $message->setFrom("bicorebundle@test.mail");
-        $message->setTo("manzolo@libero.it");
+        $message->setTo("dst@test.mail");
         $filename = sys_get_temp_dir() . "/test.dat";
 
         $ptr = fopen($filename, 'wb');
