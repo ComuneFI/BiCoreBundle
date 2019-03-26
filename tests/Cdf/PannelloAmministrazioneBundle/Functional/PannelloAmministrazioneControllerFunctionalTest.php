@@ -83,6 +83,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->visit($url);
         //In caso di symfony 4 dopo la clear cache non richiede la login
         if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '4.0') >= 0) {
+            
+        } else {
             $this->login('admin', 'admin');
         }
 
