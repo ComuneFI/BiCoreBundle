@@ -30,7 +30,7 @@ cleanFilesystem();
 function clearcache()
 {
     passthru(sprintf(
-                    '"%s/console" cache:clear', __DIR__.'/../bin'
+                    '"%s/console" cache:clear --env=test', __DIR__.'/../bin'
     ));
 }
 

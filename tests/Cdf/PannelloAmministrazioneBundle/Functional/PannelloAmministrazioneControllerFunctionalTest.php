@@ -14,14 +14,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     {
         //url da testare
         $apppath = self::$container->get('pannelloamministrazione.projectpath');
-        $checkentityprova = $apppath->getSrcPath().
-                DIRECTORY_SEPARATOR.'Entity'.DIRECTORY_SEPARATOR.'Prova.php';
-        $checktypeprova = $apppath->getSrcPath().
-                DIRECTORY_SEPARATOR.'Form'.DIRECTORY_SEPARATOR.'ProvaType.php';
-        $checkviewsprova = $apppath->getSrcPath().DIRECTORY_SEPARATOR.'..'.
-                DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Prova';
-        $checkindexprova = $checkviewsprova.
-                DIRECTORY_SEPARATOR.'Crud'.DIRECTORY_SEPARATOR.'index.html.twig';
+        $checkentityprova = $apppath->getSrcPath() .
+                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
+        $checktypeprova = $apppath->getSrcPath() .
+                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
+        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
+                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
+        $checkindexprova = $checkviewsprova .
+                DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
         $client = $this->getClient();
@@ -52,6 +52,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
+        clearcache();
+
+        $this->visit($url);
+        $this->login('admin', 'admin');
         $this->executeScript('$("#entityform").val("Prova")');
 
         $this->pressButton('adminpanelgenerateformcrud');
@@ -77,12 +81,18 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $url = $urlRouting;
 
         $this->visit($url);
-        //$this->login('admin', 'admin');
+        //In caso di symfony 4 dopo la clear cache non richiede la login
+        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '4.0') >= 0) {
+            
+        } else {
+            $this->login('admin', 'admin');
+        }
+
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
         //echo $page->getHtml();
-        //$this->crudoperation($session, $page);
+        $this->crudoperation($session, $page);
 
         $session->quit();
     }
@@ -124,7 +134,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $fieldhtml = 'prova_descrizione';
 //        }
 
-        $client->waitFor('#'.$fieldhtml);
+        $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
 
@@ -141,7 +151,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
         $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
         $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
 
@@ -150,7 +160,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //Modifica
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
-        $client->waitFor('#'.$fieldhtml);
+        $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
 
@@ -169,7 +179,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
           $this->assertEquals($provaobj2->getDescrizione(), $descrizionetest2); */
 
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
         $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
         $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
 
@@ -197,4 +207,5 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         removecache();
         clearcache();
     }
+
 }
