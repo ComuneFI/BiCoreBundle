@@ -22,5 +22,9 @@ function formlabeladjust()
         $('.bidatetimepicker').datetimepicker({
             locale: 'it'
         });
+        
+        //Per impostare il layout delle select come bootstrapitalia
+        $(".bootstrap-select-wrapper select").selectpicker('refresh');
+
     });
 }
