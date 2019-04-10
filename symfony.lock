@@ -87,9 +87,6 @@
     "facebook/webdriver": {
         "version": "1.6.0"
     },
-    "fi/bootstrapitaliabundle": {
-        "version": "v1.2.3"
-    },
     "fi/osbundle": {
         "version": "2.0.5"
     },

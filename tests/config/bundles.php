@@ -15,7 +15,6 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Cdf\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle::class => ['all' => true],
     Cdf\BiCoreBundle\BiCoreBundle::class => ['all' => true],
-    Fi\BootstrapitaliaBundle\BootstrapitaliaBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Sensio\Bundle\DistributionBundle\SensioDistributionBundle::class => ['all' => true],
 ];

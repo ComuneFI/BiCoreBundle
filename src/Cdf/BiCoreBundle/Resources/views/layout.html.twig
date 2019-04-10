@@ -1,40 +1,72 @@
-{% extends "BootstrapitaliaBundle::layout.html.twig" %}
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+        <script type="text/javascript">
+            window.__PUBLIC_PATH__ = '{{ asset('bundles/bicore/fonts') }}';
+            var baseUrl = '{{app.request.baseUrl}}';
+        </script>
+        {% block head %}
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bootstrap-datetimepicker.min.css') }}?ver={{versione_tag_git()}}">
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/font-awesome.min.css') }}?ver={{versione_tag_git()}}">
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bootstrap-italia.min.css') }}?ver={{versione_tag_git()}}" >
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/italia-icon-font.css') }}?ver={{versione_tag_git()}}" >  
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/fibootstrapitalia.css') }}?ver={{versione_tag_git()}}">
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bicore.css') }}?ver={{versione_tag_git()}}" >
+            {% block css %}
+            {% endblock %}
+        {% endblock %}
+    </head>            
 
-{% block title %}{{parameter('bi_core.appname')}}{% endblock%}
-
-{% block javascript %}
-    {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-confirmation.min.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/menu/contextmenuactionstabella.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bicore.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/bibootstrap.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/functions/stringfunctions.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/modal/alertbuilder.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/spinner/waitpage.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-{% endblock%}
-{% block css %}
-    {{parent()}}
-    <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bicore.css') }}?ver={{versione_tag_git()}}" >
-{% endblock%}
-
-
-{% block body %}
-    <div id="spinnerloader" class="loader loader-default"></div>
-    {% block menuapplicazione %}
-        {{ generamenu() }}
-    {% endblock %}
-    {% for label, messages in app.flashes(['success','warning']) %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+    {% block body %}
+        <div id="spinnerloader" class="loader loader-default"></div>
+        {% block menuapplicazione %}
+            {{ generamenu() }}
+        {% endblock %}
+        {% for label, messages in app.flashes(['success','warning']) %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-    {% block content %}
+        {% block content %}
+        {% endblock %}
+        <div id="fifireenotificationcontainer"></div>
+        {% block bootstrapitaliajavascript %}
+            <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
+            <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/bootstrap-italia.bundle.min.js') }}?ver={{versione_tag_git()}}" crossorigin="anonymous"></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/bootbox.min.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/moment.min.js') }}?ver={{versione_tag_git()}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/locale/it.js') }}?ver={{versione_tag_git()}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/bootstrap-datetimepicker.min.js') }}?ver={{versione_tag_git()}}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/fibootstrapitalia.js') }}?ver={{versione_tag_git()}}"></script>
+
+            <script type="text/javascript">
+                function binotification(messaggio, tipo = "info", icon = "it-info-circle") {
+                    $("#fifireenotificationcontainer").html('<div class="notification with-icon ' + tipo + '" role="alert" aria-labelledby="' + messaggio + '" id="fifireenotification"><h5><svg class="icon"><use xlink:href="{{ asset('bundles/bicore/svg/sprite.svg') }}#' + icon + '"><\/use><\/svg>' + messaggio + '<\/h5><\/div>');
+                    notificationShow('fifireenotification', 6000);
+                }
+            </script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-confirmation.min.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/menu/contextmenuactionstabella.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/bicore.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/bibootstrap.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/functions/stringfunctions.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/modal/alertbuilder.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script type="text/javascript" src="{{ asset('bundles/bicore/js/spinner/waitpage.js') }}?ver={{versione_tag_git()}}" ></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        {% endblock %}
+        {% block javascript %}
+        {% endblock %}
     {% endblock %}
-{% endblock %}
+</body>
+</html>
