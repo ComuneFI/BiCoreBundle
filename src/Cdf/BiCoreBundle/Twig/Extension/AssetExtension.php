@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-class AssetExtension extends \Twig_Extension
+class AssetExtension extends \Twig\Extension\AbstractExtension
 {
     private $projectpath;
 

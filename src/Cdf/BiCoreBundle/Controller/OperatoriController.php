@@ -18,12 +18,12 @@ class OperatoriController extends FiController
     private $logger;
     private $usermanipulator;
 
-    public function __construct(TokenStorageInterface $user, PermessiManager $permessi, LoggerInterface $logger, $usermanipulator)
+    public function __construct(PermessiManager $permessi, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
         $this->permessi = $permessi;
         $this->usermanipulator = $usermanipulator;
-        parent::__construct($user, $permessi);
+        parent::__construct($permessi);
     }
 
     /**

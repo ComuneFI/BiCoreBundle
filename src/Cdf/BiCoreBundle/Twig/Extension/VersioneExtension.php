@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 
-class VersioneExtension extends \Twig_Extension
+class VersioneExtension extends \Twig\Extension\AbstractExtension
 {
     private $projectpath;
 
