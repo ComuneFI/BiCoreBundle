@@ -142,3 +142,11 @@ function aggiustafootertabella(nomecontroller)
     $("#bitollbarbottoni" + nometabella).attr("colspan", colCount);
     $("#bititletable" + nometabella).attr("colspan", colCount);
 }
+
+function dumpParametriTabella(nomecontroller)
+{
+    var parametri = document.querySelector('#Parametri' + nomecontroller + '.parametri-tabella');
+    $.each(parametri.dataset, function (key, value) {
+        console.log(key + ":" + getTabellaParameter(value));
+    });
+}
