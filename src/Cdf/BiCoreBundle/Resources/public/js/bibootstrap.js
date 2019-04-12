@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    bootbox.setDefaults({
+        locale: "it"
+    });
+});
+
 function openloaderspinner()
 {
     $("#spinnerloader").addClass("is-active");
