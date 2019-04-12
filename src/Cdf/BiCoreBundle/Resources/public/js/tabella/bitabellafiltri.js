@@ -37,8 +37,6 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                         }
                     });
                     var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': 'IN', 'valore': valorifiltro};
-
-                    //valorefiltro = findKeyArrayByValue(decodifiche, valorefiltro);
                 } else {
                     switch (tipocampo) {
                         case "string":

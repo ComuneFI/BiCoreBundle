@@ -13,7 +13,7 @@
             <link rel="stylesheet" href="{{ asset('bundles/bicore/css/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css') }}?ver={{versione_tag_git()}}">
             <link rel="stylesheet" href="{{ asset('bundles/bicore/css/vendor/font-awesome/font-awesome.min.css') }}?ver={{versione_tag_git()}}">
             <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bootstrap-italia.min.css') }}?ver={{versione_tag_git()}}" >
-            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/italia-icon-font.css') }}?ver={{versione_tag_git()}}" >  
+            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/vendor/bootstrapitalia-legacy/italia-icon-font.css') }}?ver={{versione_tag_git()}}" >
             <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bicore.css') }}?ver={{versione_tag_git()}}" >
             {% block css %}
             {% endblock %}
@@ -37,7 +37,7 @@
         {% endfor %}
         {% block content %}
         {% endblock %}
-        <div id="fifireenotificationcontainer"></div>
+        <div id="binotificationcontainer"></div>
         {% block bootstrapitaliajavascript %}
             <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
             <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->
@@ -46,18 +46,10 @@
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/moment/moment.min.js') }}?ver={{versione_tag_git()}}"></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/locale/it.js') }}?ver={{versione_tag_git()}}"></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js') }}?ver={{versione_tag_git()}}"></script>
-
-            <script type="text/javascript">
-                function binotification(messaggio, tipo = "info", icon = "it-info-circle") {
-                    $("#fifireenotificationcontainer").html('<div class="notification with-icon ' + tipo + '" role="alert" aria-labelledby="' + messaggio + '" id="fifireenotification"><h5><svg class="icon"><use xlink:href="{{ asset('bundles/bicore/svg/sprite.svg') }}#' + icon + '"><\/use><\/svg>' + messaggio + '<\/h5><\/div>');
-                    notificationShow('fifireenotification', 6000);
-                }
-            </script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-confirmation/bootstrap-confirmation.min.js') }}?ver={{versione_tag_git()}}" ></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/menu/contextmenuactionstabella.js') }}?ver={{versione_tag_git()}}" ></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/bibootstrap.js') }}?ver={{versione_tag_git()}}" ></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/functions/string.js') }}?ver={{versione_tag_git()}}" ></script>
-            <script type="text/javascript" src="{{ asset('bundles/bicore/js/functions/array.js') }}?ver={{versione_tag_git()}}" ></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/modal/alertbuilder.js') }}?ver={{versione_tag_git()}}" ></script>
             <script type="text/javascript" src="{{ asset('bundles/bicore/js/spinner/waitpage.js') }}?ver={{versione_tag_git()}}" ></script>
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
