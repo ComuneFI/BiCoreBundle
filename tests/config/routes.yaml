@@ -26,10 +26,6 @@ fi_core:
     resource: "@BiCoreBundle/Resources/config/routing.yml"
     prefix:   /
 
-bootstrapitalia:
-    resource: "@BootstrapitaliaBundle/Resources/config/routing.yml"
-    prefix:   /
-
 #HOMEPAGE ROUTE
 homepage:
     prefix:   /
