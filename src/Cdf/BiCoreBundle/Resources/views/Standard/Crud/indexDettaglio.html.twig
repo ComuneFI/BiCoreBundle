@@ -19,5 +19,6 @@
 </div>
 
 <script type="text/javascript">
-    ricaricatabella("{{parametritabella.nomecontroller|getparametrotabella}}");
+    let tab = new Tabella("{{parametritabella.nomecontroller|getparametrotabella}}");
+    tab.caricatabella();
 </script>
