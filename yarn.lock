@@ -5542,6 +5542,11 @@ svgxuse@1.2.6:
   resolved "https://registry.yarnpkg.com/svgxuse/-/svgxuse-1.2.6.tgz#d6251edd07a75cb28618e0c23e8d4db64936d6be"
   integrity sha512-0KC0I24LDskC2vaVjUQfFmdtKJk8wFwMYOjCci0HlhBRSc0F86dZRqNBHf6BoS5bibQ7chgnBQWyJCTYkzVuSA==
 
+sweetalert2@^8.8.5:
+  version "8.8.5"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-8.8.5.tgz#2c794bc325332de5cec5c7fd774d99ed887e0b85"
+  integrity sha512-Ajg4u6N0NEHgQ13xwLAXgTmLwFeDwN9JhgCC39YsIwTCN0yqEN8KRnLpmS0izM3GhdzgBmWA6WSgcKBZDyFfUw==
+
 tapable@^1.0.0, tapable@^1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"

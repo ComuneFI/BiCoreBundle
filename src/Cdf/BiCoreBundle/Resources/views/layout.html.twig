@@ -10,10 +10,7 @@
             var baseUrl = '{{app.request.baseUrl}}';
         </script>
         {% block head %}
-            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css') }}?ver={{versione_tag_git()}}">
             {{ encore_entry_link_tags('bootstrap-italia') }}
-            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/vendor/bootstrapitalia-legacy/italia-icon-font.css') }}?ver={{versione_tag_git()}}" >
-            <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bicore.css') }}?ver={{versione_tag_git()}}" >
             {% block css %}
             {% endblock %}
         {% endblock %}
@@ -36,14 +33,11 @@
         {% endfor %}
         {% block content %}
         {% endblock %}
-        <div id="binotificationcontainer"></div>
         {% block bootstrapitaliajavascript %}
             <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
             <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->
             {{ encore_entry_script_tags('bootstrap-italia') }}
-            <script type="text/javascript" src="{{ asset('bundles/bicore/js/vendor/bootstrap-confirmation/bootstrap-confirmation.min.js') }}?ver={{versione_tag_git()}}" ></script>
-            <script type="text/javascript" src="{{ asset('bundles/bicore/js/modal/alertbuilder.js') }}?ver={{versione_tag_git()}}" ></script>
-            
+
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}

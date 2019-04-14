@@ -18,6 +18,7 @@
         "bootstrap-italia": "^1.2.5",
         "font-awesome": "4.7.0",
         "moment": "^2.24.0",
-        "popover": "^2.4.1"
+        "popover": "^2.4.1",
+        "sweetalert2": "^8.8.5"
     }
 }

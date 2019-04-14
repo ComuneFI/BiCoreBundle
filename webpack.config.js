@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('bitabella', './assets/js/bitabella.js')
+    .addEntry('bidemo', './assets/js/bidemo.js')
     .addEntry('bootstrap-italia', './assets/js/bootstrap-italia.js')
     
     //.addEntry('page1', './assets/js/page1.js')

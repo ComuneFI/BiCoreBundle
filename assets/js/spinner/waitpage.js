@@ -7,8 +7,8 @@ function closeloaderspinner()
     jQuery("#spinnerloader").removeClass("is-active");
 }
 
-const BiSpinner = {
+const Spinner = {
     openloaderspinner,
     closeloaderspinner
 };
-export default BiSpinner;
+export default Spinner;

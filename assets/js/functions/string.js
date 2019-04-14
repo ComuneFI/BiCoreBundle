@@ -16,9 +16,9 @@ function ucfirst(str, force) {
 }
 
 
-const BiFunctions = {
+const BiStringFunctions = {
     setTabellaParameter,
     getTabellaParameter,
     ucfirst
 };
-export default BiFunctions;
+export default BiStringFunctions;
