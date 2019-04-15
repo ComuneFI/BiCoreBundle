@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-class HeaderTabellaExtension extends \Twig_Extension
+class HeaderTabellaExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * {@inheritdoc}

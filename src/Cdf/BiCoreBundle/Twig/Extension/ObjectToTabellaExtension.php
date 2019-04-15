@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 
-class ObjectToTabellaExtension extends \Twig_Extension
+class ObjectToTabellaExtension extends \Twig\Extension\AbstractExtension
 {
     private $tableprefix;
 

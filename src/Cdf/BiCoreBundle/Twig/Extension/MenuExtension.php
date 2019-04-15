@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class MenuExtension extends \Twig_Extension
+class MenuExtension extends \Twig\Extension\AbstractExtension
 {
     protected $em;
     protected $urlgenerator;

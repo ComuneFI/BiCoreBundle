@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
-class UtilitaExtension extends \Twig_Extension
+class UtilitaExtension extends \Twig\Extension\AbstractExtension
 {
     private $container;
 

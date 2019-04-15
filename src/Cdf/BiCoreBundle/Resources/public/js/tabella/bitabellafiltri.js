@@ -23,6 +23,8 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
 
     /* Invio */
     if (code == '13') {
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
         var filtririchiesti = new Array();
         $(".colonnatabellafiltro").each(function (index) {
             if ($(this).val() != "") {
@@ -53,11 +55,11 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': (valorefiltro == 'SI' ? true : false)};
                             break;
                         case "date":
-                            var date = getDateTimeTabella(valorefiltro);
+                            var date = tab.getDateTimeTabella(valorefiltro);
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                             break;
                         case "datetime":
-                            var date = getDateTimeTabella(valorefiltro);
+                            var date = tab.getDateTimeTabella(valorefiltro);
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                             break;
                         default:
@@ -69,24 +71,9 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                 filtririchiesti.push(elem);
             }
         });
-        var nomecontroller = this.dataset["nomecontroller"];
-
-        setDataParameterTabella(nomecontroller, "filtri", JSON.stringify(filtririchiesti));
+        tab.setDataParameterTabella("filtri", JSON.stringify(filtririchiesti));
+        tab.caricatabella();
         //dumpParametriTabella(nomecontroller);
-        ricaricatabella(nomecontroller);
     }
 });
 
-function getDateTimeTabella(stringadata)
-{
-    var date = new Date(stringadata.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
-    var tzoffset = date.getTimezoneOffset() * 60000; //offset in milliseconds
-    var localISOTime = (new Date(date - tzoffset)).toISOString().slice(0, -1);
-    return localISOTime;
-}
-
-$(document).on("click", '.birimuovifiltri', function (e) {
-    var nomecontroller = this.dataset["nomecontroller"];
-    setDataParameterTabella(nomecontroller, "filtri", JSON.stringify([]));
-    ricaricatabella(nomecontroller);
-});
