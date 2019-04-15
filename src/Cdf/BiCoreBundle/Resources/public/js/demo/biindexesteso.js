@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function (e) {
     e.preventDefault();
     var nomecontroller = getMainTabella();
-    let tab = new Tabella(nomecontroller);
+    let tab = new TabellaCliente(nomecontroller);
     tab.caricatabella();
     //dumpParametriTabella(nomecontroller);
 });

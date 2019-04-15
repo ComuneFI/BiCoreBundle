@@ -69,44 +69,12 @@
         <div class="tab-content" id="card-simpleContent">
             <div class="tab-pane p-4 fade show active" id="card-simpletab1" role="tabpanel" aria-labelledby="card-simple1-tab">
                 <!-- Tabella ordini -->
-                <div id="tabellaOrdineCliente"></div>
+                <div id="tabellaOrdineCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{entity.nominativo}}"></div>
             </div>
             <div class="tab-pane p-4 fade" id="card-simpletab2" role="tabpanel" aria-labelledby="card-simple2-tab">
-                <div id="tabellaMagazzinoCliente"></div>
+                <!-- Tabella magazzino -->
+                <div id="tabellaMagazzinoCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{entity.nominativo}}"></div>
             </div>
         </div>
-
-        <script type="text/javascript">
-            var url = '{{path("Ordine_indexdettaglio")}}';
-            var data = {
-            prefiltri: [{nomecampo: "Ordine.Cliente.id", operatore: "=", valore: {{ entity.id }} }],
-                    titolotabella: 'Ordini del cliente {{entity.nominativo}}',
-                    modellocolonne: [{nomecampo: 'Ordine.Cliente', escluso: true}],
-                    colonneordinamento: {'Ordine.data': 'DESC', 'Ordine.quantita': 'DESC'},
-                    parametriform: {'cliente_id': {{ entity.id }} },
-                    multiselezione: true
-            };
-            $.ajax({
-            type: 'POST',
-                    url: url,
-                    data: {parametripassati: JSON.stringify(data)}
-            }).done(function (data) {
-            $("#tabellaOrdineCliente").html(data);
-            });
-        </script>
-        <script type="text/javascript">
-            var url = '{{path("Magazzino_indexdettaglio")}}';
-            var data = {
-            prefiltri: [{nomecampo: "Magazzino.Ordine.Cliente.id", operatore: "=", valore: {{ entity.id }} }],
-                    modellocolonne: [{nomecampo: 'Magazzino.giornodellasettimana', escluso: false, decodifiche: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]}],
-                    titolotabella: 'Roba in magazzino del cliente {{entity.nominativo}}'};
-            $.ajax({
-            type: 'POST',
-                    url: url,
-                    data: {parametripassati: JSON.stringify(data)}
-            }).done(function (data) {
-            $("#tabellaMagazzinoCliente").html(data);
-            });
-        </script>
     </div>
 {% endif %}

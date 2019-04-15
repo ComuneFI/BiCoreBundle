@@ -43,7 +43,7 @@ class Tabella {
                         size: "large",
                         closeButton: false,
                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                        message: divboxerrori(xhr.responseText)
+                        message: BiAlert.showErrori(xhr.responseText)
                     });
                     return false;
                 },
@@ -90,7 +90,7 @@ class Tabella {
                                     size: "large",
                                     closeButton: false,
                                     title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
-                                    message: divboxerrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
+                                    message: BiAlert.showErrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
                                 });
                                 return false;
                             } else {
@@ -98,7 +98,7 @@ class Tabella {
                                     size: "large",
                                     closeButton: false,
                                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                                    message: divboxerrori(xhr.responseText)
+                                    message: BiAlert.showErrori(xhr.responseText)
                                 });
                                 return false;
                             }
@@ -158,7 +158,7 @@ class Tabella {
                                         size: "large",
                                         closeButton: false,
                                         title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
-                                        message: divboxerrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
+                                        message: BiAlert.showErrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
                                     });
                                     return false;
                                 } else {
@@ -166,7 +166,7 @@ class Tabella {
                                         size: "large",
                                         closeButton: false,
                                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                                        message: divboxerrori(xhr.responseText)
+                                        message: BiAlert.showErrori(xhr.responseText)
                                     });
                                     return false;
                                 }
@@ -215,7 +215,7 @@ class Tabella {
                         size: "large",
                         closeButton: false,
                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                        message: divboxerrori(xhr.responseText)
+                        message: BiAlert.showErrori(xhr.responseText)
                     });
                     return false;
                 },
@@ -236,7 +236,7 @@ class Tabella {
     afterTabellaLoadComplete()
     {
         //Genera menu per edit e delete
-        generatemenuconfirmation(this.parametri);
+        this.generatemenuconfirmation(this.parametri);
 
         //Abilita tooltip bootstrap
         $(function () {
@@ -382,7 +382,7 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(data.file)
+                    message: BiAlert.showErrori(data.file)
                 });
                 return false;
             }
@@ -408,7 +408,7 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
+                    message: BiAlert.showErrori(xhr.responseText)
                 });
                 Spinner.hide();
                 return false;
@@ -471,7 +471,7 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
+                    message: BiAlert.showErrori(xhr.responseText)
                 });
                 return false;
             },
@@ -535,4 +535,57 @@ class Tabella {
 
         });
     }
+    generatemenuconfirmation()
+    {
+        var bottoni = this.getContextmenuButtons();
+        var tabellaclass = this;
+        if (bottoni.length > 0) {
+            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).confirmation({
+                rootSelector: '[data-toggle=confirmation-popout]',
+                title: 'Cosa vuoi fare?',
+                popout: true,
+                onConfirm: function (operazione) {
+                    //Sul menu Cancella
+                    var biid = this.dataset["biid"];
+                    if (operazione === "delete") {
+                        tabellaclass.deletemenu(biid);
+                    }
+                    //Sul menu Modifica
+                    if (operazione === "edit") {
+                        tabellaclass.editmenu(biid);
+                    }
+                },
+                onCancel: function () {
+                    //alert('You didn\'t choose anything');
+                },
+                buttons: bottoni
+            });
+        } else {
+            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller)).hide();
+        }
+    }
+
+    getContextmenuButtons()
+    {
+        var editbutton = {
+            label: 'Modificare',
+            value: 'edit',
+            class: 'it-file'
+        };
+        var deletebutton = {
+            label: 'Cancellare',
+            value: 'delete',
+            class: 'it-cancel'
+        };
+        var bottoni = new Array();
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
+        if (permessi.update === true) {
+            bottoni.push(editbutton);
+        }
+        if (permessi.delete === true) {
+            bottoni.push(deletebutton);
+        }
+        return bottoni;
+    }
+
 }
