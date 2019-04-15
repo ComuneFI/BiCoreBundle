@@ -69,12 +69,12 @@
         <div class="tab-content" id="card-simpleContent">
             <div class="tab-pane p-4 fade show active" id="card-simpletab1" role="tabpanel" aria-labelledby="card-simple1-tab">
                 <!-- Tabella ordini -->
-                <div id="tabellaOrdineCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{ entity.nominativo }}"></div>
+                <div id="tabellaOrdineCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{entity.nominativo}}"></div>
             </div>
             <div class="tab-pane p-4 fade" id="card-simpletab2" role="tabpanel" aria-labelledby="card-simple2-tab">
-                <div id="tabellaMagazzinoCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{ entity.nominativo }}"></div>
+                <!-- Tabella magazzino -->
+                <div id="tabellaMagazzinoCliente" data-clienteid="{{ entity.id }}" data-clientenominativo="{{entity.nominativo}}"></div>
             </div>
         </div>
-
     </div>
 {% endif %}

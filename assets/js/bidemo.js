@@ -12,5 +12,10 @@
 // const $ = require('jquery');
 
 import "./bitabella/bitabella.js";
+import "./bitabella/bitabellainline.js";
 import "./bidemo/bidemo.js";
-
+import "./bidemo/biindexesteso.js";
+import "./bitabella/bitabellafunctions.js";
+import "./bidemo/sottotabelle.js";
+import "./bidemo/tabellaestesa.js";
+import "./bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";

@@ -49,7 +49,7 @@ class Tabella {
                         size: "large",
                         closeButton: false,
                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                        message: divboxerrori(xhr.responseText)
+                        message: BiAlert.showErrori(xhr.responseText)
                     });
                     return false;
                 },
@@ -96,7 +96,7 @@ class Tabella {
                                     size: "large",
                                     closeButton: false,
                                     title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
-                                    message: divboxerrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
+                                    message: BiAlert.showErrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
                                 });
                                 return false;
                             } else {
@@ -104,7 +104,7 @@ class Tabella {
                                     size: "large",
                                     closeButton: false,
                                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                                    message: divboxerrori(xhr.responseText)
+                                    message: BiAlert.showErrori(xhr.responseText)
                                 });
                                 return false;
                             }
@@ -164,7 +164,7 @@ class Tabella {
                                         size: "large",
                                         closeButton: false,
                                         title: '<div class="alert alert-warning" role="alert">Attenzione</div>',
-                                        message: divboxerrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
+                                        message: BiAlert.showErrori("Ci sono informazioni legate a questo elemento, impossibile eliminare")
                                     });
                                     return false;
                                 } else {
@@ -172,7 +172,7 @@ class Tabella {
                                         size: "large",
                                         closeButton: false,
                                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                                        message: divboxerrori(xhr.responseText)
+                                        message: BiAlert.showErrori(xhr.responseText)
                                     });
                                     return false;
                                 }
@@ -221,7 +221,7 @@ class Tabella {
                         size: "large",
                         closeButton: false,
                         title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                        message: divboxerrori(xhr.responseText)
+                        message: BiAlert.showErrori(xhr.responseText)
                     });
                     return false;
                 },
@@ -388,7 +388,7 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(data.file)
+                    message: BiAlert.showErrori(data.file)
                 });
                 return false;
             }
@@ -396,7 +396,7 @@ class Tabella {
     }
     caricatabella() {
         this.beforeTabellaLoadComplete();
-        Spinner.openloaderspinner();
+        Spinner.show();
         var tabellaclass = this;
         $.ajax({
             url: BiStringFunctions.getTabellaParameter(this.parametri.urltabella),
@@ -409,9 +409,9 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
+                    message: BiAlert.showErrori(xhr.responseText)
                 });
-                Spinner.closeloaderspinner();
+                Spinner.hide();
                 return false;
             },
             beforeSend: function (xhr) {
@@ -420,7 +420,7 @@ class Tabella {
             success: function (response) {
                 $('#tabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).html(response);
                 tabellaclass.afterTabellaLoadComplete();
-                Spinner.closeloaderspinner();
+                Spinner.hide();
             }
         });
     }
@@ -472,7 +472,7 @@ class Tabella {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
+                    message: BiAlert.showErrori(xhr.responseText)
                 });
                 return false;
             },
@@ -538,9 +538,9 @@ class Tabella {
     }
     generatemenuconfirmation()
     {
-        var bottoni = this.getCrudButtons(this.parametri);
+        var bottoni = this.getContextmenuButtons();
+        var tabellaclass = this;
         if (bottoni.length > 0) {
-            let tab = new Tabella(BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).confirmation({
                 rootSelector: '[data-toggle=confirmation-popout]',
                 title: 'Cosa vuoi fare?',
@@ -549,11 +549,11 @@ class Tabella {
                     //Sul menu Cancella
                     var biid = this.dataset["biid"];
                     if (operazione === "delete") {
-                        tab.deletemenu(biid);
+                        tabellaclass.deletemenu(biid);
                     }
                     //Sul menu Modifica
                     if (operazione === "edit") {
-                        tab.editmenu(biid);
+                        tabellaclass.editmenu(biid);
                     }
                 },
                 onCancel: function () {
@@ -562,11 +562,11 @@ class Tabella {
                 buttons: bottoni
             });
         } else {
-            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).hide();
+            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller)).hide();
         }
     }
 
-    getCrudButtons(parametri)
+    getContextmenuButtons()
     {
         var editbutton = {
             label: 'Modificare',
@@ -579,7 +579,7 @@ class Tabella {
             class: 'it-cancel'
         };
         var bottoni = new Array();
-        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.permessi));
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update === true) {
             bottoni.push(editbutton);
         }
@@ -588,67 +588,7 @@ class Tabella {
         }
         return bottoni;
     }
+
 }
-
-$(document).on("submit", ".bitabellaform", function (e) {
-    e.preventDefault();
-    var form = $(this).closest("form");
-    var formid = $(form).attr('id');
-    //$("#" + formid).children('input[type="submit"]').click()
-    var url = form.attr('action');
-    var formSerialize = form.serialize();
-    var tabellaclass = this;
-    var jqxhr = $.post(url, formSerialize, function (xhr) {
-        var nomecontroller = BiTabellaFunctions.getMainTabella();
-        let tab = new Tabella(nomecontroller);
-        tab.caricatabella();
-        BiNotification.show("Registrazione effettuata");
-        //alert("success");
-    }).done(function () {
-        //alert("second success");
-    }).fail(function (xhr, status, error) {
-        //in caso
-        if (xhr.status === 400) {
-            form.replaceWith(xhr.responseText).promise().done(function () {
-                tabellaclass.formlabeladjust();
-            });
-        } else {
-            bootbox.alert({
-                size: "large",
-                closeButton: false,
-                title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                message: divboxerrori(xhr.responseText)
-            });
-        }
-    }).always(function () {
-        //alert("finished");
-    });
-
-    // Perform other work here ...
-    // Set another completion function for the request above
-    jqxhr.always(function () {
-        //alert("second finished");
-    });
-});
-
-
-//, .colonnatabellafiltro[readonly]
-$(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_asc .colonnatabellafiltro[readonly], th.sorting_desc .colonnatabellafiltro[readonly]", function (e) {
-    var nomecampo = this.dataset["nomecampo"];
-    var nomecontroller = this.dataset["nomecontroller"];
-    var nuovotipoordinamento = 'ASC';
-    let tab = new Tabella(nomecontroller);
-    var parametri = tab.getParametriTabellaDataset();
-    var colonneordinamento = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.colonneordinamento));
-    if (typeof colonneordinamento[nomecampo] != 'undefined') {
-        if (colonneordinamento[nomecampo] == 'ASC') {
-            nuovotipoordinamento = 'DESC';
-        } else {
-            nuovotipoordinamento = 'ASC';
-        }
-    }
-    tab.setDataParameterTabella("colonneordinamento", '{"' + nomecampo + '": "' + nuovotipoordinamento + '" }');
-    tab.caricatabella();
-});
 
 export default Tabella;

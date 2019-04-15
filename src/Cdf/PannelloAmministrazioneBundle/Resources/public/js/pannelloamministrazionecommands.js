@@ -1,17 +1,20 @@
+'use strict';
+
 $(document).ready(function () {
     $("#adminpanelcc").click(function () {
         var domanda = "Vuoi pulire tutte le cache?";
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_clearcache"));
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_clearcache"));
     });
     $("#adminpanelvcs").click(function () {
+        var vcs = this.dataset["vcs"];
         var domanda = "Vuoi prendere l'ultima versione dei sorgenti dal server " + vcs + "?";
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_getVcs"));
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_getVcs"));
     });
 
     //PHPUNIT
     $("#adminpanelphpunittest").click(function () {
         var domanda = "Vuoi eseguire tutti i test unitari?";
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_phpunittest"));
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_phpunittest"));
     });
 
     $("#adminpanelunixcommand").click(function () {
@@ -27,7 +30,7 @@ $(document).ready(function () {
         }
 
         var domanda = "Vuoi eseguire il comando unix: " + unixcommand;
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_unixcommand"), {unixcommand: unixcommand});
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_unixcommand"), {unixcommand: unixcommand});
     });
 
     $("#adminpanelgenerateentity").click(function () {
@@ -42,7 +45,7 @@ $(document).ready(function () {
             return false;
         }
         var domanda = "Vuoi creare i fle di configurazione per le entità partendo dal file: " + entityfile;
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateentity"), {file: entityfile});
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateentity"), {file: entityfile});
     });
 
     $("#adminpanelgenerateformcrud").click(function () {
@@ -58,12 +61,12 @@ $(document).ready(function () {
         }
         var generatemplate = $("#generatemplate").prop("checked");
         var domanda = "Vuoi creare il crud per il form " + entityform;
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateformcrud"), {entityform: entityform, generatemplate: generatemplate});
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_generateformcrud"), {entityform: entityform, generatemplate: generatemplate});
     });
 
     $("#adminpanelaggiornadatabase").click(function () {
         var domanda = "Vuoi aggiornare il database partendo dalla definizione dalle entità esistenti";
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_aggiornaschemadatabase"));
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_aggiornaschemadatabase"));
     });
 
     $("#adminpanelsymfonycommand").click(function () {
@@ -78,6 +81,6 @@ $(document).ready(function () {
             return false;
         }
         var domanda = "Vuoi eseguire il comando " + symfonycommand;
-        eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_symfonycommand"), {symfonycommand: symfonycommand});
+        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_symfonycommand"), {symfonycommand: symfonycommand});
     });
 });

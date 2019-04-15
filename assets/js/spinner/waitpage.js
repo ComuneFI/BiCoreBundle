@@ -1,14 +1,15 @@
-function openloaderspinner()
-{
-    jQuery("#spinnerloader").addClass("is-active");
-}
-function closeloaderspinner()
-{
-    jQuery("#spinnerloader").removeClass("is-active");
+class Spinner {
+    static show()
+    {
+        var elem = document.createElement('div');
+        elem.setAttribute("class", 'loader loader-default is-active');
+        elem.setAttribute("id", 'bispinnerloader');
+        document.body.appendChild(elem);
+    }
+    static hide()
+    {
+        $("#bispinnerloader").remove();
+    }
 }
 
-const Spinner = {
-    openloaderspinner,
-    closeloaderspinner
-};
 export default Spinner;

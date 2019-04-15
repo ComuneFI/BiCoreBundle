@@ -12,7 +12,7 @@
 // const $ = require('jquery');
 
 import "./bitabella/bitabella.js";
-import "./bitabella/bitabellafiltri.js";
 import "./bitabella/bitabellainline.js";
+import "./bitabella/bitabellafunctions.js";
 import "./bitabella/biindex.js";
 import "./bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";

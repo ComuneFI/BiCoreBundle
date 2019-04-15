@@ -27,11 +27,6 @@ console.log('bootstrap-italia');
 
 import "bootstrap-italia";
 import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
-import "bootstrap-select";
-import "bootstrap";
-import "owl.carousel";
-import 'popper.js';
-import "svgxuse";
 import "bootstrap-confirmation2";
 import "font-awesome/css/font-awesome.min.css";
 
