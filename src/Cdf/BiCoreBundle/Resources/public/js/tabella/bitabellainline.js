@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).on("click", '.bibottonieditinline', function (e) {
     var biid = this.closest("tr").dataset["bitableid"];
     var idtabella = $(this).closest("tr").closest("table").attr("id");
@@ -5,14 +7,15 @@ $(document).on("click", '.bibottonieditinline', function (e) {
     var azione = this.dataset["azione"];
     var inputs = $("#" + idtabella + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] :input");
 
-    if (azione == 'conferma') {
+    if (azione === 'conferma') {
         var values = Array();
 
         inputs.each(function (index, object) {
             var fieldname = object.closest("td").dataset["nomecampo"];
             var fieldtype = object.closest("td").dataset["tipocampo"];
             var disabled = $(object).attr("disabled");
-            if (fieldtype == "boolean") {
+            var fieldvalue;
+            if (fieldtype === "boolean") {
                 fieldvalue = $(object).is(":checked");
             } else {
                 fieldvalue = $(object).val();
@@ -53,7 +56,7 @@ $(document).on("click", '.bibottonieditinline', function (e) {
 
 
     }
-    if (azione == 'annulla') {
+    if (azione === 'annulla') {
         let tab = new Tabella(nomecontroller);
         tab.reseteditinline(inputs);
         $("#table" + nomecontroller + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").addClass("sr-only");
