@@ -21,7 +21,6 @@
     </head>            
 
     {% block body %}
-        <div id="spinnerloader" class="loader loader-default"></div>
         {% block menuapplicazione %}
             {{ generamenu() }}
         {% endblock %}
@@ -37,7 +36,6 @@
         {% endfor %}
         {% block content %}
         {% endblock %}
-        <div id="binotificationcontainer"></div>
         {% block bootstrapitaliajavascript %}
             <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
             <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->

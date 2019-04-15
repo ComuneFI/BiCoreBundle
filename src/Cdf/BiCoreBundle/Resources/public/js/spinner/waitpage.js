@@ -1,8 +1,11 @@
 function openloaderspinner()
 {
-    $("#spinnerloader").addClass("is-active");
+    var elem = document.createElement('div');
+    elem.setAttribute("class", 'loader loader-default is-active');
+    elem.setAttribute("id", 'bispinnerloader');
+    document.body.appendChild(elem);
 }
 function closeloaderspinner()
 {
-    $("#spinnerloader").removeClass("is-active");
+    $("#bispinnerloader").remove();
 }
