@@ -1,5 +1,12 @@
 'use strict';
 
+function getMainTabella()
+{
+    var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
+    return nomecontroller;
+}
+
+//Gestione filtri
 $(document).on("click", '.filterable .btn-filter', function (e) {
     var panel = $(this).parents('.filterable');
     var filters = panel.find('.filters input.colonnatabellafiltro');
@@ -79,7 +86,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
     }
 });
 
-//, .colonnatabellafiltro[readonly]
+//Gestione Ordinamento
 $(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_asc .colonnatabellafiltro[readonly], th.sorting_desc .colonnatabellafiltro[readonly]", function (e) {
     var nomecampo = this.dataset["nomecampo"];
     var nomecontroller = this.dataset["nomecontroller"];
@@ -98,6 +105,7 @@ $(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_
     tab.caricatabella();
 });
 
+//Gestione Submit
 $(document).on("submit", ".bitabellaform", function (e) {
     e.preventDefault();
     var form = $(this).closest("form");
@@ -125,7 +133,7 @@ $(document).on("submit", ".bitabellaform", function (e) {
                 size: "large",
                 closeButton: false,
                 title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                message: divboxerrori(xhr.responseText)
+                message: BiAlert.showErrori(xhr.responseText)
             });
         }
     }).always(function () {
@@ -136,5 +144,56 @@ $(document).on("submit", ".bitabellaform", function (e) {
     // Set another completion function for the request above
     jqxhr.always(function () {
         //alert("second finished");
+    });
+});
+
+$(document).ready(function () {
+    //Sul click del pulsante aggiorna si lancia il refresh della tabella
+    $(document).on("click", ".tabellarefresh", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        tab.caricatabella();
+    });
+    //Sul click del pulsante cancella si lancia la detete dei records selezionati
+    $(document).on("click", ".tabelladel", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        tab.eliminaselezionati();
+    });
+    //Sul click del link $pagina si lancia la refresh per andare alla pagina selezionata
+    $(document).on("click", ".paginascelta", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        var divparametri = tab.getParametriTabellaDataset();
+        divparametri["paginacorrente"] = BiStringFunctions.setTabellaParameter(this.dataset["paginascelta"]);
+        tab.caricatabella();
+    });
+
+    //Sul click del pulsante aggiungi si lancia la creazione di un nuovo record tramite form
+    $(document).on("click", ".tabellaadd", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        tab.aggiungirecord();
+
+    });
+
+    //Sul click del pulsante download si lancia il download in formato excel dei dati della tabella corrente
+    $(document).on("click", ".tabelladownload", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        tab.download();
+    });
+
+    //Sul click del pulsante rimuovi filtri si lancia il reset dei filtri e la refresh della tabella
+    $(document).on("click", '.birimuovifiltri', function (e) {
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new Tabella(nomecontroller);
+        tab.setDataParameterTabella("filtri", JSON.stringify([]));
+        tab.caricatabella();
     });
 });

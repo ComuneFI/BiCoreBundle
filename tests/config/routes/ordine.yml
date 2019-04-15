@@ -11,6 +11,8 @@ Ordine_lista:
 Ordine_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: 'App\Controller\OrdineController::indexDettaglio' }
+    options:
+        expose: true
 
 Ordine_new:
     path:  /new

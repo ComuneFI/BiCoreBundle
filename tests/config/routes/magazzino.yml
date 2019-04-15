@@ -11,6 +11,8 @@ Magazzino_lista:
 Magazzino_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: 'App\Controller\MagazzinoController::indexDettaglio' }
+    options:
+        expose: true
 
 Magazzino_new:
     path:  /new

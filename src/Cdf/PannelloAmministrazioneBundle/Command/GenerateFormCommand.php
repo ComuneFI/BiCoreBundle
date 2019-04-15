@@ -210,6 +210,8 @@ EOF;
 [tabella]_indexdettaglio:
     path:  /indexDettaglio
     defaults: { _controller: '[bundle]\Controller\[tabella]Controller::indexDettaglio' }
+    options:
+        expose: true
 
 [tabella]_new:
     path:  /new

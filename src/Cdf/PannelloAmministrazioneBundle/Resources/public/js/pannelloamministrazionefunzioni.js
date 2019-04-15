@@ -25,7 +25,7 @@ class Pannelloamministrazione {
                         boxstatus.html('<strong>Operazione conclusa</strong>');
                         bootbox.alert({
                             size: "large",
-                            message: $.merge(boxstatus, divboxmessaggi(data)),
+                            message: $.merge(boxstatus, BiAlert.showMessaggi(data)),
                             buttons: {
                                 ok: {
                                     className: 'btn btn-primary biconfirmok',
@@ -40,7 +40,7 @@ class Pannelloamministrazione {
                         bootbox.alert({
                             size: "large",
                             closeButton: false,
-                            message: $.merge(boxstatus, divboxerrori(jqXHR.responseText))
+                            message: $.merge(boxstatus, BiAlert.showErrori(jqXHR.responseText))
                         });
                         Spinner.hide();
                     });

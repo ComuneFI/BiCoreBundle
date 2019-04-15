@@ -37,7 +37,7 @@ $(document).on("click", '.bibottonieditinline', function (e) {
                     size: "large",
                     closeButton: false,
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                    message: divboxerrori(xhr.responseText)
+                    message: BiAlert.showErrori(xhr.responseText)
                 });
                 return false;
             },
