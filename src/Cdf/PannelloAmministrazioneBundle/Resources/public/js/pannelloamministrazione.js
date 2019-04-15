@@ -1,11 +1,13 @@
+'use strict';
+
 $(document).unbind("keyup").keyup(function (e) {
     var code = e.which; // recommended to use e.which, it's normalized across browsers
     if (code == 13) {
-        if (currentfunction) {
+        if (window.currentfunction) {
             e.preventDefault();
             //e.stopPropagation();
-            $("#adminpanel" + currentfunction).click();
-            currentfunction = "";
+            $("#adminpanel" + window.currentfunction).click();
+            window.currentfunction = "";
         }
     }
 });
@@ -13,23 +15,23 @@ $(document).ready(function () {
     //Per gestire l'enter
     $("#symfonycommand").focusin(
             function () {
-                currentfunction = "symfonycommand";
+                window.currentfunction = "symfonycommand";
             }
     );
 
     $("#unixcommand").focusin(
             function () {
-                currentfunction = "unixcommand";
+                window.currentfunction = "unixcommand";
             }
     );
     $("#entityform").focusin(
             function () {
-                currentfunction = "";
+                window.currentfunction = "";
             }
     );
     $("#entityfile").focusin(
             function () {
-                currentfunction = "";
+                window.currentfunction = "";
             }
     );
 

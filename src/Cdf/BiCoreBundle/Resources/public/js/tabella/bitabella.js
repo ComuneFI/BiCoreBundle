@@ -13,7 +13,7 @@ class Tabella {
     aggiustafootertabella()
     {
         var colCount = 0;
-        var nometabella = getTabellaParameter(this.parametri.nomecontroller);
+        var nometabella = BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller);
         $('#tabella' + nometabella + ' tr:nth-child(2) th').each(function () {
             if ($(this).attr('colspan')) {
                 colCount += +$(this).attr('colspan');
@@ -28,12 +28,12 @@ class Tabella {
     editmenu(biid)
     {
         var tabellaclass = this;
-        if (getTabellaParameter(this.parametri.editinline) == 1) {
-            var elencocampi = $("#table" + getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
+        if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) == 1) {
+            var elencocampi = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
             this.abilitainputinline(elencocampi, biid);
 
         } else {
-            var editurl = getTabellaParameter(this.parametri.baseurl) + getTabellaParameter(this.parametri.nomecontroller) + "/" + biid + "/edit";
+            var editurl = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + "/" + biid + "/edit";
             $.ajax({
                 url: editurl,
                 type: "GET",
@@ -51,11 +51,11 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    $('#' + getTabellaParameter(tabellaclass.parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
-                    var form = $('#formdati' + getTabellaParameter(tabellaclass.parametri.nomecontroller));
+                    $('#' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
+                    var form = $('#formdati' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller));
                     form.replaceWith(response).promise().done(function () {
                         tabellaclass.formlabeladjust();
-                        $('.nav-tabs a[href="#tab' + getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
+                        $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
                     });
                 }
             });
@@ -78,8 +78,8 @@ class Tabella {
             },
             callback: function (confirm) {
                 if (confirm) {
-                    var token = $("#table" + getTabellaParameter(tabellaclass.parametri.nomecontroller)).attr("data-tabletoken");
-                    var deleteturl = getTabellaParameter(tabellaclass.parametri.baseurl) + getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + biid + "/" + token + "/delete";
+                    var token = $("#table" + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller)).attr("data-tabletoken");
+                    var deleteturl = BiStringFunctions.getTabellaParameter(tabellaclass.parametri.baseurl) + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + biid + "/" + token + "/delete";
                     $.ajax({
                         url: deleteturl,
                         type: "POST",
@@ -108,7 +108,7 @@ class Tabella {
                         },
                         success: function (response) {
                             tabellaclass.caricatabella();
-                            binotification("Eliminato", "warning", "it-error");
+                            BiNotification.show("Eliminato", "warning", "it-error");
                         }
                     });
                 }
@@ -119,9 +119,9 @@ class Tabella {
     {
         let tab = new Tabella(this.nometabella);
         var parametri = tab.getParametriTabellaDataset();
-        var permessi = JSON.parse(getTabellaParameter(parametri.permessi));
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.permessi));
         if (permessi.update !== true) {
-            binotification("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
+            BiNotification.show("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
             return false;
         }
         var token = $("#table" + this.nometabella).attr("data-tabletoken");
@@ -146,7 +146,7 @@ class Tabella {
                 },
                 callback: function (confirm) {
                     if (confirm) {
-                        var deleteturl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/" + token + "/delete";
+                        var deleteturl = BiStringFunctions.getTabellaParameter(parametri.baseurl) + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + "/" + token + "/delete";
                         $.ajax({
                             url: deleteturl,
                             type: "POST",
@@ -176,14 +176,14 @@ class Tabella {
                             },
                             success: function (response) {
                                 tab.caricatabella();
-                                binotification("Elementi eliminati", "warning", "it-error");
+                                BiNotification.show("Elementi eliminati", "warning", "it-error");
                             }
                         });
                     }
                 }
             });
         } else {
-            binotification("Selezionare almeno un elemento", "warning", "it-error");
+            BiNotification.show("Selezionare almeno un elemento", "warning", "it-error");
             return false;
         }
 
@@ -194,17 +194,17 @@ class Tabella {
         var parametri = this.getParametriTabellaDataset();
         var tabellaclass = this;
 
-        if (getTabellaParameter(parametri.editinline) == 1) {
-            var elencocampinuovariga = $("#table" + getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
+        if (BiStringFunctions.getTabellaParameter(parametri.editinline) == 1) {
+            var elencocampinuovariga = $("#table" + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
             var nuovariga = elencocampinuovariga.closest("tr");
             nuovariga.removeClass("sr-only");
             this.abilitainputinline(elencocampinuovariga, 0);
         } else {
             var parametriform = [];
             if (typeof parametri.parametriform !== "undefined") {
-                parametriform.push(getTabellaParameter(parametri.parametriform));
+                parametriform.push(BiStringFunctions.getTabellaParameter(parametri.parametriform));
             }
-            var newurl = getTabellaParameter(parametri.baseurl) + getTabellaParameter(parametri.nomecontroller) + "/new";
+            var newurl = BiStringFunctions.getTabellaParameter(parametri.baseurl) + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + "/new";
             $.ajax({
                 url: newurl,
                 type: "GET",
@@ -223,11 +223,11 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    $('#' + getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
-                    var form = $('#formdati' + getTabellaParameter(parametri.nomecontroller));
+                    $('#' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
+                    var form = $('#formdati' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller));
                     form.replaceWith(response).promise().done(function () {
                         tabellaclass.formlabeladjust();
-                        $('.nav-tabs a[href="#tab' + getTabellaParameter(parametri.nomecontroller) + '2a"]').click();
+                        $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + '2a"]').click();
                     });
                 }
             });
@@ -248,7 +248,7 @@ class Tabella {
         //Sistema label per form inserimento
         this.formlabeladjust();
 
-        var permessi = JSON.parse(getTabellaParameter(this.parametri.permessi));
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update === true) {
             //Doppio click su riga per edit
             var tabellaclass = this;
@@ -272,7 +272,7 @@ class Tabella {
             var editable = object.closest("td").dataset["editabile"];
             var soggettoadecodifica = object.closest("td").dataset["soggettoadecodifica"];
             var decodifiche;
-            var modellocolonne = JSON.parse(getTabellaParameter(tabellaclass.parametri.modellocolonne));
+            var modellocolonne = JSON.parse(BiStringFunctions.getTabellaParameter(tabellaclass.parametri.modellocolonne));
 
             if (soggettoadecodifica) {
                 $(modellocolonne).each(function (colidx, colobj) {
@@ -288,10 +288,10 @@ class Tabella {
             }
             var input;
             var div = $('<div />', {class: 'form-group'});
-            $("#table" + getTabellaParameter(tabellaclass.parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
-            $("#table" + getTabellaParameter(tabellaclass.parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + getTabellaParameter(tabellaclass.parametri.nomecontroller) + "[data-biid='" + biid + "']").addClass("sr-only");
+            $("#table" + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonieditinline[data-biid='" + biid + "']").removeClass("sr-only");
+            $("#table" + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + " > tbody > tr > td.colonnazionitabella a.bibottonimodificatabella" + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "[data-biid='" + biid + "']").addClass("sr-only");
             if (fieldname && editable == true) {
-                if (fieldname == getTabellaParameter(tabellaclass.parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
+                if (fieldname == BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '.id' || fieldname.split(".").length > 2) {
                     //Id e campi di tabelle collegate non devono essere modificabili
                     input = $('<input />', {type: 'text', class: 'form-control', value: $(object).val(), disabled: true});
                 } else {
@@ -351,7 +351,7 @@ class Tabella {
     setDataParameterTabella(parametro, valore)
     {
         var divparametri = this.getParametriTabellaDataset(this.nometabella);
-        divparametri[parametro] = setTabellaParameter(valore);
+        divparametri[parametro] = BiStringFunctions.setTabellaParameter(valore);
     }
 //Funzione per prendere il valore di un parametro della tabella
     getDataParameterTabella(parametro)
@@ -362,7 +362,7 @@ class Tabella {
     download() {
 
 
-        var url = getTabellaParameter(this.parametri.baseurl) + getTabellaParameter(this.parametri.nomecontroller) + '/exportxls';
+        var url = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + '/exportxls';
         $.ajax({
             type: 'POST',
             url: url,
@@ -374,7 +374,7 @@ class Tabella {
                 var $a = $("<a>");
                 $a.attr("href", data.file);
                 $("body").append($a);
-                $a.attr("download", getTabellaParameter(this.parametri.nomecontroller) + ".xls");
+                $a.attr("download", BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + ".xls");
                 $a[0].click();
                 $a.remove();
             } else {
@@ -395,10 +395,10 @@ class Tabella {
     }
     caricatabella() {
         this.beforeTabellaLoadComplete();
-        openloaderspinner();
+        Spinner.show();
         var tabellaclass = this;
         $.ajax({
-            url: getTabellaParameter(this.parametri.urltabella),
+            url: BiStringFunctions.getTabellaParameter(this.parametri.urltabella),
             type: "POST",
             parametri: this.parametri,
             async: true,
@@ -410,16 +410,16 @@ class Tabella {
                     title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
                     message: divboxerrori(xhr.responseText)
                 });
-                closeloaderspinner();
+                Spinner.hide();
                 return false;
             },
             beforeSend: function (xhr) {
 
             },
             success: function (response) {
-                $('#tabella' + getTabellaParameter(this.parametri.nomecontroller)).html(response);
+                $('#tabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).html(response);
                 tabellaclass.afterTabellaLoadComplete();
-                closeloaderspinner();
+                Spinner.hide();
             }
         });
     }
@@ -427,7 +427,7 @@ class Tabella {
     {
         var parametri = document.querySelector('#Parametri' + this.nometabella + '.parametri-tabella');
         $.each(parametri.dataset, function (key, value) {
-            console.log(key + ":" + getTabellaParameter(value));
+            console.log(key + ":" + BiStringFunctions.getTabellaParameter(value));
         });
     }
     reseteditinline(inputs) {
@@ -459,7 +459,7 @@ class Tabella {
 
     riempiselect(fieldname, selectedoption) {
         var fieldpieces = fieldname.split(".");
-        var nomecontroller = ucfirst(fieldpieces[1]);
+        var nomecontroller = BiStringFunctions.ucfirst(fieldpieces[1]);
         var url = Routing.generate(nomecontroller + '_lista');
         var select;
         $.ajax({url: url,
@@ -496,7 +496,7 @@ class Tabella {
 
     riempiselectdecodifiche(fieldname, decodifiche, selectedoption) {
         var fieldpieces = fieldname.split(".");
-        var nomecontroller = ucfirst(fieldpieces[1]);
+        var nomecontroller = BiStringFunctions.ucfirst(fieldpieces[1]);
 
         var select;
         var div1 = $('<div/>', {class: 'bootstrap-select-wrapper'});
@@ -536,69 +536,3 @@ class Tabella {
         });
     }
 }
-
-$(document).on("submit", ".bitabellaform", function (e) {
-    e.preventDefault();
-    var form = $(this).closest("form");
-    var formid = $(form).attr('id');
-    //$("#" + formid).children('input[type="submit"]').click()
-    var url = form.attr('action');
-    var formSerialize = form.serialize();
-    var tabellaclass = this;
-    var jqxhr = $.post(url, formSerialize, function (xhr) {
-        var nomecontroller = getMainTabella();
-        let tab = new Tabella(nomecontroller);
-        tab.caricatabella();
-        binotification("Registrazione effettuata");
-        //alert("success");
-    }).done(function () {
-        //alert("second success");
-    }).fail(function (xhr, status, error) {
-        //in caso
-        if (xhr.status === 400) {
-            form.replaceWith(xhr.responseText).promise().done(function () {
-                tabellaclass.formlabeladjust();
-            });
-        } else {
-            bootbox.alert({
-                size: "large",
-                closeButton: false,
-                title: '<div class="alert alert-warning" role="alert">Si è verificato un errore</div>',
-                message: divboxerrori(xhr.responseText)
-            });
-        }
-    }).always(function () {
-        //alert("finished");
-    });
-
-    // Perform other work here ...
-    // Set another completion function for the request above
-    jqxhr.always(function () {
-        //alert("second finished");
-    });
-});
-
-
-//, .colonnatabellafiltro[readonly]
-$(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_asc .colonnatabellafiltro[readonly], th.sorting_desc .colonnatabellafiltro[readonly]", function (e) {
-    var nomecampo = this.dataset["nomecampo"];
-    var nomecontroller = this.dataset["nomecontroller"];
-    var nuovotipoordinamento = 'ASC';
-    let tab = new Tabella(nomecontroller);
-    var parametri = tab.getParametriTabellaDataset();
-    var colonneordinamento = JSON.parse(getTabellaParameter(parametri.colonneordinamento));
-    if (typeof colonneordinamento[nomecampo] != 'undefined') {
-        if (colonneordinamento[nomecampo] == 'ASC') {
-            nuovotipoordinamento = 'DESC';
-        } else {
-            nuovotipoordinamento = 'ASC';
-        }
-    }
-    tab.setDataParameterTabella("colonneordinamento", '{"' + nomecampo + '": "' + nuovotipoordinamento + '" }');
-    tab.caricatabella();
-});
-
-
-
-
-
