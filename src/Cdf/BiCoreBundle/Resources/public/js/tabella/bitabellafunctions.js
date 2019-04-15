@@ -1,8 +1,8 @@
 'use strict';
 
 $(document).on("click", '.filterable .btn-filter', function (e) {
-    var $panel = $(this).parents('.filterable');
-    var filters = $panel.find('.filters input.colonnatabellafiltro');
+    var panel = $(this).parents('.filterable');
+    var filters = panel.find('.filters input.colonnatabellafiltro');
     if (filters.prop('readonly') === true) {
         filters.prop('readonly', false);
 
@@ -33,8 +33,8 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                 var tipocampo = $(this).data('tipocampo');
                 var valorefiltro = $(this).val();
                 if ($(this).data('decodifiche') !== null) {
-                    decodifiche = $(this).data('decodifiche');
-                    valorifiltro = Array();
+                    var decodifiche = $(this).data('decodifiche');
+                    var valorifiltro = Array();
                     $.each(decodifiche, function (key, value) {
                         if (value.toLowerCase().indexOf(valorefiltro.toLowerCase()) !== -1) {
                             valorifiltro.push(key);
@@ -86,9 +86,9 @@ $(document).on("click", "th.sorting .colonnatabellafiltro[readonly], th.sorting_
     var nuovotipoordinamento = 'ASC';
     let tab = new Tabella(nomecontroller);
     var parametri = tab.getParametriTabellaDataset();
-    var colonneordinamento = JSON.parse(getTabellaParameter(parametri.colonneordinamento));
-    if (typeof colonneordinamento[nomecampo] != 'undefined') {
-        if (colonneordinamento[nomecampo] == 'ASC') {
+    var colonneordinamento = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.colonneordinamento));
+    if (typeof colonneordinamento[nomecampo] !== 'undefined') {
+        if (colonneordinamento[nomecampo] === 'ASC') {
             nuovotipoordinamento = 'DESC';
         } else {
             nuovotipoordinamento = 'ASC';
@@ -110,7 +110,7 @@ $(document).on("submit", ".bitabellaform", function (e) {
         var nomecontroller = getMainTabella();
         let tab = new Tabella(nomecontroller);
         tab.caricatabella();
-        binotification("Registrazione effettuata");
+        BiNotification.show("Registrazione effettuata");
         //alert("success");
     }).done(function () {
         //alert("second success");

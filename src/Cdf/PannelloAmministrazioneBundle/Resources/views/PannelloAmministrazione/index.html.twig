@@ -5,12 +5,6 @@
 {% block javascript %}
     {{parent()}}
     {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
-    <script type="text/javascript">
-        var currentfunction = "";
-        var vcs = "";
-        {% if (git == true) %}var vcs = "git";{% endif %}
-        {% if (svn == true) %}var vcs = "svn";{% endif %}
-    </script>
     <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionefunzioni.js') }}?ver={{versione_tag_git()}}" ></script>
     <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazione.js') }}?ver={{versione_tag_git()}}" ></script>
     <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionecommands.js') }}?ver={{versione_tag_git()}}" ></script>
@@ -31,11 +25,11 @@
                     <button id="adminpanelcc" class="active btn btn-success" type="button">Clear cache</button>
                     <br/><br/>
                     {% if (svn == true) %}
-                        <button id="adminpanelvcs" class="active btn btn-primary" type="button">Prendi l'ultima versione da svn</button>
+                        <button id="adminpanelvcs" class="active btn btn-primary" data-vcs="svn" type="button">Prendi l'ultima versione da svn</button>
                         <br/><br/>
                     {% endif %}
                     {% if (git == true) %}
-                        <button id="adminpanelvcs" class="active btn btn-primary" type="button">Prendi l'ultima versione da Git</button>
+                        <button id="adminpanelvcs" class="active btn btn-primary" data-vcs="git" type="button">Prendi l'ultima versione da Git</button>
                         <br/><br/>
                     {% endif %}
                     <button id="adminpanelphpunittest" class="active btn btn-default" type="button">PHPUnit test</button>

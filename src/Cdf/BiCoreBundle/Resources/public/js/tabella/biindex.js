@@ -28,7 +28,7 @@ $(document).ready(function () {
         var nomecontroller = this.dataset["nomecontroller"];
         let tab = new Tabella(nomecontroller);
         var divparametri = tab.getParametriTabellaDataset();
-        divparametri["paginacorrente"] = setTabellaParameter(this.dataset["paginascelta"]);
+        divparametri["paginacorrente"] = BiStringFunctions.setTabellaParameter(this.dataset["paginascelta"]);
         tab.caricatabella();
     });
 

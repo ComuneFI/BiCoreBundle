@@ -2,8 +2,8 @@ function generatemenuconfirmation(parametri)
 {
     var bottoni = getButtons(parametri);
     if (bottoni.length > 0) {
-        let tab = new Tabella(getTabellaParameter(parametri.nomecontroller));
-        $('[data-toggle=confirmation-popout].bibottonimodificatabella' + getTabellaParameter(parametri.nomecontroller)).confirmation({
+        let tab = new Tabella(BiStringFunctions.getTabellaParameter(parametri.nomecontroller));
+        $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller)).confirmation({
             rootSelector: '[data-toggle=confirmation-popout]',
             title: 'Cosa vuoi fare?',
             popout: true,
@@ -24,7 +24,7 @@ function generatemenuconfirmation(parametri)
             buttons: bottoni
         });
     } else {
-        $('[data-toggle=confirmation-popout].bibottonimodificatabella' + getTabellaParameter(parametri.nomecontroller)).hide();
+        $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller)).hide();
     }
 }
 
@@ -41,7 +41,7 @@ function getButtons(parametri)
         class: 'it-cancel'
     };
     var bottoni = new Array();
-    var permessi = JSON.parse(getTabellaParameter(parametri.permessi));
+    var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.permessi));
     if (permessi.update === true) {
         bottoni.push(editbutton);
     }
