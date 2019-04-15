@@ -56,7 +56,6 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                             break;
                         case "date":
                             var date = tab.getDateTimeTabella(valorefiltro);
-                            console.log(date);
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                             break;
                         case "datetime":
