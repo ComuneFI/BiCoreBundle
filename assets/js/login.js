@@ -6,11 +6,12 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-//require('../css/app.css');
+require('../css/login.css');
+
+import $ from 'jquery';
+global.$ = global.jQuery = $;
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-import "./bidemo/biindexesteso.js";
-import "./bidemo/sottotabelle.js";
-import "./bidemo/tabellaestesa.js";
+console.log('Hello Webpack Encore! Edit me in assets/js/login.js');

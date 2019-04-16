@@ -10,8 +10,8 @@
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = import 'jquery');
-import $ from 'jquery';
-global.$ = global.jQuery = $;
+//import $ from 'jquery';
+//global.$ = global.jQuery = $;
 console.log('bootstrap-italia');
 
 
@@ -27,9 +27,10 @@ console.log('bootstrap-italia');
 
 import "bootstrap-italia";
 import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
-import "bootstrap-confirmation2";
-import "font-awesome/css/font-awesome.min.css";
-
-import "../css/bootstrap-datetimepicker.min.css";
-import "../css/bicore.css";
+import "bootstrap-italia/dist/fonts/Titillium_Web/TitilliumWeb-Bold.ttf";
+//import "bootstrap-confirmation2";
+//import "font-awesome/css/font-awesome.min.css";
+//
+//import "../css/bootstrap-datetimepicker.min.css";
+//import "../css/bicore.css";
 

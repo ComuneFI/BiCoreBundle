@@ -4,12 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>{{ parameter('bi_core.appname')}} Login</title>
-        <link rel="stylesheet" href="{{ asset('bundles/bicore/css/bootstrap-italia.min.css') }}" >
-        <link rel="stylesheet" href="{{ asset('bundles/bicore/css/login.css') }}" >  
         <script type="text/javascript">
-            window.__PUBLIC_PATH__ = '{{ asset('bundles/bicore/fonts') }}';
+            window.__PUBLIC_PATH__ = '/bootstrap-italia/dist/fonts';
             var baseUrl = '{{app.request.baseUrl}}';
         </script>
+        {% block css %}{% endblock %}
+        {#{ encore_entry_link_tags('bootstrap-italia') }#}
     </head>
     <body>
         {% for type, messages in app.session.flashBag.all %}
@@ -19,8 +19,8 @@
                 </div>
             {% endfor %}
         {% endfor %}
-    {% block fos_user_content %}{% endblock %}
-{% block javascripts %}{% endblock %}
-<script type="text/javascript" src="{{ asset('bundles/bicore/js/bootstrap-italia.bundle.min.js') }}" ></script>
-</body>
+        {% block fos_user_content %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+        {#{ encore_entry_script_tags('bootstrap-italia') }#}
+    </body>
 </html>

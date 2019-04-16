@@ -1,5 +1,10 @@
 {% trans_default_domain 'FOSUserBundle' %}
 {% extends "base.html.twig" %}
+
+{% block css %}
+{{ encore_entry_link_tags('login') }}
+{% endblock css %}
+
 {% block fos_user_content %}
     <div class="container">
         <div class="login-form">
