@@ -6,10 +6,11 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/login.css');
+import '../css/login.css';
+import 'bootstrap-italia';
 
-import $ from 'jquery';
-global.$ = global.jQuery = $;
+//import $ from 'jquery';
+//global.$ = global.jQuery = $;
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');

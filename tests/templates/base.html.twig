@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>{{ parameter('bi_core.appname')}} Login</title>
         <script type="text/javascript">
-            window.__PUBLIC_PATH__ = '/bootstrap-italia/dist/fonts';
+            window.__PUBLIC_PATH__ = '{{ asset('build/fonts') }}';
             var baseUrl = '{{app.request.baseUrl}}';
         </script>
+        {{ encore_entry_link_tags('bootstrap-italia') }}
         {% block css %}{% endblock %}
         {#{ encore_entry_link_tags('bootstrap-italia') }#}
     </head>
