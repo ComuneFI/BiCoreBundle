@@ -124,15 +124,6 @@ $(document).ready(function () {
         tab.caricatabella();
     });
 
-    //Sul click del pulsante aggiungi si lancia la creazione di un nuovo record tramite form
-    $(document).on("click", ".tabellaadd", function (e) {
-        e.preventDefault();
-        var nomecontroller = this.dataset["nomecontroller"];
-        let tab = new Tabella(nomecontroller);
-        tab.aggiungirecord();
-
-    });
-
     //Sul click del pulsante download si lancia il download in formato excel dei dati della tabella corrente
     $(document).on("click", ".tabelladownload", function (e) {
         e.preventDefault();

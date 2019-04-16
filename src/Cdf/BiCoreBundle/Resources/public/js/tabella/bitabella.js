@@ -9,7 +9,7 @@ class Tabella {
         var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
         return nomecontroller;
     }
-    beforeTabellaLoadComplete()
+    caricatabellaStart()
     {
         $('[data-toggle="tooltip"]').tooltip('disable');
         $('[data-toggle="tooltip"]').tooltip('dispose');
@@ -30,14 +30,32 @@ class Tabella {
         $("#bitollbarbottoni" + nometabella).attr("colspan", colCount);
         $("#bititletable" + nometabella).attr("colspan", colCount);
     }
-    submithandler(formhtml) {
+    generateForm(formhtml, callback) {
         var tabellaclass = this;
         $('#' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
         var form = document.getElementById('formdati' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller));
         $(form).replaceWith(formhtml).promise().done(function () {
+            tabellaclass.submitHandler();
             tabellaclass.formlabeladjust();
-            //Gestione Submit
-            var form = document.getElementById('formdati' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller));
+            typeof callback == "function" && callback();
+        });
+    }
+    addHandler() {
+        //Sul click del pulsante aggiungi si lancia la creazione di un nuovo record tramite form
+        var tabellaclass = this;
+        var pulsantiadd = $(".tabellaadd");
+        pulsantiadd.each(function (index, object) {
+            object.addEventListener("click", function (e) {
+                tabellaclass.aggiungirecord();
+            });
+        });
+    }
+    submitHandler() {
+        var tabellaclass = this;
+        //Gestione Submit
+        //console.log(BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
+        var form = document.getElementById('formdati' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
+        if (form) {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 var form = $(this).closest("form");
@@ -75,30 +93,29 @@ class Tabella {
                     //alert("second finished");
                 });
             }, false);
-            $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
-        });
+        }
     }
-    aggiungirecord()
+    aggiungirecord(callback)
     {
 
-        var parametri = this.getParametriTabellaDataset();
         var tabellaclass = this;
 
-        if (BiStringFunctions.getTabellaParameter(parametri.editinline) == 1) {
-            var elencocampinuovariga = $("#table" + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
+        if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) === 1) {
+            var elencocampinuovariga = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
             var nuovariga = elencocampinuovariga.closest("tr");
             nuovariga.removeClass("sr-only");
             this.abilitainputinline(elencocampinuovariga, 0);
         } else {
             var parametriform = [];
-            if (typeof parametri.parametriform !== "undefined") {
-                parametriform.push(BiStringFunctions.getTabellaParameter(parametri.parametriform));
+            if (typeof this.parametri.parametriform !== "undefined") {
+                parametriform.push(BiStringFunctions.getTabellaParameter(this.parametri.parametriform));
             }
-            var newurl = BiStringFunctions.getTabellaParameter(parametri.baseurl) + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + "/new";
+
+            var newurl = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + "/new";
             $.ajax({
                 url: newurl,
                 type: "GET",
-                data: {parametriform: parametriform},
+                data: {parametriform: JSON.stringify(parametriform)},
                 async: true,
                 error: function (xhr, textStatus, errorThrown) {
                     bootbox.alert({
@@ -113,12 +130,14 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    tabellaclass.submithandler(response);
+                    tabellaclass.generateForm(response);
+                    $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
+                    typeof callback == "function" && callback();
                 }
             });
         }
     }
-    editmenu(biid)
+    modificarecord(biid, callback)
     {
         var tabellaclass = this;
         if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) == 1) {
@@ -144,12 +163,14 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    tabellaclass.submithandler(response);
+                    tabellaclass.generateForm(response);
+                    $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
+                    typeof callback == "function" && callback();
                 }
             });
         }
     }
-    deletemenu(biid)
+    cancellarecord(biid)
     {
         var tabellaclass = this;
         bootbox.confirm({
@@ -276,7 +297,7 @@ class Tabella {
         }
 
     }
-    afterTabellaLoadComplete()
+    caricatabellaComplete()
     {
         //Genera menu per edit e delete
         this.generatemenuconfirmation(this.parametri);
@@ -291,6 +312,9 @@ class Tabella {
         //Sistema label per form inserimento
         this.formlabeladjust();
 
+        this.submitHandler();
+        this.addHandler();
+
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update === true) {
             //Doppio click su riga per edit
@@ -298,7 +322,7 @@ class Tabella {
             $('#table' + this.nometabella + ' > tbody > tr').dblclick(function () {
                 var biid = this.dataset['bitableid'];
                 if (biid) {
-                    tabellaclass.editmenu(biid);
+                    tabellaclass.modificarecord(biid);
                 }
             });
         }
@@ -387,7 +411,6 @@ class Tabella {
     }
     getParametriTabellaDataset()
     {
-        //console.log(this.nometabella);
         return document.querySelector('#Parametri' + this.nometabella + '.parametri-tabella').dataset;
     }
 //Funzione per modificare il valore di un parametro della tabella
@@ -431,13 +454,8 @@ class Tabella {
             }
         });
     }
-    getMainTabella()
-    {
-        var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
-        return nomecontroller;
-    }
-    caricatabella() {
-        this.beforeTabellaLoadComplete();
+    caricatabella(callback) {
+        this.caricatabellaStart();
         Spinner.show();
         var tabellaclass = this;
         $.ajax({
@@ -461,7 +479,8 @@ class Tabella {
             },
             success: function (response) {
                 $('#tabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).html(response);
-                tabellaclass.afterTabellaLoadComplete();
+                tabellaclass.caricatabellaComplete();
+                typeof callback == "function" && callback();
                 Spinner.hide();
             }
         });
@@ -591,11 +610,11 @@ class Tabella {
                     //Sul menu Cancella
                     var biid = this.dataset["biid"];
                     if (operazione === "delete") {
-                        tabellaclass.deletemenu(biid);
+                        tabellaclass.cancellarecord(biid);
                     }
                     //Sul menu Modifica
                     if (operazione === "edit") {
-                        tabellaclass.editmenu(biid);
+                        tabellaclass.modificarecord(biid);
                     }
                 },
                 onCancel: function () {
