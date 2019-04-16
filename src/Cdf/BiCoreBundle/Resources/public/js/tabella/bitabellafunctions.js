@@ -1,11 +1,5 @@
 'use strict';
 
-function getMainTabella()
-{
-    var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
-    return nomecontroller;
-}
-
 //Gestione filtri
 $(document).on("click", '.filterable .btn-filter', function (e) {
     var panel = $(this).parents('.filterable');
@@ -115,7 +109,7 @@ $(document).on("submit", ".bitabellaform", function (e) {
     var formSerialize = form.serialize();
     var tabellaclass = this;
     var jqxhr = $.post(url, formSerialize, function (xhr) {
-        var nomecontroller = getMainTabella();
+        var nomecontroller = Tabella.getMainTabella();
         let tab = new Tabella(nomecontroller);
         tab.caricatabella();
         BiNotification.show("Registrazione effettuata");

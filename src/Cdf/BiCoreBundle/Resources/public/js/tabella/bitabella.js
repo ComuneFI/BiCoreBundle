@@ -4,6 +4,11 @@ class Tabella {
         this.nometabella = nometabella;
         this.parametri = this.getParametriTabellaDataset(nometabella);
     }
+    static getMainTabella()
+    {
+        var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
+        return nomecontroller;
+    }
     beforeTabellaLoadComplete()
     {
         $('[data-toggle="tooltip"]').tooltip('disable');
