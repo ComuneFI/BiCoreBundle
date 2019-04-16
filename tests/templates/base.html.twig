@@ -8,9 +8,8 @@
             window.__PUBLIC_PATH__ = '{{ asset('build/fonts') }}';
             var baseUrl = '{{app.request.baseUrl}}';
         </script>
-        {{ encore_entry_link_tags('bootstrap-italia') }}
-        {% block css %}{% endblock %}
-        {#{ encore_entry_link_tags('bootstrap-italia') }#}
+        {% block stylesheets %}{% endblock %}
+        {{ encore_entry_link_tags('bootstrapitalia') }}
     </head>
     <body>
         {% for type, messages in app.session.flashBag.all %}
@@ -22,6 +21,6 @@
         {% endfor %}
         {% block fos_user_content %}{% endblock %}
         {% block javascripts %}{% endblock %}
-        {#{ encore_entry_script_tags('bootstrap-italia') }#}
+        {{ encore_entry_script_tags('bootstrapitalia') }}
     </body>
 </html>

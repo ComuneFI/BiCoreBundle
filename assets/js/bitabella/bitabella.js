@@ -2,6 +2,8 @@ import Spinner from "../spinner/waitpage.js";
 import BiStringFunctions from "../functions/string.js";
 import BiTabellaFunctions from "../functions/tabella.js";
 import BiNotification from "../notification/notification.js";
+import BiAlert from "../modal/alertbuilder.js";
+
 import bootbox from 'bootbox';
 
 class Tabella {
@@ -10,6 +12,12 @@ class Tabella {
         this.nometabella = nometabella;
         this.parametri = this.getParametriTabellaDataset(nometabella);
     }
+    static getMainTabella()
+    {
+        var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
+        return nomecontroller;
+    }
+
     beforeTabellaLoadComplete()
     {
         $('[data-toggle="tooltip"]').tooltip('disable');

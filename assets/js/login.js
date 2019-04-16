@@ -7,7 +7,8 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 import '../css/login.css';
-import 'bootstrap-italia';
+//import "bootstrap-italia";
+//import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
 
 //import $ from 'jquery';
 //global.$ = global.jQuery = $;

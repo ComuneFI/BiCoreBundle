@@ -23,9 +23,10 @@ Encore
          * Each entry will result in one JavaScript file (e.g. app.js)
          * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
          */
+        //.addEntry('app', './assets/js/app.js')
+        .addEntry('bootstrapitalia', './assets/js/bootstrapitalia.js')
+        //.addEntry('login', ['./assets/js/login.js', './assets/js/bootstrapitalia.js'])
         .addEntry('login', './assets/js/login.js')
-        .addEntry('app', './assets/js/app.js')
-        .addEntry('bootstrap-italia', './assets/js/bootstrap-italia.js')
         .addEntry('bitabella', './assets/js/bitabella.js')
         .addEntry('bidemo', './assets/js/bidemo.js')
 

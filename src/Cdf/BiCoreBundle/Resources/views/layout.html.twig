@@ -10,7 +10,7 @@
             var baseUrl = '{{app.request.baseUrl}}';
         </script>
         {% block head %}
-            {{ encore_entry_link_tags('bootstrap-italia') }}
+            {{ encore_entry_link_tags('bootstrapitalia') }}
             {% block css %}
             {% endblock %}
         {% endblock %}
@@ -35,7 +35,7 @@
         {% block bootstrapitaliajavascript %}
             <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
             <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->
-            {{ encore_entry_script_tags('bootstrap-italia') }}
+            {{ encore_entry_script_tags('bootstrapitalia') }}
 
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
