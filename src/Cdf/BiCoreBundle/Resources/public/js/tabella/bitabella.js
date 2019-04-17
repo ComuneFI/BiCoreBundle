@@ -392,7 +392,6 @@ class Tabella {
         });
 
     }
-    /*fix controllare filtri per data secca*/
     getDateTimeTabella(stringadata)
     {
         var date = new Date(stringadata.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));

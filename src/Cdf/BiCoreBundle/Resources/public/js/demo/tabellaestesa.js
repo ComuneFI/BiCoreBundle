@@ -3,7 +3,7 @@ class TabellaCliente extends Tabella {
     {
         console.log("caricatabella TabellaEstesa");
         super.caricatabella();
-        super.__dumpParametriTabella();
+        //super.__dumpParametriTabella();
 
     }
     aggiungirecord(callback)

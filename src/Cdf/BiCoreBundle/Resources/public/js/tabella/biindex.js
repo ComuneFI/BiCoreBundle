@@ -67,7 +67,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': (valorefiltro == 'SI' ? true : false)};
                             break;
                         case "date":
-                            var date = tab.getDateTimeTabella(valorefiltro);
+                            var date = tab.getDateTimeTabella(valorefiltro + " 00:00:00");
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                             break;
                         case "datetime":
