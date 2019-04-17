@@ -160,7 +160,7 @@ class Tabella {
             });
         }
     }
-    cancellarecord(biid)
+    cancellarecord(biid, callback)
     {
         var tabellaclass = this;
         bootbox.confirm({
@@ -202,11 +202,8 @@ class Tabella {
                                 return false;
                             }
                         },
-                        beforeSend: function (xhr) {
-
-                        },
                         success: function (response) {
-                            tabellaclass.caricatabella();
+                            tabellaclass.caricatabella(callback);
                             BiNotification.show("Eliminato", "warning", "it-error");
                         }
                     });
@@ -214,17 +211,16 @@ class Tabella {
             }
         });
     }
-    eliminaselezionati()
+    eliminaselezionati(callback)
     {
-        let tab = new Tabella(this.nometabella);
-        var parametri = tab.getParametriTabellaDataset();
-        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.permessi));
+        var tabellaclass = this;
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update !== true) {
             BiNotification.show("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
             return false;
         }
         var token = $("#table" + this.nometabella).attr("data-tabletoken");
-        var recordsdacancellareids = $("#table" + this.nometabella + " > tbody > tr .biselecttablerow").map(function () {
+        var recordsdacancellareids = $("#table" + tabellaclass.nometabella + " > tbody > tr .biselecttablerow").map(function () {
             if ($(this).prop("checked") === true) {
                 return parseInt(this.dataset['bitableid']);
             }
@@ -245,7 +241,7 @@ class Tabella {
                 },
                 callback: function (confirm) {
                     if (confirm) {
-                        var deleteturl = BiStringFunctions.getTabellaParameter(parametri.baseurl) + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + "/" + token + "/delete";
+                        var deleteturl = BiStringFunctions.getTabellaParameter(tabellaclass.parametri.baseurl) + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + token + "/delete";
                         $.ajax({
                             url: deleteturl,
                             type: "POST",
@@ -274,7 +270,7 @@ class Tabella {
 
                             },
                             success: function (response) {
-                                tab.caricatabella();
+                                tabellaclass.caricatabella(callback);
                                 BiNotification.show("Elementi eliminati", "warning", "it-error");
                             }
                         });

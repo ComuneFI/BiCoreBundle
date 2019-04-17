@@ -121,7 +121,9 @@ $(document).ready(function () {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];
         let tab = new TabellaCliente(nomecontroller);
-        tab.eliminaselezionati();
+        tab.eliminaselezionati(function () {
+            console.log("Cancellati records tabella estesa");
+        });
     });
     //Sul click del link $pagina si lancia la refresh per andare alla pagina selezionata
     $(document).on("click", ".paginascelta", function (e) {

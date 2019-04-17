@@ -10,4 +10,11 @@ class TabellaCliente extends Tabella {
         console.log("editrow TabellaEstesa");
         super.modificarecord(biid, estraiSottotabelle);
     }
+    cancellarecord(biid, callback)
+    {
+        console.log("deleterow TabellaEstesa");
+        super.cancellarecord(biid, function () {
+            console.log("Cancellato record " + biid);
+        });
+    }
 }
