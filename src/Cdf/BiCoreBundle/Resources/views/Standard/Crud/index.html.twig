@@ -11,6 +11,7 @@
 
 {% block css %}
     {{parent()}}
+    {{ encore_entry_link_tags('bitabella') }}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
         <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}?ver={{versione_tag_git()}}" >
     {%endif%}

@@ -13,8 +13,6 @@
 
 import "./bitabella/biindex.js";
 import "./bitabella/bitabella.js";
-import "./bitabella/bitabellafunctions.js";
-import "./bitabella/bitabellainline.js";
 
 import "./bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
 import "bootstrap-confirmation2";

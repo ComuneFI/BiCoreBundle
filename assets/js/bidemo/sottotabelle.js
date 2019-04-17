@@ -45,4 +45,5 @@ function estraiSottotabelle() {
         });
     });
 }
+
 export default estraiSottotabelle;
