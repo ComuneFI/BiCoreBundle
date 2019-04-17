@@ -3,7 +3,6 @@
 
 {% block javascript %}
     {{parent()}}
-    {{ encore_entry_script_tags('bitabella') }}
     {{ encore_entry_script_tags('bidemo') }}
 
     {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
@@ -14,7 +13,6 @@
 
 {% block css %}
     {{parent()}}
-    {{ encore_entry_link_tags('bitabella') }}
     {{ encore_entry_link_tags('bidemo') }}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
         <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}?ver={{versione_tag_git()}}" >

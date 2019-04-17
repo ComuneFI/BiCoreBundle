@@ -14,3 +14,10 @@
 import "./bidemo/biindexesteso.js";
 import "./bidemo/sottotabelle.js";
 import "./bidemo/tabellaestesa.js";
+
+import "./bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
+import "bootstrap-confirmation2";
+import "font-awesome/css/font-awesome.min.css";
+
+import "../css/bootstrap-datetimepicker.min.css";
+import "../css/bicore.css";

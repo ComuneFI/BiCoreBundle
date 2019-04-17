@@ -1,0 +1,48 @@
+{
+  "entrypoints": {
+    "bootstrapitalia": {
+      "js": [
+        "/build/runtime.1ba6bf05.js",
+        "/build/0.574ae5db.js",
+        "/build/2.615e010a.js",
+        "/build/bootstrapitalia.cd94a1e0.js"
+      ],
+      "css": [
+        "/build/2.3aa95fd5.css"
+      ]
+    },
+    "login": {
+      "js": [
+        "/build/runtime.1ba6bf05.js",
+        "/build/login.da0aa4e6.js"
+      ],
+      "css": [
+        "/build/login.e53ccb4c.css"
+      ]
+    },
+    "bitabella": {
+      "js": [
+        "/build/runtime.1ba6bf05.js",
+        "/build/0.574ae5db.js",
+        "/build/1.e805ee9b.js",
+        "/build/bitabella.d554d7bc.js"
+      ],
+      "css": [
+        "/build/1.3798bf4a.css",
+        "/build/bitabella.dd6d4ac3.css"
+      ]
+    },
+    "bidemo": {
+      "js": [
+        "/build/runtime.1ba6bf05.js",
+        "/build/0.574ae5db.js",
+        "/build/1.e805ee9b.js",
+        "/build/bidemo.ba78f9ac.js"
+      ],
+      "css": [
+        "/build/1.3798bf4a.css",
+        "/build/bidemo.dd6d4ac3.css"
+      ]
+    }
+  }
+}

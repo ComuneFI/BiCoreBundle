@@ -1,7 +1,6 @@
 'use strict';
 import TabellaCliente from "./tabellaestesa.js";
-
-'use strict';
+import BiStringFunctions from "../functions/string.js";
 
 //Gestione symfony di passaggio parametri tra twig e javascript di parametri in attribute data-*
 document.addEventListener('DOMContentLoaded', function (e) {
@@ -70,7 +69,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': (valorefiltro == 'SI' ? true : false)};
                             break;
                         case "date":
-                            var date = tab.getDateTimeTabella(valorefiltro);
+                            var date = tab.getDateTimeTabella(valorefiltro + " 00:00:00");
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': {date: date}};
                             break;
                         case "datetime":
@@ -124,7 +123,9 @@ $(document).ready(function () {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];
         let tab = new TabellaCliente(nomecontroller);
-        tab.eliminaselezionati();
+        tab.eliminaselezionati(function () {
+            console.log("Cancellati records tabella estesa");
+        });
     });
     //Sul click del link $pagina si lancia la refresh per andare alla pagina selezionata
     $(document).on("click", ".paginascelta", function (e) {

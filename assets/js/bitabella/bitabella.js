@@ -15,14 +15,30 @@ class Tabella {
         var nomecontroller = document.querySelector('.main-tabella').dataset["nomecontroller"];
         return nomecontroller;
     }
-    caricatabellaStart()
+    _caricatabellaStart()
     {
         $('[data-toggle="tooltip"]').tooltip('disable');
         $('[data-toggle="tooltip"]').tooltip('dispose');
         $('[data-toggle="popover"]').popover('dispose');
     }
-    aggiustafootertabella()
+    _caricatabellaComplete()
     {
+        //Sistema label e input per form inserimento/modifica
+        this._tabellaAdjust();
+
+        //Genera menu per edit e delete
+        this._generatemenuconfirmation(this.parametri);
+
+        //Abilita tooltip
+        $(function () {
+            $('[data-toggle="popover"]').popover({container: 'body'});
+            $('[data-toggle="tooltip"]').tooltip('enable');
+        });
+
+        //Per impostare il layout delle select come bootstrapitalia
+        $(".bootstrap-select-wrapper select").selectpicker('refresh');
+
+        //Sistema i footer delle tabelle per i campi generati dinamicamente
         var colCount = 0;
         var nometabella = BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller);
         $('#tabella' + nometabella + ' tr:nth-child(2) th').each(function () {
@@ -35,18 +51,40 @@ class Tabella {
         $("#bitraduzionefiltri" + nometabella).attr("colspan", colCount);
         $("#bitollbarbottoni" + nometabella).attr("colspan", colCount);
         $("#bititletable" + nometabella).attr("colspan", colCount);
+
+        //Se si hanno i permessi per update si abilita il doppioclick per scatenare l'edir
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
+        if (permessi.update === true) {
+            //Doppio click su riga per edit
+            var tabellaclass = this;
+            $('#table' + this.nometabella + ' > tbody > tr').dblclick(function () {
+                var biid = this.dataset['bitableid'];
+                if (biid) {
+                    tabellaclass.modificarecord(biid);
+                }
+            });
+        }
+        //Se si preme si selectall seleziona tutti i record di una determinata tabellas
+        $(document).on("click", ".bitabellacheckboxselectall", function (e) {
+            var table = $(this).closest("table");
+            $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", $(this).prop("checked"));
+        });
+
+        //Si imposta il submit per il pulsante salva della form
+        this._submitHandler();
+
     }
-    generateForm(formhtml, callback) {
+    _generateForm(formhtml, callback) {
         var tabellaclass = this;
         $('#' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + 'SubTabellaDettagliContainer').remove();
         var form = document.getElementById('formdati' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller));
         $(form).replaceWith(formhtml).promise().done(function () {
-            tabellaclass.submitHandler();
-            tabellaclass.formlabeladjust();
+            tabellaclass._submitHandler();
+            tabellaclass._tabellaAdjust();
             typeof callback == "function" && callback();
         });
     }
-    submitHandler() {
+    _submitHandler() {
         var tabellaclass = this;
         //Gestione Submit
         //console.log(BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
@@ -69,7 +107,7 @@ class Tabella {
                     //in caso
                     if (xhr.status === 400) {
                         form.replaceWith(xhr.responseText).promise().done(function () {
-                            tabellaclass.formlabeladjust();
+                            tabellaclass._tabellaAdjust();
                         });
                     } else {
                         bootbox.alert({
@@ -126,7 +164,7 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    tabellaclass.generateForm(response);
+                    tabellaclass._generateForm(response);
                     $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
                     typeof callback == "function" && callback();
                 }
@@ -159,14 +197,14 @@ class Tabella {
 
                 },
                 success: function (response) {
-                    tabellaclass.generateForm(response);
+                    tabellaclass._generateForm(response);
                     $('.nav-tabs a[href="#tab' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + '2a"]').tab('show');
                     typeof callback == "function" && callback();
                 }
             });
         }
     }
-    cancellarecord(biid)
+    cancellarecord(biid, callback)
     {
         var tabellaclass = this;
         bootbox.confirm({
@@ -208,11 +246,8 @@ class Tabella {
                                 return false;
                             }
                         },
-                        beforeSend: function (xhr) {
-
-                        },
                         success: function (response) {
-                            tabellaclass.caricatabella();
+                            tabellaclass.caricatabella(callback);
                             BiNotification.show("Eliminato", "warning", "it-error");
                         }
                     });
@@ -220,17 +255,16 @@ class Tabella {
             }
         });
     }
-    eliminaselezionati()
+    eliminaselezionati(callback)
     {
-        let tab = new Tabella(this.nometabella);
-        var parametri = tab.getParametriTabellaDataset();
-        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(parametri.permessi));
+        var tabellaclass = this;
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update !== true) {
             BiNotification.show("Non si dispongono dei diritti per eliminare questo elemento", "warning", "it-error");
             return false;
         }
         var token = $("#table" + this.nometabella).attr("data-tabletoken");
-        var recordsdacancellareids = $("#table" + this.nometabella + " > tbody > tr .biselecttablerow").map(function () {
+        var recordsdacancellareids = $("#table" + tabellaclass.nometabella + " > tbody > tr .biselecttablerow").map(function () {
             if ($(this).prop("checked") === true) {
                 return parseInt(this.dataset['bitableid']);
             }
@@ -251,7 +285,7 @@ class Tabella {
                 },
                 callback: function (confirm) {
                     if (confirm) {
-                        var deleteturl = BiStringFunctions.getTabellaParameter(parametri.baseurl) + BiStringFunctions.getTabellaParameter(parametri.nomecontroller) + "/" + token + "/delete";
+                        var deleteturl = BiStringFunctions.getTabellaParameter(tabellaclass.parametri.baseurl) + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + token + "/delete";
                         $.ajax({
                             url: deleteturl,
                             type: "POST",
@@ -280,7 +314,7 @@ class Tabella {
 
                             },
                             success: function (response) {
-                                tab.caricatabella();
+                                tabellaclass.caricatabella(callback);
                                 BiNotification.show("Elementi eliminati", "warning", "it-error");
                             }
                         });
@@ -292,39 +326,6 @@ class Tabella {
             return false;
         }
 
-    }
-    caricatabellaComplete()
-    {
-        //Genera menu per edit e delete
-        this.generatemenuconfirmation(this.parametri);
-
-        //Abilita tooltip bootstrap
-        $(function () {
-            $('[data-toggle="popover"]').popover({container: 'body'});
-            $('[data-toggle="tooltip"]').tooltip('enable');
-        });
-        this.aggiustafootertabella();
-
-        //Sistema label per form inserimento
-        this.formlabeladjust();
-
-        this.submitHandler();
-
-        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
-        if (permessi.update === true) {
-            //Doppio click su riga per edit
-            var tabellaclass = this;
-            $('#table' + this.nometabella + ' > tbody > tr').dblclick(function () {
-                var biid = this.dataset['bitableid'];
-                if (biid) {
-                    tabellaclass.modificarecord(biid);
-                }
-            });
-        }
-        $(document).on("click", ".bitabellacheckboxselectall", function (e) {
-            var table = $(this).closest("table");
-            $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", $(this).prop("checked"));
-        });
     }
     abilitainputinline(elencocampi, biid) {
         var tabellaclass = this;
@@ -393,7 +394,7 @@ class Tabella {
             }
             $(input).appendTo(div);
             $(object).closest("td").html(div);
-            tabellaclass.formlabeladjust();
+            tabellaclass._tabellaAdjust();
         });
 
     }
@@ -421,8 +422,6 @@ class Tabella {
         return divparametri[parametro];
     }
     download() {
-
-
         var url = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + '/exportxls';
         $.ajax({
             type: 'POST',
@@ -450,7 +449,7 @@ class Tabella {
         });
     }
     caricatabella(callback) {
-        this.caricatabellaStart();
+        this._caricatabellaStart();
         Spinner.show();
         var tabellaclass = this;
         $.ajax({
@@ -474,13 +473,13 @@ class Tabella {
             },
             success: function (response) {
                 $('#tabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).html(response);
-                tabellaclass.caricatabellaComplete();
+                tabellaclass._caricatabellaComplete();
                 typeof callback == "function" && callback();
                 Spinner.hide();
             }
         });
     }
-    dumpParametriTabella()
+    __dumpParametriTabella()
     {
         var parametri = document.querySelector('#Parametri' + this.nometabella + '.parametri-tabella');
         $.each(parametri.dataset, function (key, value) {
@@ -490,32 +489,29 @@ class Tabella {
     reseteditinline(inputs) {
         inputs.each(function (index, object) {
             var td = object.closest("td");
-            if (td) {
-                var fieldtype = td.dataset["tipocampo"];
-                var soggettoadecodifica = td.dataset["soggettoadecodifica"];
-                var div = object.closest("div.form-group");
-                $(object).attr("disabled", true);
-                if (fieldtype === 'boolean') {
-                    if ($(object).is(":checked")) {
-                        obj = $('<input />', {type: 'text', class: 'form-control', value: 'SI', disabled: true});
-                    } else {
-                        obj = $('<input />', {type: 'text', class: 'form-control', value: 'NO', disabled: true});
-                    }
-                    $(div).remove();
-                    $(td).html(obj);
-                } else if (fieldtype === 'join' || soggettoadecodifica == 1) {
-                    var obj = $('<input />', {type: 'text', class: 'form-control', value: $(object).find('option:selected').text(), disabled: true});
-                    $(div).remove();
-                    $(td).html(obj);
+            var fieldtype = td.dataset["tipocampo"];
+            var soggettoadecodifica = td.dataset["soggettoadecodifica"];
+            var div = object.closest("div.form-group");
+            $(object).attr("disabled", true);
+            if (fieldtype === 'boolean') {
+                if ($(object).is(":checked")) {
+                    obj = $('<input />', {type: 'text', class: 'form-control', value: 'SI', disabled: true});
                 } else {
-                    $(div).remove();
-                    $(object).appendTo(td);
+                    obj = $('<input />', {type: 'text', class: 'form-control', value: 'NO', disabled: true});
                 }
+                $(div).remove();
+                $(td).html(obj);
+            } else if (fieldtype === 'join' || soggettoadecodifica == 1) {
+                var obj = $('<input />', {type: 'text', class: 'form-control', value: $(object).find('option:selected').text(), disabled: true});
+                $(div).remove();
+                $(td).html(obj);
+            } else {
+                $(div).remove();
+                $(object).appendTo(td);
             }
         });
         $(".biselecttablerow").attr("disabled", false);
     }
-
     riempiselect(fieldname, selectedoption) {
         var fieldpieces = fieldname.split(".");
         var nomecontroller = BiStringFunctions.ucfirst(fieldpieces[1]);
@@ -552,7 +548,6 @@ class Tabella {
         });
         return select;
     }
-
     riempiselectdecodifiche(fieldname, decodifiche, selectedoption) {
         var fieldpieces = fieldname.split(".");
         var nomecontroller = BiStringFunctions.ucfirst(fieldpieces[1]);
@@ -572,31 +567,32 @@ class Tabella {
         });
         return select;
     }
-    formlabeladjust()
+    _tabellaAdjust()
     {
+        //Sistema le label dei campi imput per evitare di venire sovrapposti
         $('.form-group label').each(function (index, object) {
             var fieldtowakeup = $(object).attr("for");
             if ($("#" + fieldtowakeup).val() || $("#" + fieldtowakeup).is('select')) {
                 $(object).addClass("active");
             }
         });
-        $(function () {
-            $('.bidatepicker').datetimepicker({
-                locale: 'it',
-                format: 'L'
-            });
-            $('.bidatetimepicker').datetimepicker({
-                locale: 'it'
-            });
+        // Sistema correttamente i widget per i datetimepicker e select in stile boostrapitalia
 
-            //Per impostare il layout delle select come bootstrapitalia
-            $(".bootstrap-select-wrapper select").selectpicker('refresh');
-
+        $('.bidatepicker').datetimepicker({
+            locale: 'it',
+            format: 'L'
         });
+        $('.bidatetimepicker').datetimepicker({
+            locale: 'it'
+        });
+
+        //Per impostare il layout delle select come bootstrapitalia
+        $(".bootstrap-select-wrapper select").selectpicker('refresh');
+
     }
-    generatemenuconfirmation()
+    _generatemenuconfirmation()
     {
-        var bottoni = this.getContextmenuButtons();
+        var bottoni = this._getContextmenuButtons();
         var tabellaclass = this;
         if (bottoni.length > 0) {
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).confirmation({
@@ -620,11 +616,10 @@ class Tabella {
                 buttons: bottoni
             });
         } else {
-            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(parametri.nomecontroller)).hide();
+            $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller)).hide();
         }
     }
-
-    getContextmenuButtons()
+    _getContextmenuButtons()
     {
         var editbutton = {
             label: 'Modificare',
@@ -646,7 +641,6 @@ class Tabella {
         }
         return bottoni;
     }
-
 }
 
 export default Tabella;

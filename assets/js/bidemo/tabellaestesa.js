@@ -3,6 +3,13 @@ import BiStringFunctions from "../functions/string.js"
 import estraiSottotabelle from "./sottotabelle.js"
 
 class TabellaCliente extends Tabella {
+    caricatabella()
+    {
+        console.log("caricatabella TabellaEstesa");
+        super.caricatabella();
+        //super.__dumpParametriTabella();
+
+    }
     aggiungirecord(callback)
     {
         console.log("addrow TabellaEstesa");
@@ -13,6 +20,13 @@ class TabellaCliente extends Tabella {
     {
         console.log("editrow TabellaEstesa");
         super.modificarecord(biid, estraiSottotabelle);
+    }
+    cancellarecord(biid, callback)
+    {
+        console.log("deleterow TabellaEstesa");
+        super.cancellarecord(biid, function () {
+            console.log("Cancellato record " + biid);
+        });
     }
 }
 
