@@ -40,16 +40,6 @@ class Tabella {
             typeof callback == "function" && callback();
         });
     }
-    addHandler() {
-        //Sul click del pulsante aggiungi si lancia la creazione di un nuovo record tramite form
-        var tabellaclass = this;
-        var pulsantiadd = $(".tabellaadd");
-        pulsantiadd.each(function (index, object) {
-            object.addEventListener("click", function (e) {
-                tabellaclass.aggiungirecord();
-            });
-        });
-    }
     submitHandler() {
         var tabellaclass = this;
         //Gestione Submit
@@ -106,16 +96,16 @@ class Tabella {
             nuovariga.removeClass("sr-only");
             this.abilitainputinline(elencocampinuovariga, 0);
         } else {
-            var parametriform = [];
+            var parametriform;
             if (typeof this.parametri.parametriform !== "undefined") {
-                parametriform.push(BiStringFunctions.getTabellaParameter(this.parametri.parametriform));
+                parametriform = BiStringFunctions.getTabellaParameter(this.parametri.parametriform);
             }
 
             var newurl = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + "/new";
             $.ajax({
                 url: newurl,
                 type: "GET",
-                data: {parametriform: JSON.stringify(parametriform)},
+                data: {parametriform: parametriform},
                 async: true,
                 error: function (xhr, textStatus, errorThrown) {
                     bootbox.alert({
@@ -313,7 +303,6 @@ class Tabella {
         this.formlabeladjust();
 
         this.submitHandler();
-        this.addHandler();
 
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update === true) {
