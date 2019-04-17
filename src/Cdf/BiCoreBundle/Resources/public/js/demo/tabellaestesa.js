@@ -1,4 +1,11 @@
 class TabellaCliente extends Tabella {
+    caricatabella()
+    {
+        console.log("caricatabella TabellaEstesa");
+        super.caricatabella();
+        super.__dumpParametriTabella();
+
+    }
     aggiungirecord(callback)
     {
         console.log("addrow TabellaEstesa");
