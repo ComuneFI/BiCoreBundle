@@ -487,17 +487,17 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
      * @param int $timeout  timeout in seconds
      * @param int $interval interval in miliseconds
      */
-    public function ajaxWait($timeout = 5, $interval = 200)
-    {
-        $this->client->wait($timeout, $interval)->until(function () {
-            // jQuery: "jQuery.active" or $.active
-            // Prototype: "Ajax.activeRequestCount"
-            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
-            $condition = 'return ($.active == 0);';
-
-            return $this->client->executeScript($condition);
-        });
-    }
+//    public function ajaxWait($timeout = 5, $interval = 200)
+//    {
+//        $this->client->wait($timeout, $interval)->until(function () {
+//            // jQuery: "jQuery.active" or $.active
+//            // Prototype: "Ajax.activeRequestCount"
+//            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
+//            $condition = 'return ($.active == 0);';
+//
+//            return $this->client->executeScript($condition);
+//        });
+//    }
     public function logout()
     {
         $this->visit('/logout');

@@ -35,7 +35,8 @@ class FunctionalMagazzinoControllerTest extends BiTestAuthorizedClient
         $this->fillField($fieldhtml, 'ed');
 
         $crawler = $this->findField($fieldhtml)->sendKeys("\n");
-        $this->ajaxWait(6000);
+//        $this->ajaxWait(6000);
+        sleep(1);
         $numrowstabella = $this->evaluateScript("return $('#tableMagazzino > tbody > tr').length;");
         $this->assertEquals(5, $numrowstabella);
 
