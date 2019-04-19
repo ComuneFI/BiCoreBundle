@@ -14,9 +14,9 @@ import '../css/adminpanel/pannelloamministrazione.css';
 //global.$ = global.jQuery = $;
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// const $ = require('jquery');
+//const $ = require('jquery');
 import "./adminpanel/pannelloamministrazione.js";
 import "./adminpanel/pannelloamministrazionecommands.js";
 import "./adminpanel/pannelloamministrazionefunzioni.js";
  
-console.log('Hello Webpack Encore! Edit me in assets/js/login.js');
+console.log('Hello Webpack Encore! Edit me in assets/js/adminpanel.js');

@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
 class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
 {
+
     public function testFunctionalOrdineIndex()
     {
         $ordiniregistrati = 14;
@@ -13,12 +13,12 @@ class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
         $client = $this->getClient();
         $testUrl = '/Ordine/';
         $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#'.$htmltableid); // Wait for the tabellaOrdine to appear
-        $this->assertSame(self::$baseUri.$testUrl, $client->getCurrentURL()); // Assert we're still on the same page
-        $ordini = $crawler->filterXPath('//table[@id="'.$htmltableid.'"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
+        $client->waitFor('#' . $htmltableid); // Wait for the tabellaOrdine to appear
+        $this->assertSame(self::$baseUri . $testUrl, $client->getCurrentURL()); // Assert we're still on the same page
+        $ordini = $crawler->filterXPath('//table[@id="' . $htmltableid . '"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
             return $tr->filter('td')->each(function ($td, $i) {
-                return trim($td->text());
-            });
+                    return trim($td->text());
+                });
         });
         $this->assertSame($ordiniregistrati, count($ordini));
         $this->logout();
@@ -31,19 +31,25 @@ class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
         $client = $this->getClient();
         $testUrl = '/Ordine/';
         $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#'.$htmltableid); // Wait for the tabellaCliente to appear
-        $this->executeScript('$("#ParametriOrdine").attr("data-editinline","Ma==");');
-        $this->executeScript('$(".tabellarefresh").click();');
+        $client->waitFor('#' . $htmltableid); // Wait for the tabellaCliente to appear
+        ;
+        //$this->executeScript('$("#ParametriOrdine").attr("data-editinline","Ma==");');
+        $this->executeScript("document.getElementById('ParametriOrdine').dataset.editinline= 'Ma=='");
+        $this->pressButton('.tabellarefresh');
         sleep(1);
-        $this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
+        $this->dblClickElement(".bibottonimodificatabellaOrdine[data-biid=\"9\"]");
+        //$this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
         sleep(2);
         $selectorinputqta = 'tr[data-bitableid=\"9\"] > td[data-nomecampo="Ordine.quantita"] :input';
         $selectorconfirm = 'a.bibottonieditinline[data-biid="9"]';
 
         $qta1ex = 21;
+
         $this->executeScript("$('".$selectorinputqta."').val(".$qta1ex.')');
+        //$this->executeScript("document.getElementById('" . $selectorinputqta . "').value = " . $qta1ex . '');
         sleep(1);
-        $this->executeScript("$('".$selectorconfirm."').click()");
+        //$this->executeScript("$('".$selectorconfirm."').click()");
+        $this->clickElement($selectorconfirm);
         sleep(1);
 
         /* qui */
@@ -56,9 +62,9 @@ class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
         $qta2ex = 22;
         $this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
         sleep(2);
-        $this->executeScript("$('".$selectorinputqta."').val(".$qta2ex.')');
+        $this->executeScript("$('" . $selectorinputqta . "').val(" . $qta2ex . ')');
         sleep(1);
-        $this->executeScript("$('".$selectorconfirm."').click()");
+        $this->executeScript("$('" . $selectorconfirm . "').click()");
         sleep(1);
 
         /* qui */

@@ -10,8 +10,8 @@
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 //const $ = require('jquery');
-import $ from 'jquery';
-global.$ = global.jQuery = $;
+//import $ from 'jquery';
+//global.$ = global.jQuery = $;
 console.log('bootstrap-italia');
 
 
