@@ -14,7 +14,7 @@
     "login": {
       "js": [
         "/build/runtime.1ba6bf05.js",
-        "/build/login.9dc736e4.js"
+        "/build/login.1c0d1ea7.js"
       ],
       "css": [
         "/build/login.1e0a1e19.css"
@@ -36,7 +36,7 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bidemo.e28fa73d.js"
+        "/build/bidemo.4ba65903.js"
       ],
       "css": [
         "/build/bidemo.9502cf85.css"
@@ -47,7 +47,7 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/2.1407628d.js",
-        "/build/adminpanel.b1308b97.js"
+        "/build/adminpanel.e6a1611d.js"
       ],
       "css": [
         "/build/adminpanel.9af09514.css"

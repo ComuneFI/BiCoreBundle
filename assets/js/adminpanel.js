@@ -19,4 +19,4 @@ import "./adminpanel/pannelloamministrazione.js";
 import "./adminpanel/pannelloamministrazionecommands.js";
 import "./adminpanel/pannelloamministrazionefunzioni.js";
  
-console.log('Hello Webpack Encore! Edit me in assets/js/adminpanel.js');
+//console.log('Hello Webpack Encore! Edit me in assets/js/adminpanel.js');

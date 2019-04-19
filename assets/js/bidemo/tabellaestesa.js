@@ -28,6 +28,6 @@ class TabellaCliente extends Tabella {
             console.log("Cancellato record " + biid);
         });
     }
-}
+};
 
 export default TabellaCliente;
