@@ -13,7 +13,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = self::$container->get('pannelloamministrazione.projectpath');
+        $apppath = $this->getContainer()->get('pannelloamministrazione.projectpath');
         $checkentityprova = $apppath->getSrcPath() .
                 DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
         $checktypeprova = $apppath->getSrcPath() .
@@ -165,7 +165,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->fillField($fieldhtml, $descrizionetest2);
 
         $this->clickElement('prova_submit');
-        $this->ajaxWait(6000);
+//        $this->ajaxWait(6000);
 
         //Non ho idea del perchè non funzioni anche perchè il record è stato davvero modificato
         /* $qb2 = $this->em->createQueryBuilder()
@@ -185,7 +185,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
-        $this->ajaxWait(6000);
+        sleep(1);
+//        $this->ajaxWait(6000);
 
         $qb3 = $this->em->createQueryBuilder()
                         ->select(array('Prova'))
