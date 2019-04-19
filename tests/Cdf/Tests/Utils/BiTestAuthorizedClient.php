@@ -12,7 +12,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     const TIMEOUT = 4;
 
     protected $client;
-    private static $container;
+    protected static $container;
 
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
