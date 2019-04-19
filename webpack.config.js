@@ -29,6 +29,7 @@ Encore
         .addEntry('login', './assets/js/login.js')
         .addEntry('bitabella', './assets/js/bitabella.js')
         .addEntry('bidemo', './assets/js/bidemo.js')
+        .addEntry('adminpanel', './assets/js/adminpanel.js')
 
         //.addEntry('page1', './assets/js/page1.js')
         //.addEntry('page2', './assets/js/page2.js')

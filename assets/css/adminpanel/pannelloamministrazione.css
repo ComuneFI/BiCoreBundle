@@ -1,0 +1,8 @@
+.utility{float:left;display: inline-block;}
+.bundle{float:left;display: inline-block;}
+.entity{float:left;display: inline-block;}
+
+.adminpanel {border:0px solid gray; text-align: left; margin: 15px}
+.btn {
+    width: 320px;
+}

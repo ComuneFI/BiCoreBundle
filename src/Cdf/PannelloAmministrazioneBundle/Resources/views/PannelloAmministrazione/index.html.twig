@@ -5,14 +5,12 @@
 {% block javascript %}
     {{parent()}}
     {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionefunzioni.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazione.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src = "{{ asset('bundles/pannelloamministrazione/js/pannelloamministrazionecommands.js') }}?ver={{versione_tag_git()}}" ></script>
+    {{ encore_entry_script_tags('adminpanel') }}
 {% endblock %}
 
 {% block css %}
     {{parent()}}
-    <link rel="stylesheet" href="{{asset('bundles/pannelloamministrazione/css/pannelloamministrazione.css')}}?ver={{versione_tag_git()}}" />
+    {{ encore_entry_link_tags('adminpanel') }}
 {% endblock %}
 
 {% block body %}
