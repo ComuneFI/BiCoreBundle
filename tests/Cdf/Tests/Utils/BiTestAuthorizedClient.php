@@ -12,7 +12,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     const TIMEOUT = 4;
 
     protected $client;
-    private $container;
+    private static $container;
 
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
@@ -20,7 +20,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     protected function setUp()
     {
         $this->client = static::createPantherClient();
-        $this->container = static::createClient()->getContainer();
+        self::$container = static::createClient()->getContainer();
         $username4test = $this->getContainer()->getParameter('bi_core.admin4test');
         $password4test = $this->getContainer()->getParameter('bi_core.adminpwd4test');
         $this->em = $this->getContainer()->get('doctrine')->getManager();
@@ -41,7 +41,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     }
     protected function getContainer()
     {
-        return $this->container;
+        return self::$container;
     }
     protected function getClient()
     {
@@ -208,7 +208,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $element = $this->findField($selector);
                 if ($element) {
                     if (!$element->isEnabled() || !$element->isDisplayed()) {
@@ -240,7 +240,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
                     if ($select->isSelected() != $value) {
@@ -268,7 +268,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
                     return $select->isSelected();
@@ -289,7 +289,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
                     $select->findElement(WebDriverBy::cssSelector("option[value='" . $value . "']"))
@@ -313,7 +313,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $button = $this->getElementBySelector($selector);
                 if (!$button) {
                     ++$i;
@@ -322,7 +322,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 }
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $button->click();
-                $this->ajaxWait();
+                //$this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -339,10 +339,10 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $page = $this->getCurrentPage();
                 $page->clickLink($selector);
-                $this->ajaxWait();
+                //$this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -360,7 +360,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $element = $this->getElementBySelector($selector);
                 if ($element) {
                     return $element->isDisplayed();
@@ -368,7 +368,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     ++$i;
                     sleep(1);
                 }
-                $this->ajaxWait();
+//                $this->ajaxWait();
             } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
@@ -383,7 +383,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->getElementBySelector($selector);
                 if (!$element || !$this->elementIsVisible($selector)) {
                     ++$i;
@@ -392,7 +392,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 }
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $element->click();
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -410,7 +410,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->client->findElement($selector);
                 if (!$element) {
                     ++$i;
@@ -418,7 +418,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     continue;
                 }
                 $element->doubleClick();
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -436,7 +436,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->findField($selector);
                 if (!$element) {
                     ++$i;
@@ -449,7 +449,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                         sendKeys(null, WebDriverKeys::ARROW_DOWN)->
                         perform();
 
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return true;
             } catch (\Exception $e) {
