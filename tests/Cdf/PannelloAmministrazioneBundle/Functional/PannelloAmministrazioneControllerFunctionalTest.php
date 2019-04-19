@@ -13,7 +13,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = self::$container->get('pannelloamministrazione.projectpath');
+        $apppath = $this->getContainer()->get('pannelloamministrazione.projectpath');
         $checkentityprova = $apppath->getSrcPath() .
                 DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
         $checktypeprova = $apppath->getSrcPath() .
