@@ -2,13 +2,13 @@
 
 {% block title %}Pannello di amministrazione progetto {{appname}}{% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
     {{parent()}}
     {%set userdir = rootdir | slice(0, rootdir|length - (appname|length) - 1)%}
     {{ encore_entry_script_tags('adminpanel') }}
 {% endblock %}
 
-{% block css %}
+{% block stylesheets %}
     {{parent()}}
     {{ encore_entry_link_tags('adminpanel') }}
 {% endblock %}

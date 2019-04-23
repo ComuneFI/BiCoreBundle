@@ -1,6 +1,6 @@
 {% extends 'BiCoreBundle::layout.html.twig' %}
 
-{% block javascript %}
+{% block javascripts %}
     {{parent()}}
     {{ encore_entry_script_tags('bitabella') }}
     {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
@@ -9,7 +9,7 @@
 {% endblock%}
 
 
-{% block css %}
+{% block stylesheets %}
     {{parent()}}
     {{ encore_entry_link_tags('bitabella') }}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}

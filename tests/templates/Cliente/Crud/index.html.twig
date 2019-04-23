@@ -1,7 +1,7 @@
 {#% include 'BiCoreBundle:Standard:Crud/index.html.twig' %#}
 {% extends 'BiCoreBundle::layout.html.twig' %}
 
-{% block javascript %}
+{% block javascripts %}
     {{parent()}}
     {{ encore_entry_script_tags('bidemo') }}
 
@@ -11,7 +11,7 @@
 {% endblock%}
 
 
-{% block css %}
+{% block stylesheets %}
     {{parent()}}
     {{ encore_entry_link_tags('bidemo') }}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}

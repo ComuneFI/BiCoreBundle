@@ -11,7 +11,8 @@
         </script>
         {% block head %}
             {{ encore_entry_link_tags('bootstrapitalia') }}
-            {% block css %}
+            {{ encore_entry_link_tags('bicore') }}
+            {% block stylesheets %}
             {% endblock %}
         {% endblock %}
     </head>            
@@ -40,7 +41,7 @@
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {% endblock %}
-        {% block javascript %}
+        {% block javascripts %}
         {% endblock %}
     {% endblock %}
 </body>

@@ -25,7 +25,7 @@ Encore
          */
         //.addEntry('app', './assets/js/app.js')
         .addEntry('bootstrapitalia', './assets/js/bootstrapitalia.js')
-        //.addEntry('login', ['./assets/js/login.js', './assets/js/bootstrapitalia.js'])
+        .addEntry('bicore', './assets/js/bicore.js')
         .addEntry('login', './assets/js/login.js')
         .addEntry('bitabella', './assets/js/bitabella.js')
         .addEntry('bidemo', './assets/js/bidemo.js')
