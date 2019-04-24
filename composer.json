@@ -74,6 +74,7 @@
         "symfony/profiler-pack": "^1.0",
         "symfony/test-pack": "^1.0",
         "symfony/var-dumper": "^3.4",
+        "symfony/framework-bundle": "^3.4",
         "symfony/web-server-bundle": "^3.4"
     },
     "conflict": {
