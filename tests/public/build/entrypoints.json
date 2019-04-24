@@ -34,10 +34,10 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bitabella.b584fec0.js"
+        "/build/bitabella.a0d864d9.js"
       ],
       "css": [
-        "/build/bitabella.6bd048a3.css"
+        "/build/bitabella.6d54a77b.css"
       ]
     },
     "bidemo": {
@@ -45,10 +45,10 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bidemo.03490052.js"
+        "/build/bidemo.77d80e7a.js"
       ],
       "css": [
-        "/build/bidemo.5402d19d.css"
+        "/build/bidemo.d9eddd2f.css"
       ]
     },
     "adminpanel": {

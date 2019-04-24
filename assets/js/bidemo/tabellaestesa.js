@@ -1,5 +1,4 @@
 import Tabella from "../bitabella/bitabella.js"
-import BiStringFunctions from "../functions/string.js"
 import estraiSottotabelle from "./sottotabelle.js"
 
 class TabellaCliente extends Tabella {

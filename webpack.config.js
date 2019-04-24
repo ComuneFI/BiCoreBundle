@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+var webpack = require('webpack');
 
 Encore
         // directory where compiled assets will be stored
@@ -7,7 +8,7 @@ Encore
         .setPublicPath('/build')
         // only needed for CDN's or sub-directory deploy
         //.setManifestKeyPrefix('build/')
-        
+
         .copyFiles([{
                 from: './node_modules/bootstrap-italia/dist/fonts',
                 to: 'fonts/[path][name].[ext]',
@@ -15,6 +16,7 @@ Encore
                 from: './node_modules/bootstrap-italia/dist/svg',
                 to: 'svg/[path][name].[ext]'
             }])
+        .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
         /*
          * ENTRY CONFIG
          *

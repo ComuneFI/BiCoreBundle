@@ -37,8 +37,8 @@ class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
         $this->pressButton('.tabellarefresh');
         sleep(1);
         $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="9"]');
-        $client->waitFor('a.h-100.d-flex.align-items-center.it-file');
-        $this->clickElement('a.h-100.d-flex.align-items-center.it-file');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
         //$this->dblClickElement(".bibottonimodificatabellaOrdine[data-biid=\"9\"]");
         //$this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
         sleep(2);
@@ -67,8 +67,8 @@ class FunctionalOrdineControllerTest extends BiTestAuthorizedClient
         $qta2ex = 22;
         //$this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
         $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="9"]');
-        $client->waitFor('a.h-100.d-flex.align-items-center.it-file');
-        $this->clickElement('a.h-100.d-flex.align-items-center.it-file');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
         
 //        sleep(2);
 //        $this->executeScript("$('" . $selectorinputqta . "').val(" . $qta2ex . ')');

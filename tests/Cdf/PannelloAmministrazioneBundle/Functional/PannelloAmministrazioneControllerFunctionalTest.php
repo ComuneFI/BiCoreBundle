@@ -151,8 +151,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor('a.h-100.d-flex.align-items-center.it-file');
-        $this->clickElement('a.h-100.d-flex.align-items-center.it-file');
+        $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary';
+        $client->waitFor($contextmenuedit);
+        $this->clickElement($contextmenuedit);
 
         $this->assertEquals($provaobj1->getDescrizione(), $descrizionetest1);
 
@@ -178,8 +179,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
           $this->assertEquals($provaobj2->getDescrizione(), $descrizionetest2); */
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor('a.h-100.d-flex.align-items-center.it-cancel');
-        $this->clickElement('a.h-100.d-flex.align-items-center.it-cancel');
+        $contextmenudelete = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
+        $client->waitFor($contextmenudelete );
+        $this->clickElement($contextmenudelete );
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');

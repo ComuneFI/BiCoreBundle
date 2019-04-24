@@ -3,7 +3,16 @@ import BiStringFunctions from "../functions/string.js";
 import BiNotification from "../notification/notification.js";
 import BiAlert from "../modal/alertbuilder.js";
 import bootbox from 'bootbox';
+
+import "../../js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
+import "../../css/bootstrap-datetimepicker.min.css";
+import "bootstrap-confirmation2";
+import "font-awesome/css/font-awesome.min.css";
+import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 require('jquery-contextmenu');
+import moment from 'moment';
+import 'moment/locale/it';
+moment.locale('it');
 
 class Tabella {
 
@@ -636,12 +645,12 @@ class Tabella {
         var editbutton = {
             label: 'Modificare',
             value: 'edit',
-            class: 'it-file'
+            class: 'btn btn-xs btn-primary',
         };
         var deletebutton = {
             label: 'Cancellare',
             value: 'delete',
-            class: 'it-cancel'
+            class: 'btn btn-xs btn-danger',
         };
         var bottoni = new Array();
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
