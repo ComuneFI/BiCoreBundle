@@ -5,7 +5,7 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bootstrapitalia.534b57b5.js"
+        "/build/bootstrapitalia.9cf64e3d.js"
       ],
       "css": [
         "/build/bootstrapitalia.a4956ed4.css"
@@ -34,10 +34,10 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bitabella.a0d864d9.js"
+        "/build/bitabella.858caa15.js"
       ],
       "css": [
-        "/build/bitabella.6d54a77b.css"
+        "/build/bitabella.43c3358f.css"
       ]
     },
     "bidemo": {
@@ -45,10 +45,10 @@
         "/build/runtime.1ba6bf05.js",
         "/build/0.c90fd7d1.js",
         "/build/1.f8d1c23a.js",
-        "/build/bidemo.77d80e7a.js"
+        "/build/bidemo.61104910.js"
       ],
       "css": [
-        "/build/bidemo.d9eddd2f.css"
+        "/build/bidemo.81ad814c.css"
       ]
     },
     "adminpanel": {

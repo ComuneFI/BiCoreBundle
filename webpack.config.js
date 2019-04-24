@@ -1,5 +1,4 @@
 var Encore = require('@symfony/webpack-encore');
-var webpack = require('webpack');
 
 Encore
         // directory where compiled assets will be stored
@@ -16,7 +15,6 @@ Encore
                 from: './node_modules/bootstrap-italia/dist/svg',
                 to: 'svg/[path][name].[ext]'
             }])
-        .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
         /*
          * ENTRY CONFIG
          *

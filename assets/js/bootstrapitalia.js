@@ -12,7 +12,7 @@
 //const $ = require('jquery');
 //import $ from 'jquery';
 //global.$ = global.jQuery = $;
-console.log('bootstrap-italia');
+//console.log('bootstrap-italia');
 
 
 //import "bootstrap-italia";
