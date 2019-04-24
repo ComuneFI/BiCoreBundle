@@ -7,6 +7,7 @@ Encore
         .setPublicPath('/build')
         // only needed for CDN's or sub-directory deploy
         //.setManifestKeyPrefix('build/')
+        
         .copyFiles([{
                 from: './node_modules/bootstrap-italia/dist/fonts',
                 to: 'fonts/[path][name].[ext]',

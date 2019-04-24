@@ -4,6 +4,7 @@ import BiNotification from "../notification/notification.js";
 import BiAlert from "../modal/alertbuilder.js";
 import bootbox from 'bootbox';
 require('jquery-contextmenu');
+
 class Tabella {
 
     constructor(nometabella) {
@@ -45,7 +46,7 @@ class Tabella {
             }
         });
         $("#bitraduzionefiltri" + nometabella).attr("colspan", colCount);
-        $("#bitollbarbottoni" + nometabella).attr("colspan", colCount);
+        $("#bitoolbarbottoni" + nometabella).attr("colspan", colCount);
         $("#bititletable" + nometabella).attr("colspan", colCount);
         //Se si hanno i permessi per update si abilita il doppioclick per scatenare l'edir
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
@@ -577,6 +578,7 @@ class Tabella {
     {
         var bottoni = this._getContextmenuButtons();
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
+        //var multiselezione = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.multiselezione));
         var tabellaclass = this;
         if (bottoni.length > 0) {
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).confirmation({
@@ -606,6 +608,11 @@ class Tabella {
             selector: '.context-menu-crud',
             callback: function (key, options) {
                 switch (key) {
+                    /*case "selezionatutti":
+                        //Sul menu Modifica
+                        var table = options.$trigger.closest("table");
+                        $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", true);
+                        break;*/
                     case "modifica":
                         //Sul menu Modifica
                         var biid = options.$trigger.attr("data-bitableid");
@@ -619,7 +626,8 @@ class Tabella {
             },
             items: {
                 "modifica": {name: "Modifica", icon: "edit", disabled: permessi.update === false},
-                "cancella": {name: "Cancella", icon: "delete", disabled: permessi.delete === false}
+                "cancella": {name: "Cancella", icon: "delete", disabled: permessi.delete === false}/*,
+                 "selezionatutti": {name: "Seleziona tutti", icon: "copy", disabled: multiselezione === 0}*/
             }
         });
     }

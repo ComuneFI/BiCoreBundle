@@ -50,9 +50,9 @@
             {% endfor%} 
 
             <td class="colonnazionitabella biw-5">
-                <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
-                <a href="#" class="bibottonieditinline sr-only" data-azione="conferma" data-biid="{{record.id}}"><span class="it-check"></span></a>
-                <a href="#" class="bibottonieditinline sr-only" data-azione="annulla" data-biid="{{record.id}}"><span class="it-close"></span></a>
+                <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-settings')}}"></use></svg></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="conferma" data-biid="{{record.id}}"><svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-check')}}"></use></svg></a>
+                <a href="#" class="bibottonieditinline sr-only" data-azione="annulla" data-biid="{{record.id}}"><svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-close')}}"></use></svg></span></a>
             </td>
         </tr>
 
