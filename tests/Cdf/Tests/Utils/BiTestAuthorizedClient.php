@@ -8,10 +8,11 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 abstract class BiTestAuthorizedClient extends PantherTestCase
 {
+
     const TIMEOUT = 4;
 
     protected $client;
-    public static $container;
+    protected static $container;
 
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
@@ -19,77 +20,66 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     protected function setUp()
     {
         $this->client = static::createPantherClient();
-
-        self::$container = static::$kernel->getContainer();
-        $username4test = self::$container->getParameter('bi_core.admin4test');
-        $password4test = self::$container->getParameter('bi_core.adminpwd4test');
-        $this->em = self::$container->get('doctrine')->getManager();
+        self::$container = static::createClient()->getContainer();
+        $username4test = $this->getContainer()->getParameter('bi_core.admin4test');
+        $password4test = $this->getContainer()->getParameter('bi_core.adminpwd4test');
+        $this->em = $this->getContainer()->get('doctrine')->getManager();
 
         $testUrl = '/';
+        
         $this->client->request('GET', $testUrl);
         $this->client->waitFor('#Login');
         $this->login($username4test, $password4test);
     }
-
     protected function getRoute($name, $variables = array(), $absolutepath = false)
     {
         if ($absolutepath) {
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
-        return self::$container->get('router')->generate($name, $variables, $absolutepath);
+        return $this->getContainer()->get('router')->generate($name, $variables, $absolutepath);
     }
-
     protected function getContainer()
     {
-        return $this->container;
+        return self::$container;
     }
-
     protected function getClient()
     {
         return $this->client;
     }
-
     public function getCurrentPage()
     {
         return $this->client;
     }
-
     public function getSession()
     {
         return $this->client;
     }
-
     public function getCurrentPageContent()
     {
         return $this->client->getPageSource();
     }
-
     public function visit($url)
     {
         $this->client->request('GET', $url);
     }
-
     public function login($user, $pass)
     {
         $this->fillField('username', $user);
         $this->fillField('password', $pass);
         $this->pressButton('_submit');
     }
-
     public function evaluateScript($script)
     {
         return $this->client->executeScript($script, array());
     }
-
     public function executeScript($script)
     {
         return $this->evaluateScript($script);
     }
-
     public function find($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -107,15 +97,13 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     private function getElementBySelector($selector)
     {
         return $this->getElementByWebDriverBy($selector);
     }
-
     private function getElementByWebDriver($webdriverby)
     {
         $elements = $this->client->findElements($webdriverby);
@@ -125,7 +113,6 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             return $elements[0];
         }
     }
-
     private function getElementByWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -159,7 +146,6 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
-
     private function getWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -193,10 +179,9 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
-
     public function findField($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -214,17 +199,16 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function fillField($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $element = $this->findField($selector);
                 if ($element) {
                     if (!$element->isEnabled() || !$element->isDisplayed()) {
@@ -247,17 +231,16 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function checkboxSelect($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
                     if ($select->isSelected() != $value) {
@@ -276,17 +259,16 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function checkboxIsChecked($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
                     return $select->isSelected();
@@ -298,20 +280,19 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function selectFieldOption($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
-                    $select->findElement(WebDriverBy::cssSelector("option[value='".$value."']"))
+                    $select->findElement(WebDriverBy::cssSelector("option[value='" . $value . "']"))
                             ->click();
 
                     return;
@@ -323,17 +304,16 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function pressButton($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $button = $this->getElementBySelector($selector);
                 if (!$button) {
                     ++$i;
@@ -342,7 +322,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 }
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $button->click();
-                $this->ajaxWait();
+                //$this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -350,20 +330,19 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function clickLink($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $page = $this->getCurrentPage();
                 $page->clickLink($selector);
-                $this->ajaxWait();
+                //$this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -373,16 +352,15 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         }
 
         echo $page->getHtml();
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function elementIsVisible($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+                //$this->ajaxWait();
                 $element = $this->getElementBySelector($selector);
                 if ($element) {
                     return $element->isDisplayed();
@@ -390,7 +368,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     ++$i;
                     sleep(1);
                 }
-                $this->ajaxWait();
+//                $this->ajaxWait();
             } catch (\Exception $e) {
                 ++$i;
                 sleep(1);
@@ -399,14 +377,13 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return false;
     }
-
     public function clickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->getElementBySelector($selector);
                 if (!$element || !$this->elementIsVisible($selector)) {
                     ++$i;
@@ -415,7 +392,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 }
                 $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $element->click();
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -424,17 +401,16 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function dblClickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare '.$selector);
+        $e = new \Exception('Impossibile trovare ' . $selector);
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->client->findElement($selector);
                 if (!$element) {
                     ++$i;
@@ -442,7 +418,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     continue;
                 }
                 $element->doubleClick();
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return;
             } catch (\Exception $e) {
@@ -452,16 +428,15 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         }
 
         echo $page->getHtml();
-        $this->screenShot();
+        //$this->screenShot();
         throw($e);
     }
-
     public function rightClickElement($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
         while ($i < $timeout) {
             try {
-                $this->ajaxWait();
+//                $this->ajaxWait();
                 $element = $this->findField($selector);
                 if (!$element) {
                     ++$i;
@@ -474,7 +449,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                         sendKeys(null, WebDriverKeys::ARROW_DOWN)->
                         perform();
 
-                $this->ajaxWait();
+//                $this->ajaxWait();
 
                 return true;
             } catch (\Exception $e) {
@@ -483,11 +458,10 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        $this->screenShot();
+        //$this->screenShot();
 
         return null;
     }
-
     public function screenShot()
     {
         /* $driver = $this->minkSession->getDriver();
@@ -507,32 +481,29 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
           file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
          */
     }
-
-    public function logout()
-    {
-        $this->visit('/logout');
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * waitForAjax : wait for all ajax request to close.
      *
      * @param int $timeout  timeout in seconds
      * @param int $interval interval in miliseconds
      */
-    public function ajaxWait($timeout = 5, $interval = 200)
+//    public function ajaxWait($timeout = 5, $interval = 200)
+//    {
+//        $this->client->wait($timeout, $interval)->until(function () {
+//            // jQuery: "jQuery.active" or $.active
+//            // Prototype: "Ajax.activeRequestCount"
+//            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
+//            $condition = 'return ($.active == 0);';
+//
+//            return $this->client->executeScript($condition);
+//        });
+//    }
+    public function logout()
     {
-        $this->client->wait($timeout, $interval)->until(function () {
-            // jQuery: "jQuery.active" or $.active
-            // Prototype: "Ajax.activeRequestCount"
-            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
-            $condition = 'return ($.active == 0);';
-
-            return $this->client->executeScript($condition);
-        });
+        $this->visit('/logout');
+    }
+    public function tearDown()
+    {
+        parent::tearDown();
     }
 }

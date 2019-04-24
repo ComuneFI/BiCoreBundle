@@ -1,11 +1,11 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js add bootstrap-confirmation3
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add moment-locales
 
 PATH: 
-  /home/manzolo/bin:/home/manzolo/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+  /home/local/COMUNE-INTRANET/d59495/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 
 Yarn version: 
-  1.15.2
+  1.12.3
 
 Node version: 
   10.15.3
@@ -14,13 +14,13 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/bootstrap-confirmation3: Not found
-      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66058:18)
-      at Request.self.callback (/usr/share/yarn/lib/cli.js:129541:22)
+  Error: https://registry.yarnpkg.com/moment-locales: Not found
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:65894:18)
+      at Request.self.callback (/usr/share/yarn/lib/cli.js:129018:22)
       at Request.emit (events.js:189:13)
-      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:130513:10)
+      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:129990:10)
       at Request.emit (events.js:189:13)
-      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:130435:12)
+      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:129912:12)
       at Object.onceWrapper (events.js:277:13)
       at IncomingMessage.emit (events.js:194:15)
       at endReadableNT (_stream_readable.js:1125:12)
@@ -43,11 +43,19 @@ npm manifest:
       },
       "dependencies": {
           "bootbox": "4.4.0",
+          "bootstrap": "^4.3.1",
           "bootstrap-confirmation2": "^4.1.0",
-          "bootstrap-italia": "^1.2.5",
+          "bootstrap-datetimepicker-cjs": "^0.0.3",
+          "bootstrap-italia": "^1.2.6",
           "font-awesome": "4.7.0",
+          "jquery": "^3.4.0",
+          "jquery-contextmenu": "^2.8.0",
           "moment": "^2.24.0",
-          "popover": "^2.4.1"
+          "moment-timezone": "^0.5.25",
+          "popover": "^2.4.1",
+          "popper.js": "^1.15.0",
+          "sweetalert2": "^8.8.5",
+          "tempusdominus-core": "^5.0.3"
       }
   }
 
@@ -1225,10 +1233,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/bootstrap-confirmation2/-/bootstrap-confirmation2-4.1.0.tgz#2b1338c00fa327e8e89d46ceb4da25a36c5b764e"
     integrity sha512-ks1UXTZwdKV6iCQQrYRWA4e0iiq6S36CP+SUQ7F83SDHFh1mZE4kALawbwE4110WymiNYdgBRQmrU/bbLO41Zw==
   
-  bootstrap-italia@^1.2.5:
-    version "1.2.5"
-    resolved "https://registry.yarnpkg.com/bootstrap-italia/-/bootstrap-italia-1.2.5.tgz#33da4bcb8ee5bcdbe022ddaaed7fb38fba94ae95"
-    integrity sha512-KP/njuWmotxcexzZ1NzElYGOoRD9Oh8ccJeyPnpyduJUaw5oTw6pxIMrvuqTwDdqQMAeJ9Jvx5niTXmJ1rGxcg==
+  bootstrap-datetimepicker-cjs@^0.0.3:
+    version "0.0.3"
+    resolved "https://registry.yarnpkg.com/bootstrap-datetimepicker-cjs/-/bootstrap-datetimepicker-cjs-0.0.3.tgz#73461b6d0d734ba83d3c465c5fbe1c1a0b878ff9"
+    integrity sha1-c0YbbQ1zS6g9PEZcX74cGguHj/k=
+  
+  bootstrap-italia@^1.2.6:
+    version "1.2.6"
+    resolved "https://registry.yarnpkg.com/bootstrap-italia/-/bootstrap-italia-1.2.6.tgz#575be56c8ae91c3b2afd21eedfa621cde017d43b"
+    integrity sha512-MSxfSyaY3Y7SJ1JP9cxf6jJauIn6umUVOfetU6ckQUw+nELjVMslg3pfXEbRxmUKZSST8H09CSeIUMx3iLvEOw==
     dependencies:
       bootstrap "4.3.1"
       bootstrap-select "1.13.5"
@@ -1242,7 +1255,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.13.5.tgz#12f000b25a95ed642fe371ae9e311d3afbb8c53f"
     integrity sha512-1uYsYLB4FvGdwM6qzIfTxp6sP5gDqjPgWNHJztBfYUTIo1GUYG5zzmMVWiJvdxJlsvBXZ9AObmeZdzi0eg2jaA==
   
-  bootstrap@4.3.1:
+  bootstrap@4.3.1, bootstrap@^4.3.1:
     version "4.3.1"
     resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
     integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
@@ -3425,12 +3438,17 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
     integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
   
+  jquery-contextmenu@^2.8.0:
+    version "2.8.0"
+    resolved "https://registry.yarnpkg.com/jquery-contextmenu/-/jquery-contextmenu-2.8.0.tgz#cc25f60c0260c8e3e50650b8e29b8e0cfbbc3be7"
+    integrity sha512-KhZBKHzpo5GposCcga557oiaB3avc48ddZuTYvJV6TDu9UR29DnnqTaXI4n/5++L4WqP8H9lqJGyhWjtum/GuA==
+  
   jquery@3.3.1:
     version "3.3.1"
     resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
     integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
   
-  jquery@>=1.8.3:
+  jquery@>=1.8.3, jquery@^3.0, jquery@^3.4.0:
     version "3.4.0"
     resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
     integrity sha512-ggRCXln9zEqv6OqAGXFEcshF5dSBvCkzj6Gm2gzuR5fWawaX8t7cxKVkkygKODrDAzKdoYw3l/e3pm3vlT4IbQ==
@@ -3825,7 +3843,21 @@ Lockfile:
     dependencies:
       minimist "0.0.8"
   
-  moment@^2.24.0:
+  moment-timezone@^0.4.0:
+    version "0.4.1"
+    resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.4.1.tgz#81f598c3ad5e22cdad796b67ecd8d88d0f5baa06"
+    integrity sha1-gfWYw61eIs2teWtn7NjYjQ9bqgY=
+    dependencies:
+      moment ">= 2.6.0"
+  
+  moment-timezone@^0.5.25:
+    version "0.5.25"
+    resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.25.tgz#a11bfa2f74e088327f2cd4c08b3e7bdf55957810"
+    integrity sha512-DgEaTyN/z0HFaVcVbSyVCUU6HeFdnNC3vE4c9cgu2dgMTvjBUBdBzWfasTBmAW45u5OIMeCJtU8yNjM22DHucw==
+    dependencies:
+      moment ">= 2.9.0"
+  
+  "moment@>= 2.6.0", "moment@>= 2.9.0", moment@^2.22.2, moment@^2.24.0:
     version "2.24.0"
     resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
     integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -4387,6 +4419,11 @@ Lockfile:
     version "1.14.7"
     resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
     integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
+  
+  popper.js@^1.15.0:
+    version "1.15.0"
+    resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+    integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
   
   portfinder@^1.0.20:
     version "1.0.20"
@@ -5599,6 +5636,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/svgxuse/-/svgxuse-1.2.6.tgz#d6251edd07a75cb28618e0c23e8d4db64936d6be"
     integrity sha512-0KC0I24LDskC2vaVjUQfFmdtKJk8wFwMYOjCci0HlhBRSc0F86dZRqNBHf6BoS5bibQ7chgnBQWyJCTYkzVuSA==
   
+  sweetalert2@^8.8.5:
+    version "8.8.5"
+    resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-8.8.5.tgz#2c794bc325332de5cec5c7fd774d99ed887e0b85"
+    integrity sha512-Ajg4u6N0NEHgQ13xwLAXgTmLwFeDwN9JhgCC39YsIwTCN0yqEN8KRnLpmS0izM3GhdzgBmWA6WSgcKBZDyFfUw==
+  
   tapable@^1.0.0, tapable@^1.1.0:
     version "1.1.3"
     resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
@@ -5616,6 +5658,15 @@ Lockfile:
       mkdirp "^0.5.0"
       safe-buffer "^5.1.2"
       yallist "^3.0.2"
+  
+  tempusdominus-core@^5.0.3:
+    version "5.0.3"
+    resolved "https://registry.yarnpkg.com/tempusdominus-core/-/tempusdominus-core-5.0.3.tgz#808642e47a83f45d7ef18c1597fd7b1d413d69e5"
+    integrity sha512-52lClmU33gb6J6I/S9uGDrgQwccq3Yw9SlZerTgGLOzOB3Sc9pgIVBirfPMsMcx8nPsg6mA5ItFAH/5BZiQThg==
+    dependencies:
+      jquery "^3.0"
+      moment "^2.22.2"
+      moment-timezone "^0.4.0"
   
   terser-webpack-plugin@^1.1.0:
     version "1.2.3"

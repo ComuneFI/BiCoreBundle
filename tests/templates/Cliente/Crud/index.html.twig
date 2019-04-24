@@ -1,22 +1,19 @@
 {#% include 'BiCoreBundle:Standard:Crud/index.html.twig' %#}
 {% extends 'BiCoreBundle::layout.html.twig' %}
 
-{% block javascript %}
+{% block javascripts %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/tabella/bitabella.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/demo/tabellaestesa.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/tabella/bitabellainline.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/tabella/bitabellafunctions.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/demo/biindexesteso.js') }}?ver={{versione_tag_git()}}" ></script>
-    <script type="text/javascript" src="{{ asset('bundles/bicore/js/demo/sottotabelle.js') }}?ver={{versione_tag_git()}}" ></script>
+    {{ encore_entry_script_tags('bidemo') }}
+
     {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
         <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}?ver={{versione_tag_git()}}" ></script>
     {%endif%}
 {% endblock%}
 
 
-{% block css %}
+{% block stylesheets %}
     {{parent()}}
+    {{ encore_entry_link_tags('bidemo') }}
     {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
         <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}?ver={{versione_tag_git()}}" >
     {%endif%}

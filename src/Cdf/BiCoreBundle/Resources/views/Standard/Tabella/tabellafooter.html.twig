@@ -6,43 +6,41 @@
         </td>
     </tr>
     <tr>
-        <td id="bitollbarbottoni{{parametri.nomecontroller|getparametrotabella}}" scope="col" class="text-center" >
-            <div class="bitoolbarazioni pull-left">
+        <td id="bitoolbarbottoni{{parametri.nomecontroller|getparametrotabella}}" scope="col" class="inline-block">
+            <div class="float-sm-left">
                 {% if (json_decode(parametri.permessi|getparametrotabella).create) %}
                     <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabellaadd" data-toggle="tooltip" data-placement="top" title="Nuovo inserimento">
-                        <span class="it-copy"></span>
+                        <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-plus-circle')}}"></use></svg>
                     </button>
                 {% endif %}
                 {% if (json_decode(parametri.permessi|getparametrotabella).delete) %}
                     <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabelladel" data-toggle="tooltip" data-placement="top" title="Elimina selezionati">
-                        <span class="it-cancel"></span>
+                        <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-close-circle')}}"></use></svg>
                     </button>
                 {% endif %}
                 <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabellarefresh" data-toggle="tooltip" data-placement="top" title="Aggiorna">
-                    <span class="it-refresh"></span>
+                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-exchange-circle')}}"></use></svg>
                 </button>
                 <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs btn-filter tabellasearch" data-toggle="tooltip" data-placement="top" title="Filtri">
-                    <span class="it-search"></span>
+                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-search')}}"></use></svg>
                 </button>
                 <button data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" type="button" class="btn btn-default btn-xs tabelladownload" data-toggle="tooltip" data-placement="top" title="Scarica">
-                    <span class="it-download"></span>
+                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-download')}}"></use></svg>
                 </button>
             </div>
-            <nav aria-label="Page navigation example">
-                <div class="bitoolbarpaginazione pull-right">
-                    <ul class="pagination pagination-sm">
+            <div class="float-sm-right">
+                <nav class="pagination-wrapper justify-content-center" aria-label="Esempio di navigazione della pagina">
+                    <ul class="pagination">
                         <!--Prima pagina avanti e precedente-->
                         {% if parametri.paginacorrente != 1 %}
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="1" href="#">
-                                    <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
-                                    <i class="it-chevron-left"></i><span class="sr-only">Prima</span>
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="1" href="#" title="Prima pagina">
+                                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-arrow-left-circle')}}"></use></svg>
                                 </a>
-                                <!--<a href="{#{ path(url, { 'page': 1, 'q': query }) }#}">First</a>-->
                             </li>
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente-1}}" href="#">
-                                    <i class="it-chevron-left"></i><span class="sr-only">Pagina precedente</span>
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente-1}}" href="#" title="Pagina precedente">
+                                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-chevron-left')}}"></use></svg>
                                 </a>
                             </li>
                         {% endif %}        
@@ -58,11 +56,11 @@
                                 {% else %}<!---->
                                     <!--<a href="{#{ path(url, { 'page': loop.index, 'q': query }) }#}">{#{ loop.index }#}</a>-->
                                 {% if parametri.paginacorrente == loop.index  %} 
-                                    <li class="page-item active">
+                                    <li class="page-item">
                                         <span class="page-link">
-                                            <span class="d-inline-block d-sm-none">Pagina</span>
-                                            {{ loop.index }}
-                                            <span class="sr-only">corrente</span>
+                                            <a class="page-link" href="#" aria-current="page">
+                                                <span class="d-inline-block d-sm-none">Pagina </span>{{ loop.index }}
+                                            </a>
                                         </span>
                                     </li>                
                                 {%else%}<!---->
@@ -74,16 +72,14 @@
                         <!--Pagina avanti e ultima-->
                         {% if parametri.paginacorrente != parametri.paginetotali %}
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente+1}}" href="#">
-                                    <i class="it-chevron-right"></i><span class="sr-only">Pagina successiva</span>
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginacorrente+1}}" href="#" title="Pagina successiva">
+                                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-chevron-right')}}"></use></svg>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginetotali}}" href="#">
-                                    <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
-                                    <i class="it-chevron-right"></i><span class="sr-only">Ultima</span>
+                                <a class="page-link paginascelta" data-nomecontroller="{{parametri.nomecontroller|getparametrotabella}}" data-paginascelta="{{parametri.paginetotali}}" href="#"  title="Ultima pagina">
+                                    <svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-arrow-right-circle')}}"></use></svg>
                                 </a>
-                                <!--<a href="{#{ path(url, { 'page': nbPages, 'q': query }) }#}">Last</a>-->
                             </li>
                         {% endif %}
 
@@ -95,11 +91,8 @@
                                 <span class="sr-only">corrente</span>
                             </span>
                         </li>
-
                     </ul>
-
-                </div>
-
+            </div>
         </td>
     </tr>
 </tfoot>
