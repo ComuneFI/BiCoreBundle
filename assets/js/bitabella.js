@@ -19,4 +19,5 @@ import "bootstrap-confirmation2";
 import "font-awesome/css/font-awesome.min.css";
 
 import "../css/bootstrap-datetimepicker.min.css";
+import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 import "../css/bicore.css";

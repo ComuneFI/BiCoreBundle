@@ -27,7 +27,7 @@
 
     {% for record in parametri.recordstabella %}
 
-        <tr data-bitableid='{{record.id}}' data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" data-token="{{ csrf_token(record.id) }}" class="d-flex {{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
+        <tr data-bitableid='{{record.id}}' data-tabletoken="{{ csrf_token(parametri.nomecontroller|getparametrotabella) }}" data-token="{{ csrf_token(record.id) }}" class="d-flex context-menu-crud {{(parametri.editinline|getparametrotabella == true)?"inputeditinline":""}}">
 
             <td scope="row" class="biw-3 {% if (parametri.multiselezione|getparametrotabella == false) %}sr-only{% else %}text-center{% endif %}">
                 <input data-bitableid='{{record.id}}' type="checkbox" class="biselecttablerow">

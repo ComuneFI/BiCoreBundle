@@ -17,6 +17,7 @@
         "bootstrap-confirmation2": "^4.1.0",
         "bootstrap-italia": "^1.2.5",
         "font-awesome": "4.7.0",
+        "jquery-contextmenu": "^2.8.0",
         "moment": "^2.24.0",
         "popover": "^2.4.1",
         "sweetalert2": "^8.8.5"

@@ -3,7 +3,7 @@ import BiStringFunctions from "../functions/string.js";
 import BiNotification from "../notification/notification.js";
 import BiAlert from "../modal/alertbuilder.js";
 import bootbox from 'bootbox';
-
+require('jquery-contextmenu');
 class Tabella {
 
     constructor(nometabella) {
@@ -25,19 +25,15 @@ class Tabella {
     {
         //Sistema label e input per form inserimento/modifica
         this._tabellaAdjust();
-
         //Genera menu per edit e delete
         this._generatemenuconfirmation(this.parametri);
-
         //Abilita tooltip
         $(function () {
             $('[data-toggle="popover"]').popover({container: 'body'});
             $('[data-toggle="tooltip"]').tooltip('enable');
         });
-
         //Per impostare il layout delle select come bootstrapitalia
         $(".bootstrap-select-wrapper select").selectpicker('refresh');
-
         //Sistema i footer delle tabelle per i campi generati dinamicamente
         var colCount = 0;
         var nometabella = BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller);
@@ -51,7 +47,6 @@ class Tabella {
         $("#bitraduzionefiltri" + nometabella).attr("colspan", colCount);
         $("#bitollbarbottoni" + nometabella).attr("colspan", colCount);
         $("#bititletable" + nometabella).attr("colspan", colCount);
-
         //Se si hanno i permessi per update si abilita il doppioclick per scatenare l'edir
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         if (permessi.update === true) {
@@ -69,10 +64,8 @@ class Tabella {
             var table = $(this).closest("table");
             $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", $(this).prop("checked"));
         });
-
         //Si imposta il submit per il pulsante salva della form
         this._submitHandler();
-
     }
     _generateForm(formhtml, callback) {
         var tabellaclass = this;
@@ -120,7 +113,6 @@ class Tabella {
                 }).always(function () {
                     //alert("finished");
                 });
-
                 // Perform other work here ...
                 // Set another completion function for the request above
                 jqxhr.always(function () {
@@ -133,7 +125,6 @@ class Tabella {
     {
 
         var tabellaclass = this;
-
         if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) === 1) {
             var elencocampinuovariga = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
             var nuovariga = elencocampinuovariga.closest("tr");
@@ -177,7 +168,6 @@ class Tabella {
         if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) == 1) {
             var elencocampi = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
             this.abilitainputinline(elencocampi, biid);
-
         } else {
             var editurl = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + "/" + biid + "/edit";
             $.ajax({
@@ -269,7 +259,6 @@ class Tabella {
                 return parseInt(this.dataset['bitableid']);
             }
         }).get();
-
         if (recordsdacancellareids.length > 0) {
             bootbox.confirm({
                 message: "Sei sicuro di voler cancellare gli elementi selezionati?",
@@ -336,7 +325,6 @@ class Tabella {
             var soggettoadecodifica = object.closest("td").dataset["soggettoadecodifica"];
             var decodifiche;
             var modellocolonne = JSON.parse(BiStringFunctions.getTabellaParameter(tabellaclass.parametri.modellocolonne));
-
             if (soggettoadecodifica) {
                 $(modellocolonne).each(function (colidx, colobj) {
                     if (colobj.nomecampo == fieldname) {
@@ -390,13 +378,11 @@ class Tabella {
                 }
             } else {
                 input = $(object).clone().attr("disabled", true);
-
             }
             $(input).appendTo(div);
             $(object).closest("td").html(div);
             tabellaclass._tabellaAdjust();
         });
-
     }
     getDateTimeTabella(stringadata)
     {
@@ -551,7 +537,6 @@ class Tabella {
     riempiselectdecodifiche(fieldname, decodifiche, selectedoption) {
         var fieldpieces = fieldname.split(".");
         var nomecontroller = BiStringFunctions.ucfirst(fieldpieces[1]);
-
         var select;
         var div1 = $('<div/>', {class: 'bootstrap-select-wrapper'});
         var div2 = $('<div/>', {class: 'dropdown bootstrap-select'});
@@ -585,14 +570,13 @@ class Tabella {
         $('.bidatetimepicker').datetimepicker({
             locale: 'it'
         });
-
         //Per impostare il layout delle select come bootstrapitalia
         $(".bootstrap-select-wrapper select").selectpicker('refresh');
-
     }
     _generatemenuconfirmation()
     {
         var bottoni = this._getContextmenuButtons();
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
         var tabellaclass = this;
         if (bottoni.length > 0) {
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller)).confirmation({
@@ -618,6 +602,26 @@ class Tabella {
         } else {
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller)).hide();
         }
+        $.contextMenu({
+            selector: '.context-menu-crud',
+            callback: function (key, options) {
+                switch (key) {
+                    case "modifica":
+                        //Sul menu Modifica
+                        var biid = options.$trigger.attr("data-bitableid");
+                        tabellaclass.modificarecord(biid);
+                        break;
+                    case "cancella":
+                        var biid = options.$trigger.attr("data-bitableid");
+                        tabellaclass.cancellarecord(biid);
+                        break;
+                }
+            },
+            items: {
+                "modifica": {name: "Modifica", icon: "edit", disabled: permessi.update === false},
+                "cancella": {name: "Cancella", icon: "delete", disabled: permessi.delete === false}
+            }
+        });
     }
     _getContextmenuButtons()
     {
