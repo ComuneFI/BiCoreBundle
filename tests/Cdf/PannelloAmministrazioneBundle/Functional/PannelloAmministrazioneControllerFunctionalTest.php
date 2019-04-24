@@ -1,5 +1,4 @@
 <?php
-
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
@@ -15,20 +14,20 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //url da testare
         $apppath = $this->getContainer()->get('pannelloamministrazione.projectpath');
         $checkentityprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
+            DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
         $checktypeprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
+            DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
         $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
-                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
+            DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
         $checkindexprova = $checkviewsprova .
-                DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
+            DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
         $client = $this->getClient();
 
         $client->request('GET', $url);
         $client->waitFor('#adminpanelgenerateentity');
-        $this->executeScript('$("#entityfile").val("wbadmintest.mwb")');
+        $this->executeScript('document.getElementById("entityfile").value = "wbadmintest.mwb"');
         $this->pressButton('adminpanelgenerateentity');
 
         $client->waitFor('.biconfirmyes');
@@ -56,12 +55,13 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->visit($url);
         $this->login('admin', 'admin');
-        $this->executeScript('$("#entityform").val("Prova")');
+        $this->executeScript('document.getElementById("entityform").value = "Prova"');
 
         $this->pressButton('adminpanelgenerateformcrud');
-
+        sleep(1);
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
+        sleep(1);
 
         $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
@@ -96,7 +96,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $session->quit();
     }
-
     /*
      * @test
      */
@@ -143,17 +142,18 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         sleep(2);
 
         $qb1 = $this->em->createQueryBuilder()
-                        ->select(array('Prova'))
-                        ->from('App:Prova', 'Prova')
-                        ->where('Prova.descrizione = :descrizione')
-                        ->setParameter('descrizione', $descrizionetest1)
-                        ->getQuery()->getResult();
+                ->select(array('Prova'))
+                ->from('App:Prova', 'Prova')
+                ->where('Prova.descrizione = :descrizione')
+                ->setParameter('descrizione', $descrizionetest1)
+                ->getQuery()->getResult();
 
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
-        $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-file');
+        $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary';
+        $client->waitFor($contextmenuedit);
+        $this->clickElement($contextmenuedit);
 
         $this->assertEquals($provaobj1->getDescrizione(), $descrizionetest1);
 
@@ -166,7 +166,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->clickElement('prova_submit');
 //        $this->ajaxWait(6000);
-
         //Non ho idea del perchè non funzioni anche perchè il record è stato davvero modificato
         /* $qb2 = $this->em->createQueryBuilder()
           ->select(array("Prova"))
@@ -180,8 +179,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
           $this->assertEquals($provaobj2->getDescrizione(), $descrizionetest2); */
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $client->waitFor('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
-        $this->clickElement('.btn.btn-sm.h-100.d-flex.align-items-center.it-cancel');
+        $contextmenudelete = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
+        $client->waitFor($contextmenudelete );
+        $this->clickElement($contextmenudelete );
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
@@ -189,11 +189,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 //        $this->ajaxWait(6000);
 
         $qb3 = $this->em->createQueryBuilder()
-                        ->select(array('Prova'))
-                        ->from('App:Prova', 'Prova')
-                        ->where('Prova.descrizione = :descrizione')
-                        ->setParameter('descrizione', $descrizionetest2)
-                        ->getQuery()->getResult();
+                ->select(array('Prova'))
+                ->from('App:Prova', 'Prova')
+                ->where('Prova.descrizione = :descrizione')
+                ->setParameter('descrizione', $descrizionetest2)
+                ->getQuery()->getResult();
 
         $this->assertEquals(count($qb3), 0);
     }
@@ -208,5 +208,4 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         removecache();
         clearcache();
     }
-
 }

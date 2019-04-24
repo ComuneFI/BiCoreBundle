@@ -23,7 +23,7 @@
             {% endfor%} 
 
             <td>
-                <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><span class="it-settings"></span></a>
+                <a href="#" class="bibottonimodificatabella{{parametri.nomecontroller|getparametrotabella}}" data-biid="{{record.id}}" data-toggle="confirmation-popout" data-singleton="true"><svg class="icon icon-sm"><use xlink:href="{{asset('build/svg/sprite.svg#it-settings')}}"></use></svg></a>
             </td>
 
         </tr>

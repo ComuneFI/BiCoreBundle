@@ -1,5 +1,13 @@
 {% trans_default_domain 'FOSUserBundle' %}
 {% extends "base.html.twig" %}
+
+{% block stylesheets %}
+{{ encore_entry_link_tags('login') }}
+{% endblock stylesheets %}
+{% block javascripts %}
+{{ encore_entry_script_tags('login') }}
+{% endblock javascripts %}
+
 {% block fos_user_content %}
     <div class="container">
         <div class="login-form">
