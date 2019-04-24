@@ -17,8 +17,7 @@
         <testsuite name="App">
             <directory suffix=".php">./../../tests/App/Controller</directory>
             <directory suffix=".php">./../../tests/App/Functional</directory>
-        </testsuite>
-        <testsuite name="Corebundle">
+
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Collector</directory>
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Command</directory>
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Controller</directory>
@@ -27,13 +26,11 @@
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Form</directory>
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Utils</directory>
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Listener</directory>
-        </testsuite>
-        <testsuite name="Pannelloamministrazionebundle">
+
             <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
             <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
             <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/DependencyInjection</directory>
-        </testsuite>
-        <testsuite name="Corebundle Functional">
+
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Functional</directory>
         </testsuite>
         <testsuite name="Pannelloamministrazionebundle Functional">
