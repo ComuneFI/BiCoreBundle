@@ -14,6 +14,13 @@
     bootstrap                   = "./../../tests/bootstrap.php" >
 
     <testsuites>
+        <testsuite name="Pannelloamministrazione">
+            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/DependencyInjection</directory>
+
+            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Functional</directory>
+        </testsuite>
         <testsuite name="App">
             <directory suffix=".php">./../../tests/App/Controller</directory>
             <directory suffix=".php">./../../tests/App/Functional</directory>
@@ -28,13 +35,6 @@
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Listener</directory>
 
             <directory suffix=".php">./../../tests/Cdf/BiCoreBundle/Functional</directory>
-        </testsuite>
-        <testsuite name="Pannelloamministrazionebundle Functional">
-            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
-            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
-            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/DependencyInjection</directory>
-
-            <directory suffix=".php">./../../tests/Cdf/PannelloAmministrazioneBundle/Functional</directory>
         </testsuite>
     </testsuites>
     

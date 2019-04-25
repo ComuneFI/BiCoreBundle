@@ -1,4 +1,5 @@
 <?php
+
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
@@ -8,19 +9,18 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /*
      * @test
      */
-
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
         $apppath = $this->getContainer()->get('pannelloamministrazione.projectpath');
         $checkentityprova = $apppath->getSrcPath() .
-            DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
+                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
         $checktypeprova = $apppath->getSrcPath() .
-            DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
+                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
         $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
+                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
         $checkindexprova = $checkviewsprova .
-            DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
+                DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
         $client = $this->getClient();
@@ -116,7 +116,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
       $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
       $container->get('session')->save();
       } */
-
     private function crudoperation($session, $page)
     {
         $client = $this->getClient();
@@ -142,11 +141,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         sleep(2);
 
         $qb1 = $this->em->createQueryBuilder()
-                ->select(array('Prova'))
-                ->from('App:Prova', 'Prova')
-                ->where('Prova.descrizione = :descrizione')
-                ->setParameter('descrizione', $descrizionetest1)
-                ->getQuery()->getResult();
+                        ->select(array('Prova'))
+                        ->from('App:Prova', 'Prova')
+                        ->where('Prova.descrizione = :descrizione')
+                        ->setParameter('descrizione', $descrizionetest1)
+                        ->getQuery()->getResult();
 
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
@@ -180,8 +179,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
         $contextmenudelete = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
-        $client->waitFor($contextmenudelete );
-        $this->clickElement($contextmenudelete );
+        $client->waitFor($contextmenudelete);
+        $this->clickElement($contextmenudelete);
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
@@ -189,15 +188,22 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 //        $this->ajaxWait(6000);
 
         $qb3 = $this->em->createQueryBuilder()
-                ->select(array('Prova'))
-                ->from('App:Prova', 'Prova')
-                ->where('Prova.descrizione = :descrizione')
-                ->setParameter('descrizione', $descrizionetest2)
-                ->getQuery()->getResult();
+                        ->select(array('Prova'))
+                        ->from('App:Prova', 'Prova')
+                        ->where('Prova.descrizione = :descrizione')
+                        ->setParameter('descrizione', $descrizionetest2)
+                        ->getQuery()->getResult();
 
         $this->assertEquals(count($qb3), 0);
-    }
 
+        $qb = $this->em->createQueryBuilder();
+        $qb->delete();
+        $qb->from('BiCoreBundle:Colonnetabelle', 'o');
+        $qb->where('o.nometabella= :tabella');
+        $qb->setParameter('tabella', 'Prova');
+        $qb->getQuery()->execute();
+        $this->em->clear();
+    }
     /**
      * {@inheritdoc}
      */
