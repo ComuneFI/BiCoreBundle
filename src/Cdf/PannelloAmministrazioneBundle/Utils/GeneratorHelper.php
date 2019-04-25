@@ -27,20 +27,9 @@ class GeneratorHelper
 
     public function checktables($destinationPath, $wbFile, $output)
     {
-        $finder = new Finder();
         $fs = new Filesystem();
 
         $pathdoctrineorm = $destinationPath;
-
-        //Si converte il nome file per l'Orm della tabella se ha undercore
-        $finder->in($pathdoctrineorm)->files()->name('*_*');
-        $table = new Table();
-
-        foreach ($finder as $file) {
-            $oldfilename = $file->getPathName();
-            $newfilename = $pathdoctrineorm.DIRECTORY_SEPARATOR.$table->beautify($file->getFileName());
-            $fs->rename($oldfilename, $newfilename, true);
-        }
 
         //Si cercano file con nomi errati
         $finderwrong = new Finder();
