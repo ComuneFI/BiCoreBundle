@@ -21,6 +21,71 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($clientiregistrati, count($clienti));
+
+        sleep(1);
+        $this->clickElement('.bibottonimodificatabellaCliente[data-biid="1"]');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+
+        $client->waitFor('#ClienteSubTabellaDettagliContainer');
+        $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="2"]');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+
+        $selectorinputqta = 'tr[data-bitableid=\"2\"] > td[data-nomecampo="Ordine.quantita"] :input';
+        $selectorconfirm = '#tableOrdine > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(6) > a:nth-child(2)';
+
+        $qta1ex = 11;
+
+        sleep(1);
+        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta1ex);
+
+        sleep(1);
+        $this->clickElement($selectorconfirm);
+
+        sleep(1);
+
+        $qta2ex = 10;
+
+        $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="2"]');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+
+        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta2ex);
+
+        sleep(1);
+        $this->clickElement($selectorconfirm);
+        sleep(1);
+
+        //Problema su salvataggio evaso che è boolean ma doctrine per mysql non accetta "false" o "true"
+//        $this->clickElement('#card-simple2-tab');
+//        sleep(1);
+//        
+//        $this->clickElement('.bibottonimodificatabellaMagazzino[data-biid="3"]');
+//        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+//        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+//
+//        $selectorconfirm = '#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(7) > a:nth-child(2)';
+//
+//        /**/
+//        
+//        sleep(1);
+//        $this->clickElement("#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1) > input:nth-child(1)");
+//
+//        sleep(1);
+//        $this->clickElement($selectorconfirm);
+//
+//        sleep(1);
+//
+//        $this->clickElement('#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(7) > a:nth-child(1)');
+//        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+//        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+//
+//        $this->clickElement("#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1) > input:nth-child(1)");
+//
+//        sleep(1);
+//        $this->clickElement($selectorconfirm);
+//        sleep(1);
         $this->logout();
     }
     public function testFunctionalFornitoreIndex()
@@ -132,7 +197,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         $this->rightClickElement('.context-menu-crud[data-bitableid="9"]');
         $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-edit');
         $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-edit');
-        
+
         $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta2ex);
 
         sleep(1);
