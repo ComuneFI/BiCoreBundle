@@ -53,11 +53,17 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         $this->fillField($fieldhtml, 'ed');
 
         $this->findField($fieldhtml)->sendKeys("\n");
-//        $this->ajaxWait(6000);
         sleep(1);
         $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
         $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
         $this->assertEquals(5, $numrowstabella);
+
+        $this->pressButton('birimuovifiltriMagazzino');
+        sleep(1);
+        $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
+        $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
+        $this->assertEquals(11, $numrowstabella);
+
         $this->logout();
     }
     public function testFunctionalOrdineIndex()
@@ -118,23 +124,18 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         //$this->executeScript('$(".tabellarefresh").click();');
         sleep(1);
 
-        $qta2ex = 22;
-        //$this->executeScript("$('.bibottonimodificatabellaOrdine[data-biid=\"9\"]').dblclick();");
-        $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="9"]');
-        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
-        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->pressButton('.tabellarefresh');
+        sleep(1);
 
-//        sleep(2);
-//        $this->executeScript("$('" . $selectorinputqta . "').val(" . $qta2ex . ')');
-//        sleep(1);
-//        $this->executeScript("$('" . $selectorconfirm . "').click()");
-//        sleep(1);
-        //$this->executeScript("$('".$selectorinputqta."').val(".$qta1ex.')');
+        $qta2ex = 22;
+
+        $this->rightClickElement('.context-menu-crud[data-bitableid="9"]');
+        $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-edit');
+        $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-edit');
+        
         $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta2ex);
 
-        //$this->executeScript("document.getElementById('" . $selectorinputqta . "').value = " . $qta1ex . '');
         sleep(1);
-        //$this->executeScript("$('".$selectorconfirm."').click()");
         $this->clickElement($selectorconfirm);
         sleep(1);
 

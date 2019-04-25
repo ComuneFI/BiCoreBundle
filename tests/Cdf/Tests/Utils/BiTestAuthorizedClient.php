@@ -443,11 +443,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
-                $this->client->
-                        action()->
-                        contextClick($element)->
-                        sendKeys(null, WebDriverKeys::ARROW_DOWN)->
-                        perform();
+                $this->client->getMouse()->contextClickTo($selector);
 
 //                $this->ajaxWait();
 
