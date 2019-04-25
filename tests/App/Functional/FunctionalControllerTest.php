@@ -57,7 +57,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         $this->clickElement($selectorconfirm);
         sleep(1);
 
-        //Problema su salvataggio evaso che è boolean ma doctrine per mysql non accetta "false" o "true"
+        //Problema su salvataggio perchè non trovo un pulsante di conferma univoco per la pagina che riceverebbe il click
 //        $this->clickElement('#card-simple2-tab');
 //        sleep(1);
 //        
