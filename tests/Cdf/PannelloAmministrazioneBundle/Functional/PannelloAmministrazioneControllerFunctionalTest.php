@@ -36,7 +36,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('#corebundlemodalinfo');
         $this->pressButton('biconfirmok');
 
-        clearcache();
+        $this->logout();
 
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -51,7 +51,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
-        clearcache();
+        $this->logout();
 
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -70,7 +70,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
 
-        clearcache();
+        $this->logout();
 
         try {
             $urlRouting = $this->router->generate('Prova_container');
