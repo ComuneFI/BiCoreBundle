@@ -16,7 +16,6 @@ class PubblicamanualeCommandTest extends WebTestCase
         static::$kernel = static::createKernel();
         static::$kernel->boot();
     }
-
     public function testPubblicamanuale()
     {
         $kernel = static::$kernel;
@@ -29,5 +28,10 @@ class PubblicamanualeCommandTest extends WebTestCase
         $outputpubblicamanuale = $commandTesterPubblicamanuale->getDisplay();
         $this->assertRegExp('/.../', $outputpubblicamanuale);
 
+        $apppath = $kernel->getContainer()->get('pannelloamministrazione.projectpath');
+        $filename = $apppath->getPublicPath() . DIRECTORY_SEPARATOR . "manuale.pdf";
+        $this->assertFileExists($filename);
+        $this->assertFileExists($apppath->getVarPath());
+        unlink($filename);
     }
 }

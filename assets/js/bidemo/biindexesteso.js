@@ -1,6 +1,8 @@
 'use strict';
 import TabellaCliente from "./tabellaestesa.js";
 import BiStringFunctions from "../functions/string.js";
+import bootbox from 'bootbox';
+import BiAlert from "../modal/alertbuilder.js";
 
 //Gestione symfony di passaggio parametri tra twig e javascript di parametri in attribute data-*
 document.addEventListener('DOMContentLoaded', function (e) {
