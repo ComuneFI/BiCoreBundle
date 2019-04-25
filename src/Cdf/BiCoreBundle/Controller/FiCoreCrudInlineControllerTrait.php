@@ -27,7 +27,6 @@ trait FiCoreCrudInlineControllerTrait
             throw $this->createNotFoundException('Token non valido');
         }
     }
-
     /**
      * Inline existing table entity.
      */
@@ -44,7 +43,6 @@ trait FiCoreCrudInlineControllerTrait
 
         return $risultato;
     }
-
     protected function insertinline($values, $token)
     {
         $this->checkAggiornaRight(0, $token);
@@ -75,7 +73,7 @@ trait FiCoreCrudInlineControllerTrait
                 if ($accessor->isWritable($entity, $field)) {
                     $accessor->setValue($entity, $field, $fieldvalue);
                 } else {
-                    throw new \Exception($field.' non modificabile');
+                    throw new \Exception($field . ' non modificabile');
                 }
             } else {
                 continue;
@@ -87,7 +85,6 @@ trait FiCoreCrudInlineControllerTrait
 
         return new \Symfony\Component\HttpFoundation\JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
     }
-
     protected function updateinline($id, $values, $token)
     {
         $this->checkAggiornaRight($id, $token);
@@ -102,7 +99,7 @@ trait FiCoreCrudInlineControllerTrait
         //Update
         $entity = $em->getRepository($entityclass)->find($id);
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
         $queryBuilder
                 ->update($entityclass, 'u')
@@ -118,7 +115,7 @@ trait FiCoreCrudInlineControllerTrait
             if ($table == $controller && 2 == count($fieldpieces)) {
                 $field = $fieldpieces[1];
                 if ('join' == $value['fieldtype']) {
-                    $field = lcfirst($field.'_id');
+                    $field = lcfirst($field . '_id');
                 }
                 $entityutils = new EntityUtils($em);
                 $property = $entityutils->getEntityProperties($field, $entity);
@@ -126,7 +123,7 @@ trait FiCoreCrudInlineControllerTrait
                 if ($nomefunzioneget != $value['fieldvalue']) {
                     $querydaeseguire = true;
                     $fieldvalue = $this->getValueAggiorna($value);
-                    $queryBuilder->set('u.'.$field, ':'.$field);
+                    $queryBuilder->set('u.' . $field, ':' . $field);
                     $queryBuilder->setParameter($field, $fieldvalue);
                 }
             } else {
@@ -139,7 +136,6 @@ trait FiCoreCrudInlineControllerTrait
 
         return new \Symfony\Component\HttpFoundation\JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
     }
-
     private function getValueAggiorna($field)
     {
         $fieldvalue = $field['fieldvalue'];
@@ -147,7 +143,8 @@ trait FiCoreCrudInlineControllerTrait
             $fieldvalue = null;
         } else {
             $fieldtype = $field['fieldtype'];
-            if ('date' == $fieldtype) {
+            if ('boolean' == $fieldtype) {
+                $fieldvalue = !($field['fieldvalue'] === "false");
             }
             if ('date' == $fieldtype) {
                 $fieldvalue = \DateTime::createFromFormat('d/m/Y', $field['fieldvalue']);
