@@ -125,6 +125,17 @@ function cleanFilesystem()
     if ($fs->exists($entityfile4)) {
         $fs->remove($entityfile4);
     }
+    $entityfile5 = $vendorDir.'/src/Entity/BaseTabellaDarinominare.php';
+
+    if ($fs->exists($entityfile5)) {
+        $fs->remove($entityfile5);
+    }
+    $entityfile6 = $vendorDir.'/src/Entity/TabellaDarinominare.php';
+
+    if ($fs->exists($entityfile6)) {
+        $fs->remove($entityfile6);
+    }
+    
     $routingfile = $vendorDir.'/config/routes/prova.yml';
 
     if ($fs->exists($routingfile)) {
