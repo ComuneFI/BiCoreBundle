@@ -26,6 +26,7 @@ build:
         php:
             ini:
                 'memory_limit': '4G'
+        node: "v10.15.3"
     nodes:
         analysis:
           tests:
