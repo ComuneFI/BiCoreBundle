@@ -91,46 +91,19 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
-        //echo $page->getHtml();
         $this->crudoperation($session, $page);
 
         $session->quit();
     }
-    /*
-     * @test
-     */
-
-    /* public function test100PannelloAmministrazioneMain()
-      {
-      $container = $this->getClientAutorizzato()->getContainer();
-      // @var $userManager \FOS\UserBundle\Doctrine\UserManager
-      $userManager = $container->get('bi.fos_user.user_manager');
-      // @var $loginManager \FOS\UserBundle\Security\LoginManager
-      $loginManager = $container->get('bi.fos_user.security.login_manager');
-      $firewallName = $container->getParameter('fos_user.firewall_name');
-      $username4test = $container->getParameter('bi_core.usernoroles4test');
-      $user = $userManager->findUserBy(array('username' => $username4test));
-      $loginManager->loginUser($firewallName, $user);
-
-      // save the login token into the session and put it in a cookie
-      $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-      $container->get('session')->save();
-      } */
     private function crudoperation($session, $page)
     {
         $client = $this->getClient();
 
         $this->clickElement('tabellaadd');
 
-        //$this->pressButton('biconfirmyes');
-
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
-//        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '3.0') >= 0) {
-//            $fieldhtml = 'prova_descrizione';
-//        } else {
         $fieldhtml = 'prova_descrizione';
-//        }
 
         $client->waitFor('#' . $fieldhtml);
 
@@ -164,28 +137,27 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->fillField($fieldhtml, $descrizionetest2);
 
         $this->clickElement('prova_submit');
-//        $this->ajaxWait(6000);
-        //Non ho idea del perchè non funzioni anche perchè il record è stato davvero modificato
-        /* $qb2 = $this->em->createQueryBuilder()
-          ->select(array("Prova"))
-          ->from("App:Prova", "Prova")
-          ->where("Prova.id = :id")
-          ->setParameter("id", $rowid)
-          ->getQuery()->getResult();
+        sleep(1);
+        $this->em->clear();
+        
+        $qb2 = $this->em->createQueryBuilder()
+                        ->select(array("Prova"))
+                        ->from("App:Prova", "Prova")
+                        ->where("Prova.id = :id")
+                        ->setParameter("id", $rowid)
+                        ->getQuery()->getResult();
 
-          $provaobj2 = $qb2[0];
-
-          $this->assertEquals($provaobj2->getDescrizione(), $descrizionetest2); */
+        $this->assertEquals($qb2[0]->getDescrizione(), $descrizionetest2);
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
-        $contextmenudelete = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
-        $client->waitFor($contextmenudelete);
-        $this->clickElement($contextmenudelete);
+
+        $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
+        $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
+        $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         sleep(1);
-//        $this->ajaxWait(6000);
 
         $qb3 = $this->em->createQueryBuilder()
                         ->select(array('Prova'))
