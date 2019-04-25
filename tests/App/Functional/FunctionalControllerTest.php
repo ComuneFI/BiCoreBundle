@@ -58,34 +58,32 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         sleep(1);
 
         //Problema su salvataggio perchè non trovo un pulsante di conferma univoco per la pagina che riceverebbe il click
-//        $this->clickElement('#card-simple2-tab');
-//        sleep(1);
-//        
-//        $this->clickElement('.bibottonimodificatabellaMagazzino[data-biid="3"]');
-//        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
-//        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
-//
-//        $selectorconfirm = '#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(7) > a:nth-child(2)';
-//
-//        /**/
-//        
-//        sleep(1);
-//        $this->clickElement("#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1) > input:nth-child(1)");
-//
-//        sleep(1);
-//        $this->clickElement($selectorconfirm);
-//
-//        sleep(1);
-//
-//        $this->clickElement('#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(7) > a:nth-child(1)');
-//        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
-//        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
-//
-//        $this->clickElement("#tableMagazzino > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1) > input:nth-child(1)");
-//
-//        sleep(1);
-//        $this->clickElement($selectorconfirm);
-//        sleep(1);
+        $this->clickElement('#card-simple2-tab');
+        sleep(1);
+        
+        $this->clickElement('.bibottonimodificatabellaMagazzino[data-biid="3"]');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+
+        $selectorconfirm = 'a.bibottonieditinline[data-biid="3"][data-tabella="Magazzino"]';
+
+        /**/
+        $this->selectFieldOption("Magazzino_giornodellasettimana", 3);
+        sleep(1);
+        $this->clickElement($selectorconfirm);
+
+        sleep(1);
+
+        $this->clickElement('.bibottonimodificatabellaMagazzino[data-biid="3"]');
+        $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+        $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
+
+
+        $this->selectFieldOption("Magazzino_giornodellasettimana", 2);
+        sleep(1);
+        sleep(1);
+        $this->clickElement($selectorconfirm);
+        sleep(1);
         $this->logout();
     }
     public function testFunctionalFornitoreIndex()
