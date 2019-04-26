@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 
 class ColonnetabelleEntityTest extends KernelTestCase
 {
@@ -26,7 +27,7 @@ class ColonnetabelleEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Colonnetabelle')
+                ->getRepository(Colonnetabelle::class)
                 ->findByNometabella('*')
         ;
 

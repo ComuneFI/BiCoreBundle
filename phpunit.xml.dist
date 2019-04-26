@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "true"
+    syntaxCheck                 = "true"
+    bootstrap                   = "./tests/bootstrap.php" >
+
+    <testsuites>
+        <testsuite name="Pannelloamministrazione">
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/DependencyInjection</directory>
+
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Functional</directory>
+        </testsuite>
+        <testsuite name="App">
+            <directory suffix=".php">./tests/App/Controller</directory>
+            <directory suffix=".php">./tests/App/Functional</directory>
+
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Collector</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Command</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Controller</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/DependencyInjection</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Entity</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Form</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Utils</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Listener</directory>
+
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Functional</directory>
+        </testsuite>
+    </testsuites>
+    
+    <php>
+        <env name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="APP_ENV" value="test" />
+        <env name="APP_DEBUG" value="1" />
+        <env name="APP_SECRET" value="s$cretf0rt3st" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        
+        <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
+        
+    </php>
+    
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>./src</directory>
+            <exclude>
+                <directory>./tests</directory>
+                <directory>./src/*Bundle/Resources</directory>
+                <directory>./src/*/*Bundle/Resources</directory>
+                <directory>./src/*/Bundle/*Bundle/Resources</directory>
+            </exclude>
+        </whitelist>
+        
+    </filter>
+    
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension" />
+    </extensions>
+    
+    <listeners>
+        <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
+    </listeners>   
+</phpunit>

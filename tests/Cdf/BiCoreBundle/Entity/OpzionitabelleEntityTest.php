@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 
 class OpzionitabelleEntityTest extends KernelTestCase
 {
@@ -26,7 +27,7 @@ class OpzionitabelleEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Opzionitabelle')
+                ->getRepository(Opzionitabelle::class)
                 ->findByParametro('titolo')
         ;
 

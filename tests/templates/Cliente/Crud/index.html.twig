@@ -4,19 +4,12 @@
 {% block javascripts %}
     {{parent()}}
     {{ encore_entry_script_tags('bidemo') }}
-
-    {% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
-        <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}?ver={{versione_tag_git()}}" ></script>
-    {%endif%}
 {% endblock%}
 
 
 {% block stylesheets %}
     {{parent()}}
     {{ encore_entry_link_tags('bidemo') }}
-    {% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
-        <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}?ver={{versione_tag_git()}}" >
-    {%endif%}
 {% endblock%}
 
 {% block content -%}

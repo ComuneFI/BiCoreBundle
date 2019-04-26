@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Ruoli;
 
 class RuoliEntityTest extends KernelTestCase
 {
@@ -26,7 +27,7 @@ class RuoliEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Ruoli')
+                ->getRepository(Ruoli::class)
                 ->findByRuolo('Super Admin')
         ;
 

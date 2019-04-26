@@ -3,6 +3,8 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Operatori;
+use Cdf\BiCoreBundle\Entity\Ruoli;
 
 class OperatoriEntityTest extends KernelTestCase
 {
@@ -26,7 +28,7 @@ class OperatoriEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Operatori')
+                ->getRepository(Operatori::class)
                 ->findByUsername('admin')
         ;
 
@@ -36,7 +38,7 @@ class OperatoriEntityTest extends KernelTestCase
     public function testfindBySuperadmin()
     {
         $operatori = $this->em
-                ->getRepository('BiCoreBundle:Ruoli')
+                ->getRepository(Ruoli::class)
                 ->findBy(array('superadmin' => true));
 
         $this->assertCount(1, $operatori, 'Non trovato il ruolo super admin');
@@ -45,7 +47,7 @@ class OperatoriEntityTest extends KernelTestCase
     public function testfindruoli()
     {
         $operatori = $this->em
-                ->getRepository('BiCoreBundle:Ruoli')
+                ->getRepository(Ruoli::class)
                 ->findAll();
         $this->assertGreaterThan(0, count($operatori), 'Non trovati ruoli');
     }
@@ -53,7 +55,7 @@ class OperatoriEntityTest extends KernelTestCase
     public function testfindoperatori()
     {
         $operatori = $this->em
-                ->getRepository('BiCoreBundle:Operatori')
+                ->getRepository(Operatori::class)
                 ->findAll();
         $this->assertGreaterThan(0, count($operatori), 'Non trovati operatori');
     }

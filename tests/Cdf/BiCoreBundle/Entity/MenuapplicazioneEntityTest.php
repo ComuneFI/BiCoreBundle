@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Menuapplicazione;
 
 class MenuapplicazioneEntityTest extends KernelTestCase
 {
@@ -26,7 +27,7 @@ class MenuapplicazioneEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Menuapplicazione')
+                ->getRepository(Menuapplicazione::class)
                 ->findByNome('Gestione tabelle di sistema')
         ;
 

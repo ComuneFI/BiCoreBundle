@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 class StoricomodificheEntityTest extends KernelTestCase
 {
@@ -26,7 +27,7 @@ class StoricomodificheEntityTest extends KernelTestCase
     public function testSearchBy()
     {
         $object = $this->em
-                ->getRepository('BiCoreBundle:Storicomodifiche')
+                ->getRepository(Storicomodifiche::class)
                 ->findByNometabella('Storicomodifiche')
         ;
 
