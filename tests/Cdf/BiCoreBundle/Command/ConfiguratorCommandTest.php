@@ -58,10 +58,15 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb = $em->createQueryBuilder();
         $qb->update();
         $qb->set('r.ruolo', ':amministratore');
+        $qb->set('r.superadmin', ":true");
+        $qb->set('r.user', ":null");
+        $qb->set('r.admin', ":null");
         $qb->from('BiCoreBundle:Ruoli', 'r');
         $qb->where('r.ruolo= :ruolo');
         $qb->setParameter('ruolo', 'Amministratore');
         $qb->setParameter('amministratore', 'Amministratores');
+        $qb->setParameter('true', true);
+        $qb->setParameter('null', null);
         $qb->getQuery()->execute();
         $em->clear();
 
@@ -103,12 +108,13 @@ class ConfiguratorCommandTest extends WebTestCase
             'nome' => 'Amministrazione',
         ));
         $menuapplicazione2->setAutorizzazionerichiesta(false);
+        $menuapplicazione2->setNotifiche(false);
         $menuapplicazione2->setTag(null);
-        $menuapplicazione2->setTarget("Pippo");
+        $menuapplicazione2->setTarget("provadacancellare");
         $em->persist($menuapplicazione2);
         $em->flush();
         $em->clear();
-        
+
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
@@ -120,6 +126,17 @@ class ConfiguratorCommandTest extends WebTestCase
         $this->assertContains('ruolo cambio valore da \'Amministratores\' a \'Amministratore\'', $outputimport2);
         $this->assertContains('sistemata', $outputimport2);
         $this->assertContains('ROLE_UNDEFINED', $outputimport2);
+        $this->assertContains('in formato DateTime', $outputimport2);
+        $this->assertContains('cambio valore da true a false in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da false a true in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da false a NULL in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da true a NULL in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da NULL a false in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da NULL a true in formato Boolean', $outputimport2);
+        $this->assertContains('cambio valore da NULL a \'admin\'', $outputimport2);
+        $this->assertContains('cambio valore da \'provadacancellare\' a NULL', $outputimport2);
+        
+        
         $em->clear();
 
         $commandTesterImport3 = new CommandTester($commandimport);
