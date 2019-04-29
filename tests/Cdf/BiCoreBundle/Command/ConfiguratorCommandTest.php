@@ -101,7 +101,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
-        echo $outputimport2;
+        //echo $outputimport2;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertContains('Modifica', $outputimport2);
         $this->assertContains('tramite entity find', $outputimport2);
