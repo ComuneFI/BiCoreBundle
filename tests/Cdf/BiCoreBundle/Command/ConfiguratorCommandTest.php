@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ConfiguratorCommandTest extends WebTestCase
 {
+
     /**
      * {@inheritdoc}
      */
@@ -15,6 +16,16 @@ class ConfiguratorCommandTest extends WebTestCase
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
+
+        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        $qb = $em->createQueryBuilder();
+        $qb->update();
+        $qb->set('o.lastLogin', ':ora');
+        $qb->from('BiCoreBundle:Operatori', 'o');
+        $qb->where('o.username= :username');
+        $qb->setParameter('username', 'admin');
+        $qb->setParameter('ora', new \DateTime('2018-01-01'));
+        $users = $qb->getQuery()->execute();
     }
 
     public function testConfigurator()
@@ -22,7 +33,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
         $entity = 'Permessi';
-        $fixturefile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fixtures.yml';
+        $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
         @unlink($fixturefile);
         $kernel = static::$kernel;
         $application = new Application($kernel);
@@ -34,7 +45,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputimport = $commandTesterImport->getDisplay();
 
         $this->assertRegExp('/.../', $outputimport);
-        $this->assertContains('Non trovato file '.$fixturefile, $outputimport);
+        $this->assertContains('Non trovato file ' . $fixturefile, $outputimport);
 
         $commandexport = $application->find('bicorebundle:configuratorexport');
         $commandTesterExport = new CommandTester($commandexport);
@@ -42,17 +53,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputexport = $commandTesterExport->getDisplay();
 
         $this->assertRegExp('/.../', $outputexport);
-        $this->assertContains('Export Entity: Cdf\\BiCoreBundle\\Entity\\'.$entity, $outputexport);
-
-        $qb = $em->createQueryBuilder();
-        $qb->update();
-        $qb->set('o.lastLogin', ':ora');
-        $qb->from('BiCoreBundle:Operatori', 'o');
-        $qb->where('o.username= :username');
-        $qb->setParameter('username', 'admin');
-        $qb->setParameter('ora', new \DateTime('2018-01-01'));
-        $users = $qb->getQuery()->execute();
-        $em->clear();
+        $this->assertContains('Export Entity: Cdf\\BiCoreBundle\\Entity\\' . $entity, $outputexport);
 
         /* Rimuovo utente per generare l'inserimento tramite import */
         /* @var $qb \Doctrine\ORM\QueryBuilder */
@@ -100,11 +101,11 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
-        //echo $outputimport2;
-        $this->assertNotContains('Non trovato file '.$fixturefile, $outputimport2);
+        echo $outputimport2;
+        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertContains('Modifica', $outputimport2);
         $this->assertContains('tramite entity find', $outputimport2);
-        //$this->assertContains('lastLogin cambio valore da', $outputimport2);
+        $this->assertContains('lastLogin cambio valore da', $outputimport2);
         $this->assertContains('ruolo cambio valore da Amministratores a Amministratore', $outputimport2);
         $this->assertContains('sistemata', $outputimport2);
         $this->assertContains('ROLE_UNDEFINED', $outputimport2);
@@ -114,7 +115,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
         $outputimport3 = $commandTesterImport3->getDisplay();
         //echo $outputimport3;
-        $this->assertNotContains('Non trovato file '.$fixturefile, $outputimport3);
+        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
         $this->assertContains('aggiunta', $outputimport3);
         $this->assertContains('tramite entity find', $outputimport3);
         $this->assertContains(' in formato Boolean', $outputimport3);
@@ -124,5 +125,14 @@ class ConfiguratorCommandTest extends WebTestCase
         $em->clear();
 
         unlink($fixturefile);
+        $qb = $em->createQueryBuilder();
+        $qb->update();
+        $qb->set('o.lastLogin', ':ora');
+        $qb->from('BiCoreBundle:Operatori', 'o');
+        $qb->where('o.username= :username');
+        $qb->setParameter('username', 'admin');
+        $qb->setParameter('ora', null);
+        $users = $qb->getQuery()->execute();
     }
+
 }

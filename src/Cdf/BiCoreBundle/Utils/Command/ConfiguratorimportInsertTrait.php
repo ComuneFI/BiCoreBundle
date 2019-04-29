@@ -6,75 +6,85 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 trait ConfiguratorimportInsertTrait
 {
+
     private function executeInsert($entityclass, $record)
     {
         $objrecord = new $entityclass();
         foreach ($record as $key => $value) {
             if ('id' !== $key) {
-                $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
-                $getfieldname = $propertyEntity['get'];
-                $setfieldname = $propertyEntity['set'];
-                if ('discr' == $key) {
-                    continue;
-                }
-                $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
-                if ('boolean' === $fieldtype) {
-                    $newval = FieldTypeUtils::getBooleanValue($value);
-                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
-                            .' per campo '.$key.' con valore '
-                            .var_export($newval, true).' in formato Boolean</info>';
-                    $this->output->writeln($msgok);
-                    $objrecord->$setfieldname($newval);
-                    continue;
-                }
-                //Si prende in considerazione solo il null del boolean, gli altri non si toccano
-                if (!$value) {
-                    continue;
-                }
-                if ('datetime' === $fieldtype || 'date' === $fieldtype) {
-                    $date = FieldTypeUtils::getDateTimeValueFromTimestamp($value);
-                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
-                            .' per campo '.$key.' cambio valore da '
-                            .($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format('Y-m-d H:i:s') : 'NULL')
-                            .' a '.$date->format('Y-m-d H:i:s').' in formato DateTime</info>';
-                    $this->output->writeln($msgok);
-                    $objrecord->$setfieldname($date);
-                    continue;
-                }
-                if (is_array($value)) {
-                    $msgarray = '<info>Inserimento '.$entityclass.' con id '.$record['id']
-                            .' per campo '.$key.' cambio valore da '
-                            .json_encode($objrecord->$getfieldname()).' a '
-                            .json_encode($value).' in formato array'.'</info>';
-                    $this->output->writeln($msgarray);
+                if (!$this->insert($objrecord, $key, $value, $record['id'], $entityclass)) {
+                    $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
+                    $setfieldname = $propertyEntity['set'];
                     $objrecord->$setfieldname($value);
-                    continue;
                 }
-
-                $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
-                $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
-                if ($joincolumn && $joincolumnproperty) {
-                    $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
-                    $msgok = '<info>Inserimento '.$entityclass.' con id '.$record['id']
-                            .' per campo '.$key
-                            .' con valore '.print_r($value, true).' tramite entity find</info>';
-                    $this->output->writeln($msgok);
-                    $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
-                    $setfieldname = $joinobj['set'];
-                    $objrecord->$setfieldname($joincolumnobj);
-                    continue;
-                }
-                $objrecord->$setfieldname($value);
             }
         }
         $this->em->persist($objrecord);
         $this->em->flush();
 
-        $infomsg = '<info>'.$entityclass.' con id '.$objrecord->getId().' aggiunta</info>';
+        $infomsg = '<info>' . $entityclass . ' con id ' . $objrecord->getId() . ' aggiunta</info>';
         $this->output->writeln($infomsg);
         $checkid = $this->changeRecordId($entityclass, $record, $objrecord);
 
         return $checkid;
+    }
+
+    private function insert(&$objrecord, $key, $value, $recordid, $entityclass)
+    {
+        $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
+        $getfieldname = $propertyEntity['get'];
+        $setfieldname = $propertyEntity['set'];
+        if ('discr' == $key) {
+            return true;
+        }
+        $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
+        if ('boolean' === $fieldtype) {
+            $newval = FieldTypeUtils::getBooleanValue($value);
+            $msgok = '<info>Inserimento ' . $entityclass . ' con id ' . $recordid
+                    . ' per campo ' . $key . ' con valore '
+                    . var_export($newval, true) . ' in formato Boolean</info>';
+            $this->output->writeln($msgok);
+            $objrecord->$setfieldname($newval);
+            return true;
+        }
+        //Si prende in considerazione solo il null del boolean, gli altri non si toccano
+        if (!$value) {
+            return true;
+        }
+        if ('datetime' === $fieldtype || 'date' === $fieldtype) {
+            $date = FieldTypeUtils::getDateTimeValueFromTimestamp($value);
+            $msgok = '<info>Inserimento ' . $entityclass . ' con id ' . $recordid
+                    . ' per campo ' . $key . ' cambio valore da '
+                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format('Y-m-d H:i:s') : 'NULL')
+                    . ' a ' . $date->format('Y-m-d H:i:s') . ' in formato DateTime</info>';
+            $this->output->writeln($msgok);
+            $objrecord->$setfieldname($date);
+            return true;
+        }
+        if (is_array($value)) {
+            $msgarray = '<info>Inserimento ' . $entityclass . ' con id ' . $recordid
+                    . ' per campo ' . $key . ' cambio valore da '
+                    . json_encode($objrecord->$getfieldname()) . ' a '
+                    . json_encode($value) . ' in formato array' . '</info>';
+            $this->output->writeln($msgarray);
+            $objrecord->$setfieldname($value);
+            return true;
+        }
+
+        $joincolumn = $this->entityutility->getJoinTableField($entityclass, $key);
+        $joincolumnproperty = $this->entityutility->getJoinTableFieldProperty($entityclass, $key);
+        if ($joincolumn && $joincolumnproperty) {
+            $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
+            $msgok = '<info>Inserimento ' . $entityclass . ' con id ' . $recordid
+                    . ' per campo ' . $key
+                    . ' con valore ' . print_r($value, true) . ' tramite entity find</info>';
+            $this->output->writeln($msgok);
+            $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
+            $setfieldname = $joinobj['set'];
+            $objrecord->$setfieldname($joincolumnobj);
+            return true;
+        }
+        return false;
     }
 
     private function changeRecordId($entityclass, $record, $objrecord)
@@ -89,7 +99,7 @@ trait ConfiguratorimportInsertTrait
                         ->setParameter('oldid', $objrecord->getId())
                         ->getQuery();
                 $q->execute();
-                $msgok = '<info>'.$entityclass.' con id '.$objrecord->getId().' sistemata</info>';
+                $msgok = '<info>' . $entityclass . ' con id ' . $objrecord->getId() . ' sistemata</info>';
                 $this->output->writeln($msgok);
             } catch (\Exception $exc) {
                 echo $exc->getMessage();
