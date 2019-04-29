@@ -61,29 +61,25 @@ trait ConfiguratorimportUpdateTrait
             $objrecord->$setfieldname($newval);
             return true;
         }
-        //Si prende in considerazione solo il null del boolean, gli altri non si toccano
-        if (!$value) {
-            return true;
-        }
-
         if ('datetime' === $fieldtype || 'date' === $fieldtype) {
             $date = FieldTypeUtils::getDateTimeValueFromTimestamp($value);
             $msgok = '<info>Modifica ' . $entityclass . ' con id ' . $objrecord->getId()
                     . ' per campo ' . $key . ' cambio valore da '
                     //. (!is_null($objrecord->$getfieldname())) ? $objrecord->$getfieldname()->format("Y-m-d H:i:s") : "(null)"
-                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format('Y-m-d H:i:s') : 'NULL')
-                    . ' a ' . $date->format('Y-m-d H:i:s') . ' in formato DateTime</info>';
+                    . ($objrecord->$getfieldname() ? $objrecord->$getfieldname()->format('Y-m-d H:i:s') : var_export(null, true))
+                    . ' a ' . ($value ? $date->format('Y-m-d H:i:s') : var_export(null, true)) . ' in formato DateTime</info>';
             $this->output->writeln($msgok);
             $objrecord->$setfieldname($date);
             return true;
         }
-        if (is_array($value)) {
+        if (is_array($value) || is_array($objrecord->$getfieldname())) {
+            $newval = FieldTypeUtils::getArrayValue($value);
             $msgarray = '<info>Modifica ' . $entityclass . ' con id ' . $objrecord->getId()
                     . ' per campo ' . $key . ' cambio valore da '
                     . json_encode($objrecord->$getfieldname()) . ' a '
-                    . json_encode($value) . ' in formato array' . '</info>';
+                    . json_encode($newval) . ' in formato array' . '</info>';
             $this->output->writeln($msgarray);
-            $objrecord->$setfieldname($value);
+            $objrecord->$setfieldname($newval);
             return true;
         }
 
@@ -92,8 +88,8 @@ trait ConfiguratorimportUpdateTrait
         if ($joincolumn && $joincolumnproperty) {
             $joincolumnobj = $this->em->getRepository($joincolumn)->find($value);
             $msgok = '<info>Modifica ' . $entityclass . ' con id ' . $objrecord->getId()
-                    . ' per campo ' . $key . ' cambio valore da ' . print_r($objrecord->$getfieldname(), true)
-                    . ' a ' . print_r($value, true) . ' tramite entity find</info>';
+                    . ' per campo ' . $key . ' cambio valore da ' . var_export($objrecord->$getfieldname(), true)
+                    . ' a ' . var_export($value, true) . ' tramite entity find</info>';
             $this->output->writeln($msgok);
             $joinobj = $this->entityutility->getEntityProperties($joincolumnproperty, new $entityclass());
             $setfieldname = $joinobj['set'];
@@ -101,9 +97,14 @@ trait ConfiguratorimportUpdateTrait
             return true;
         }
 
+//        //Si prende in considerazione solo il null del boolean, gli altri non si toccano
+//        if (!is_null($value)) {
+//            return true;
+//        }
+
         $msgok = '<info>Modifica ' . $entityclass . ' con id ' . $objrecord->getId()
-                . ' per campo ' . $key . ' cambio valore da ' . print_r($objrecord->$getfieldname(), true)
-                . ' a ' . print_r($value, true) . '</info>';
+                . ' per campo ' . $key . ' cambio valore da ' . var_export($objrecord->$getfieldname(), true)
+                . ' a ' . var_export($value, true) . '</info>';
         $this->output->writeln($msgok);
         $objrecord->$setfieldname($value);
         return false;

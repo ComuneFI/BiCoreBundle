@@ -16,16 +16,6 @@ class ConfiguratorCommandTest extends WebTestCase
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
-
-        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
-        $qb = $em->createQueryBuilder();
-        $qb->update();
-        $qb->set('o.lastLogin', ':ora');
-        $qb->from('BiCoreBundle:Operatori', 'o');
-        $qb->where('o.username= :username');
-        $qb->setParameter('username', 'admin');
-        $qb->setParameter('ora', new \DateTime('2018-01-01'));
-        $users = $qb->getQuery()->execute();
     }
 
     public function testConfigurator()
@@ -62,7 +52,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->from('BiCoreBundle:Operatori', 'o');
         $qb->where('o.username= :username');
         $qb->setParameter('username', 'usernoroles');
-        $users = $qb->getQuery()->execute();
+        $qb->getQuery()->execute();
         $em->clear();
 
         $qb = $em->createQueryBuilder();
@@ -72,7 +62,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->where('r.ruolo= :ruolo');
         $qb->setParameter('ruolo', 'Amministratore');
         $qb->setParameter('amministratore', 'Amministratores');
-        $users = $qb->getQuery()->execute();
+        $qb->getQuery()->execute();
         $em->clear();
 
         $operatoreadmin = $em->getRepository('BiCoreBundle:Operatori')->findOneBy(array(
@@ -86,7 +76,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->where('p.modulo= :modulo');
         $qb->setParameter('modulo', 'Cliente');
         $qb->setParameter('operatore', $operatoreadmin);
-        $users = $qb->getQuery()->execute();
+        $qb->getQuery()->execute();
         $em->clear();
 
         $operatore = $em->getRepository('BiCoreBundle:Operatori')->findOneBy(array(
@@ -94,19 +84,40 @@ class ConfiguratorCommandTest extends WebTestCase
         ));
         $operatore->setLastLogin(new \DateTime());
         $operatore->setRoles(array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_UNDEFINED'));
+        $operatore->setEnabled(false);
+        $operatore->setOperatore(null);
         $em->persist($operatore);
         $em->flush();
         $em->clear();
 
+        $menuapplicazione = $em->getRepository('BiCoreBundle:Menuapplicazione')->findOneBy(array(
+            'percorso' => 'fi_pannello_amministrazione_homepage',
+        ));
+        $menuapplicazione->setAutorizzazionerichiesta(true);
+        $menuapplicazione->setAttivo(false);
+        $em->persist($menuapplicazione);
+        $em->flush();
+        $em->clear();
+
+        $menuapplicazione2 = $em->getRepository('BiCoreBundle:Menuapplicazione')->findOneBy(array(
+            'nome' => 'Amministrazione',
+        ));
+        $menuapplicazione2->setAutorizzazionerichiesta(false);
+        $menuapplicazione2->setTag(null);
+        $menuapplicazione2->setTarget("Pippo");
+        $em->persist($menuapplicazione2);
+        $em->flush();
+        $em->clear();
+        
         $commandTesterImport2 = new CommandTester($commandimport);
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
-        //echo $outputimport2;
+        echo $outputimport2;
         $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertContains('Modifica', $outputimport2);
         $this->assertContains('tramite entity find', $outputimport2);
         $this->assertContains('lastLogin cambio valore da', $outputimport2);
-        $this->assertContains('ruolo cambio valore da Amministratores a Amministratore', $outputimport2);
+        $this->assertContains('ruolo cambio valore da \'Amministratores\' a \'Amministratore\'', $outputimport2);
         $this->assertContains('sistemata', $outputimport2);
         $this->assertContains('ROLE_UNDEFINED', $outputimport2);
         $em->clear();
@@ -132,7 +143,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->where('o.username= :username');
         $qb->setParameter('username', 'admin');
         $qb->setParameter('ora', null);
-        $users = $qb->getQuery()->execute();
+        $qb->getQuery()->execute();
     }
 
 }
