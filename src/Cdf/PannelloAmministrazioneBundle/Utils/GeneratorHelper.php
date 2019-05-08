@@ -52,7 +52,7 @@ class GeneratorHelper
             $props = $ref->getProperties();
             foreach ($props as $prop) {
                 $f = $prop->getName();
-                if ($f !== strtolower($f)) {
+                if ($f !== strtolower($f) && strpos($f, "RelatedBy") === false) {
                     $wrongpropertyname[] = $file->getFileName();
                     $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
                 }
