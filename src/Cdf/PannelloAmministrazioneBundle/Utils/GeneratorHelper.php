@@ -8,6 +8,7 @@ use MwbExporter\Model\Table;
 
 class GeneratorHelper
 {
+
     private $apppaths;
 
     public function __construct(ProjectPath $projectpath)
@@ -17,7 +18,7 @@ class GeneratorHelper
 
     public function getDestinationEntityOrmPath()
     {
-        $entitypath = realpath($this->apppaths->getSrcPath().'/../src/Entity/');
+        $entitypath = realpath($this->apppaths->getSrcPath() . '/../src/Entity/');
         if (DIRECTORY_SEPARATOR == '/') {
             return $entitypath;
         } else {
@@ -38,7 +39,7 @@ class GeneratorHelper
         if (count($finderwrong) > 0) {
             foreach ($finderwrong as $file) {
                 $wrongfilename[] = $file->getFileName();
-                $fs->remove($pathdoctrineorm.DIRECTORY_SEPARATOR.$file->getFileName());
+                $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
             }
         }
 
@@ -47,20 +48,20 @@ class GeneratorHelper
         $finderwrongproperty->in($pathdoctrineorm)->files()->name('*');
         $wrongpropertyname = array();
         foreach ($finderwrongproperty as $file) {
-            $ref = new \ReflectionClass('App\\Entity\\'.basename($file->getFileName(), '.php'));
+            $ref = new \ReflectionClass('App\\Entity\\' . basename($file->getFileName(), '.php'));
             $props = $ref->getProperties();
             foreach ($props as $prop) {
                 $f = $prop->getName();
                 if ($f !== strtolower($f)) {
                     $wrongpropertyname[] = $file->getFileName();
-                    $fs->remove($pathdoctrineorm.DIRECTORY_SEPARATOR.$file->getFileName());
+                    $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
                 }
             }
         }
 
         if (count($wrongpropertyname) > 0) {
-            $errout = '<error>Ci sono campi nel file '.$wbFile.' con nomi non consentiti:'.
-                    implode(',', $wrongpropertyname).
+            $errout = '<error>Ci sono campi nel file ' . $wbFile . ' con nomi non consentiti:' .
+                    implode(',', $wrongpropertyname) .
                     '. I nomi dei campi devono essere lower case</error>';
 
             $output->writeln($errout);
@@ -75,23 +76,23 @@ class GeneratorHelper
     {
         $fs = new Filesystem();
 
-        $wbFile = $this->apppaths->getDocPath().DIRECTORY_SEPARATOR.$mwbfile;
+        $wbFile = $this->apppaths->getDocPath() . DIRECTORY_SEPARATOR . $mwbfile;
         $bundlePath = $this->apppaths->getSrcPath();
 
-        $viewsPath = $bundlePath.
-                DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR;
-        $entityPath = $bundlePath.
-                DIRECTORY_SEPARATOR.'Entity'.DIRECTORY_SEPARATOR;
-        $formPath = $bundlePath.
-                DIRECTORY_SEPARATOR.'Form'.DIRECTORY_SEPARATOR;
+        $viewsPath = $bundlePath .
+                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
+        $entityPath = $bundlePath .
+                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR;
+        $formPath = $bundlePath .
+                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR;
 
         $scriptGenerator = $this->getScriptGenerator();
 
         $destinationPath = $this->getDestinationEntityOrmPath();
-        $output->writeln('Creazione orm entities in '.$destinationPath.' da file '.$mwbfile);
+        $output->writeln('Creazione orm entities in ' . $destinationPath . ' da file ' . $mwbfile);
 
         if (!$fs->exists($bundlePath)) {
-            $output->writeln('<error>Non esiste la cartella del bundle '.$bundlePath.'</error>');
+            $output->writeln('<error>Non esiste la cartella del bundle ' . $bundlePath . '</error>');
 
             return -1;
         }
@@ -103,18 +104,18 @@ class GeneratorHelper
         $fs->mkdir($viewsPath);
 
         if (!$fs->exists($wbFile)) {
-            $output->writeln("<error>Nella cartella 'doc' non è presente il file ".$mwbfile.'!');
+            $output->writeln("<error>Nella cartella 'doc' non è presente il file " . $mwbfile . '!');
 
             return -1;
         }
 
         if (!$fs->exists($scriptGenerator)) {
-            $output->writeln('<error>Non è presente il comando '.$scriptGenerator.' per esportare il modello!</error>');
+            $output->writeln('<error>Non è presente il comando ' . $scriptGenerator . ' per esportare il modello!</error>');
 
             return -1;
         }
         if (!$fs->exists($destinationPath)) {
-            $output->writeln("<error>Non esiste la cartella per l'esportazione ".$destinationPath.', controllare il nome del Bundle!</error>');
+            $output->writeln("<error>Non esiste la cartella per l'esportazione " . $destinationPath . ', controllare il nome del Bundle!</error>');
 
             return -1;
         }
@@ -124,7 +125,11 @@ class GeneratorHelper
 
     public function getScriptGenerator()
     {
-        $scriptGenerator = $this->apppaths->getVendorBinPath().DIRECTORY_SEPARATOR.'mysql-workbench-schema-export';
+        $bindir = $this->apppaths->getVendorBinPath();
+        if (!file_exists($bindir)) {
+            $bindir = $this->apppaths->getBinPath();
+        }
+        $scriptGenerator = $bindir . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
             throw new \Exception('mysql-workbench-schema-export non trovato', -100);
         }
@@ -136,7 +141,7 @@ class GeneratorHelper
     {
         $fs = new Filesystem();
         $cachedir = $this->apppaths->getCachePath();
-        $exportJson = $cachedir.DIRECTORY_SEPARATOR.'export.json';
+        $exportJson = $cachedir . DIRECTORY_SEPARATOR . 'export.json';
         if ($fs->exists($exportJson)) {
             $fs->remove($exportJson);
         }
