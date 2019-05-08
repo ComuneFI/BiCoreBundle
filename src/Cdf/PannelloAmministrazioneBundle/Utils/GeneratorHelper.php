@@ -125,8 +125,9 @@ class GeneratorHelper
 
     public function getScriptGenerator()
     {
-        $bindir = $this->apppaths->getVendorBinPath();
-        if (!file_exists($bindir)) {
+        try {
+            $bindir = $this->apppaths->getVendorBinPath();
+        } catch (\Exception $exc) {
             $bindir = $this->apppaths->getBinPath();
         }
         $scriptGenerator = $bindir . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
