@@ -23,6 +23,9 @@ trait TabellaQueryTrait
     protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array())
     {
         foreach ($campi as $campo) {
+            if (strpos(strtolower($campo), "relatedby")!==false) {
+                continue;
+            }
             if (!in_array($nometabella, $ancestors)) {
                 $ancestors[] = $nometabella;
             }
