@@ -22,7 +22,7 @@ class GeneratorHelper
         if (DIRECTORY_SEPARATOR == '/') {
             return $entitypath;
         } else {
-            return str_replace('/', "\/", $entitypath);
+            return str_replace('\\', "\\\\", $entitypath);
         }
     }
 
@@ -45,7 +45,7 @@ class GeneratorHelper
 
         //Si cercano file con nomi campo errati
         $finderwrongproperty = new Finder();
-        $finderwrongproperty->in($pathdoctrineorm)->files()->name('*');
+        $finderwrongproperty->in($pathdoctrineorm)->files()->name('Base*.php');
         $wrongpropertyname = array();
         foreach ($finderwrongproperty as $file) {
             $ref = new \ReflectionClass('App\\Entity\\' . basename($file->getFileName(), '.php'));
@@ -54,15 +54,19 @@ class GeneratorHelper
                 $f = $prop->getName();
                 if ($f !== strtolower($f) && strpos($f, "RelatedBy") === false) {
                     $wrongpropertyname[] = $file->getFileName();
-                    $fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
+                    $fullpathprmbase = $pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName();
+                    $fullpathprm = $pathdoctrineorm . DIRECTORY_SEPARATOR . substr($file->getFileName(), 4);
+                    //$fs->remove($pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName());
+                    $fs->rename($fullpathprmbase, $fullpathprmbase . ".ko", true);
+                    $fs->rename($fullpathprm, $fullpathprm . ".ko", true);
                 }
             }
         }
 
         if (count($wrongpropertyname) > 0) {
-            $errout = '<error>Ci sono campi nel file ' . $wbFile . ' con nomi non consentiti:' .
+            $errout = '<error>CI SONO CAMPI NEL FILE ' . $wbFile . ' CON NOMI NON CONSENTITI: ' .
                     implode(',', $wrongpropertyname) .
-                    '. I nomi dei campi devono essere lower case</error>';
+                    '. I NOMI DEI CAMPI DEVONO ESSERE MINUSCOLI!</error>';
 
             $output->writeln($errout);
 
