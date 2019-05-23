@@ -186,14 +186,14 @@ trait FiCoreCrudControllerTrait
             }
         }
 
-        return $this->render(
+        return new Response($this->renderView(
             $crudtemplate,
             array(
                             'entity' => $entity,
                             'edit_form' => $editForm->createView(),
                             'nomecontroller' => ParametriTabella::setParameter($controller),
                         )
-        );
+        ), 400);
     }
 
     /**

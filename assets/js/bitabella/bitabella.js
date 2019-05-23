@@ -110,6 +110,7 @@ class Tabella {
                     //in caso
                     if (xhr.status === 400) {
                         form.replaceWith(xhr.responseText).promise().done(function () {
+                            tabellaclass._submitHandler();
                             tabellaclass._tabellaAdjust();
                         });
                     } else {
