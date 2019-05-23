@@ -136,6 +136,17 @@ function cleanFilesystem()
         $fs->remove($entityfile6);
     }
     
+    $entityfile7 = $vendorDir.'/src/Entity/BaseTabellaMinuscola.php.ko';
+
+    if ($fs->exists($entityfile7)) {
+        $fs->remove($entityfile7);
+    }
+    $entityfile8 = $vendorDir.'/src/Entity/TabellaMinuscola.php.ko';
+
+    if ($fs->exists($entityfile8)) {
+        $fs->remove($entityfile8);
+    }
+    
     $routingfile = $vendorDir.'/config/routes/prova.yml';
 
     if ($fs->exists($routingfile)) {
