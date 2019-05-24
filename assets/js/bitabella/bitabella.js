@@ -87,7 +87,7 @@ class Tabella {
             typeof callback == "function" && callback();
         });
     }
-    _submitHandler() {
+_submitHandler() {
         var tabellaclass = this;
         //Gestione Submit
         //console.log(BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
@@ -99,11 +99,29 @@ class Tabella {
                 var formid = $(form).attr('id');
                 //$("#" + formid).children('input[type="submit"]').click()
                 var url = form.attr('action');
-                var formSerialize = form.serialize();
-                var jqxhr = $.post(url, formSerialize, function (xhr) {
-                    tabellaclass.caricatabella();
-                    BiNotification.show("Registrazione effettuata");
-                    //alert("success");
+                var formSerialize = new FormData();
+                var formParams = form.serializeArray();
+                //var formSerialize = form.serialize();
+                $.each(form.find('input[type="file"]'), function (i, tag) {
+                    $.each($(tag)[0].files, function (i, file) {
+                        formSerialize.append(tag.name, file);
+                    });
+                });
+                $.each(formParams, function (i, val) {
+                    formSerialize.append(val.name, val.value);
+                });
+
+                var jqxhr = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formSerialize,
+                    enctype: 'multipart/form-data',
+                    processData: false, // tell jQuery not to process the data
+                    contentType: false, // tell jQuery not to set contentType
+                    success: function (data) {
+                        tabellaclass.caricatabella();
+                        BiNotification.show("Registrazione effettuata");
+                    }
                 }).done(function () {
                     //alert("second success");
                 }).fail(function (xhr, status, error) {
