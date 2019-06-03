@@ -7,7 +7,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 {
-    protected $client = null;
     protected $em = null;
 
     public function setUp()
