@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
 class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 {
-    public function testColonnetabelleIndex()
+    public function testBiCoreBundleIndex()
     {
         $colonnetabelleregistrati = 6;
         $htmltableid = 'tableColonnetabelle';
@@ -21,10 +21,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($colonnetabelleregistrati, count($colonnetabelle));
-        $this->logout();
-    }
-    public function testMenuapplicazioneIndex()
-    {
+
         $menuapplicazioneregistrati = 15;
         $htmltableid = 'tableMenuapplicazione';
         $client = $this->getClient();
@@ -38,10 +35,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($menuapplicazioneregistrati, count($menuapplicazione));
-        $this->logout();
-    }
-    public function testOperatoriIndex()
-    {
+
         $operatoriregistrati = 3;
         $htmltableid = 'tableOperatori';
         $client = $this->getClient();
@@ -55,10 +49,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($operatoriregistrati, count($operatori));
-        $this->logout();
-    }
-    public function testOpzionitabelleIndex()
-    {
+
         $opzionitabelleregistrati = 3;
         $htmltableid = 'tableOpzionitabelle';
         $client = $this->getClient();
@@ -72,10 +63,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($opzionitabelleregistrati, count($opzionitabelle));
-        $this->logout();
-    }
-    public function testPermessiIndex()
-    {
+
         $permessiregistrati = 1;
         $htmltableid = 'tablePermessi';
         $client = $this->getClient();
@@ -89,10 +77,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($permessiregistrati, count($permessi));
-        $this->logout();
-    }
-    public function testRuoliIndex()
-    {
+
         $ruoliregistrati = 3;
         $htmltableid = 'tableRuoli';
         $client = $this->getClient();
