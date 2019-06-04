@@ -96,7 +96,7 @@ _submitHandler() {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
                 var form = $(this).closest("form");
-                var formid = $(form).attr('id');
+                //var formid = $(form).attr('id');
                 //$("#" + formid).children('input[type="submit"]').click()
                 var url = form.attr('action');
                 var formSerialize = new FormData();
@@ -113,6 +113,8 @@ _submitHandler() {
 
                 var jqxhr = $.ajax({
                     url: url,
+                    async: false,
+                    cache: false,
                     type: "POST",
                     data: formSerialize,
                     enctype: 'multipart/form-data',
@@ -244,8 +246,8 @@ _submitHandler() {
                     var deleteturl = BiStringFunctions.getTabellaParameter(tabellaclass.parametri.baseurl) + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + biid + "/" + token + "/delete";
                     $.ajax({
                         url: deleteturl,
-                        type: "POST",
-                        async: true,
+                        type: "DELETE",
+                        async: false,
                         error: function (xhr, textStatus, errorThrown) {
                             if (xhr.status === 501) {
                                 bootbox.alert({
@@ -306,7 +308,7 @@ _submitHandler() {
                         var deleteturl = BiStringFunctions.getTabellaParameter(tabellaclass.parametri.baseurl) + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller) + "/" + token + "/delete";
                         $.ajax({
                             url: deleteturl,
-                            type: "POST",
+                            type: "DELETE",
                             async: true,
                             data: {id: recordsdacancellareids.join(",")},
                             error: function (xhr, textStatus, errorThrown) {

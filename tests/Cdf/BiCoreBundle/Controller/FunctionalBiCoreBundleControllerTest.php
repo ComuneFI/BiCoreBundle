@@ -74,7 +74,7 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($permessiregistrati, count($permessi));
-
+        
         $ruoliregistrati = 3;
         $htmltableid = 'tableRuoli';
         $testUrl = '/Ruoli/';

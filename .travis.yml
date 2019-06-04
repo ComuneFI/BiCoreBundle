@@ -119,7 +119,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - travis_wait 20 ant
+  - travis_wait 40 ant
   #- PANTHER_WEB_SERVER_DIR=/src/php/BiCoreBundle/tests/public PANTHER_NO_HEADLESS=1 vendor/bin/simple-phpunit -c tools/phpunit/phpunit.xml.dist --filter test20AdminpanelGenerateBundle
 
 after_success:
@@ -136,8 +136,8 @@ after_failure:
   - sudo cat /var/log/apache2/other_vhosts_access.log
   - sudo cat /var/log/apache2/bi_error.log
   - sudo cat /var/log/apache2/bi_access.log
+  - sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test.log
   #- sudo cat /tmp/screenshot.txt
-  #- sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test/test.log
 
 notifications:
   email:

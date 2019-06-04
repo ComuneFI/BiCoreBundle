@@ -76,7 +76,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->assertTrue(file_exists($checkindexprova));
 
         $this->logout();
-        clearcache();
+        //clearcache();
+        removecache();
+        
+        $client->reload();
 
         try {
             $urlRouting = $this->router->generate('Prova_container');
@@ -89,13 +92,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->visit($url);
         $this->login('admin', 'admin');
 
-        $session = $this->getSession();
-        $page = $this->getCurrentPage();
-
-        $this->crudoperation($session, $page);
+        $this->crudoperation();
     }
 
-    private function crudoperation($session, $page)
+    private function crudoperation()
     {
         $client = static::createPantherClient();
 
@@ -138,9 +138,10 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->fillField($fieldhtml, $descrizionetest2);
 
         $this->clickElement('prova_submit');
-        sleep(1);
+        sleep(2);
         $em->clear();
 
+        $em = static::createClient()->getContainer()->get('doctrine')->getManager();
         $qb2 = $em->createQueryBuilder()
                         ->select(array("Prova"))
                         ->from("App:Prova", "Prova")
@@ -154,11 +155,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
         $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
+        sleep(2);
         $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
-        sleep(1);
+        sleep(2);
 
         $qb3 = $em->createQueryBuilder()
                         ->select(array('Prova'))

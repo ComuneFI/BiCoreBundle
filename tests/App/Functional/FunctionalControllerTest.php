@@ -119,13 +119,13 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         $this->fillField($fieldhtml, 'ed');
 
         $this->findField($fieldhtml)->sendKeys("\n");
-        sleep(1);
+        sleep(5);
         $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
         $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
         $this->assertEquals(5, $numrowstabella);
 
         $this->pressButton('birimuovifiltriMagazzino');
-        sleep(1);
+        sleep(5);
         $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
         $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
         $this->assertEquals(11, $numrowstabella);
@@ -183,7 +183,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         sleep(1);
         //$this->executeScript("$('".$selectorconfirm."').click()");
         $this->clickElement($selectorconfirm);
-        sleep(1);
+        sleep(5);
 
         /* qui */
         $container = static::createClient()->getContainer();
@@ -196,7 +196,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         sleep(1);
 
         $this->pressButton('.tabellarefresh');
-        sleep(1);
+        sleep(5);
 
         $qta2ex = 22;
 
@@ -208,7 +208,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
 
         sleep(1);
         $this->clickElement($selectorconfirm);
-        sleep(1);
+        sleep(5);
 
 
         /* qui */

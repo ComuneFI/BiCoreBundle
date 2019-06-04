@@ -8,23 +8,18 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 abstract class BiTestAuthorizedClient extends PantherTestCase
 {
+
     const TIMEOUT = 4;
+
     /* @var $em \Doctrine\ORM\EntityManager */
+
     protected $em;
 
     protected function setUp()
     {
-        $client = static::createPantherClient();
-        $container = static::createClient()->getContainer();
-        $username4test = $container->getParameter('bi_core.admin4test');
-        $password4test = $container->getParameter('bi_core.adminpwd4test');
-        $this->em = $container->get('doctrine')->getManager();
-
-        $testUrl = '/';
-
-        $client->request('GET', $testUrl);
-        $client->waitFor('#Login');
-        $this->login($username4test, $password4test);
+        //$client = static::createPantherClient();
+        //$this->em = $container->get('doctrine')->getManager();
+        $this->autologin();
     }
 
     protected function getRoute($name, $variables = array(), $absolutepath = false)
@@ -49,13 +44,25 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function getCurrentPageContent()
     {
-        
+
         return static::createPantherClient()->getPageSource();
     }
 
     public function visit($url)
     {
         static::createPantherClient()->request('GET', $url);
+    }
+
+    public function autologin()
+    {
+        $client = static::createPantherClient();
+        $container = static::createClient()->getContainer();
+        $username4test = $container->getParameter('bi_core.admin4test');
+        $password4test = $container->getParameter('bi_core.adminpwd4test');
+
+        $client->request('GET', '/');
+        $client->waitFor('#Login');
+        $this->login($username4test, $password4test);
     }
 
     public function login($user, $pass)
@@ -106,7 +113,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     private function getElementByWebDriver($webdriverby)
     {
-        
+
         $elements = static::createPantherClient()->findElements($webdriverby);
         if (0 === count($elements)) {
             return null;

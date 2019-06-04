@@ -199,55 +199,55 @@ EOF;
         $codeTemplate = <<<'EOF'
 [tabella]_container:
     path:  /
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::index' }
+    controller: '[bundle]\Controller\[tabella]Controller::index'
 
 [tabella]_lista:
     path:  /lista
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::lista' }
+    controller: '[bundle]\Controller\[tabella]Controller::lista'
     options:
         expose: true
 
 [tabella]_indexdettaglio:
     path:  /indexDettaglio
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::indexDettaglio' }
+    controller: '[bundle]\Controller\[tabella]Controller::indexDettaglio'
     options:
         expose: true
 
 [tabella]_new:
     path:  /new
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::new' }
-    requirements: { methods: get|post }
+    controller: '[bundle]\Controller\[tabella]Controller::new'
+    methods:    GET|POST
 
 [tabella]_edit:
     path:  /{id}/edit
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::edit' }
+    controller: '[bundle]\Controller\[tabella]Controller::edit'
 
 [tabella]_update:
     path:  /{id}/update
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::update' }
-    requirements: { methods: post|put }
+    controller: '[bundle]\Controller\[tabella]Controller::update'
+    methods:    POST|PUT
 
 [tabella]_aggiorna:
     path:  /{id}/{token}/aggiorna
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::aggiorna' }
-    requirements: { methods: post|put }
+    controller: '[bundle]\Controller\[tabella]Controller::aggiorna'
+    methods:    POST|PUT
     options:
         expose: true
 
 [tabella]_delete:
     path:  /{id}/{token}/delete
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::delete' }
-    requirements: { methods: post|delete }
+    controller: '[bundle]\Controller\[tabella]Controller::delete'
+    methods:    POST|DELETE
 
 [tabella]_deletemultiple:
     path:  /{token}/delete
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::delete' }
-    requirements: { methods: post|delete }
+    controller: '[bundle]\Controller\[tabella]Controller::delete'
+    methods:    POST|DELETE
 
 [tabella]_tabella:
     path:  /tabella
-    defaults: { _controller: '[bundle]\Controller\[tabella]Controller::tabella' }
-    requirements: { methods: post }
+    controller: '[bundle]\Controller\[tabella]Controller::tabella'
+    methods:    POST
 EOF;
         $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
         $code = str_replace('[tabella]', $tabella, $codebundle);
