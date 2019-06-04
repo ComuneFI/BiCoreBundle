@@ -8,7 +8,7 @@ class TestTablesReadonlyAuthorizedControllerTest extends BiWebtestcaseReadrolesA
      */
     public function testSecuredReadonlyAuthorizedIndex()
     {
-        $client = $this->client;
+        $client = $this->logInUser();
         $url = $client->getContainer()->get('router')->generate('Magazzino_container');
         $client->request('GET', $url);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -29,7 +29,7 @@ class TestTablesReadonlyAuthorizedControllerTest extends BiWebtestcaseReadrolesA
         $client->request('GET', $url);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 
-        $csrfDeleteToken = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('Cliente');
+        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Cliente');
         $url = $client->getContainer()->get('router')->generate('Cliente_delete', array('id' => 1, 'token' => $csrfDeleteToken));
         $client->request('GET', $url);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
@@ -38,9 +38,10 @@ class TestTablesReadonlyAuthorizedControllerTest extends BiWebtestcaseReadrolesA
     public function testSecuredReadonlyAuthorizedAggiorna()
     {
         //aggiorna ajax
-        $csrfTokenAggiorna = $this->client->getContainer()->get('security.csrf.token_manager')->getToken('1');
+        $client = $this->logInUser();
+        $csrfTokenAggiorna = $client->getContainer()->get('security.csrf.token_manager')->getToken('1');
         $parametriagiorna = array('values' => array(array('fieldname' => 'Cliente.nominativo', 'fieldtype' => 'string', 'fieldvalue' => 'Andrea Manzo')));
-        $this->client->request('POST', '/Cliente/1/'.$csrfTokenAggiorna.'/aggiorna', $parametriagiorna);
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $client->request('POST', '/Cliente/1/'.$csrfTokenAggiorna.'/aggiorna', $parametriagiorna);
+        $this->assertSame(403, $client->getResponse()->getStatusCode());
     }
 }

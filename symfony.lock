@@ -223,7 +223,7 @@
         "version": "v1.1.1"
     },
     "symfony/class-loader": {
-        "version": "v3.4.24"
+        "version": "v3.4.28"
     },
     "symfony/config": {
         "version": "v3.4.24"
@@ -307,6 +307,12 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client": {
+        "version": "v4.3.0"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v1.1.1"
     },
     "symfony/http-foundation": {
         "version": "v4.2.5"
@@ -398,6 +404,9 @@
     "symfony/polyfill-php72": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-php73": {
+        "version": "v1.11.0"
+    },
     "symfony/process": {
         "version": "v3.4.24"
     },
@@ -422,9 +431,6 @@
             "tests/config/routes.yaml"
         ]
     },
-    "symfony/security": {
-        "version": "v4.2.5"
-    },
     "symfony/security-bundle": {
         "version": "3.3",
         "recipe": {
@@ -436,6 +442,9 @@
         "files": [
             "tests/config/packages/security.yaml"
         ]
+    },
+    "symfony/security-http": {
+        "version": "v4.3.0"
     },
     "symfony/serializer": {
         "version": "v4.2.5"

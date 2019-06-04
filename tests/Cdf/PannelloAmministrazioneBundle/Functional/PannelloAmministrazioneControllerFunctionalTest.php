@@ -9,10 +9,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /*
      * @test
      */
+
     public function test20AdminpanelGenerateBundle()
     {
         //url da testare
-        $apppath = $this->getContainer()->get('pannelloamministrazione.projectpath');
+        $container = static::createClient()->getContainer();
+        $apppath = $container->get('pannelloamministrazione.projectpath');
         $checkentityprova = $apppath->getSrcPath() .
                 DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
         $checktypeprova = $apppath->getSrcPath() .
@@ -23,7 +25,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
                 DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
-        $client = $this->getClient();
+
+        $client = static::createPantherClient();
 
         $client->request('GET', $url);
         $client->waitFor('#adminpanelgenerateentity');
@@ -35,7 +38,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $client->waitFor('#corebundlemodalinfo');
         $this->pressButton('biconfirmok');
-        
+
+        $this->logout();
         clearcache();
 
         $this->visit($url);
@@ -51,6 +55,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('.biconfirmok');
         $this->pressButton('biconfirmok');
 
+        $this->logout();
         clearcache();
 
         $this->visit($url);
@@ -70,6 +75,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->assertTrue(file_exists($checkviewsprova));
         $this->assertTrue(file_exists($checkindexprova));
 
+        $this->logout();
         clearcache();
 
         try {
@@ -81,23 +87,17 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $url = $urlRouting;
 
         $this->visit($url);
-        //In caso di symfony 4 dopo la clear cache non richiede la login
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '4.0') >= 0) {
-            
-        } else {
-            $this->login('admin', 'admin');
-        }
+        $this->login('admin', 'admin');
 
         $session = $this->getSession();
         $page = $this->getCurrentPage();
 
         $this->crudoperation($session, $page);
-
-        $session->quit();
     }
+
     private function crudoperation($session, $page)
     {
-        $client = $this->getClient();
+        $client = static::createPantherClient();
 
         $this->clickElement('tabellaadd');
 
@@ -112,8 +112,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $client->waitFor('#prova_submit');
         $this->clickElement('prova_submit');
         sleep(2);
+        $em = static::createClient()->getContainer()->get('doctrine')->getManager();
 
-        $qb1 = $this->em->createQueryBuilder()
+        $qb1 = $em->createQueryBuilder()
                         ->select(array('Prova'))
                         ->from('App:Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
@@ -138,9 +139,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->clickElement('prova_submit');
         sleep(1);
-        $this->em->clear();
-        
-        $qb2 = $this->em->createQueryBuilder()
+        $em->clear();
+
+        $qb2 = $em->createQueryBuilder()
                         ->select(array("Prova"))
                         ->from("App:Prova", "Prova")
                         ->where("Prova.id = :id")
@@ -159,7 +160,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->pressButton('biconfirmyes');
         sleep(1);
 
-        $qb3 = $this->em->createQueryBuilder()
+        $qb3 = $em->createQueryBuilder()
                         ->select(array('Prova'))
                         ->from('App:Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
@@ -168,22 +169,25 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->assertEquals(count($qb3), 0);
 
-        $qb = $this->em->createQueryBuilder();
+        $qb = $em->createQueryBuilder();
         $qb->delete();
         $qb->from('BiCoreBundle:Colonnetabelle', 'o');
         $qb->where('o.nometabella= :tabella');
         $qb->setParameter('tabella', 'Prova');
         $qb->getQuery()->execute();
-        $this->em->clear();
+        $em->clear();
     }
+
     /**
      * {@inheritdoc}
      */
     public function tearDown()
     {
+        static::createPantherClient()->quit();
         parent::tearDown();
         cleanFilesystem();
         removecache();
         clearcache();
     }
+
 }

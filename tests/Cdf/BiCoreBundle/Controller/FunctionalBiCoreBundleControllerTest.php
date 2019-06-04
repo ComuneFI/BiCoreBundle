@@ -6,11 +6,12 @@ use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
 class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 {
+
     public function testBiCoreBundleIndex()
     {
         $colonnetabelleregistrati = 6;
         $htmltableid = 'tableColonnetabelle';
-        $client = $this->getClient();
+        $client = static::createPantherClient();
         $testUrl = '/Colonnetabelle/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaColonnetabelle to appear
@@ -24,7 +25,6 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 
         $menuapplicazioneregistrati = 15;
         $htmltableid = 'tableMenuapplicazione';
-        $client = $this->getClient();
         $testUrl = '/Menuapplicazione/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaMenuapplicazione to appear
@@ -38,7 +38,6 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 
         $operatoriregistrati = 3;
         $htmltableid = 'tableOperatori';
-        $client = $this->getClient();
         $testUrl = '/Operatori/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaOperatori to appear
@@ -52,7 +51,6 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 
         $opzionitabelleregistrati = 3;
         $htmltableid = 'tableOpzionitabelle';
-        $client = $this->getClient();
         $testUrl = '/Opzionitabelle/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaOpzionitabelle to appear
@@ -66,7 +64,6 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 
         $permessiregistrati = 1;
         $htmltableid = 'tablePermessi';
-        $client = $this->getClient();
         $testUrl = '/Permessi/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaPermessi to appear
@@ -80,7 +77,6 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
 
         $ruoliregistrati = 3;
         $htmltableid = 'tableRuoli';
-        $client = $this->getClient();
         $testUrl = '/Ruoli/';
         $crawler = $client->request('GET', $testUrl);
         $client->waitFor('#' . $htmltableid); // Wait for the tabellaRuoli to appear
@@ -91,6 +87,13 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
                     });
         });
         $this->assertSame($ruoliregistrati, count($ruoli));
-        $this->logout();
+        //$this->logout();
     }
+
+    public function tearDown()
+    {
+        static::createPantherClient()->quit();
+        parent::tearDown();
+    }
+
 }

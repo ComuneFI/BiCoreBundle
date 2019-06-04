@@ -8,74 +8,73 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 abstract class BiTestAuthorizedClient extends PantherTestCase
 {
-
     const TIMEOUT = 4;
-
-    protected static $container;
-
     /* @var $em \Doctrine\ORM\EntityManager */
     protected $em;
 
     protected function setUp()
     {
-        $this->client = static::createPantherClient();
-        self::$container = static::createClient()->getContainer();
-        $username4test = $this->getContainer()->getParameter('bi_core.admin4test');
-        $password4test = $this->getContainer()->getParameter('bi_core.adminpwd4test');
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
+        $client = static::createPantherClient();
+        $container = static::createClient()->getContainer();
+        $username4test = $container->getParameter('bi_core.admin4test');
+        $password4test = $container->getParameter('bi_core.adminpwd4test');
+        $this->em = $container->get('doctrine')->getManager();
 
         $testUrl = '/';
-        
-        $this->client->request('GET', $testUrl);
-        $this->client->waitFor('#Login');
+
+        $client->request('GET', $testUrl);
+        $client->waitFor('#Login');
         $this->login($username4test, $password4test);
     }
+
     protected function getRoute($name, $variables = array(), $absolutepath = false)
     {
         if ($absolutepath) {
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
-        return $this->getContainer()->get('router')->generate($name, $variables, $absolutepath);
+        $container = static::createClient()->getContainer();
+        return $container->get('router')->generate($name, $variables, $absolutepath);
     }
-    protected function getContainer()
-    {
-        return self::$container;
-    }
-    protected function getClient()
-    {
-        return $this->client;
-    }
+
     public function getCurrentPage()
     {
-        return $this->client;
+        return static::createPantherClient();
     }
+
     public function getSession()
     {
-        return $this->client;
+        return static::createPantherClient();
     }
+
     public function getCurrentPageContent()
     {
-        return $this->client->getPageSource();
+        
+        return static::createPantherClient()->getPageSource();
     }
+
     public function visit($url)
     {
-        $this->client->request('GET', $url);
+        static::createPantherClient()->request('GET', $url);
     }
+
     public function login($user, $pass)
     {
         $this->fillField('username', $user);
         $this->fillField('password', $pass);
         $this->pressButton('_submit');
     }
+
     public function evaluateScript($script)
     {
-        return $this->client->executeScript($script, array());
+        return static::createPantherClient()->executeScript($script, array());
     }
+
     public function executeScript($script)
     {
         return $this->evaluateScript($script);
     }
+
     public function find($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -99,19 +98,23 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     private function getElementBySelector($selector)
     {
         return $this->getElementByWebDriverBy($selector);
     }
+
     private function getElementByWebDriver($webdriverby)
     {
-        $elements = $this->client->findElements($webdriverby);
+        
+        $elements = static::createPantherClient()->findElements($webdriverby);
         if (0 === count($elements)) {
             return null;
         } else {
             return $elements[0];
         }
     }
+
     private function getElementByWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -145,6 +148,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
+
     private function getWebDriverBy($selector)
     {
         $element = $this->getElementByWebDriver(WebDriverBy::id($selector));
@@ -178,6 +182,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
+
     public function findField($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -201,6 +206,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function fillField($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -233,6 +239,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function checkboxSelect($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -261,6 +268,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function checkboxIsChecked($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -282,6 +290,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function selectFieldOption($selector, $value, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -306,6 +315,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function pressButton($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -319,7 +329,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
-                $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
+                static::createPantherClient()->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $button->click();
                 //$this->ajaxWait();
 
@@ -332,6 +342,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function clickLink($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -354,6 +365,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function elementIsVisible($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
@@ -376,6 +388,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return false;
     }
+
     public function clickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -389,7 +402,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
-                $this->client->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
+                static::createPantherClient()->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable($this->getWebDriverBy($selector)));
                 $element->click();
 //                $this->ajaxWait();
 
@@ -403,6 +416,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function dblClickElement($selector, $timeout = self::TIMEOUT)
     {
         $e = new \Exception('Impossibile trovare ' . $selector);
@@ -410,7 +424,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         while ($i < $timeout) {
             try {
 //                $this->ajaxWait();
-                $element = $this->client->findElement($selector);
+                $element = static::createPantherClient()->findElement($selector);
                 if (!$element) {
                     ++$i;
                     sleep(1);
@@ -430,6 +444,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         //$this->screenShot();
         throw($e);
     }
+
     public function rightClickElement($selector, $timeout = self::TIMEOUT)
     {
         $i = 0;
@@ -442,7 +457,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
-                $this->client->getMouse()->contextClickTo($selector);
+                static::createPantherClient()->getMouse()->contextClickTo($selector);
 
 //                $this->ajaxWait();
 
@@ -457,6 +472,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         return null;
     }
+
     public function screenShot()
     {
         /* $driver = $this->minkSession->getDriver();
@@ -476,6 +492,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
           file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
          */
     }
+
     /**
      * waitForAjax : wait for all ajax request to close.
      *
@@ -484,21 +501,23 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
      */
 //    public function ajaxWait($timeout = 5, $interval = 200)
 //    {
-//        $this->client->wait($timeout, $interval)->until(function () {
+//        static::createPantherClient()->wait($timeout, $interval)->until(function () {
 //            // jQuery: "jQuery.active" or $.active
 //            // Prototype: "Ajax.activeRequestCount"
 //            // Dojo: "dojo.io.XMLHTTPTransport.inFlight.length"
 //            $condition = 'return ($.active == 0);';
 //
-//            return $this->client->executeScript($condition);
+//            return static::createPantherClient()->executeScript($condition);
 //        });
 //    }
     public function logout()
     {
         $this->visit('/logout');
     }
+
     public function tearDown()
     {
         parent::tearDown();
     }
+
 }

@@ -10,10 +10,9 @@ class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClien
 
     public function testSecuredAdminpanelIndex()
     {
-        $client = $this->client;
+        $client = $this->logInAdmin();
         $url = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_homepage');
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));
-
         $client->request('GET', $url);
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -81,7 +80,7 @@ class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClien
         $this->assertTrue(file_exists($checkindexprova));
 
         /*
-        $client->reload();
+          $client->reload();
           $urlcc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_clearcache');
           $client->request('GET', $urlcc);
           $client->reload();
