@@ -6,16 +6,17 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthorizedClient
 {
+
     public function setUp()
     {
-        $this->client = static::createClient();
-        $this->logInUser();
-        $this->em = $this->client->getContainer()->get('doctrine')->getManager();
+        $client = $this->logInUser();
+        $this->em = $client->getContainer()->get('doctrine')->getManager();
     }
 
     protected function logInUser()
     {
-        $container = $this->client->getContainer();
+        $client = static::createClient();
+        $container = $client->getContainer();
         $session = $container->get('session');
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -29,8 +30,10 @@ abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthori
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return $client;
     }
+
 }

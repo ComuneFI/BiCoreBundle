@@ -11,8 +11,8 @@ class TestTablesNotAuthorizedControllerTest extends BiWebtestcaseNorolesAuthoriz
     {
         $routes = array('Cliente', 'Fornitore', 'Prodottofornitore',
             'Magazzino', 'Ordine', );
+        $client = $this->logInUser();
         foreach ($routes as $route) {
-            $client = $this->client;
             $url = $client->getContainer()->get('router')->generate($route.'_container');
             //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 
@@ -24,14 +24,13 @@ class TestTablesNotAuthorizedControllerTest extends BiWebtestcaseNorolesAuthoriz
     public function testSecuredNotAuthorizedTabella()
     {
         $route = 'Cliente';
-        $this->logInAdmin();
-        $client = $this->client;
+        $client = $this->logInAdmin();
         $url = $client->getContainer()->get('router')->generate($route.'_container');
         $crawler = $client->request('GET', $url);
         $parametri = $this->getParametriTabella($route, $crawler);
 
         $crawler = $client->request('GET', '/logout');
-        $this->logInUsernoreoles();
+        $client = $this->logInUsernoreoles();
 
         $url = $client->getContainer()->get('router')->generate($route.'_tabella');
         //$this->assertContains('DoctrineORMEntityManager', get_class($em));

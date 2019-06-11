@@ -10,8 +10,8 @@ class PannelloAmministrazioneNotAuthorizedControllerTest extends BiWebtestcaseNo
     public function testSecuredAdminpanelIndex()
     {
         $routes = array('fi_pannello_amministrazione_homepage');
+        $client = $this->logInUser();
         foreach ($routes as $route) {
-            $client = $this->client;
             $url = $client->getContainer()->get('router')->generate($route);
             //$this->assertContains('DoctrineORMEntityManager', get_class($em));
 

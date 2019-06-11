@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class BiInstallCommandTest extends WebTestCase
 {
+
     /**
      * {@inheritdoc}
      */
@@ -16,6 +17,7 @@ class BiInstallCommandTest extends WebTestCase
         static::$kernel = static::createKernel();
         static::$kernel->boot();
     }
+
     public function testBiInstall()
     {
         $kernel = static::$kernel;
@@ -53,11 +55,14 @@ class BiInstallCommandTest extends WebTestCase
         $this->assertRegExp('/.../', $outputloaddata);
         $this->assertContains('Done', $outputloaddata);
 
-        $commandcc = $application->find('cache:clear');
-        $commandTestercc = new CommandTester($commandcc);
-        $commandTestercc->execute(array('--env' => 'test'));
-        $outputcc = $commandTestercc->getDisplay();
+        /*
+          $commandcc = $application->find('cache:clear');
+          $commandTestercc = new CommandTester($commandcc);
+          $commandTestercc->execute(array('--env' => 'test'));
+          $outputcc = $commandTestercc->getDisplay();
 
-        $this->assertRegExp('/.../', $outputcc);
+          $this->assertRegExp('/.../', $outputcc);
+         */
     }
+
 }

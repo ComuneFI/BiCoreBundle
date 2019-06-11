@@ -10,7 +10,6 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    syntaxCheck                 = "true"
     bootstrap                   = "./tests/bootstrap.php" >
 
     <testsuites>
@@ -43,7 +42,7 @@
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999&amp;max[self]=999999" />
         
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
         
@@ -62,12 +61,10 @@
         
     </filter>
     
-    <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension" />
-    </extensions>
-    
     <listeners>
         <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
+
+        <listener class="Symfony\Component\Panther\ServerListener" />
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
         <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
     </listeners>   

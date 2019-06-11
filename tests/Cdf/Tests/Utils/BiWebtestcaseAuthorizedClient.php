@@ -7,14 +7,13 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 {
-    protected $client = null;
+
     protected $em = null;
 
     public function setUp()
     {
-        $this->client = static::createClient();
         $this->logInAdmin();
-        $this->em = $this->client->getContainer()->get('doctrine')->getManager();
+        $this->em = static::createClient()->getContainer()->get('doctrine')->getManager();
     }
 
     protected function getParametriTabella($nomecontroller, $crawler)
@@ -27,7 +26,7 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
             'tablename', 'titolotabella', 'multiselezione', 'editinline', 'traduzionefiltri', 'urltabella',
         );
         foreach ($attributi as $attributo) {
-            $parametri[$attributo] = $crawler->filter('#Parametri'.$nomecontroller.'.parametri-tabella')->attr('data-'.$attributo);
+            $parametri[$attributo] = $crawler->filter('#Parametri' . $nomecontroller . '.parametri-tabella')->attr('data-' . $attributo);
         }
 
         return $parametri;
@@ -35,7 +34,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 
     protected function logInAdmin()
     {
-        $container = $this->client->getContainer();
+        $client = static::createClient();
+        $container = $client->getContainer();
         $session = $container->get('session');
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -49,14 +49,16 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return $client;
     }
 
     protected function logInUsernoreoles()
     {
-        $container = $this->client->getContainer();
+        $client = static::createClient();
+        $container = $client->getContainer();
         $session = $container->get('session');
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -70,14 +72,16 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return $client;
     }
 
     protected function logInUserreadroles()
     {
-        $container = $this->client->getContainer();
+        $client = static::createClient();
+        $container = $client->getContainer();
         $session = $container->get('session');
 
         /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
@@ -91,8 +95,10 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
         $loginManager->loginUser($firewallName, $user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_'.$firewallName, serialize($container->get('security.token_storage')->getToken()));
+        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
         $container->get('session')->save();
-        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return $client;
     }
+
 }
