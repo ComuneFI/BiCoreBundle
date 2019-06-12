@@ -58,6 +58,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                 } else {
                     switch (tipocampo) {
                         case "string":
+                        case "text":
                             var testo = encodeURIComponent(valorefiltro);
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': 'CONTAINS', 'valore': testo};
                             break;
