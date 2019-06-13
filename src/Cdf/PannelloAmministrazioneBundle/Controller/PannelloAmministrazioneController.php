@@ -17,7 +17,6 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
 
 class PannelloAmministrazioneController extends AbstractController
 {
-
     private $apppaths;
     private $pacommands;
     private $pautils;
@@ -73,24 +72,24 @@ class PannelloAmministrazioneController extends AbstractController
             }
         }
         sort($mwbs);
-        $svn = $fs->exists($projectDir . '/.svn');
-        $git = $fs->exists($projectDir . '/.git');
+        $svn = $fs->exists($projectDir.'/.svn');
+        $git = $fs->exists($projectDir.'/.git');
         if (!OsFunctions::isWindows()) {
             $delcmd = 'rm -rf';
-            $setfilelock = 'touch ' . $this->lockfile;
-            $remfilelock = 'rm ' . $this->lockfile;
+            $setfilelock = 'touch '.$this->lockfile;
+            $remfilelock = 'rm '.$this->lockfile;
             $windows = false;
         } else {
             // @codeCoverageIgnoreStart
             $delcmd = 'del';
-            $setfilelock = 'echo $null >> ' . $this->lockfile;
-            $remfilelock = 'del ' . $this->lockfile;
+            $setfilelock = 'echo $null >> '.$this->lockfile;
+            $remfilelock = 'del '.$this->lockfile;
             $windows = true;
             // @codeCoverageIgnoreEnd
         }
-        $dellogsfiles = $delcmd . ' ' . $this->apppaths->getLogsPath() . DIRECTORY_SEPARATOR . '*';
-        $delcacheprodfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'prod' . DIRECTORY_SEPARATOR . '*';
-        $delcachedevfiles = $delcmd . ' ' . $this->apppaths->getCachePath() . DIRECTORY_SEPARATOR . 'dev' . DIRECTORY_SEPARATOR . '*';
+        $dellogsfiles = $delcmd.' '.$this->apppaths->getLogsPath().DIRECTORY_SEPARATOR.'*';
+        $delcacheprodfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'prod'.DIRECTORY_SEPARATOR.'*';
+        $delcachedevfiles = $delcmd.' '.$this->apppaths->getCachePath().DIRECTORY_SEPARATOR.'dev'.DIRECTORY_SEPARATOR.'*';
         $setmaintenancefile = $setfilelock;
         $remmaintenancefile = $remfilelock;
 
@@ -104,12 +103,11 @@ class PannelloAmministrazioneController extends AbstractController
         );
         $composerinstall = '';
         if (false == $windows) {
-            $composerinstall = $composerinstall . ' cd ' . $projectDir . ' && composer install --no-interaction 2>&1';
-            $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' " . $projectDir . '/.env';
+            $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-interaction 2>&1';
+            $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' ".$projectDir.'/.env';
             $comandishell[] = array('text' => $composerinstall, 'link' => '#');
             $comandishell[] = array('text' => $sed, 'link' => '#');
         }
-
 
         $comandisymfony = array(
             array('text' => 'list', 'link' => '#'),
@@ -293,7 +291,7 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->acquire();
             $this->apppaths = $this->apppaths;
             $pammutils = $this->pautils;
-            $command = $this->apppaths->getConsole() . ' ' . $simfonycommand;
+            $command = $this->apppaths->getConsole().' '.$simfonycommand;
             $result = $pammutils->runCommand($command);
 
             $this->locksystem->release();
@@ -362,7 +360,7 @@ class PannelloAmministrazioneController extends AbstractController
             if (!OsFunctions::isWindows()) {
                 $this->locksystem->acquire();
                 //$phpPath = OsFunctions::getPHPExecutableFromPath();
-                $command = 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'simple-phpunit';
+                $command = 'vendor'.DIRECTORY_SEPARATOR.'bin'.DIRECTORY_SEPARATOR.'simple-phpunit';
                 $process = new Process(array($command));
                 $process->setWorkingDirectory($this->apppaths->getRootPath());
 
@@ -371,12 +369,12 @@ class PannelloAmministrazioneController extends AbstractController
                 $this->locksystem->release();
                 // eseguito dopo la fine del comando
                 if (!$process->isSuccessful()) {
-                    $twigparms = array('errcode' => -1, 'command' => $command, 'message' => $process->getOutput() . $process->getErrorOutput());
+                    $twigparms = array('errcode' => -1, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
                     $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
 
                     return new Response($view, 500);
                 } else {
-                    $twigparms = array('errcode' => 0, 'command' => $command, 'message' => $process->getOutput() . $process->getErrorOutput());
+                    $twigparms = array('errcode' => 0, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
 
                     return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
                 }
