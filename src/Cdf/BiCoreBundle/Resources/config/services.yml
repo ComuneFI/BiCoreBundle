@@ -230,6 +230,12 @@ services:
         tags:
             -  { name: console.command }
             
+    cdf.bicorebundle.command.clonaruolo:
+        class: Cdf\BiCoreBundle\Command\BiCoreBundleClonaruoloCommand
+        public: false
+        tags:
+            -  { name: console.command }
+            
     cdf.bicorebundle.command.configuratorimport:
         alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
         public: true

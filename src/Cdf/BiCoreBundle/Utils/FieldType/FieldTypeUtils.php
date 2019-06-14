@@ -7,7 +7,6 @@ namespace Cdf\BiCoreBundle\Utils\FieldType;
  */
 abstract class FieldTypeUtils
 {
-
     public static function getArrayValue($value)
     {
         if (is_null($value)) {
@@ -54,7 +53,7 @@ abstract class FieldTypeUtils
                     $date = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
                     break;
                 case \DateTime::createFromFormat('Y-m-d', $value):
-                    $date = \DateTime::createFromFormat('Y-m-d H:i:s', $value . ' 00:00:00');
+                    $date = \DateTime::createFromFormat('Y-m-d H:i:s', $value.' 00:00:00');
                     break;
                 default:
                     break;

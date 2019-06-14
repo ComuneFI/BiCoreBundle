@@ -4,13 +4,13 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 
 class DoctrineFieldReader
 {
-
     private $tableprefix;
 
     public function __construct($tableprefix)
     {
         $this->tableprefix = $tableprefix;
     }
+
     public function getField2Object($fieldname, $object, $decodifiche = null)
     {
         $property = '';
@@ -25,7 +25,7 @@ class DoctrineFieldReader
             }
         }
         if (!$propertyfound) {
-            throw new \Exception('Proprietà ' . $field . ' non trovata per ' . $fieldname);
+            throw new \Exception('Proprietà '.$field.' non trovata per '.$fieldname);
         }
         if ($decodifiche) {
             if (key_exists($object, $decodifiche)) {
@@ -35,6 +35,7 @@ class DoctrineFieldReader
 
         return $object;
     }
+
     public function object2View($object, $type = null, $decodifiche = null)
     {
         $risposta = null;
@@ -66,6 +67,7 @@ class DoctrineFieldReader
 
         return $risposta;
     }
+
     private function getObjectType($type, $object)
     {
         if (null === $type) {
@@ -75,19 +77,21 @@ class DoctrineFieldReader
         } else {
             $tipo = $type;
         }
+
         return $tipo;
     }
+
     private function getObjectProperty($field, $object)
     {
-        $property = 'get' . ucfirst($field);
+        $property = 'get'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = 'is' . ucfirst($field);
+        $property = 'is'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = 'has' . ucfirst($field);
+        $property = 'has'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }

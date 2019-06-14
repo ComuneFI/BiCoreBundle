@@ -7,7 +7,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 
 /**
