@@ -85,7 +85,7 @@
         "version": "2.1.7"
     },
     "facebook/webdriver": {
-        "version": "1.6.0"
+        "version": "1.7.1"
     },
     "fi/osbundle": {
         "version": "2.0.5"
@@ -120,6 +120,9 @@
     "markbaker/matrix": {
         "version": "1.1.4"
     },
+    "michaeldegroot/doctrine-encrypt-bundle": {
+        "version": "4.0.1"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -138,8 +141,20 @@
     "ocramius/proxy-manager": {
         "version": "2.2.2"
     },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.2.3"
+    },
+    "paragonie/halite": {
+        "version": "v4.5.4"
+    },
+    "paragonie/hidden-string": {
+        "version": "v1.0.0"
+    },
     "paragonie/random_compat": {
         "version": "v2.0.18"
+    },
+    "paragonie/sodium_compat": {
+        "version": "v1.10.0"
     },
     "pdepend/pdepend": {
         "version": "2.5.2"
@@ -309,10 +324,10 @@
         ]
     },
     "symfony/http-client": {
-        "version": "v4.3.0"
+        "version": "v4.3.1"
     },
     "symfony/http-client-contracts": {
-        "version": "v1.1.1"
+        "version": "v1.1.5"
     },
     "symfony/http-foundation": {
         "version": "v4.2.5"
@@ -365,7 +380,7 @@
         "version": "v1.0.6"
     },
     "symfony/panther": {
-        "version": "v0.3.0"
+        "version": "v0.4.1"
     },
     "symfony/phpunit-bridge": {
         "version": "4.1",
