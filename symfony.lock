@@ -120,9 +120,6 @@
     "markbaker/matrix": {
         "version": "1.1.4"
     },
-    "michaeldegroot/doctrine-encrypt-bundle": {
-        "version": "4.0.1"
-    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -141,20 +138,8 @@
     "ocramius/proxy-manager": {
         "version": "2.2.2"
     },
-    "paragonie/constant_time_encoding": {
-        "version": "v2.2.3"
-    },
-    "paragonie/halite": {
-        "version": "v4.5.4"
-    },
-    "paragonie/hidden-string": {
-        "version": "v1.0.0"
-    },
     "paragonie/random_compat": {
         "version": "v2.0.18"
-    },
-    "paragonie/sodium_compat": {
-        "version": "v1.10.0"
     },
     "pdepend/pdepend": {
         "version": "2.5.2"
@@ -445,6 +430,9 @@
             "tests/config/packages/test/routing.yaml",
             "tests/config/routes.yaml"
         ]
+    },
+    "symfony/security": {
+        "version": "v4.2.10"
     },
     "symfony/security-bundle": {
         "version": "3.3",
