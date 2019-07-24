@@ -238,7 +238,7 @@ trait FiCoreCrudControllerTrait
         return new Response('Operazione eseguita con successo');
     }
 
-    private function elencoModifiche($controller, $id)
+    public function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
