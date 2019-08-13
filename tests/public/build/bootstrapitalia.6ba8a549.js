@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([["bootstrapitalia"],{ytcq:function(t,p,i){"use strict";i.r(p);i("Gp/l"),i("NphZ")}},[["ytcq","runtime",0,2]]]);
