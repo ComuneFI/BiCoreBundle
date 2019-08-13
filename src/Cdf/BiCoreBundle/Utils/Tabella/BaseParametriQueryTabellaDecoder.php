@@ -2,6 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
+use DateTime;
 use Doctrine\Common\Collections\Expr\Comparison;
 
 class BaseParametriQueryTabellaDecoder
