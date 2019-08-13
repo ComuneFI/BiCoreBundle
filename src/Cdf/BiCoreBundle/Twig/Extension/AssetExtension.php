@@ -2,7 +2,10 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-class AssetExtension extends \Twig\Extension\AbstractExtension
+use Twig\Extension\AbstractExtension;
+use Twig_SimpleFunction;
+
+class AssetExtension extends AbstractExtension
 {
     private $projectpath;
 
@@ -13,7 +16,7 @@ class AssetExtension extends \Twig\Extension\AbstractExtension
 
     public function getFunctions()
     {
-        return [new \Twig_SimpleFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
+        return [new Twig_SimpleFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
     }
 
     public function assetExists($path)

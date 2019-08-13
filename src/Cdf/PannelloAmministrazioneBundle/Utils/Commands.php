@@ -2,14 +2,15 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Commands
 {
-    /* @var $apppaths \Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath */
+    /* @var $apppaths ProjectPath */
 
     private $apppaths;
-    /* @var $pammutils \Cdf\PannelloAmministrazioneBundle\Utils\Utility */
+    /* @var $pammutils Utility */
     private $pammutils;
 
     public function __construct(ProjectPath $projectpath, Utility $pautils)
@@ -31,7 +32,7 @@ class Commands
             $command = 'git pull';
         }
         if (!$command) {
-            throw new \Exception('Vcs non trovato', 100);
+            throw new Exception('Vcs non trovato', 100);
         }
 
         return $this->pammutils->runCommand($command, $projectDir);
@@ -59,7 +60,7 @@ class Commands
 
     public function generateFormCrud($entityform, $generatemplate)
     {
-        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
+        /* @var $fs Filesystem */
         $resultchk = $this->checkFormCrud($entityform);
 
         if (0 !== $resultchk['errcode']) {
@@ -80,7 +81,7 @@ class Commands
 
     public function checkFormCrud($entityform)
     {
-        /* @var $fs \Symfony\Component\Filesystem\Filesystem */
+        /* @var $fs Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
         $appPath = $srcPath;

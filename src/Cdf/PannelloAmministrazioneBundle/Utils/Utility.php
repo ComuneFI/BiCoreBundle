@@ -3,8 +3,9 @@
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\Process;
 
 class Utility
@@ -32,7 +33,7 @@ class Utility
     public static function runCommand($command, $workingdir = '')
     {
         /* @var $process \Symfony\Component\Process\Process */
-        if (version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, '4.2.0') >= 0) {
+        if (version_compare(Kernel::VERSION, '4.2.0') >= 0) {
             $process = Process::fromShellCommandline($command);
         } else {
             $process = new Process($command, $workingdir);

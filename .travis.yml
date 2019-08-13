@@ -11,7 +11,7 @@ php:
 
 services:
   - mysql
-  - pgsql
+  - postgresql
   - xvfb
   
 # Configure different DB environments
@@ -59,7 +59,7 @@ before_script:
   - sudo /sbin/swapon /var/swap.1
   
   - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi make
+  - sudo apt-get install apache2 libapache2-mod-fastcgi make ant
   
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi

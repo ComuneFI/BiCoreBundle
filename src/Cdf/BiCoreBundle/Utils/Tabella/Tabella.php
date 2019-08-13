@@ -2,12 +2,15 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
+use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\Security;
 
 /**
- * @property \Doctrine\ORM\EntityManager                        $em
- * @property \Cdf\BiCoreBundle\Service\Permessi\PermessiManager $permessi
- * @property \Symfony\Component\Security\Core\Security          $user
+ * @property EntityManager                        $em
+ * @property PermessiManager $permessi
+ * @property Security          $user
  */
 
 /**

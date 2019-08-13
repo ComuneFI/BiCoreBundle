@@ -3,7 +3,9 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use function count;
 
 class FiController extends AbstractController
 {
@@ -16,7 +18,7 @@ class FiController extends AbstractController
     public function __construct(PermessiManager $permessi)
     {
         $matches = array();
-        $controllo = new \ReflectionClass(get_class($this));
+        $controllo = new ReflectionClass(get_class($this));
 
         preg_match('/(.*)\\\(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         if (0 == count($matches)) {

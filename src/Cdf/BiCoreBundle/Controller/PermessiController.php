@@ -2,9 +2,11 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
+use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 /**
  * Permessi controller.
@@ -14,7 +16,7 @@ class PermessiController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -59,7 +61,7 @@ class PermessiController extends FiController
             ),
         );
         $prefiltri = array();
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),

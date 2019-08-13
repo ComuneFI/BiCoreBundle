@@ -2,7 +2,9 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
+use Datetime;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Exception;
 
 trait TabellaDecoderTrait
 {
@@ -19,7 +21,7 @@ trait TabellaDecoderTrait
     protected function getFieldValue($fieldvalue)
     {
         if (isset($fieldvalue['date'])) {
-            return new \Datetime($fieldvalue['date']);
+            return new Datetime($fieldvalue['date']);
         } else {
             return $fieldvalue;
         }
@@ -74,7 +76,7 @@ trait TabellaDecoderTrait
             $ex = 'BiCore: table or association '.$tablename." not found, did you mean one of these:\n".
                     implode("\n", array_keys($this->decodificaAlias)).
                     ' ?';
-            throw new \Exception($ex);
+            throw new Exception($ex);
         }
 
         return $this->getAliasGenerato($tablename);
@@ -86,7 +88,7 @@ trait TabellaDecoderTrait
             $ex = 'BiCore: field or association '.$nomecampo." not found, did you mean one of these:\n".
                     implode("\n", array_keys($this->configurazionecolonnetabella)).
                     ' ?';
-            throw new \Exception($ex);
+            throw new Exception($ex);
         }
 
         return $this->configurazionecolonnetabella[$nomecampo];

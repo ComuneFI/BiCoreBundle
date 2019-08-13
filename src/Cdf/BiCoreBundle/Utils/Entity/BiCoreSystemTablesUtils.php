@@ -2,16 +2,19 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
+use Cdf\BiCoreBundle\Entity\Ruoli;
+use Doctrine\ORM\EntityManager;
+
 class BiCoreSystemTablesUtils
 {
-    /* @var $em \Doctrine\ORM\EntityManager */
+    /* @var $em EntityManager */
     private $em;
     private $entities = array();
 
     public function __construct($em)
     {
         $this->em = $em;
-        $this->entities[\Cdf\BiCoreBundle\Entity\Ruoli::class] = array('priority' => 10);
+        $this->entities[Ruoli::class] = array('priority' => 10);
         $this->entities["Cdf\BiCoreBundle\Entity\Operatori"] = array('priority' => 50);
         $this->entities["Cdf\BiCoreBundle\Entity\Permessi"] = array('priority' => 100);
         $this->entities["Cdf\BiCoreBundle\Entity\Storicomodifiche"] = array('priority' => 110);

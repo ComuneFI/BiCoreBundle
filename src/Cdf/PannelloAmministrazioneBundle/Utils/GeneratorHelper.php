@@ -2,8 +2,12 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Exception;
+use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use function count;
 
 class GeneratorHelper
 {
@@ -46,7 +50,7 @@ class GeneratorHelper
         $finderwrongproperty->in($pathdoctrineorm)->files()->name('Base*.php');
         $wrongpropertyname = array();
         foreach ($finderwrongproperty as $file) {
-            $ref = new \ReflectionClass('App\\Entity\\'.basename($file->getFileName(), '.php'));
+            $ref = new ReflectionClass('App\\Entity\\'.basename($file->getFileName(), '.php'));
             $props = $ref->getProperties();
             foreach ($props as $prop) {
                 $f = $prop->getName();
@@ -129,12 +133,12 @@ class GeneratorHelper
     {
         try {
             $bindir = $this->apppaths->getVendorBinPath();
-        } catch (\Exception $exc) {
+        } catch (Exception $exc) {
             $bindir = $this->apppaths->getBinPath();
         }
         $scriptGenerator = $bindir.DIRECTORY_SEPARATOR.'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
-            throw new \Exception('mysql-workbench-schema-export non trovato', -100);
+            throw new Exception('mysql-workbench-schema-export non trovato', -100);
         }
 
         return $scriptGenerator;

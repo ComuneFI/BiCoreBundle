@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use function count;
 
 trait TabellaQueryTrait
 {

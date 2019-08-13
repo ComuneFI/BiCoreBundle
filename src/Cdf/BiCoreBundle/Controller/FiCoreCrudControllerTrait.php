@@ -2,10 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 
 trait FiCoreCrudControllerTrait
 {
@@ -16,7 +18,7 @@ trait FiCoreCrudControllerTrait
      */
     public function new(Request $request)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canCreate($this->getController())) {
@@ -80,7 +82,7 @@ trait FiCoreCrudControllerTrait
      */
     public function edit(Request $request, $id)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
@@ -132,7 +134,7 @@ trait FiCoreCrudControllerTrait
      */
     public function update(Request $request, $id)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
@@ -201,7 +203,7 @@ trait FiCoreCrudControllerTrait
      */
     public function delete(Request $request, $token)
     {
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         if (!$this->getPermessi()->canDelete($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per eliminare questo contenuto');
         }
@@ -223,7 +225,7 @@ trait FiCoreCrudControllerTrait
 
             $query = $qb->getQuery();
             $query->execute();
-        } catch (\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException $e) {
             $response = new Response($e->getMessage());
             $response->setStatusCode('501');
 

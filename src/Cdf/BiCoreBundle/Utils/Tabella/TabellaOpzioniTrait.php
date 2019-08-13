@@ -2,8 +2,9 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
-use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils;
+use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use function count;
 
 trait TabellaOpzioniTrait
 {

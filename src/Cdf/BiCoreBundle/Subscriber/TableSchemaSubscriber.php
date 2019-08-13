@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Subscriber;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Id\SequenceGenerator;
 
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
@@ -41,7 +42,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
             $em = $args->getEntityManager();
             if (isset($classMetadata->idGenerator)) {
-                $sequenceGenerator = new \Doctrine\ORM\Id\SequenceGenerator(
+                $sequenceGenerator = new SequenceGenerator(
                     $em->getConfiguration()->getQuoteStrategy()->getSequenceName(
                         $newDefinition,
                         $classMetadata,
