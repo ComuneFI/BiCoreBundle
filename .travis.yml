@@ -11,7 +11,7 @@ php:
 
 services:
   - mysql
-  - pgsql
+  - postgresql
   - xvfb
   
 # Configure different DB environments
