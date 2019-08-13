@@ -2,11 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class BiCoreBundlePubblicamanualeCommand extends Command
 {
@@ -41,7 +42,7 @@ class BiCoreBundlePubblicamanualeCommand extends Command
             //    // We use a custom iterator to ignore VCS files
             $this->fs->mirror($originDir, $targetDir, Finder::create()->name($manuale)->in($originDir));
         } else {
-            throw new \Exception('Attenzione, non è presente il file '.$manualepath);
+            throw new Exception('Attenzione, non è presente il file '.$manualepath);
         }
         $output->writeln('Done!');
     }

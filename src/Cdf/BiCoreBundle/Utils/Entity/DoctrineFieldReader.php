@@ -2,6 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
+use Exception;
+
 class DoctrineFieldReader
 {
     private $tableprefix;
@@ -25,7 +27,7 @@ class DoctrineFieldReader
             }
         }
         if (!$propertyfound) {
-            throw new \Exception('Proprietà '.$field.' non trovata per '.$fieldname);
+            throw new Exception('Proprietà '.$field.' non trovata per '.$fieldname);
         }
         if ($decodifiche) {
             if (key_exists($object, $decodifiche)) {

@@ -3,8 +3,11 @@
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+use Twig\Extension\AbstractExtension;
+use Twig_SimpleFilter;
+use Twig_SimpleFunction;
 
-class UtilitaExtension extends \Twig\Extension\AbstractExtension
+class UtilitaExtension extends AbstractExtension
 {
     private $container;
 
@@ -19,16 +22,16 @@ class UtilitaExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('json_decode', array($this, 'jsonDecode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('parameter', array($this, 'getParameter', 'is_safe' => array('html'))),
+            new Twig_SimpleFunction('json_decode', array($this, 'jsonDecode', 'is_safe' => array('html'))),
+            new Twig_SimpleFunction('parameter', array($this, 'getParameter', 'is_safe' => array('html'))),
         );
     }
 
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('getparametrotabella', array($this, 'getParametroTabella')),
-            new \Twig_SimpleFilter('larghezzacolonna', array($this, 'getLarghezzacolonna')),
+            new Twig_SimpleFilter('getparametrotabella', array($this, 'getParametroTabella')),
+            new Twig_SimpleFilter('larghezzacolonna', array($this, 'getLarghezzacolonna')),
         );
     }
 

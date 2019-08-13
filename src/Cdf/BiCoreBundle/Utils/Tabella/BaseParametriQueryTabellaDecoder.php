@@ -2,11 +2,11 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
-//use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Expr\Comparison;
 
 class BaseParametriQueryTabellaDecoder
 {
+
     protected $fieldname;
     protected $fieldoperator;
     protected $fieldvalue;
@@ -61,7 +61,7 @@ class BaseParametriQueryTabellaDecoder
                 break;
         }
         $nomecampo = substr($this->fieldname, stripos($this->fieldname, '.') + 1);
-        $filtro = $nomecampo.' '.$this->operatorToString($this->fieldoperator).' '.$descrizionevalore;
+        $filtro = $nomecampo . ' ' . $this->operatorToString($this->fieldoperator) . ' ' . $descrizionevalore;
 
         return $filtro;
     }
@@ -69,7 +69,7 @@ class BaseParametriQueryTabellaDecoder
     protected function getDescrizioneFiltroAltro(&$descrizionevalore)
     {
         if ('' == $descrizionevalore) {
-            $descrizionevalore = "'".$this->fieldvalue."'";
+            $descrizionevalore = "'" . $this->fieldvalue . "'";
         }
     }
 
@@ -80,7 +80,7 @@ class BaseParametriQueryTabellaDecoder
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y');
             } else {
-                $descrizionevalore = \DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -88,7 +88,7 @@ class BaseParametriQueryTabellaDecoder
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y H:i:s');
             } else {
-                $descrizionevalore = \DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -100,7 +100,7 @@ class BaseParametriQueryTabellaDecoder
     {
         $trovato = false;
         if (is_string($this->fieldvalue)) {
-            $descrizionevalore = $descrizionevalore = "'".$this->fieldvalue."'";
+            $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
             $trovato = true;
         }
 
@@ -115,13 +115,13 @@ class BaseParametriQueryTabellaDecoder
             if ($decodifiche) {
                 if (is_array($this->fieldvalue)) {
                     foreach ($this->fieldvalue as $value) {
-                        $descrizionevalore = $descrizionevalore."'".$decodifiche[$value]."', ";
+                        $descrizionevalore = $descrizionevalore . "'" . $decodifiche[$value] . "', ";
                     }
                 } else {
                     if (isset($decodifiche[$this->fieldvalue])) {
-                        $descrizionevalore = $descrizionevalore = "'".$decodifiche[$this->fieldvalue]."'";
+                        $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
                     } else {
-                        $descrizionevalore = $descrizionevalore = "'".$this->fieldvalue."'";
+                        $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
                     }
                 }
                 $trovato = true;
@@ -159,9 +159,9 @@ class BaseParametriQueryTabellaDecoder
         if (is_array($this->fieldvalue)) {
             foreach ($this->fieldvalue as $value) {
                 if (is_numeric($value)) {
-                    $descrizionevalore = $descrizionevalore.', '.$value;
+                    $descrizionevalore = $descrizionevalore . ', ' . $value;
                 } else {
-                    $descrizionevalore = $descrizionevalore."'".$value."', ";
+                    $descrizionevalore = $descrizionevalore . "'" . $value . "', ";
                 }
                 $trovato = true;
             }
@@ -185,7 +185,7 @@ class BaseParametriQueryTabellaDecoder
             Comparison::NIN => 'non compreso tra',
             Comparison::EQ => 'uguale a',
             Comparison::NEQ => 'diverso da',
-            );
+        );
 
         return $decoder[$operator];
     }

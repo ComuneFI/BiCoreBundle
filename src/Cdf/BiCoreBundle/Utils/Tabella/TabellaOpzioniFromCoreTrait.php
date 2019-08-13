@@ -2,8 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
-use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
+use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 
 trait TabellaOpzioniFromCoreTrait
 {
@@ -21,7 +21,7 @@ trait TabellaOpzioniFromCoreTrait
     {
         $colonnetabellacore = $this->opzionitabellacore['colonnetabella'];
         //$nomecolonna = $this->tablename . "." . $colonnadatabase["fieldName"];
-        /* @var $colonnatabellacore \Cdf\BiCoreBundle\Entity\Colonnetabelle */
+        /* @var $colonnatabellacore Colonnetabelle */
         foreach ($colonnetabellacore as $colonnatabellacore) {
             $campodabonificare = $colonnatabellacore->getNometabella().'.'.$colonnatabellacore->getNomecampo();
             $campo = $this->bonificaNomeCampo($campodabonificare);

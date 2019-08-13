@@ -2,11 +2,16 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use function count;
 
 trait FiCoreCrudInlineControllerTrait
 {
@@ -49,7 +54,7 @@ trait FiCoreCrudInlineControllerTrait
     {
         $this->checkAggiornaRight(0, $token);
 
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $controller = $this->getController();
         $entityclass = $this->getEntityClassName();
 
@@ -75,7 +80,7 @@ trait FiCoreCrudInlineControllerTrait
                 if ($accessor->isWritable($entity, $field)) {
                     $accessor->setValue($entity, $field, $fieldvalue);
                 } else {
-                    throw new \Exception($field.' non modificabile');
+                    throw new Exception($field.' non modificabile');
                 }
             } else {
                 continue;
@@ -85,14 +90,14 @@ trait FiCoreCrudInlineControllerTrait
         $em->flush();
         $em->clear();
 
-        return new \Symfony\Component\HttpFoundation\JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
+        return new JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
     }
 
     protected function updateinline($id, $values, $token)
     {
         $this->checkAggiornaRight($id, $token);
 
-        /* @var $em \Doctrine\ORM\EntityManager */
+        /* @var $em EntityManager */
         $controller = $this->getController();
         $entityclass = $this->getEntityClassName();
 
@@ -137,7 +142,7 @@ trait FiCoreCrudInlineControllerTrait
             $queryBuilder->getQuery()->execute();
         }
 
-        return new \Symfony\Component\HttpFoundation\JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
+        return new JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
     }
 
     private function getValueAggiorna($field)
@@ -151,15 +156,15 @@ trait FiCoreCrudInlineControllerTrait
                 $fieldvalue = !('false' === $field['fieldvalue']);
             }
             if ('date' == $fieldtype) {
-                $fieldvalue = \DateTime::createFromFormat('d/m/Y', $field['fieldvalue']);
+                $fieldvalue = DateTime::createFromFormat('d/m/Y', $field['fieldvalue']);
                 if (false === $fieldvalue) {
-                    throw new \Exception('Formato data non valido');
+                    throw new Exception('Formato data non valido');
                 }
             }
             if ('datetime' == $fieldtype) {
-                $fieldvalue = \DateTime::createFromFormat('d/m/Y H:i', $field['fieldvalue']);
+                $fieldvalue = DateTime::createFromFormat('d/m/Y H:i', $field['fieldvalue']);
                 if (false === $fieldvalue) {
-                    throw new \Exception('Formato data ora non valido');
+                    throw new Exception('Formato data ora non valido');
                 }
             }
         }

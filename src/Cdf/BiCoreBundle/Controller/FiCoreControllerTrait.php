@@ -2,13 +2,14 @@
 
 namespace Cdf\BiCoreBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Cdf\BiCoreBundle\Utils\Entity\Finder;
+use Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Cdf\BiCoreBundle\Utils\Entity\Finder;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreControllerTrait
 {
@@ -55,7 +56,7 @@ trait FiCoreControllerTrait
 
         $filtri = array();
         $prefiltri = array();
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $colonneordinamento = array($tablenamefromentity.'.id' => 'DESC');
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),
@@ -118,7 +119,7 @@ trait FiCoreControllerTrait
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),
@@ -183,7 +184,7 @@ trait FiCoreControllerTrait
             $lista[] = array('id' => $riga->getId(), 'descrizione' => $riga->__toString());
         }
 
-        return new JsonResponse(\Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
+        return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
     }
 
     protected function getTabellaTemplate($controller)

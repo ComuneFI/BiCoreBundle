@@ -2,11 +2,17 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
+use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Extension\AbstractExtension;
+use Twig_Environment;
+use Twig_SimpleFunction;
+use function count;
 
-class MenuExtension extends \Twig\Extension\AbstractExtension
+class MenuExtension extends AbstractExtension
 {
     protected $em;
     protected $urlgenerator;
@@ -23,14 +29,14 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
+            new Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
                 'needs_environment' => true,
                 'is_safe' => ['html'],
                 ]),
         ];
     }
 
-    public function generamenu(\Twig_Environment $environment)
+    public function generamenu(Twig_Environment $environment)
     {
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();
@@ -40,7 +46,7 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
         );
 
         $em = $this->em;
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        /* @var $qb QueryBuilder */
         $qb = $em->createQueryBuilder();
         $qb->select(array('a'));
         $qb->from('BiCoreBundle:Menuapplicazione', 'a');
@@ -95,7 +101,7 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
             $visualizzare = true;
 
             if ($item->isAutorizzazionerichiesta()) {
-                $permessi = new \Cdf\BiCoreBundle\Service\Permessi\PermessiManager($this->em, $this->user);
+                $permessi = new PermessiManager($this->em, $this->user);
                 $visualizzare = $permessi->canRead($item->getTag());
             }
 
@@ -137,7 +143,7 @@ class MenuExtension extends \Twig\Extension\AbstractExtension
         foreach ($submenu as $subitem) {
             $visualizzare = true;
             if ($subitem->isAutorizzazionerichiesta()) {
-                $permessi = new \Cdf\BiCoreBundle\Service\Permessi\PermessiManager($this->em, $this->user);
+                $permessi = new PermessiManager($this->em, $this->user);
                 $visualizzare = $permessi->canRead($subitem->getTag());
             }
 

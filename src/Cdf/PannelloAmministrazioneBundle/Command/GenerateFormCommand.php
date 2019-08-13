@@ -2,15 +2,18 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use Cdf\BiCoreBundle\Entity\Colonnetabelle;
+use Cdf\BiCoreBundle\Entity\Permessi;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use function count;
 
 class GenerateFormCommand extends Command
 {
@@ -152,14 +155,14 @@ class GenerateFormCommand extends Command
         //Si inserisce il record di default nella tabella permessi
         $ruoloAmm = $this->em->getRepository('BiCoreBundle:Ruoli')->findOneBy(array('superadmin' => true)); //SuperAdmin
 
-        $newPermesso = new \Cdf\BiCoreBundle\Entity\Permessi();
+        $newPermesso = new Permessi();
         $newPermesso->setCrud('crud');
         $newPermesso->setModulo($entityform);
         $newPermesso->setRuoli($ruoloAmm);
         $this->em->persist($newPermesso);
         $this->em->flush();
 
-        $tabelle = new \Cdf\BiCoreBundle\Entity\Colonnetabelle();
+        $tabelle = new Colonnetabelle();
         $tabelle->setNometabella($entityform);
         $this->em->persist($tabelle);
         $this->em->flush();

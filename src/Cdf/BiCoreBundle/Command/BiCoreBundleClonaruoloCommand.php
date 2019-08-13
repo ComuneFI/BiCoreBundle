@@ -2,11 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class BiCoreBundleClonaruoloCommand extends Command
 {
@@ -37,10 +38,10 @@ class BiCoreBundleClonaruoloCommand extends Command
         $nuovoruolo = $input->getArgument('nuovoruolo');
 
         if (!$ruoloesistente) {
-            throw new \Exception('Inserire il ruolo da clonare');
+            throw new Exception('Inserire il ruolo da clonare');
         }
         if (!$nuovoruolo) {
-            throw new \Exception('Inserire il nuvo ruolo');
+            throw new Exception('Inserire il nuvo ruolo');
         }
 
         $query = $this->em->createQueryBuilder()
@@ -52,7 +53,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         ;
         $ruoloesistenteobj = $query->getResult();
         if (!$ruoloesistenteobj) {
-            throw new \Exception('Non esiste il ruolo '.$ruoloesistente);
+            throw new Exception('Non esiste il ruolo '.$ruoloesistente);
         } else {
             $newruoloesistente = $ruoloesistenteobj[0];
         }
@@ -66,7 +67,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         ;
         $nuovruoloobj = $query->getResult();
         if ($nuovruoloobj) {
-            throw new \Exception('Esiste già il ruolo '.$nuovoruolo);
+            throw new Exception('Esiste già il ruolo '.$nuovoruolo);
         }
 
         $output->writeln('<info>Inizio clonazione del ruolo '.$ruoloesistente.' in '.$nuovoruolo.'</info>');

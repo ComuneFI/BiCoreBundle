@@ -2,7 +2,10 @@
 
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
-class HeaderTabellaExtension extends \Twig\Extension\AbstractExtension
+use Twig\Extension\AbstractExtension;
+use Twig_SimpleFunction;
+
+class HeaderTabellaExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -10,7 +13,7 @@ class HeaderTabellaExtension extends \Twig\Extension\AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('sort_class', array($this, 'sortClass', 'is_safe' => array('html'))),
+            new Twig_SimpleFunction('sort_class', array($this, 'sortClass', 'is_safe' => array('html'))),
         );
     }
 

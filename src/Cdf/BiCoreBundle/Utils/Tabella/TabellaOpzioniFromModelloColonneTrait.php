@@ -2,6 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
+use Exception;
+
 trait TabellaOpzioniFromModelloColonneTrait
 {
     protected function setOpzioniTabellaFromModellocolonne(&$opzionibuilder)
@@ -28,7 +30,7 @@ trait TabellaOpzioniFromModelloColonneTrait
                 $ex = 'BiCore: '.$campo." field table option not found, did you mean one of these:\n".
                         implode("\n", array_keys($opzionibuilder)).
                         ' ?';
-                throw new \Exception($ex);
+                throw new Exception($ex);
             }
         }
     }

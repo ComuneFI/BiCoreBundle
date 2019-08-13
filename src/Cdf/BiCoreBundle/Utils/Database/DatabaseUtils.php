@@ -2,14 +2,17 @@
 
 namespace Cdf\BiCoreBundle\Utils\Database;
 
+use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Doctrine\Common\Persistence\ObjectManager;
+use function count;
 
 class DatabaseUtils
 {
-    /* @var $em \Doctrine\ORM\EntityManager */
+    /* @var $em EntityManager */
     private $em;
     private $kernel;
 
@@ -47,7 +50,7 @@ class DatabaseUtils
 
     public function isDateChanged($oldvalue, $newvalue)
     {
-        $datenewvalue = new \DateTime();
+        $datenewvalue = new DateTime();
         $datenewvalue->setTimestamp($newvalue);
         $twoboth = !$oldvalue && !$newvalue;
         if ($twoboth) {

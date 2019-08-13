@@ -2,6 +2,8 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
+use Exception;
+
 class ProjectPath
 {
     /**
@@ -49,7 +51,7 @@ class ProjectPath
             $bindir = realpath($this->getProjectPath().'/../bin');
         }
         if (!file_exists($bindir)) {
-            throw new \Exception('Cartella Bin non trovata', -100);
+            throw new Exception('Cartella Bin non trovata', -100);
         }
 
         return $bindir;
@@ -61,7 +63,7 @@ class ProjectPath
         if (!file_exists($vendorbindir)) {
             $vendorbindir = dirname($this->getProjectPath()).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin';
             if (!file_exists($vendorbindir)) {
-                throw new \Exception('Cartella Bin in vendor non trovata', -100);
+                throw new Exception('Cartella Bin in vendor non trovata', -100);
             }
         }
 
@@ -107,7 +109,7 @@ class ProjectPath
     {
         $cachedir = $this->cacheDir;
         if (!file_exists($cachedir)) {
-            throw new \Exception('Cache non trovata', -100);
+            throw new Exception('Cache non trovata', -100);
         }
 
         return $cachedir;
@@ -117,7 +119,7 @@ class ProjectPath
     {
         $logsdir = $this->logsDir;
         if (!file_exists($logsdir)) {
-            throw new \Exception('Logs non trovata', -100);
+            throw new Exception('Logs non trovata', -100);
         }
 
         return $logsdir;
@@ -128,7 +130,7 @@ class ProjectPath
         $console = $this->getBinPath().'/console';
         // Questo codice per versioni che usano un symfony 2 o 3
         if (!file_exists($console)) {
-            throw new \Exception('Console non trovata', -100);
+            throw new Exception('Console non trovata', -100);
         }
 
         return $console;

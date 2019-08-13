@@ -3,6 +3,8 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
+use function count;
 
 class Finder
 {
@@ -24,7 +26,7 @@ class Finder
             }
         }
         if (!$entityclassname) {
-            throw new \Exception("Non riesco a trovare l'entità '".$entityname."', è stata generata?");
+            throw new Exception("Non riesco a trovare l'entità '".$entityname."', è stata generata?");
         }
 
         return $entityclassname;

@@ -2,8 +2,10 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
-use Doctrine\Common\Persistence\Proxy;
+use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\Proxy;
+use function count;
 
 class EntityUtils
 {
@@ -95,17 +97,17 @@ class EntityUtils
     public function getEntityProperties($fieldname, $objrecord)
     {
         $parametri = array('str' => $fieldname, 'primamaiuscola' => true);
-        $getfieldname = \Cdf\BiCoreBundle\Utils\String\StringUtils::toCamelCase($parametri);
+        $getfieldname = StringUtils::toCamelCase($parametri);
         if (!method_exists($objrecord, $getfieldname)) {
-            $getfieldname = 'has'.\Cdf\BiCoreBundle\Utils\String\StringUtils::toCamelCase($parametri);
+            $getfieldname = 'has'.StringUtils::toCamelCase($parametri);
             if (!method_exists($objrecord, $getfieldname)) {
-                $getfieldname = 'is'.\Cdf\BiCoreBundle\Utils\String\StringUtils::toCamelCase($parametri);
+                $getfieldname = 'is'.StringUtils::toCamelCase($parametri);
                 if (!method_exists($objrecord, $getfieldname)) {
-                    $getfieldname = 'get'.\Cdf\BiCoreBundle\Utils\String\StringUtils::toCamelCase($parametri);
+                    $getfieldname = 'get'.StringUtils::toCamelCase($parametri);
                 }
             }
         }
-        $setfieldname = 'set'.\Cdf\BiCoreBundle\Utils\String\StringUtils::toCamelCase($parametri);
+        $setfieldname = 'set'.StringUtils::toCamelCase($parametri);
 
         return array('get' => $getfieldname, 'set' => $setfieldname);
     }
