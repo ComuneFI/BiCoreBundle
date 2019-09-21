@@ -30,7 +30,7 @@ class Utility
         return self::runCommand($command);
     }
 
-    public static function runCommand($command, $workingdir = '')
+    public static function runCommand($command, $workingdir = '.')
     {
         /* @var $process \Symfony\Component\Process\Process */
         if (version_compare(Kernel::VERSION, '4.2.0') >= 0) {
