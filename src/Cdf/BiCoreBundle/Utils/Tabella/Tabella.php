@@ -6,6 +6,7 @@ use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Security;
+use \Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * @property EntityManager                        $em
@@ -45,7 +46,7 @@ class Tabella
     protected $em;
     protected $user;
 
-    public function __construct($doctrine, $parametri = '{}')
+    public function __construct(Registry $doctrine, array $parametri)
     {
         $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {
@@ -58,15 +59,15 @@ class Tabella
         $this->entityname = $this->getTabellaParameter('entityclass');
         $this->entityname = str_replace('FiBiCoreBundle', 'BiCoreBundle', $this->entityname);
         $this->permessi = json_decode($this->getTabellaParameter('permessi'));
-        $this->modellocolonne = json_decode($this->getTabellaParameter('modellocolonne', array()), true);
+        $this->modellocolonne = json_decode($this->getTabellaParameter('modellocolonne', '{}'), true);
         $this->paginacorrente = $this->getTabellaParameter('paginacorrente');
         $this->paginetotali = $this->getTabellaParameter('paginetotali');
         $this->righeperpagina = $this->getTabellaParameter('righeperpagina', 15);
 
         $this->estraituttirecords = '1' === $this->getTabellaParameter('estraituttirecords', 0) ? true : false;
-        $this->colonneordinamento = json_decode($this->getTabellaParameter('colonneordinamento', array()), true);
-        $this->prefiltri = json_decode($this->getTabellaParameter('prefiltri', array()), true);
-        $this->filtri = json_decode($this->getTabellaParameter('filtri', array()), true);
+        $this->colonneordinamento = json_decode($this->getTabellaParameter('colonneordinamento', '{}'), true);
+        $this->prefiltri = json_decode($this->getTabellaParameter('prefiltri', '{}'), true);
+        $this->filtri = json_decode($this->getTabellaParameter('filtri', '{}'), true);
         $this->wheremanuale = $this->getTabellaParameter('wheremanuale', null);
         $this->user = $this->parametri['user'];
 
