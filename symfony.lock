@@ -383,6 +383,9 @@
             "tests/.gitignore"
         ]
     },
+    "symfony/polyfill-apcu": {
+        "version": "v1.12.0"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.11.0"
     },
@@ -446,6 +449,15 @@
             "tests/config/packages/security.yaml"
         ]
     },
+    "symfony/security-core": {
+        "version": "v4.3.4"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.3.4"
+    },
+    "symfony/security-guard": {
+        "version": "v4.3.4"
+    },
     "symfony/security-http": {
         "version": "v4.3.0"
     },
@@ -490,6 +502,9 @@
             "tests/config/packages/translation.yaml",
             "translations/.gitignore"
         ]
+    },
+    "symfony/translation-contracts": {
+        "version": "v1.1.6"
     },
     "symfony/twig-bridge": {
         "version": "v4.0.15"

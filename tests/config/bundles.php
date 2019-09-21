@@ -16,6 +16,5 @@ return [
     Cdf\PannelloAmministrazioneBundle\PannelloAmministrazioneBundle::class => ['all' => true],
     Cdf\BiCoreBundle\BiCoreBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
-    Sensio\Bundle\DistributionBundle\SensioDistributionBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];
