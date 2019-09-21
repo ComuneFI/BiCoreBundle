@@ -122,7 +122,7 @@
         "conf-dir": "tests/conf",
         "config-dir": "tests/config",
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     }
 }
