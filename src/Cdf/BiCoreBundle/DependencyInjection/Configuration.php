@@ -17,10 +17,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('bi_core');
-
-        $rootNode
+        $treeBuilder = new TreeBuilder('bi_core');
+        
+        $treeBuilder->getRootNode()
                 ->children()
                 ->scalarNode('lockfile')->defaultValue('%kernel.cache_dir%/maintenance.lock')->end()
                 ->scalarNode('appname')->defaultValue('BiCoreBundle')->end()

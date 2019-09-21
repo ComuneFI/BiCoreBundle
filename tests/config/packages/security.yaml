@@ -22,7 +22,6 @@ security:
               provider: fos_userbundle
               csrf_token_generator: security.csrf.token_manager 
               
-          logout_on_user_change: true
           logout:       true
           anonymous:    true
           
@@ -31,7 +30,6 @@ security:
             pattern:    ^/
             http_basic:
                 realm: "Area protetta"
-            logout_on_user_change: true
         
     access_control:
         - { path: ^/(_(profiler|wdt)|css|images|js|accedi), roles: IS_AUTHENTICATED_ANONYMOUSLY }
