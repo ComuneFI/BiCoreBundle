@@ -10,6 +10,7 @@ use Symfony\Component\Process\Process;
 
 class Utility
 {
+
     private $apppaths;
     private $kernel;
 
@@ -18,26 +19,20 @@ class Utility
         $this->apppaths = $projectpath;
         $this->kernel = $kernel;
     }
-
     public function clearcache($env = '')
     {
         if (!$env) {
             $env = $this->kernel->getEnvironment();
         }
 
-        $command = $this->apppaths->getConsole().' cache:clear --env='.$env;
+        $command = $this->apppaths->getConsole() . ' cache:clear --env=' . $env;
 
         return self::runCommand($command);
     }
-
     public static function runCommand($command, $workingdir = '.')
     {
         /* @var $process \Symfony\Component\Process\Process */
-        if (version_compare(Kernel::VERSION, '4.2.0') >= 0) {
-            $process = Process::fromShellCommandline($command);
-        } else {
-            $process = new Process($command, $workingdir);
-        }
+        $process = new Process(explode(" ", $command), $workingdir);
 
         if ($workingdir) {
             $process->setWorkingDirectory($workingdir);
@@ -48,7 +43,7 @@ class Utility
         if (!$process->isSuccessful()) {
             $return = array('errcode' => -1,
                 'command' => $command,
-                'message' => 'Errore nel comando '.$command."\n".$process->getErrorOutput()."\n".$process->getOutput(), );
+                'message' => 'Errore nel comando ' . $command . "\n" . $process->getErrorOutput() . "\n" . $process->getOutput(),);
         } else {
             $return = array('errcode' => 0,
                 'command' => $command,
@@ -58,7 +53,6 @@ class Utility
 
         return $return;
     }
-
     public function runSymfonyCommand($command, array $options = array())
     {
         $application = new Application($this->kernel);

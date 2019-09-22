@@ -13,7 +13,7 @@ trait FiCoreTabellaControllerTrait
 {
 
     private $tabellaxls;
-
+    
     public function tabella(Request $request)
     {
         if (!$this->permessi->canRead($this->getController())) {
@@ -115,10 +115,10 @@ trait FiCoreTabellaControllerTrait
     {
         $template = $controller . '/Tabella/tabellacontainer.html.twig';
         $path = $controller . '/';
-        if (!$this->get('templating')->exists($template)) {
+        if (!$this->twig->exists($template)) {
             $template = 'BiCoreBundle:' . $controller . ':Tabella/tabellacontainer.html.twig';
             $path = 'BiCoreBundle:' . $controller . ':';
-            if (!$this->get('templating')->exists($template)) {
+            if (!$this->twig->exists($template)) {
                 $path = 'BiCoreBundle:Standard:';
                 $template = $path . 'Tabella/tabellacontainer.html.twig';
             }

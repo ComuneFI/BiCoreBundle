@@ -161,7 +161,9 @@ services:
     Cdf\BiCoreBundle\Controller\FiController:
         public: false
         calls:
-             - [setTabellaxls, ['@cdf.bicorebundle.utils.export.tabellaxls']]
+            - method: setTabellaxls
+              arguments:
+                  - '@cdf.bicorebundle.utils.export.tabellaxls'
         #tags: ['controller.service_arguments']
         
     cdf.bicorebundle.controller.operatori:
