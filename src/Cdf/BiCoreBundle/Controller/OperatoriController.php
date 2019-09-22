@@ -19,13 +19,13 @@ class OperatoriController extends FiController
     private $logger;
     private $usermanipulator;
 
-    public function __construct(PermessiManager $permessi, EngineInterface $twig, LoggerInterface $logger, $usermanipulator)
+    public function __construct(PermessiManager $permessi, EngineInterface $template, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
         $this->permessi = $permessi;
         $this->usermanipulator = $usermanipulator;
-        $this->twig = $twig;
-        parent::__construct($permessi, $twig);
+        $this->template = $template;
+        parent::__construct($permessi, $template);
     }
     /**
      * Displays a form to create a new table entity.

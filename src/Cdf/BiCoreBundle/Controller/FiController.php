@@ -13,11 +13,11 @@ class FiController extends AbstractController
     use FiCoreControllerTrait, FiCoreCrudControllerTrait, FiCoreTabellaControllerTrait;
 
     protected $bundle;
-    protected $twig;
+    protected $template;
     protected $controller;
     protected $permessi;
 
-    public function __construct(PermessiManager $permessi, EngineInterface $twig)
+    public function __construct(PermessiManager $permessi, EngineInterface $template)
     {
         $matches = array();
         $controllo = new ReflectionClass(get_class($this));
@@ -30,7 +30,7 @@ class FiController extends AbstractController
         $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
         $this->controller = $matches[count($matches) - 1];
         $this->permessi = $permessi;
-        $this->twig = $twig;
+        $this->template = $template;
     }
 
     protected function getBundle()
@@ -46,5 +46,9 @@ class FiController extends AbstractController
     protected function getPermessi()
     {
         return $this->permessi;
+    }
+    protected function getTemplate()
+    {
+        return $this->template;
     }
 }
