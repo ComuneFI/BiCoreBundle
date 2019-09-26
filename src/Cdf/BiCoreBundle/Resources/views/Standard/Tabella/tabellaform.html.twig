@@ -17,10 +17,10 @@
 
 {%if not isnew %}
     <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
-        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseStoricomodifiche" aria-label="Registro modifiche" aria-expanded="false" aria-controls="collapseStoricomodifiche">
             Registro modifiche
         </button>
-        <div class="collapse" id="collapseExample">
+        <div class="collapse" id="collapseStoricomodifiche">
             <div class="card card-body">
                 {% for modifica in elencomodifiche %}
                     <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>

@@ -20,6 +20,7 @@ class MenuapplicazioneType extends AbstractType
             'label' => 'Aggiorna record',
             'attr' => array(
                 'class' => 'btn-outline-primary bisubmit',
+                'aria-label' => 'Aggiorna record',
         ), );
         $builder
                 ->add('nome')
