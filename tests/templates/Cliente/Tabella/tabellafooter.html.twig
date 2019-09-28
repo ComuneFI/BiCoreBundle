@@ -29,7 +29,7 @@
                 </button>
             </div>
             <div class="float-sm-right">
-                <nav class="pagination-wrapper justify-content-center" aria-label="Esempio di navigazione della pagina">
+                <nav class="pagination-wrapper justify-content-center" aria-label="Navigazione pagina {{parametri.nomecontroller|getparametrotabella}}">
                     <ul class="pagination">
                         <!--Prima pagina avanti e precedente-->
                         {% if parametri.paginacorrente != 1 %}
@@ -86,7 +86,7 @@
                         <!--Pagina n di tot-->
                         <li class="page-item active">
                             <span class="page-link">
-                                <span class="d-inline-block d-sm-none">Pagina</span>
+                                <span class="d-inline-block d-sm-none"></span>
                                 Pagina {{parametri.paginacorrente}} di {{parametri.paginetotali}} (Righe estratte: {{parametri.righetotali}})
                                 <span class="sr-only">corrente</span>
                             </span>
