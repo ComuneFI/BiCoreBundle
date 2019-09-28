@@ -42,7 +42,7 @@
     <div class="float-lg-right">
         {{ form_widget(form.submit) }}
         {%if not isnew %}
-            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseRegistroModifiche" aria-expanded="false" aria-controls="collapseRegistroModifiche">
                 Registro modifiche
             </button>
         {%endif %}
@@ -54,7 +54,7 @@
     <!--Attenzione a questo div che deve contenere tutte queste informazioni, altrimenti nella edit si raddoppiano 
     i div ogni chiamata ad una nuova edit -->
     <div id="{{nomecontroller|getparametrotabella}}SubTabellaDettagliContainer">
-        <div class="collapse" id="collapseExample">
+        <div class="collapse" id="collapseRegistroModifiche">
             <div class="card card-body">
                 {% for modifica in elencomodifiche %}
                     <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
