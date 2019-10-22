@@ -67,7 +67,7 @@ class GenerateFormCommand extends Command
             array_splice($lines, 8, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
 
             array_splice($lines, 14, 0, '        $submitparms = array('
-                    ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\"));");
+                    ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
 
             array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
 
