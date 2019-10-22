@@ -13,7 +13,8 @@
             <ul class="navbar-nav">
                 {% for i in risposta %}
                     {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
-                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
                             <div class="dropdown-menu">
                                 <div class="link-list-wrapper">
                                     <ul class="link-list">
@@ -23,12 +24,12 @@
                                                 <li><span class="divider">&nbsp;</span>
                                                 </li>
                                                 {% for sottosubmenu in sottomenu.sottolivello %}
-                                                    <li><a class="list-item" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
+                                                    <li role="menuitem"><a class="list-item" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
                                                     {% endfor %}
                                                 <li><span class="divider">&nbsp;</span>
                                                 {% else  %}
                                                 </li>                               
-                                                <li><a class="list-item" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
+                                                <li><a role="menuitem" class="list-item" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
                                                 {% endif  %}
                                             {% endfor %}
                                     </ul>
@@ -36,7 +37,7 @@
                             </div>
                         </li>                        
                     {% else %}
-                        <li class="nav-item"{% if i.classe is defined %} class = "nav-link {{ i.classe }}" {% endif %} >
+                        <li role="menuitem" class="nav-item"{% if i.classe is defined %} class="nav-link {{ i.classe }}" {% endif %} >
                             <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}" class="nav-link" >
                                 <span>{{ i.nome }} </span>
                             </a>
