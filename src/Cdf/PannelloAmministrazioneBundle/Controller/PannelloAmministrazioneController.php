@@ -103,7 +103,7 @@ class PannelloAmministrazioneController extends AbstractController
         );
         $composerinstall = '';
         if (false == $windows) {
-            $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-interaction 2>&1';
+            $composerinstall = $composerinstall.' cd '.$projectDir.' && composer install --no-dev --optimize-autoloader --no-interaction 2>&1';
             $sed = "sed -i -e 's/cercaquestastringa/sostituisciconquestastringa/g' ".$projectDir.'/.env';
             $comandishell[] = array('text' => $composerinstall, 'link' => '#');
             $comandishell[] = array('text' => $sed, 'link' => '#');
