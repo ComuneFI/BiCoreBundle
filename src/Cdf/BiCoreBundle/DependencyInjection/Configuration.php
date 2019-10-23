@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritdoc}
      */
@@ -33,8 +34,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('userreadroles4test')->defaultValue('userreadroles')->end()
                 ->scalarNode('userreadrolespwd4test')->defaultValue('userreadroles')->end()
                 ->booleanNode('solosso')->defaultFalse()->end()
-                ->end()
-        ;
+                ->end();
 
         return $treeBuilder;
     }
