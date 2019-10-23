@@ -51,7 +51,7 @@ matrix:
     #  env: DB=pgsql
 
 addons:
-  chrome: stable
+  chrome: beta
   apt:
     packages:
       - apache2 libapache2-mod-fastcgi make ant
