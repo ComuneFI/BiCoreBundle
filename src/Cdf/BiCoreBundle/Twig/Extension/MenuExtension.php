@@ -58,14 +58,21 @@ class MenuExtension extends AbstractExtension
 
         $risposta = array_merge($rispostahome, $this->getMenu($menu));
 
+        $pathmanualemkdocs = $this->rootpath.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'manuale/index.html';
         $pathmanuale = $this->rootpath.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'manuale.pdf';
         $username = '';
         $urlLogout = '';
 
+        if (file_exists($pathmanualemkdocs)) {
+            $risposta[] = array(
+                'percorso' => $this->getUrlObject('Manuale', $pathmanualemkdocs, '_blank'),
+                'nome' => 'Manuale', 'target' => '_blank', );
+        }
+
         if (file_exists($pathmanuale)) {
             $risposta[] = array(
                 'percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'),
-                'nome' => 'Manuale', 'target' => '_blank', );
+                'nome' => 'Manuale (Pdf)', 'target' => '_blank', );
         }
 
         if ('ssocdf' === $this->user->getToken()->getProviderKey()) {
