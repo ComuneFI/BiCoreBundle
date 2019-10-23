@@ -51,10 +51,9 @@ matrix:
     #  env: DB=pgsql
 
 addons:
-  chrome: latest
+  chrome: stable
   apt:
     packages:
-      - chromium-chromedriver
       - apache2 libapache2-mod-fastcgi make ant
       
 before_script:
