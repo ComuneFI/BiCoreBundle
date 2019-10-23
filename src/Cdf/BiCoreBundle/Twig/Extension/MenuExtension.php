@@ -14,6 +14,7 @@ use function count;
 
 class MenuExtension extends AbstractExtension
 {
+
     protected $em;
     protected $urlgenerator;
     protected $user;
@@ -32,7 +33,7 @@ class MenuExtension extends AbstractExtension
             new Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
                 'needs_environment' => true,
                 'is_safe' => ['html'],
-                ]),
+                    ]),
         ];
     }
 
@@ -58,24 +59,13 @@ class MenuExtension extends AbstractExtension
 
         $risposta = array_merge($rispostahome, $this->getMenu($menu));
 
-        $mkdocsfile = 'manuale' . DIRECTORY_SEPARATOR . 'index.html';
-        $pathmanualemkdocs = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $mkdocsfile;
-        $pathmanuale = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'manuale.pdf';
         $username = '';
         $urlLogout = '';
-
-        if (file_exists($pathmanualemkdocs)) {
-            $risposta[] = array(
-                'percorso' => array("percorso" => $this->urlgenerator->generate("homepage") . $mkdocsfile),
-                'nome' => 'Manuale', 'target' => '_blank',);
-        }
-
-        if (file_exists($pathmanuale)) {
-            $risposta[] = array(
-                'percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'),
-                'nome' => 'Manuale (Pdf)', 'target' => '_blank',);
-        }
-
+        
+        $this->generaManualeMkdocMenu($risposta);
+        
+        $this->generaManualePdfMenu($risposta);
+        
         if ('ssocdf' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
@@ -98,6 +88,27 @@ class MenuExtension extends AbstractExtension
         );
 
         return $environment->render('BiCoreBundle:Menu:menu.html.twig', array('risposta' => $risposta));
+    }
+
+    protected function generaManualePdfMenu(&$risposta)
+    {
+        $pathmanuale = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'manuale.pdf';
+        if (file_exists($pathmanuale)) {
+            $risposta[] = array(
+                'percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'),
+                'nome' => 'Manuale (Pdf)', 'target' => '_blank',);
+        }
+    }
+
+    protected function generaManualeMkdocMenu(&$risposta)
+    {
+        $mkdocsfile = 'manuale' . DIRECTORY_SEPARATOR . 'index.html';
+        $pathmanualemkdocs = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $mkdocsfile;
+        if (file_exists($pathmanualemkdocs)) {
+            $risposta[] = array(
+                'percorso' => array("percorso" => $this->urlgenerator->generate("homepage") . $mkdocsfile),
+                'nome' => 'Manuale', 'target' => '_blank',);
+        }
     }
 
     protected function getMenu($menu)
@@ -234,4 +245,5 @@ class MenuExtension extends AbstractExtension
 
         return $exist;
     }
+
 }
