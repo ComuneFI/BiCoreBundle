@@ -245,5 +245,4 @@ class MenuExtension extends AbstractExtension
 
         return $exist;
     }
-
 }
