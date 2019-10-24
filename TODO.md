@@ -1,6 +1,10 @@
-- Change:
-  "minimum-stability": "dev",
-  To:
-  "minimum-stability": "stable",
+composer.json:
+    Change:
+    "minimum-stability": "dev",
+    To:
+    "minimum-stability": "stable",
 
-- remove from build.xml "chromedriver-update" + "chromedriver-install"
+    remove paragonie/sodium_compat
+
+build.xml
+    remove "chromedriver-update" + "chromedriver-install"
