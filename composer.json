@@ -1,6 +1,8 @@
 {
     "name": "comunedifirenze/bicorebundle",
     "description": "Bootstrap italia CoreBundle by Comune Di Firenze",
+    "homepage": "https://github.com/ComuneFI/BiCoreBundle",
+    "license": "MIT",
     "type": "symfony-bundle",
     "authors": [{
             "name": "Andrea Manzi",
@@ -25,8 +27,6 @@
     "keywords": [
         "bicorebundle bootstrapitalia jquery bootstrap"
     ],
-    "homepage": "https://github.com/ComuneFI/BiCoreBundle",
-    "license": "MIT",
     "autoload": {
         "psr-4": {
             "App\\": "tests/src",
