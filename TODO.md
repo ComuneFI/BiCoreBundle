@@ -1,4 +1,6 @@
-Change:
-"minimum-stability": "dev",
-To:
-"minimum-stability": "stable",
+- Change:
+  "minimum-stability": "dev",
+  To:
+  "minimum-stability": "stable",
+
+- remove from build.xml "chromedriver-update"

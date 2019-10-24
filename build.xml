@@ -5,6 +5,7 @@
     <target name="build" depends="prepare,
                     composer-self-update,
                     composer-run-install,
+                    chromedriver-update,
                     bicorebundle-drop-database,
                     bicorebundle-install,
                     bicoredemo-loaddefaultdata,
@@ -51,6 +52,12 @@
     <target name="composer-run-install" depends="composer-self-update">
         <exec executable="php" failonerror="true">
             <arg line="composer.phar install"/>
+        </exec>
+    </target>
+  
+    <target name="chromedriver-update" depends="composer-run-install">
+        <exec executable="sh" failonerror="true">
+            <arg line="vendor/symfony/panther/chromedriver-bin/update.sh"/>
         </exec>
     </target>
   
