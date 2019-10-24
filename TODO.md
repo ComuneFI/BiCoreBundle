@@ -3,4 +3,4 @@
   To:
   "minimum-stability": "stable",
 
-- remove from build.xml "chromedriver-update"
+- remove from build.xml "chromedriver-update" + "chromedriver-install"

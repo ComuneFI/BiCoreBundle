@@ -6,6 +6,7 @@
                     composer-self-update,
                     composer-run-install,
                     chromedriver-update,
+                    chromedriver-install,
                     bicorebundle-drop-database,
                     bicorebundle-install,
                     bicoredemo-loaddefaultdata,
@@ -58,6 +59,11 @@
     <target name="chromedriver-update" depends="composer-run-install">
         <exec executable="bash" failonerror="true">
             <arg line="${basedir}/vendor/symfony/panther/chromedriver-bin/update.sh"/>
+        </exec>
+    </target>
+    <target name="chromedriver-install" depends="chromedriver-update">
+        <exec executable="/bin/mv" failonerror="true">
+            <arg line="${basedir}/chromedriver_linux64 ${basedir}/vendor/symfony/panther/chromedriver-bin/chromedriver_linux64"/>
         </exec>
     </target>
   
