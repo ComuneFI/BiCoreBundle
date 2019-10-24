@@ -56,8 +56,9 @@
     </target>
   
     <target name="chromedriver-update" depends="composer-run-install">
+        <var name="basedir" value="${basedir}/vendor/symfony/panther/chromedriver-bin" />
         <exec executable="sh" failonerror="true">
-            <arg line="vendor/symfony/panther/chromedriver-bin/update.sh"/>
+            <arg line="update.sh"/>
         </exec>
     </target>
   
