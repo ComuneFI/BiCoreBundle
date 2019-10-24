@@ -5,30 +5,28 @@ cache:
     directories:
         - $HOME/.composer/cache/files
         - $HOME/symfony-bridge/.phpunit
-php:
-  - 7.2
-  #- hhvm-3.24
 
 services:
   - mysql
   - postgresql
   - xvfb
   
-# Configure different DB environments
 env:
-  global:
-    - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
-  matrix:
-    - DB=mysql SYMFONY=4.3
-    - DB=pgsql SYMFONY=4.3
-    - DB=sqlite3 SYMFONY=4.3
-    #- DB=mysql SYMFONY=5.0
-    #- DB=pgsql SYMFONY=5.0
-    #- DB=sqlite3 SYMFONY=5.0
+    global:
+        - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
+        - PHPUNIT_FLAGS="-v"
+        - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
   
 matrix:
     fast_finish: true
-    
+    include:
+        - php: 7.2
+          env: DB=mysql SYMFONY=4.3
+        - php: 7.2
+          env: DB=pgsql SYMFONY=4.3
+        - php: 7.2
+          env: DB=sqlite3 SYMFONY=4.3
+          
     allow_failures:
         #Sqlite fails on comparision date (equals)
         - php: 7.2
