@@ -19,7 +19,6 @@ class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClien
 
         $urlsc = $client->getContainer()->get('router')->generate('fi_pannello_amministrazione_symfonycommand');
         $client->request('GET', $urlsc, array('symfonycommand' => 'list'));
-        echo $client->getResponse();
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
