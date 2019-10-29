@@ -5,6 +5,3 @@ composer.json:
     "minimum-stability": "stable",
 
     remove paragonie/sodium_compat
-
-build.xml
-    remove "chromedriver-update" + "chromedriver-install"
