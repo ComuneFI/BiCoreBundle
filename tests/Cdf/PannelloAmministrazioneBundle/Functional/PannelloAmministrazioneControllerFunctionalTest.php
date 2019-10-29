@@ -92,13 +92,11 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->visit($url);
         $this->login('admin', 'admin');
 
-        $this->crudoperation();
+        $this->crudoperation($client);
     }
 
-    private function crudoperation()
+    private function crudoperation($client)
     {
-        $client = static::createPantherClient();
-
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
