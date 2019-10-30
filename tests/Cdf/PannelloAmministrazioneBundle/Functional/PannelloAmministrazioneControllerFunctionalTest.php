@@ -103,7 +103,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $fieldhtml = 'prova_descrizione';
         
-        echo $this->getCurrentPageContent();
         $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
@@ -134,6 +133,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $client->waitFor('#' . $fieldhtml);
 
+        echo $this->getCurrentPageContent();
         $this->fillField($fieldhtml, $descrizionetest2);
 
         $this->clickElement('prova_submit');
