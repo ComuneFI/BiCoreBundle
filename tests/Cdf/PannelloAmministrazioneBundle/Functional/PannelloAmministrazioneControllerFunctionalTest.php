@@ -102,7 +102,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $fieldhtml = 'prova_descrizione';
-
+        echo $this->getCurrentPageContent();
         $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
