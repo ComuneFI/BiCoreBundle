@@ -46,7 +46,6 @@
         "friendsofsymfony/user-bundle": "^2.1",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "^3.0",
         "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
-        "paragonie/sodium_compat": "^1.12",
         "phpoffice/phpspreadsheet": "^1.4",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
