@@ -3,5 +3,3 @@ composer.json:
     "minimum-stability": "dev",
     To:
     "minimum-stability": "stable",
-
-    remove paragonie/sodium_compat
