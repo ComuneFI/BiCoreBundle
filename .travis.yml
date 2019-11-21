@@ -107,7 +107,7 @@ before_script:
   - php -i
 
 script:
-  - ant
+  - travis_wait 40 ant
   #- PANTHER_WEB_SERVER_DIR=/src/php/BiCoreBundle/tests/public PANTHER_NO_HEADLESS=1 vendor/bin/simple-phpunit -c tools/phpunit/phpunit.xml.dist --filter test20AdminpanelGenerateBundle
 
 after_success:
