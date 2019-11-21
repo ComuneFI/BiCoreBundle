@@ -152,10 +152,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
 
-        $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
-        $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-        sleep(2);
-        $this->clickElement('li.context-menu-item:nth-child(2) > span:nth-child(1)');
+        $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
+        $client->waitFor($contextmenuedit);
+        $this->clickElement($contextmenuedit);
+
+        //$this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
+        //$client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
+        //sleep(2);
+        //$this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         sleep(2);
