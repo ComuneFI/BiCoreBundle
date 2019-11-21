@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
@@ -27,7 +27,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
                 ->setHelp('Esporta la configurazione di bi');
     }
 
-    public function __construct(ObjectManager $em, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
+    public function __construct(EntityManagerInterface $em, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
     {
         $this->em = $em;
         $this->entityutility = $entityutility;

@@ -2,12 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Command;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Exception;
 
 class BiCoreBundleClonaruoloCommand extends Command
 {
@@ -24,7 +24,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         ;
     }
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
 

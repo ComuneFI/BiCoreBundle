@@ -10,7 +10,7 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 
     protected $em = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->logInAdmin();
         $this->em = static::createClient()->getContainer()->get('doctrine')->getManager();

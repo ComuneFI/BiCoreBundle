@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 
 abstract class BiTestNorolesAuthorizedClient extends BiTestAuthorizedClient
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = static::createPantherClient();
 

@@ -15,7 +15,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     protected $em;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //$client = static::createPantherClient();
         //$this->em = $container->get('doctrine')->getManager();
@@ -522,7 +522,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $this->visit('/logout');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

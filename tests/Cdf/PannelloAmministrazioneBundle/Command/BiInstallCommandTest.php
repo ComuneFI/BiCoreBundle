@@ -6,20 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class BiInstallCommandTest extends WebTestCase
-{
+class BiInstallCommandTest extends WebTestCase {
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    protected function setUp()
-    {
+    protected function setUp(): void {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
     }
 
-    public function testBiInstall()
-    {
+    public function testBiInstall() {
         $kernel = static::$kernel;
         $application = new Application($kernel);
 

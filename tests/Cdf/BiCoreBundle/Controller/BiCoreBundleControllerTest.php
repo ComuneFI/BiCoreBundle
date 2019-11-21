@@ -8,7 +8,7 @@ use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

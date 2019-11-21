@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 use Cdf\BiCoreBundle\Entity\Permessi;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,7 +34,7 @@ class GenerateFormCommand extends Command
                 ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
     }
 
-    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, ObjectManager $em)
+    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
         $this->apppaths = $projectpath;

@@ -7,7 +7,7 @@ use Symfony\Component\BrowserKit\Cookie;
 abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthorizedClient
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $client = $this->logInUser();
         $this->em = $client->getContainer()->get('doctrine')->getManager();
