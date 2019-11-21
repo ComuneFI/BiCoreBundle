@@ -154,9 +154,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
         $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-        sleep(5);
-        $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-
+        sleep(2);
+        $this->clickElement('li.context-menu-item:nth-child(2) > span:nth-child(1)');
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         sleep(2);
