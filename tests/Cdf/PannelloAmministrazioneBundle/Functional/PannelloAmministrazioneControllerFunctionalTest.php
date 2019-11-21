@@ -154,12 +154,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
         $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-        sleep(3);
+        sleep(5);
         $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
 
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
-        sleep(3);
+        sleep(2);
 
         $qb3 = $em->createQueryBuilder()
                         ->select(array('Prova'))
