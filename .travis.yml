@@ -70,9 +70,12 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION == "7.3" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+   
+  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo 'max_execution_time = 1800' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION == "7.3" ]] ; then echo 'max_execution_time = 1800' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.3" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.3" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ $TRAVIS_PHP_VERSION == "7.3" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
