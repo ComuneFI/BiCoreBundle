@@ -148,7 +148,7 @@
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
             <env key="PANTHER_WEB_SERVER_DIR" value="${basedir}/tests/public"/>
-            <env key="PANTHER_NO_HEADLESS" value="0"/>
+            <env key="PANTHER_NO_HEADLESS" value="1"/>
             <arg line="--configuration=${basedir}/phpunit.xml.dist"/>
             <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
         </exec>
