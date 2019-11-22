@@ -7,7 +7,7 @@ use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
 class MaintenanceListenerTest extends BiWebtestcaseAuthorizedClient
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
