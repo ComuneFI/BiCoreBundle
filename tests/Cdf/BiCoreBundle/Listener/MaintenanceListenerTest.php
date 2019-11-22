@@ -28,7 +28,7 @@ class MaintenanceListenerTest extends BiWebtestcaseAuthorizedClient
 
         $client->request('GET', '/'.$nomecontroller);
         $this->assertSame(503, $client->getResponse()->getStatusCode());
-        $this->assertContains($msg, $client->getResponse()->getContent());
+        $this->assertStringContainsString($msg, $client->getResponse()->getContent());
 
         @unlink($lockfile);
 

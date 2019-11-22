@@ -43,7 +43,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametri));
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'Pagina 1 di 14 (Righe estratte: 210)', $client->getResponse()->getContent()
         );
         //Sub tables
@@ -62,7 +62,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
 
         // submit that form
         $crawler = $client->submit($form);
-        $this->assertContains('Questo valore non dovrebbe essere vuoto', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Questo valore non dovrebbe essere vuoto', $client->getResponse()->getContent());
 
         $nominativo = 'Andrea Manzi';
         $entity = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
@@ -94,7 +94,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
 
         $crawler = $client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'Andrea Manzi 2', $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -107,7 +107,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $crawler = $client->submit($form);
         $crawler = $client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'Andrea Manzi', $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -128,7 +128,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $parametripererrore["modellocolonne"] = \Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella::setParameter('[{"nometabella":"Cliente","nomecampo":"Cliente.errore","etichetta":"Errore"}]');
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'Cliente.errore field table option not found', $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
@@ -137,7 +137,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $parametripererrore["filtri"] = \Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella::setParameter('[{"nomecampo":"Cliente.nominativa","operatore":"=","valore":"Andrea Manzi"}]');
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'field or association Cliente.nominativa', $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
@@ -145,7 +145,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $parametripererrore["filtri"] = \Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella::setParameter('[{"nomecampo":"Cliento.nominativo","operatore":"=","valore":"Andrea Manzi"}]');
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
                 'table or association Cliento not found', $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
