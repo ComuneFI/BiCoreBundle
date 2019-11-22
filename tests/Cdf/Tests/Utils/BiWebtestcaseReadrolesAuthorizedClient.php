@@ -6,12 +6,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseReadrolesAuthorizedClient extends BiWebtestcaseAuthorizedClient
 {
-    protected function setUp(): void
-    {
-        //$this->client = static::createClient();
-        //$this->em = $this->client->getContainer()->get('doctrine')->getManager();
-    }
-
     protected function logInUser()
     {
         $client = static::createClient();
