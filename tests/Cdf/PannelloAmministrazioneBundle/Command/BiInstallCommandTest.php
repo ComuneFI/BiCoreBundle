@@ -50,7 +50,7 @@ class BiInstallCommandTest extends WebTestCase {
         $outputloaddata = $commandTesterLoaddata->getDisplay();
 
         $this->assertRegExp('/.../', $outputloaddata);
-        $this->assertContains('Done', $outputloaddata);
+        $this->assertStringContainsString('Done', $outputloaddata);
 
         /*
           $commandcc = $application->find('cache:clear');
