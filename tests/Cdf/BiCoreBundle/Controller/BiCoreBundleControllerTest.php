@@ -8,11 +8,6 @@ use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
 {
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testSecuredColonnetabelleIndex()
     {
         $nomecontroller = 'Colonnetabelle';
@@ -72,6 +67,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Colonnetabelle');
         $crawler = $client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        //$client = static::createClient();
+        $client->restart();
     }
 
     public function testSecuredMenuapplicazioneIndex()
@@ -130,6 +127,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Menuapplicazione');
         $crawler = $client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        //$client = static::createClient();
+        $client->restart();
     }
 
     public function testSecuredOperatoriIndex()
@@ -212,6 +211,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $qb->setParameter('username', 'Provaoperatori2');
         $qb->getQuery()->execute();
         $this->em->clear();
+        //$client = static::createClient();
+        $client->restart();
     }
 
     public function testSecuredOpzionitabelleIndex()
@@ -270,6 +271,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Opzionitabelle');
         $crawler = $client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        //$client = static::createClient();
+        $client->restart();
     }
 
     public function testSecuredPermessiIndex()
@@ -341,6 +344,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Permessi');
         $crawler = $client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        //$client = static::createClient();
+        $client->restart();
     }
 
     public function testSecuredRuoliIndex()
@@ -399,6 +404,8 @@ class BiCoreBundleControllerTest extends BiWebtestcaseAuthorizedClient
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Ruoli');
         $crawler = $client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        //$client = static::createClient();
+        $client->restart();
     }
 
 }
