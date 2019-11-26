@@ -119,7 +119,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
         echo $outputimport2;
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
+        $this->assertStringNotContainsString('Non trovato file ' . $fixturefile, $outputimport2);
         $this->assertStringContainsString('Modifica', $outputimport2);
         $this->assertStringContainsString('tramite entity find', $outputimport2);
         $this->assertStringContainsString('lastLogin cambio valore da', $outputimport2);
@@ -143,7 +143,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
         $outputimport3 = $commandTesterImport3->getDisplay();
         //echo $outputimport3;
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
+        $this->assertStringNotContainsString('Non trovato file ' . $fixturefile, $outputimport3);
         $this->assertStringContainsString('aggiunta', $outputimport3);
         $this->assertStringContainsString('tramite entity find', $outputimport3);
         $this->assertStringContainsString(' in formato Boolean', $outputimport3);
