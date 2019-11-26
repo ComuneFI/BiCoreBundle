@@ -61,6 +61,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         } catch (\Exception $exc) {
             echo $exc->getMessage().' at line '.$exc->getLine();
         }
+        return 0;
     }
 
     protected function export($fixturefile, $entity)

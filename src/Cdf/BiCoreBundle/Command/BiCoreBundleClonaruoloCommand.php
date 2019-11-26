@@ -90,5 +90,6 @@ class BiCoreBundleClonaruoloCommand extends Command
             $this->em->persist($newpermessi);
             $this->em->flush();
         }
+        return 0;
     }
 }

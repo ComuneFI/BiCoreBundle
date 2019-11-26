@@ -45,5 +45,6 @@ class BiCoreBundleCreatedatabaseCommand extends Command
         $arguments = array('--force' => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
+        return 0;
     }
 }
