@@ -5,14 +5,14 @@ namespace Cdf\BiCoreBundle\Collector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
     /* @var $em \Doctrine\ORM\EntityManager */
     private $em;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

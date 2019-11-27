@@ -13,7 +13,7 @@ class PannelloAmministrazioneNotAuthorizedControllerTest extends BiWebtestcaseNo
         $client = $this->logInUser();
         foreach ($routes as $route) {
             $url = $client->getContainer()->get('router')->generate($route);
-            //$this->assertContains('DoctrineORMEntityManager', get_class($em));
+            //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
 
             $client->request('GET', $url);
             $this->assertEquals(403, $client->getResponse()->getStatusCode());

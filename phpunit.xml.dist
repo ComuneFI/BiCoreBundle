@@ -45,7 +45,7 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999999&amp;max[self]=999999" />
         
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
-
+        <ini name="max_execution_time" value="0"/>
     </php>
     
     <filter>
@@ -65,7 +65,7 @@
         <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
 
         <listener class="Symfony\Component\Panther\ServerListener" />
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+        <!--<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />-->
         <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
     </listeners>   
 </phpunit>

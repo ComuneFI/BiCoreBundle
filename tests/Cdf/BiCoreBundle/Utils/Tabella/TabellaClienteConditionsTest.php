@@ -20,7 +20,7 @@ class TabellaClienteConditionsTest extends KernelTestCase
     private $recordstabellanonattivicliente = 9;
     private $colonnetotalicliente = 8;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //$d = DatetimeTabella::createFromFormat("d/m/Y H:i:s", "05/02/1980 00:00:00", new \DateTimeZone('UTC'));
         //dump($d);exit;

@@ -23,7 +23,7 @@ class PermessiRepository extends EntityRepository
         } else {
             return false;
         }
-        if (!$operatore) {
+        if (!$operatore || !$operatore->getRuoli()) {
             return false;
         }
         $permesso = $em->getRepository(Permessi::class)

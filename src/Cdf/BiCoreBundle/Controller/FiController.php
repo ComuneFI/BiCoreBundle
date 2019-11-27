@@ -5,6 +5,7 @@ namespace Cdf\BiCoreBundle\Controller;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Templating\EngineInterface;
 use function count;
 
 class FiController extends AbstractController
@@ -12,10 +13,11 @@ class FiController extends AbstractController
     use FiCoreControllerTrait, FiCoreCrudControllerTrait, FiCoreTabellaControllerTrait;
 
     protected $bundle;
+    protected $template;
     protected $controller;
     protected $permessi;
 
-    public function __construct(PermessiManager $permessi)
+    public function __construct(PermessiManager $permessi, EngineInterface $template)
     {
         $matches = array();
         $controllo = new ReflectionClass(get_class($this));
@@ -28,6 +30,7 @@ class FiController extends AbstractController
         $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
         $this->controller = $matches[count($matches) - 1];
         $this->permessi = $permessi;
+        $this->template = $template;
     }
 
     protected function getBundle()
@@ -43,5 +46,9 @@ class FiController extends AbstractController
     protected function getPermessi()
     {
         return $this->permessi;
+    }
+    protected function getTemplate()
+    {
+        return $this->template;
     }
 }

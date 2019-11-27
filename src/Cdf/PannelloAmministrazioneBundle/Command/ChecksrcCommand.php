@@ -72,6 +72,7 @@ class ChecksrcCommand extends Command
             $output->writeln($phpmdoutput);
         }
         /* phpmd */
+        return 0;
     }
 
     private function runcmd(array $cmd)

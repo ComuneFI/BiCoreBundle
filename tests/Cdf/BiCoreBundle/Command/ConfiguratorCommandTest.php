@@ -12,7 +12,7 @@ class ConfiguratorCommandTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
@@ -35,7 +35,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputimport = $commandTesterImport->getDisplay();
 
         $this->assertRegExp('/.../', $outputimport);
-        $this->assertContains('Non trovato file ' . $fixturefile, $outputimport);
+        $this->assertStringContainsString('Non trovato file ' . $fixturefile, $outputimport);
 
         $commandexport = $application->find('bicorebundle:configuratorexport');
         $commandTesterExport = new CommandTester($commandexport);
@@ -43,7 +43,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $outputexport = $commandTesterExport->getDisplay();
 
         $this->assertRegExp('/.../', $outputexport);
-        $this->assertContains('Export Entity: Cdf\\BiCoreBundle\\Entity\\' . $entity, $outputexport);
+        $this->assertStringContainsString('Export Entity: Cdf\\BiCoreBundle\\Entity\\' . $entity, $outputexport);
 
         /* Rimuovo utente per generare l'inserimento tramite import */
         /* @var $qb \Doctrine\ORM\QueryBuilder */
@@ -119,22 +119,22 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport2->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport2 = $commandTesterImport2->getDisplay();
         echo $outputimport2;
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport2);
-        $this->assertContains('Modifica', $outputimport2);
-        $this->assertContains('tramite entity find', $outputimport2);
-        $this->assertContains('lastLogin cambio valore da', $outputimport2);
-        $this->assertContains('ruolo cambio valore da \'Amministratores\' a \'Amministratore\'', $outputimport2);
-        $this->assertContains('sistemata', $outputimport2);
-        $this->assertContains('ROLE_UNDEFINED', $outputimport2);
-        $this->assertContains('in formato DateTime', $outputimport2);
-        $this->assertContains('cambio valore da true a false in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da false a true in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da false a NULL in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da true a NULL in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da NULL a false in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da NULL a true in formato Boolean', $outputimport2);
-        $this->assertContains('cambio valore da NULL a \'admin\'', $outputimport2);
-        $this->assertContains('cambio valore da \'provadacancellare\' a NULL', $outputimport2);
+        $this->assertStringNotContainsString('Non trovato file ' . $fixturefile, $outputimport2);
+        $this->assertStringContainsString('Modifica', $outputimport2);
+        $this->assertStringContainsString('tramite entity find', $outputimport2);
+        $this->assertStringContainsString('lastLogin cambio valore da', $outputimport2);
+        $this->assertStringContainsString('ruolo cambio valore da \'Amministratores\' a \'Amministratore\'', $outputimport2);
+        $this->assertStringContainsString('sistemata', $outputimport2);
+        $this->assertStringContainsString('ROLE_UNDEFINED', $outputimport2);
+        $this->assertStringContainsString('in formato DateTime', $outputimport2);
+        $this->assertStringContainsString('cambio valore da true a false in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da false a true in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da false a NULL in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da true a NULL in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da NULL a false in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da NULL a true in formato Boolean', $outputimport2);
+        $this->assertStringContainsString('cambio valore da NULL a \'admin\'', $outputimport2);
+        $this->assertStringContainsString('cambio valore da \'provadacancellare\' a NULL', $outputimport2);
         
         
         $em->clear();
@@ -143,13 +143,13 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport3->execute(array('--forceupdate' => true, '--verboso' => true, '--truncatetables' => true));
         $outputimport3 = $commandTesterImport3->getDisplay();
         //echo $outputimport3;
-        $this->assertNotContains('Non trovato file ' . $fixturefile, $outputimport3);
-        $this->assertContains('aggiunta', $outputimport3);
-        $this->assertContains('tramite entity find', $outputimport3);
-        $this->assertContains(' in formato Boolean', $outputimport3);
-        //$this->assertContains('in formato DateTime', $outputimport3);
-        //$this->assertContains('campo lastLogin cambio valore da NULL a', $outputimport3);
-        $this->assertContains('tramite entity find', $outputimport3);
+        $this->assertStringNotContainsString('Non trovato file ' . $fixturefile, $outputimport3);
+        $this->assertStringContainsString('aggiunta', $outputimport3);
+        $this->assertStringContainsString('tramite entity find', $outputimport3);
+        $this->assertStringContainsString(' in formato Boolean', $outputimport3);
+        //$this->assertStringContainsString('in formato DateTime', $outputimport3);
+        //$this->assertStringContainsString('campo lastLogin cambio valore da NULL a', $outputimport3);
+        $this->assertStringContainsString('tramite entity find', $outputimport3);
         $em->clear();
 
         unlink($fixturefile);

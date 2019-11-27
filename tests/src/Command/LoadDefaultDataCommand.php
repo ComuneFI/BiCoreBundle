@@ -12,7 +12,7 @@ use App\Entity\Ordine;
 use App\Entity\Magazzino;
 use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class LoadDefaultDataCommand extends Command
 {
@@ -23,7 +23,7 @@ class LoadDefaultDataCommand extends Command
                 ->setDescription('Carica dei dati di default per il demo')
         ;
     }
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
 

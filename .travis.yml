@@ -5,83 +5,70 @@ cache:
     directories:
         - $HOME/.composer/cache/files
         - $HOME/symfony-bridge/.phpunit
-php:
-  - 7.2
-  #- hhvm-3.24
 
 services:
   - mysql
   - postgresql
   - xvfb
   
-# Configure different DB environments
 env:
-  global:
-    - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
-  matrix:
-    - DB=mysql SYMFONY=3.4
-    - DB=pgsql SYMFONY=3.4
-    - DB=sqlite3 SYMFONY=3.4
-    #- DB=mysql SYMFONY=4.3
-    #- DB=pgsql SYMFONY=4.3
-    #- DB=sqlite3 SYMFONY=4.3
+    global:
+        - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
+        - PHPUNIT_FLAGS="-v"
+        - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
   
 matrix:
     fast_finish: true
-    
+    include:
+        - php: 7.2
+          env: DB=mysql SYMFONY=4.4
+        - php: 7.2
+          env: DB=pgsql SYMFONY=4.4
+        - php: 7.2
+          env: DB=sqlite3 SYMFONY=4.4
+        - php: 7.3
+          env: DB=mysql SYMFONY=4.4
+        - php: 7.3
+          env: DB=pgsql SYMFONY=4.4
+        - php: 7.3
+          env: DB=sqlite3 SYMFONY=4.4
+          
     allow_failures:
         #Sqlite fails on comparision date (equals)
         - php: 7.2
-          env: DB=sqlite3 SYMFONY=3.4
-       # - php: 7.2
-       #   env: DB=sqlite3 SYMFONY=4.3
-       # - php: 7.2
-       #   env: DB=mysql SYMFONY=4.3
-       # - php: 7.2
-       #   env: DB=pgsql SYMFONY=4.3
-       # - php: hhvm-3.24
-       # - php: 5.6
-       #   env:
-       # - php: 7.0
-       #   env:
-       # - php: 7.1
-       #   env:
+          env: DB=sqlite3 SYMFONY=4.4
+        - php: 7.3
+          env: DB=sqlite3 SYMFONY=4.4
+
     exclude:
     #- php: hhvm
     #  env: DB=pgsql
 
 addons:
   chrome: stable
-
+  apt:
+    packages:
+      - apache2 libapache2-mod-fastcgi make ant
+      
 before_script:
   - sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
   - sudo /sbin/mkswap /var/swap.1
   - sudo /sbin/swapon /var/swap.1
-  
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi make ant
-  
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file,http,https"' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_zend_compat=true' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\ndate.timezone = "Europe/Rome"' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.enable_hip_hop_syntax = true' | sudo tee -a /etc/hhvm/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo -e '\nhhvm.php7.all = 1' | sudo tee -a /etc/hhvm/php.ini; fi
 
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]] ; then pecl channel-update pecl.php.net; fi;
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
+   
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/max_execution_time=1800/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.0" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.1" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
-  - if [[ $TRAVIS_PHP_VERSION == "7.2" ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
   - sudo a2enmod rewrite actions fastcgi alias
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
@@ -112,13 +99,12 @@ before_script:
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/tests/.env; fi
   
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/build.hhvm.xml $TRAVIS_BUILD_DIR/build.xml; fi
-  
-  - if [[ $SYMFONY == "4.3" ]]; then sed -i -e "s,\^3.4,\^4.3,g" $TRAVIS_BUILD_DIR/composer.json; fi
-  - if [[ $SYMFONY == "4.3" ]]; then sed -i '\|"sensio\/distribution-bundle"|d' $TRAVIS_BUILD_DIR/composer.json; fi
-  - if [[ $SYMFONY == "4.3" ]]; then sed -i '\"SensioDistributionBundle"d' $TRAVIS_BUILD_DIR/tests/config/bundles.php; fi
+  #- if [[ $SYMFONY == "5.0" ]]; then sed -i -e "s,4.4.\*,5.0.\*,g" $TRAVIS_BUILD_DIR/composer.json; fi
+  #- if [[ $SYMFONY == "5.0" ]]; then sed -i '\|"sensio\/distribution-bundle"|d' $TRAVIS_BUILD_DIR/composer.json; fi
+  #- if [[ $SYMFONY == "5.0" ]]; then sed -i '\"SensioDistributionBundle"d' $TRAVIS_BUILD_DIR/tests/config/bundles.php; fi
 
   - chmod +x bin/console
+  - php -i
 
 script:
   - travis_wait 40 ant

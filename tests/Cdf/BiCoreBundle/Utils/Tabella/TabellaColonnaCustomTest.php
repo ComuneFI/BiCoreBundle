@@ -17,7 +17,7 @@ class TabellaColonnaCustomTest extends KernelTestCase
     protected $entityclass;
     protected $formclass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //$d = DatetimeTabella::createFromFormat("d/m/Y H:i:s", "05/02/1980 00:00:00", new \DateTimeZone('UTC'));
         //dump($d);exit;

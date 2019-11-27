@@ -45,5 +45,6 @@ class BiCoreBundlePubblicamanualeCommand extends Command
             throw new Exception('Attenzione, non è presente il file '.$manualepath);
         }
         $output->writeln('Done!');
+        return 0;
     }
 }

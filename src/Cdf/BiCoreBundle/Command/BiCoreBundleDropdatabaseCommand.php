@@ -39,5 +39,6 @@ class BiCoreBundleDropdatabaseCommand extends Command
         $arguments = array('command' => 'doctrine:schema:drop', '--force' => true, '--full-database' => true);
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
+        return 0;
     }
 }

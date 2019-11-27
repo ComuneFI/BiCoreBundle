@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Templating\EngineInterface;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 
 /**
@@ -14,17 +15,18 @@ use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
  */
 class OperatoriController extends FiController
 {
+
     private $logger;
     private $usermanipulator;
 
-    public function __construct(PermessiManager $permessi, LoggerInterface $logger, $usermanipulator)
+    public function __construct(PermessiManager $permessi, EngineInterface $template, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
         $this->permessi = $permessi;
         $this->usermanipulator = $usermanipulator;
-        parent::__construct($permessi);
+        $this->template = $template;
+        parent::__construct($permessi, $template);
     }
-
     /**
      * Displays a form to create a new table entity.
      */
@@ -43,19 +45,19 @@ class OperatoriController extends FiController
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-            'id' => 'formdati'.$controller,
-        ),
-        'action' => $this->generateUrl($controller.'_new'),
+                'id' => 'formdati' . $controller,
+            ),
+            'action' => $this->generateUrl($controller . '_new'),
         ));
 
         $form->handleRequest($request);
 
         $twigparms = array(
-        'form' => $form->createView(),
-        'nomecontroller' => ParametriTabella::setParameter($controller),
-        'tabellatemplate' => $tabellatemplate,
+            'form' => $form->createView(),
+            'nomecontroller' => ParametriTabella::setParameter($controller),
+            'tabellatemplate' => $tabellatemplate,
         );
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -65,7 +67,7 @@ class OperatoriController extends FiController
                 $password = $entity->getPassword();
                 $entity->setOperatore($username);
                 $entity->setEnabled(true);
-                $logger->info('Inserimento nuovo utente '.$username);
+                $logger->info('Inserimento nuovo utente ' . $username);
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($entity);
@@ -73,7 +75,7 @@ class OperatoriController extends FiController
 
                 $content = $this->usermanipulator->changePassword($username, $password);
 
-                $logger->info('Esito inserimento nuovo utente '.$username.' : '.$content);
+                $logger->info('Esito inserimento nuovo utente ' . $username . ' : ' . $content);
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),

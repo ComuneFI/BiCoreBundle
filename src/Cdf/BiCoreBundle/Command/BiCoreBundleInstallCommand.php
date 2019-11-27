@@ -80,6 +80,7 @@ class BiCoreBundleInstallCommand extends Command
         $userManipulator = $this->usermanipulator;
 
         $userManipulator->changePassword($admin, $adminpass);
+        return 0;
     }
 
     /**

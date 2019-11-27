@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Cdf\BiCoreBundle\Utils\Database\DatabaseUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils;
@@ -41,11 +41,11 @@ class BiCoreBundleConfiguratorimportCommand extends Command
                 ->addOption('verboso', null, InputOption::VALUE_NONE, 'Visualizza tutti i messaggi di importazione');
     }
 
-    public function __construct(ObjectManager $em, DatabaseUtils $dbutility, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
+    public function __construct(EntityManagerInterface $em, DatabaseUtils $dbutil, EntityUtils $entityutil, BiCoreSystemTablesUtils $systementity)
     {
         $this->em = $em;
-        $this->dbutility = $dbutility;
-        $this->entityutility = $entityutility;
+        $this->dbutility = $dbutil;
+        $this->entityutility = $entityutil;
         $this->systementity = $systementity;
 
         // you *must* call the parent constructor
