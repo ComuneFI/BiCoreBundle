@@ -92,19 +92,17 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->visit($url);
         $this->login('admin', 'admin');
 
-        $this->crudoperation();
+        $this->crudoperation($client);
     }
 
-    private function crudoperation()
+    private function crudoperation($client)
     {
-        $client = static::createPantherClient();
-
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $fieldhtml = 'prova_descrizione';
-
+        
         $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
@@ -133,6 +131,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //Modifica
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
+        sleep(2);
         $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
@@ -153,11 +152,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
 
-        $this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
-        $client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-        sleep(2);
-        $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
+        $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
+        $client->waitFor($contextmenuedit);
+        $this->clickElement($contextmenuedit);
 
+        //$this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
+        //$client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
+        //sleep(2);
+        //$this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         sleep(2);
@@ -183,7 +185,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         static::createPantherClient()->quit();
         parent::tearDown();

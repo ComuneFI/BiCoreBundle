@@ -238,7 +238,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
 
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         static::createPantherClient()->quit();
         parent::tearDown();

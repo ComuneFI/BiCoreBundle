@@ -115,10 +115,10 @@ trait FiCoreTabellaControllerTrait
     {
         $template = $controller . '/Tabella/tabellacontainer.html.twig';
         $path = $controller . '/';
-        if (!$this->get('templating')->exists($template)) {
+        if (!$this->getTemplate()->exists($template)) {
             $template = 'BiCoreBundle:' . $controller . ':Tabella/tabellacontainer.html.twig';
             $path = 'BiCoreBundle:' . $controller . ':';
-            if (!$this->get('templating')->exists($template)) {
+            if (!$this->getTemplate()->exists($template)) {
                 $path = 'BiCoreBundle:Standard:';
                 $template = $path . 'Tabella/tabellacontainer.html.twig';
             }
