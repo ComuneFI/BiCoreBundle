@@ -57,6 +57,10 @@ matrix:
           env: DB=pgsql SYMFONY=4.4 XDEBUG=1
         - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=0
+        - php: 7.2
+          env: DB=sqlite3 SYMFONY=4.4 XDEBUG=1
+        - php: 7.3
+          env: DB=sqlite3 SYMFONY=4.4 XDEBUG=0
         - php: 7.3
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=1
 
