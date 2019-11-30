@@ -1,5 +1,9 @@
 language: php
 
+php:
+  - '7.2.24'
+  - '7.3'
+  
 sudo: false
 cache:
     directories:
@@ -20,17 +24,17 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.2.24
+        - php: 7.2
           env: DB=mysql SYMFONY=4.4 XDEBUG=0
-        - php: 7.2.24
+        - php: 7.2
           env: DB=mysql SYMFONY=4.4 XDEBUG=1
-        - php: 7.2.24
+        - php: 7.2
           env: DB=pgsql SYMFONY=4.4 XDEBUG=0
-        - php: 7.2.24
+        - php: 7.2
           env: DB=pgsql SYMFONY=4.4 XDEBUG=1
-        - php: 7.2.24
+        - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=0
-        - php: 7.2.24
+        - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=1
         - php: 7.3
           env: DB=mysql SYMFONY=4.4 XDEBUG=0
@@ -47,17 +51,17 @@ matrix:
           
     allow_failures:
         #Sqlite fails on comparision date (equals)
-        - php: 7.2.24
+        - php: 7.2
           env: DB=mysql SYMFONY=4.4 XDEBUG=1
         - php: 7.3
           env: DB=mysql SYMFONY=4.4 XDEBUG=1
-        - php: 7.2.24
+        - php: 7.2
           env: DB=pgsql SYMFONY=4.4 XDEBUG=1
         - php: 7.3
           env: DB=pgsql SYMFONY=4.4 XDEBUG=1
-        - php: 7.2.24
+        - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=0
-        - php: 7.2.24
+        - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=1
         - php: 7.3
           env: DB=sqlite3 SYMFONY=4.4 XDEBUG=0
