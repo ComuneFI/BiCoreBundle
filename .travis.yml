@@ -79,6 +79,7 @@ before_script:
   - sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
   - sudo /sbin/mkswap /var/swap.1
   - sudo /sbin/swapon /var/swap.1
+  
   - wget http://mirrors.kernel.org/ubuntu/pool/multiverse/liba/libapache-mod-fastcgi/libapache2-mod-fastcgi_2.4.7~0910052141-1.2_amd64.deb
   - dpkg -i libapache2-mod-fastcgi_2.4.7~0910052141-1.2_amd64.deb
   - a2enmod actions
