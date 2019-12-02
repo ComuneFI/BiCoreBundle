@@ -45,7 +45,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
             if ($(this).val() != "") {
                 var tipocampo = $(this).data('tipocampo');
                 var valorefiltro = $(this).val();
-                if (typeof $(this).data('decodifiche') !== 'undefined' ) {
+                if (typeof $(this).data('decodifiche') !== 'undefined' && $(this).data('decodifiche') !== null ) {
                     var decodifiche = $(this).data('decodifiche');
                     var valorifiltro = Array();
                     $.each(decodifiche, function (key, value) {
