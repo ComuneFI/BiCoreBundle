@@ -4,10 +4,13 @@ sudo: false
 dist: bionic
 
 addons:
+  postgresql: 10
   chrome: stable
   apt:
     packages:
       - apache2 libapache2-mod-fcgid make ant
+      - postgresql-10
+      - postgresql-client-10
       
 cache:
     directories:
