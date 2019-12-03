@@ -1,0 +1,33 @@
+1) templating
+This is due to the deprecation of the templating component, see https://symfony.com/blog/new-in-symfony-4-3-deprecated-the-templating-component-integration
+
+Solution:
+
+    Remove "symfony/templating" from composer.json
+    Remove this from framework.yaml:
+
+    templating:
+        engines:
+            - twig
+
+    Run composer update
+
+This should remove all the deprecation warnings.
+
+If you're getting this error
+
+    Cannot autowire service "...": argument "$templating" of method "__construct()" references interface "Symfony\Bundle\FrameworkBundle\Templating\EngineInterface" but no such service exists. Did you create a class that implements this interface?
+
+... you're still using the old templating in some service.
+Solution: Change the dependency from Symfony\Bundle\FrameworkBundle\Templating\EngineInterface to Twig\Environment:
+
+use Twig\Environment;
+
+private $twig;
+
+public function __construct(Environment $twig)
+{
+    $this->twig = $twig;
+}
+
+See also https://github.com/symfony/symfony/issues/31645
