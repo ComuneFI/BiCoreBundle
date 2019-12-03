@@ -52,7 +52,8 @@ function databaseinit()
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $envs = ['test', 'dev', 'prod'];
+    //$envs = ['test', 'dev', 'prod'];
+    $envs[] = getenv("APP_ENV");
     foreach ($envs as $env) {
         $cachedir = $vendorDir.'/tests/var/cache/'.$env;
         if (file_exists($cachedir)) {
