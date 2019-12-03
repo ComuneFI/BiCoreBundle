@@ -57,7 +57,7 @@ function removecache()
         $cachedir = $vendorDir.'/tests/var/cache/'.$env;
         if (file_exists($cachedir)) {
             $command = 'rm -rf '.$cachedir;
-            $process = new Process($command);
+            $process = Process::fromShellCommandline($command);
             $process->setTimeout(60 * 100);
             $process->run();
             if (!$process->isSuccessful()) {
