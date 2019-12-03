@@ -32,12 +32,20 @@ matrix:
           env: DB=pgsql SYMFONY=4.4
         - php: 7.3
           env: DB=sqlite3 SYMFONY=4.4
+        - php: 7.4
+          env: DB=mysql SYMFONY=4.4
+        - php: 7.4
+          env: DB=pgsql SYMFONY=4.4
+        - php: 7.4
+          env: DB=sqlite3 SYMFONY=4.4
           
     allow_failures:
         #Sqlite fails on comparision date (equals)
         - php: 7.2
           env: DB=sqlite3 SYMFONY=4.4
         - php: 7.3
+          env: DB=sqlite3 SYMFONY=4.4
+        - php: 7.4
           env: DB=sqlite3 SYMFONY=4.4
 
     exclude:
@@ -108,7 +116,8 @@ before_script:
   - php -i
 
 script:
-  - travis_wait 40 ant
+  - ant
+  #- travis_wait 40 ant
   #- PANTHER_WEB_SERVER_DIR=/src/php/BiCoreBundle/tests/public PANTHER_NO_HEADLESS=1 vendor/bin/simple-phpunit -c tools/phpunit/phpunit.xml.dist --filter test20AdminpanelGenerateBundle
 
 after_success:
