@@ -52,12 +52,13 @@ function databaseinit()
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
-    $envs = ['test', 'dev', 'prod'];
+    //$envs = ['test', 'dev', 'prod'];
+    $envs[] = getenv("APP_ENV");
     foreach ($envs as $env) {
         $cachedir = $vendorDir.'/tests/var/cache/'.$env;
         if (file_exists($cachedir)) {
             $command = 'rm -rf '.$cachedir;
-            $process = new Process($command);
+            $process = Process::fromShellCommandline($command);
             $process->setTimeout(60 * 100);
             $process->run();
             if (!$process->isSuccessful()) {

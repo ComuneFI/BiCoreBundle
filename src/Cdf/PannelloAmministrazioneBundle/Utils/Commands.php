@@ -118,7 +118,8 @@ class Commands
     public function clearcache()
     {
         $cmdoutput = '';
-        $envs = array('dev', 'test', 'prod');
+        //$envs = array('dev', 'test', 'prod');
+        $envs[] = getenv("APP_ENV");
         foreach ($envs as $env) {
             $result = $this->pammutils->clearcache($env);
             $cmdoutput = $cmdoutput.$result['message'];

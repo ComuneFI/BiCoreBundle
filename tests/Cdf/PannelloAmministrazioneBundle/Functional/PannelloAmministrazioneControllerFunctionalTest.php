@@ -109,7 +109,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $client->waitFor('#prova_submit');
         $this->clickElement('prova_submit');
-        sleep(2);
+        sleep(1);
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
 
         $qb1 = $em->createQueryBuilder()
@@ -131,13 +131,13 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //Modifica
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
-        sleep(2);
+        sleep(1);
         $client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
 
         $this->clickElement('prova_submit');
-        sleep(2);
+        sleep(1);
         $em->clear();
 
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
@@ -162,7 +162,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //$this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
         $client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
-        sleep(2);
+        sleep(1);
 
         $qb3 = $em->createQueryBuilder()
                         ->select(array('Prova'))
