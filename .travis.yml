@@ -1,6 +1,14 @@
 language: php
-
 sudo: false
+
+dist: xenial
+
+addons:
+  chrome: stable
+  apt:
+    packages:
+      - apache2 libapache2-mod-fastcgi make ant
+      
 cache:
     directories:
         - $HOME/.composer/cache/files
@@ -56,12 +64,6 @@ matrix:
     #- php: hhvm
     #  env: DB=pgsql
 
-addons:
-  chrome: stable
-  apt:
-    packages:
-      - apache2 libapache2-mod-fastcgi make ant
-      
 before_script:
   - sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
   - sudo /sbin/mkswap /var/swap.1
