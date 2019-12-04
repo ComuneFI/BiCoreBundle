@@ -1,6 +1,6 @@
 dist: bionic
 language: php
-sudo: false
+sudo: true
 
 addons:
   chrome: stable
