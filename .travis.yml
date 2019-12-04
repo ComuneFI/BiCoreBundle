@@ -7,7 +7,7 @@ addons:
   chrome: stable
   apt:
     packages:
-      - apache2 libapache2-mod-fcgid make ant
+      - apache2 libapache2-mod-fcgid make ant php-gd
       
 cache:
     directories:
