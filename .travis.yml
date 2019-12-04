@@ -1,14 +1,12 @@
 dist: bionic
 language: php
-sudo: true
+sudo: false
 
 addons:
   chrome: stable
   apt:
     packages:
       - apache2 libapache2-mod-fcgid make ant
-      - postgresql-11
-      - postgresql-client-11
       
 cache:
     directories:
