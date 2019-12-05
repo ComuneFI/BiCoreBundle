@@ -130,7 +130,7 @@ class PannelloAmministrazioneController extends AbstractController
             'appname' => $this->appname,
         );
 
-        return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:index.html.twig', $twigparms);
+        return $this->render('@PannelloAmministrazione/PannelloAmministrazione/index.html.twig', $twigparms);
     }
 
     private function fixSlash($path)
@@ -155,13 +155,13 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->release();
             if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
             }
         }
     }
@@ -186,7 +186,7 @@ class PannelloAmministrazioneController extends AbstractController
                 $twigparms = array('errcode' => $result['errcode'], 'command' => 'Generazione Form Crud', 'message' => $result['message']);
 
                 return new Response(
-                    $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms),
+                    $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms),
                     500
                 );
             } else {
@@ -194,7 +194,7 @@ class PannelloAmministrazioneController extends AbstractController
             }
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-            return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+            return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
         }
     }
 
@@ -213,13 +213,13 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->release();
             if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
             }
         }
     }
@@ -242,7 +242,7 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->release();
             $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-            return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+            return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
         }
     }
 
@@ -267,13 +267,13 @@ class PannelloAmministrazioneController extends AbstractController
 
             if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
             }
         }
     }
@@ -297,13 +297,13 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->release();
             if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
             }
         }
     }
@@ -336,13 +336,13 @@ class PannelloAmministrazioneController extends AbstractController
             // eseguito deopo la fine del comando
             if (0 != $result['errcode']) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
-                $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                 return new Response($view, 500);
             } else {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => $result['command'], 'message' => $result['message']);
 
-                return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
             }
         }
     }
@@ -370,13 +370,13 @@ class PannelloAmministrazioneController extends AbstractController
                 // eseguito dopo la fine del comando
                 if (!$process->isSuccessful()) {
                     $twigparms = array('errcode' => -1, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
-                    $view = $this->renderView('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                    $view = $this->renderView('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
 
                     return new Response($view, 500);
                 } else {
                     $twigparms = array('errcode' => 0, 'command' => $command, 'message' => $process->getOutput().$process->getErrorOutput());
 
-                    return $this->render('PannelloAmministrazioneBundle:PannelloAmministrazione:outputcommand.html.twig', $twigparms);
+                    return $this->render('@PannelloAmministrazione/PannelloAmministrazione/outputcommand.html.twig', $twigparms);
                 }
             } else {
                 // @codeCoverageIgnoreStart

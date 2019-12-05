@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 
 /**
@@ -19,7 +19,7 @@ class OperatoriController extends FiController
     private $logger;
     private $usermanipulator;
 
-    public function __construct(PermessiManager $permessi, EngineInterface $template, LoggerInterface $logger, $usermanipulator)
+    public function __construct(PermessiManager $permessi, Environment $template, LoggerInterface $logger, $usermanipulator)
     {
         $this->logger = $logger;
         $this->permessi = $permessi;

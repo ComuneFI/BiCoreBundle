@@ -115,7 +115,7 @@ class ClienteController extends FiController
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
         $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
-        if (!$this->get('templating')->exists($template)) {
+        if (!$this->get('twig')->getLoader()->exists($template)) {
             $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
