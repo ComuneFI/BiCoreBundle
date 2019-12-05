@@ -11,6 +11,8 @@ fos_user:
     from_email:
         address: "%env(resolve:mailer_user)%"
         sender_name: "%env(resolve:mailer_user)%"
+    service:
+        mailer: 'fos_user.mailer.noop'
 
 services:
     # default configuration for services in *this* file

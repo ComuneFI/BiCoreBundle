@@ -5,7 +5,7 @@ namespace Cdf\BiCoreBundle\Controller;
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 use function count;
 
 class FiController extends AbstractController
@@ -17,7 +17,7 @@ class FiController extends AbstractController
     protected $controller;
     protected $permessi;
 
-    public function __construct(PermessiManager $permessi, EngineInterface $template)
+    public function __construct(PermessiManager $permessi, Environment $template)
     {
         $matches = array();
         $controllo = new ReflectionClass(get_class($this));

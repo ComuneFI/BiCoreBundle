@@ -110,7 +110,7 @@ trait FiCoreControllerTrait
         $parametriform = $this->getParametroIndexDettaglio($parametripassati, 'parametriform', array());
 
         $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
-        if (!$this->getTemplate()->exists($template)) {
+        if (!$this->get("twig")->getLoader()->exists($template)) {
             $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
@@ -190,10 +190,10 @@ trait FiCoreControllerTrait
     protected function getTabellaTemplate($controller)
     {
         $tabellatemplate = $controller.'/Tabella/tabellaform.html.twig';
-        if (!$this->getTemplate()->exists($tabellatemplate)) {
-            $tabellatemplate = 'BiCoreBundle:'.$controller.':Tabella/tabellaform.html.twig';
-            if (!$this->getTemplate()->exists($tabellatemplate)) {
-                $tabellatemplate = 'BiCoreBundle:Standard:Tabella/tabellaform.html.twig';
+        if (!$this->get("twig")->getLoader()->exists($tabellatemplate)) {
+            $tabellatemplate = '@BiCore/'.$controller.'/Tabella/tabellaform.html.twig';
+            if (!$this->get("twig")->getLoader()->exists($tabellatemplate)) {
+                $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
         }
 
@@ -202,11 +202,11 @@ trait FiCoreControllerTrait
 
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
-        $crudtemplate = $bundle.':'.$controller.':Crud/'.$operation.'.html.twig';
-        if (!$this->getTemplate()->exists($crudtemplate)) {
+        $crudtemplate = $bundle.'/'.$controller.'/Crud/'.$operation.'.html.twig';
+        if (!$this->get("twig")->getLoader()->exists($crudtemplate)) {
             $crudtemplate = $controller.'/Crud/'.$operation.'.html.twig';
-            if (!$this->getTemplate()->exists($crudtemplate)) {
-                $crudtemplate = 'BiCoreBundle:Standard:Crud/'.$operation.'.html.twig';
+            if (!$this->get("twig")->getLoader()->exists($crudtemplate)) {
+                $crudtemplate = '@BiCore/Standard/Crud/'.$operation.'.html.twig';
             }
         }
 
