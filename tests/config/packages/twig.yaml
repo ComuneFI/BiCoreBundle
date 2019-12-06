@@ -10,4 +10,4 @@ twig:
         #database_user: "%env(resolve:database_user)%"
     form_themes:
         - bootstrap_4_layout.html.twig
-
+    exception_controller: null
