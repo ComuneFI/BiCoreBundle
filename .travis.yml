@@ -1,6 +1,14 @@
+dist: bionic
 language: php
-
 sudo: false
+
+addons:
+  postgresql: 9.6
+  chrome: stable
+  apt:
+    packages:
+      - apache2 libapache2-mod-fcgid make ant
+      
 cache:
     directories:
         - $HOME/.composer/cache/files
@@ -56,12 +64,6 @@ matrix:
     #- php: hhvm
     #  env: DB=pgsql
 
-addons:
-  chrome: stable
-  apt:
-    packages:
-      - apache2 libapache2-mod-fastcgi make ant
-      
 before_script:
   - sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
   - sudo /sbin/mkswap /var/swap.1
@@ -81,10 +83,10 @@ before_script:
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
-  - sudo a2enmod rewrite actions fastcgi alias
+  - sudo a2enmod rewrite actions alias
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
+  #- if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi

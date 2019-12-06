@@ -48,7 +48,7 @@ services:
     cdf.bicorebundle.collector.databaseinfo:
         class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
         tags:
-            - { name: data_collector , template: "BiCoreBundle:Collector:databaseInfo", id: "databaseInfo" }
+            - { name: data_collector , template: "@BiCore/Collector/databaseInfo", id: "databaseInfo" }
             
     #Utility database
     cdf.bicorebundle.utility.database:

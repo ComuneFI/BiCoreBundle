@@ -87,7 +87,7 @@ class MenuExtension extends AbstractExtension
             ),
         );
 
-        return $environment->render('BiCoreBundle:Menu:menu.html.twig', array('risposta' => $risposta));
+        return $environment->render('@BiCore/Menu/menu.html.twig', array('risposta' => $risposta));
     }
 
     protected function generaManualePdfMenu(&$risposta)

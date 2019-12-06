@@ -27,7 +27,7 @@ class TabellaOrdineConditionsTest extends KernelTestCase
 
         self::bootKernel();
         $this->doctrine = static::$kernel->getContainer()->get('doctrine');
-        $this->templating = static::$kernel->getContainer()->get('templating');
+        $this->templating = static::$kernel->getContainer()->get('twig')->getLoader();
 
         //Parametri Tabella
         $this->bundle = 'App';

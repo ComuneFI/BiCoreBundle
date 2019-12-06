@@ -411,6 +411,7 @@ class LoadDefaultDataCommand extends Command
         $em->flush();
 
         $output->writeln('Done!');
+        return 0;
     }
     private function createCliente($em, $cliente)
     {
