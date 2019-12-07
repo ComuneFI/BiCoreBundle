@@ -24,17 +24,11 @@ class TestTablesNotAuthorizedControllerTest extends BiWebtestcaseNorolesAuthoriz
     public function testSecuredNotAuthorizedTabella()
     {
         $route = 'Cliente';
-        $client = $this->logInAdmin();
-        $url = $client->getContainer()->get('router')->generate($route.'_container');
-        $crawler = $client->request('GET', $url);
-        $parametri = $this->getParametriTabella($route, $crawler);
-
-        $crawler = $client->request('GET', '/logout');
         $client = $this->logInUsernoreoles();
 
         $url = $client->getContainer()->get('router')->generate($route.'_tabella');
         //$this->assertStringContainsString('DoctrineORMEntityManager', get_class($em));
-        $client->request('POST', '/'.$route.'/tabella', array('parametri' => $parametri));
+        $client->request('POST', '/'.$route.'/tabella', array('parametri' => []));
 
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }

@@ -12,7 +12,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $client->request('GET', '/' . $nomecontroller);
-        $crawler =$client->followRedirect();
+        $crawler = $client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $client->request('GET', '/' . $nomecontroller . '/1000/edit');
@@ -23,6 +23,11 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         //Elenco valori entity
         $crawler = $client->request('GET', '/' . $nomecontroller . '/lista');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
+
+
         $ec = count($this->em->getRepository('App:' . $nomecontroller)->findAll());
         $response = $client->getResponse();
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
@@ -196,6 +201,9 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
         $entity = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
         $this->assertSame(1, count($entity));
 
@@ -209,7 +217,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
     }
     public function testSecuredOrdineIndex()
     {
-        $client=$this->logInAdmin();
+        $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller);
         $crawler = $client->followRedirect();
@@ -217,14 +225,14 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
     }
     public function testSecuredOrdineUpdate()
     {
-        $client=$this->logInAdmin();
+        $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller . '/100/update');
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
     public function testSecuredOrdineDelete()
     {
-        $client=$this->logInAdmin();
+        $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken($nomecontroller);
         $url = $client->getContainer()->get('router')->generate($nomecontroller . '_delete', array('id' => 1, 'token' => $csrfDeleteToken));

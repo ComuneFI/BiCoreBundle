@@ -39,6 +39,9 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
                 'Provaruolo', $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
         $entity = $this->em->getRepository('BiCoreBundle:Ruoli')->findByRuolo($provaruolo);
         $ruoloinserito = $entity[0];
 
