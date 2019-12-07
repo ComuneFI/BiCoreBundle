@@ -40,6 +40,9 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
                 $provaopzionitabelle, $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
         $entity = $this->em->getRepository('BiCoreBundle:Opzionitabelle')->findByNometabella($provaopzionitabelle);
         $opzionitabelleinserito = $entity[0];
 

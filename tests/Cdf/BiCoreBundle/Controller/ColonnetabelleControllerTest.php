@@ -7,7 +7,6 @@ use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
 class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
 {
-
     public function testSecuredColonnetabelleIndex()
     {
         $nomecontroller = 'Colonnetabelle';
@@ -42,6 +41,9 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
                 $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
         $entity = $this->em->getRepository('BiCoreBundle:Colonnetabelle')->findByNometabella($provacolonnatabella);
         $colonnatabellainserito = $entity[0];
 
@@ -70,5 +72,4 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
         //$client = static::createClient();
         $client->restart();
     }
-
 }

@@ -60,6 +60,9 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
                 $provaooperatori, $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->em = self::bootKernel()->getContainer()
+                ->get('doctrine')
+                ->getManager();
         $entity = $this->em->getRepository('BiCoreBundle:Operatori')->findByUsername($provaooperatori);
         $operatoriinserito = $entity[0];
 

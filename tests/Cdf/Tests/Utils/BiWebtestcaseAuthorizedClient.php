@@ -7,15 +7,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 {
-
-    protected $em = null;
-
-    protected function setUp(): void
-    {
-        $this->logInAdmin();
-        $this->em = static::createClient()->getContainer()->get('doctrine')->getManager();
-    }
-
     protected function getParametriTabella($nomecontroller, $crawler)
     {
         $parametri = array();
