@@ -32,7 +32,7 @@ class Utility
     public static function runCommand($command, $workingdir = '.')
     {
         /* @var $process \Symfony\Component\Process\Process */
-        $process = new Process(explode(" ", $command), $workingdir);
+        $process = Process::fromShellCommandline($command);
 
         if ($workingdir) {
             $process->setWorkingDirectory($workingdir);
