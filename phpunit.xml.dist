@@ -42,7 +42,7 @@
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=34&amp;max[self]=0" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=46&amp;max[self]=0" />
         
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
         <ini name="max_execution_time" value="0"/>
