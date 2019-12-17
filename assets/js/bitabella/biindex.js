@@ -88,6 +88,8 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
             }
         });
         tab.setDataParameterTabella("filtri", JSON.stringify(filtririchiesti));
+        //Si torna alla pagina uno in caso di filtri
+        tab.setDataParameterTabella("paginacorrente", "1");
         tab.caricatabella();
         //dumpParametriTabella(nomecontroller);
     }
