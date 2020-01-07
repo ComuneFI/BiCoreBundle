@@ -123,6 +123,7 @@ class CheckgitversionCommand extends Command
         if ('master' == $versions) {
             return $versions;
         } else {
+            $matches = [];
             if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
                 return $matches[0]; //returning the first match
             }
@@ -133,6 +134,7 @@ class CheckgitversionCommand extends Command
 
     private function getRemoteVersionString($versions)
     {
+        $matches = [];
         if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
             return $matches[0]; //returning the first match
         }
