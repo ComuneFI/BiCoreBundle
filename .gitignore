@@ -49,7 +49,6 @@ composer.phar
 /vendor/
 /tests/app/dbtest.sqlite
 composer.lock
-symfony.lock
 
 #yarn
 yarn-error.log
