@@ -33,6 +33,7 @@
 # PHPUnit
 /tests/app/phpunit.xml
 /phpunit.xml
+.phpunit.result.cache
 
 # Build data
 /build/
@@ -48,13 +49,19 @@ composer.phar
 /vendor/
 /tests/app/dbtest.sqlite
 composer.lock
+symfony.lock
+
+#yarn
+yarn-error.log
 
 ###> symfony/framework-bundle ###
 .env
-/public/bundles/
 tests/public/bundles/
 /var/
 /vendor/
+/public
+/web
+
 ###< symfony/framework-bundle ###
 ###> symfony/phpunit-bridge ###
 .phpunit
