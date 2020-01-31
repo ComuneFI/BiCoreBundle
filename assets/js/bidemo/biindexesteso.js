@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var nomecontroller = TabellaCliente.getMainTabella();
     let tab = new TabellaCliente(nomecontroller);
     tab.caricatabella();
-    //dumpParametriTabella(nomecontroller);
+    //tab.__dumpParametriTabella(nomecontroller);
 });
 
 //Gestione filtri
@@ -122,6 +122,15 @@ $(document).ready(function () {
         var nomecontroller = this.dataset["nomecontroller"];
         let tab = new TabellaCliente(nomecontroller);
         tab.caricatabella();
+    });
+    //Sul click del pulsante cancella si lancia la detete dei records selezionati
+    $(document).on("click", ".tabellamodificamultipla", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new TabellaCliente(nomecontroller);
+        tab.aggiornaselezionati(function () {
+            console.log("Modifica records tabella estesa");
+        });
     });
     //Sul click del pulsante cancella si lancia la detete dei records selezionati
     $(document).on("click", ".tabelladel", function (e) {

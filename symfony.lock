@@ -91,7 +91,10 @@
             "branch": "master",
             "version": "2.3",
             "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
-        }
+        },
+        "files": [
+            "tests/config/routes/fos_js_routing.yaml"
+        ]
     },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
