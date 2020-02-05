@@ -1,9 +1,12 @@
 import Tabella from "../bitabella/bitabella.js"
 import estraiSottotabelle from "./sottotabelle.js"
 import BiStringFunctions from "../functions/string.js";
+import BiNotification from "../notification/notification.js";
+import BiAlert from "../modal/alertbuilder.js";
+import bootbox from 'bootbox';
 
 
-        class TabellaCliente extends Tabella {
+class TabellaCliente extends Tabella {
     caricatabella()
     {
         console.log("caricatabella TabellaEstesa");
@@ -43,9 +46,29 @@ import BiStringFunctions from "../functions/string.js";
                 return parseInt(this.dataset['bitableid']);
             }
         }).get();
-        console.log(recordsdaaggiornareids.length);
+
         if (recordsdaaggiornareids.length > 0) {
-            
+            bootbox.prompt({
+                title: "Selezionare il dato da modificare",
+                inputType: 'select',
+                inputOptions: [
+                    {
+                        text: 'Attivo',
+                        value: 'Cliente.attivo',
+                    },
+                    {
+                        text: 'Punti',
+                        value: 'Cliente.punti',
+                    },
+                    {
+                        text: 'Data di nascita',
+                        value: 'Cliente.datanascita',
+                    }
+                ],
+                callback: function (result) {
+                    console.log(result);
+                }
+            });
         }
 
     }
