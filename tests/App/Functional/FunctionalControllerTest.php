@@ -163,7 +163,7 @@ class FunctionalControllerTest extends BiTestAuthorizedClient
         //$this->executeScript('$("#ParametriOrdine").attr("data-editinline","Ma==");');
         $this->executeScript("document.getElementById('ParametriOrdine').dataset.editinline= 'Ma=='");
         $this->pressButton('.tabellarefresh');
-        sleep(1);
+        sleep(2);
         $this->clickElement('.bibottonimodificatabellaOrdine[data-biid="9"]');
         $client->waitFor('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
         $this->clickElement('a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary');
