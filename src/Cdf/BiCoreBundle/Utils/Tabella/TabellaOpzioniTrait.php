@@ -77,7 +77,7 @@ trait TabellaOpzioniTrait
             'association' => isset($colonnadatabase['association']) ? $colonnadatabase['association'] : false,
             'associationtable' => isset($colonnadatabase['associationtable']) ? $colonnadatabase['associationtable'] : null,
             'decodifiche' => null,
-            'escluso' => (true === $ricursione) ? true : '_id' == substr($colonnadatabase['fieldName'], -3) ? true : false,
+            'escluso' => (true === $ricursione ? true : ('_id' == substr($colonnadatabase['fieldName'], -3) ? true : false)),
         );
     }
 
