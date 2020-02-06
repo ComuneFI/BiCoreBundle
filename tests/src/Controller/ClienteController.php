@@ -6,17 +6,17 @@ use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Cliente controller.
  */
-class ClienteController extends FiController
-{
+class ClienteController extends FiController {
+
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager)
-    {
+    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager) {
         /* $dateimm = new \DateTimeImmutable($datestrchk);
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
@@ -114,9 +114,9 @@ class ClienteController extends FiController
         if (!$this->getPermessi()->canRead($controller)) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
-        $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
+        $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
         if (!$this->get('twig')->getLoader()->exists($template)) {
-            $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
+            $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
         }
 
         $entityclassnotation = $this->getEntityClassNotation();
@@ -130,7 +130,7 @@ class ClienteController extends FiController
                 //, "escluso" => false, "larghezza" => 15, "association" => false, "tipocampo"=>"string", "editabile"=>false
         );
 
-        $colonneordinamento = array($controller.'.id' => 'ASC');
+        $colonneordinamento = array($controller . '.id' => 'ASC');
 
         $filtri = array(
                 /* array("nomecampo" => "Cliente.nominativo",
@@ -183,10 +183,10 @@ class ClienteController extends FiController
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('/')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'titolotabella' => ParametriTabella::setParameter('Elenco ' . $controller),
             'multiselezione' => ParametriTabella::setParameter('1'),
             'editinline' => ParametriTabella::setParameter('0'),
             'paginacorrente' => ParametriTabella::setParameter('1'),
@@ -207,4 +207,40 @@ class ClienteController extends FiController
                         )
         );
     }
+
+    public function preparazioneaggiornamentomultiplo(Request $request) {
+        //Migliorare con parametrizzazione tipi campo
+        $parametri = array();
+        $parametri["campi"][] = array("id" => "Cliente.attivo", "value" => "Attivo");
+        $parametri["campi"][] = array("id" => "Cliente.punti", "value" => "Punti");
+        $parametri["campi"][] = array("id" => "Cliente.datanascita", "value" => "Data di nascita");
+
+        return $this->render("Cliente/preparazioneaggiornamentomultiplo.html.twig", $parametri);
+    }
+
+    public function aggiornamentomultiplo(Request $request) {
+        $camposelezionato = $request->get("camposelezionato");
+        $valoreselezionato = $request->get("valoreselezionato");
+        $idsselezionati = $request->get("idsselezionati");
+        /* @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->get('doctrine')->getManager();
+        $ritorno = array();
+        try {
+            $qb = $em->createQueryBuilder();
+            $q = $qb->update('App:Cliente', 'Cliente')
+                    ->set($camposelezionato, ':valore')
+                    ->where("Cliente.id in (:ids)")
+                    ->setParameter("valore", $valoreselezionato)
+                    ->setParameter("ids", $idsselezionati)
+                    ->getQuery();
+            $p = $q->execute();
+            $ritorno = array("errcode" => "0", "message" => "Aggiornamento eseguito con successo " . $p);
+        } catch (\Exception $exc) {
+            $ritorno = array("errcode" => "-1", "message" => $exc->getMessage());
+        }
+
+
+        return new JsonResponse($ritorno);
+    }
+
 }

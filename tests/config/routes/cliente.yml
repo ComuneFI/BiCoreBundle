@@ -47,4 +47,17 @@ Cliente_tabella:
     path:  /tabella
     defaults: { _controller: 'App\Controller\ClienteController::tabella' }
     requirements: { methods: post }
+    
+Cliente_preparazioneaggiornamentomultiplo:
+    path:  /preparazioneaggiornamentomultiplo
+    defaults: { _controller: 'App\Controller\ClienteController::preparazioneaggiornamentomultiplo' }
+    requirements: { methods: get }
+    options:
+        expose: true
 
+Cliente_aggiornamentomultiplo:
+    path:  /aggiornamentomultiplo
+    defaults: { _controller: 'App\Controller\ClienteController::aggiornamentomultiplo' }
+    requirements: { methods: post }
+    options:
+        expose: true

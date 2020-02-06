@@ -1,0 +1,8 @@
+<div class="bootstrap-select-wrapper" id="selectmultipladiv">
+    <select id="selectmultipla" title="Scegli una opzione">
+        {% for campo in campi %}
+            <option value="{{ campo.id }}">{{ campo.value }}</option>
+        {% endfor %}
+    </select> 
+    <input type="text" id="selectmultiplainputtext">
+</div>
