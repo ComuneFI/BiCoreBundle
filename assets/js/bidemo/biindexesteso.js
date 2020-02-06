@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var nomecontroller = TabellaCliente.getMainTabella();
     let tab = new TabellaCliente(nomecontroller);
     tab.caricatabella();
-    //dumpParametriTabella(nomecontroller);
+    //tab.__dumpParametriTabella(nomecontroller);
 });
 
 //Gestione filtri
@@ -46,7 +46,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
             if ($(this).val() != "") {
                 var tipocampo = $(this).data('tipocampo');
                 var valorefiltro = $(this).val();
-                if (typeof $(this).data('decodifiche') !== 'undefined' && $(this).data('decodifiche') !== null ) {
+                if (typeof $(this).data('decodifiche') !== 'undefined' && $(this).data('decodifiche') !== null) {
                     var decodifiche = $(this).data('decodifiche');
                     var valorifiltro = Array();
                     $.each(decodifiche, function (key, value) {
@@ -122,6 +122,15 @@ $(document).ready(function () {
         var nomecontroller = this.dataset["nomecontroller"];
         let tab = new TabellaCliente(nomecontroller);
         tab.caricatabella();
+    });
+
+    $(document).on("click", ".tabellamodificamultipla", function (e) {
+        e.preventDefault();
+        var nomecontroller = this.dataset["nomecontroller"];
+        let tab = new TabellaCliente(nomecontroller);
+        tab.aggiornaselezionati(function () {
+            console.log("Modifica records tabella estesa");
+        });
     });
     //Sul click del pulsante cancella si lancia la detete dei records selezionati
     $(document).on("click", ".tabelladel", function (e) {
