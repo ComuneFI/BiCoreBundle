@@ -46,7 +46,7 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
             if ($(this).val() != "") {
                 var tipocampo = $(this).data('tipocampo');
                 var valorefiltro = $(this).val();
-                if (typeof $(this).data('decodifiche') !== 'undefined' && $(this).data('decodifiche') !== null ) {
+                if (typeof $(this).data('decodifiche') !== 'undefined' && $(this).data('decodifiche') !== null) {
                     var decodifiche = $(this).data('decodifiche');
                     var valorifiltro = Array();
                     $.each(decodifiche, function (key, value) {
@@ -123,7 +123,7 @@ $(document).ready(function () {
         let tab = new TabellaCliente(nomecontroller);
         tab.caricatabella();
     });
-    //Sul click del pulsante cancella si lancia la detete dei records selezionati
+
     $(document).on("click", ".tabellamodificamultipla", function (e) {
         e.preventDefault();
         var nomecontroller = this.dataset["nomecontroller"];

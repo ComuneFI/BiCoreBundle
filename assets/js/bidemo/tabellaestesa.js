@@ -4,6 +4,8 @@ import BiStringFunctions from "../functions/string.js";
 import BiNotification from "../notification/notification.js";
 import BiAlert from "../modal/alertbuilder.js";
 import bootbox from 'bootbox';
+import Swal from 'sweetalert2';
+
 
 
 class TabellaCliente extends Tabella {
@@ -48,27 +50,64 @@ class TabellaCliente extends Tabella {
         }).get();
 
         if (recordsdaaggiornareids.length > 0) {
-            bootbox.prompt({
-                title: "Selezionare il dato da modificare",
-                inputType: 'select',
-                inputOptions: [
-                    {
-                        text: 'Attivo',
-                        value: 'Cliente.attivo',
-                    },
-                    {
-                        text: 'Punti',
-                        value: 'Cliente.punti',
-                    },
-                    {
-                        text: 'Data di nascita',
-                        value: 'Cliente.datanascita',
-                    }
-                ],
-                callback: function (result) {
-                    console.log(result);
+            var dialogcontent = Routing.generate('Cliente_preparazioneaggiornamentomultiplo');
+            $.ajax({
+                type: 'GET',
+                url: dialogcontent,
+                context: 'body',
+                dataType: 'html',
+                success: function (response) {
+                    var el = document.createElement('html');
+                    el.innerHTML = response;
+                    var bodycontent = $(el).find('#selectmultipladiv');
+                    var dialog = bootbox.dialog({
+                        title: 'Seleziona il campo',
+                        closeButton: false,
+                        message: bodycontent,
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Annulla",
+                                className: 'btn-danger',
+                                callback: function () {
+                                    console.log('Custom cancel clicked');
+                                    callback();
+                                }
+                            },
+                            ok: {
+                                label: "Conferma",
+                                className: 'btn-info',
+                                callback: function () {
+                                    var urlaggiornamentomultiplo = Routing.generate('Cliente_aggiornamentomultiplo');
+                                    var camposelezionato = $("#selectmultipla").val();
+                                    var valoreselezionato = $("#selectmultiplainputtext").val();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: urlaggiornamentomultiplo,
+                                        data: {camposelezionato: camposelezionato, valoreselezionato: valoreselezionato, idsselezionati: recordsdaaggiornareids},
+                                        context: 'body',
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            if (response.errcode < 0) {
+                                                Swal.fire('Oops...', response.message, 'error')
+                                            } else {
+                                                tabellaclass.caricatabella();
+                                                Swal.fire(response.message);
+                                            }
+                                        }
+                                    });
+                                    callback();
+                                }
+                            }
+                        }
+                    });
+                    $(".bootstrap-select-wrapper select").selectpicker('refresh');
+
                 }
             });
+
+
         }
 
     }
