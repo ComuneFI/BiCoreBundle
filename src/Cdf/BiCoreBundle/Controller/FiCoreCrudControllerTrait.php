@@ -1,5 +1,4 @@
 <?php
-
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
@@ -11,6 +10,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreCrudControllerTrait
 {
+
     use FiCoreCrudInlineControllerTrait;
 
     /**
@@ -34,11 +34,11 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
             ),
-            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
+            'action' => $this->generateUrl($controller . '_new'), 'parametriform' => $parametriform,
         ));
 
         $form->handleRequest($request);
@@ -95,7 +95,7 @@ trait FiCoreCrudControllerTrait
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -104,28 +104,28 @@ trait FiCoreCrudControllerTrait
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
-                )
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+            )
         );
 
         return $this->render(
-            $crudtemplate,
-            array(
-                            'entity' => $entity,
-                            'nomecontroller' => ParametriTabella::setParameter($controller),
-                            'tabellatemplate' => $tabellatemplate,
-                            'edit_form' => $editForm->createView(),
-                            'elencomodifiche' => $elencomodifiche,
-                        )
+                $crudtemplate,
+                array(
+                    'entity' => $entity,
+                    'nomecontroller' => ParametriTabella::setParameter($controller),
+                    'tabellatemplate' => $tabellatemplate,
+                    'edit_form' => $editForm->createView(),
+                    'elencomodifiche' => $elencomodifiche,
+                )
         );
     }
 
@@ -141,27 +141,28 @@ trait FiCoreCrudControllerTrait
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, 'edit');
-
+        $tabellatemplate = $this->getTabellaTemplate($controller);
+        $elencomodifiche = $this->elencoModifiche($controller, $id);
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati'.$controller,
-                    ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
-                )
+                    'id' => 'formdati' . $controller,
+                ),
+                'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
+            )
         );
 
         $editForm->submit($request->request->get($editForm->getName()));
@@ -184,18 +185,20 @@ trait FiCoreCrudControllerTrait
             if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
             }
         }
 
         return new Response($this->renderView(
-            $crudtemplate,
-            array(
-                            'entity' => $entity,
-                            'edit_form' => $editForm->createView(),
-                            'nomecontroller' => ParametriTabella::setParameter($controller),
-                        )
-        ), 400);
+                $crudtemplate,
+                array(
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'nomecontroller' => ParametriTabella::setParameter($controller),
+                    'tabellatemplate' => $tabellatemplate,
+                    'elencomodifiche' => $elencomodifiche,
+                )
+            ), 400);
     }
 
     /**
@@ -220,8 +223,8 @@ trait FiCoreCrudControllerTrait
             $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
             $qb->delete($entityclass, 'u')
-                    ->andWhere('u.id IN (:ids)')
-                    ->setParameter('ids', $ids);
+                ->andWhere('u.id IN (:ids)')
+                ->setParameter('ids', $ids);
 
             $query = $qb->getQuery();
             $query->execute();
@@ -245,9 +248,9 @@ trait FiCoreCrudControllerTrait
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
             array(
-                    'nometabella' => $controller,
-                    'idtabella' => $id,
-                ),
+                'nometabella' => $controller,
+                'idtabella' => $id,
+            ),
             array('giorno' => 'DESC')
         );
 
