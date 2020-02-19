@@ -135,4 +135,13 @@ class ProjectPath
 
         return $console;
     }
+    public function getConsoleExecute()
+    {
+        $console = $this->getConsole();
+        if (\Fi\OsBundle\DependencyInjection\OsFunctions::isWindows()) {
+            $console = \Fi\OsBundle\DependencyInjection\OsFunctions::getPHPExecutableFromPath() . " " . $console;
+        }
+
+        return $console;
+    }
 }

@@ -25,7 +25,7 @@ class Utility
             $env = $this->kernel->getEnvironment();
         }
 
-        $command = $this->apppaths->getConsole() . ' cache:clear --env=' . $env;
+        $command = $this->apppaths->getConsoleExecute() . ' cache:clear --env=' . $env;
 
         return self::runCommand($command);
     }
