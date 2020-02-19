@@ -14,6 +14,36 @@ document.addEventListener('DOMContentLoaded', function (e) {
 });
 
 //Gestione filtri
+$(document).on("change", '#selectmultipla', function (e) {
+    var datatype = $(this).find(':selected').data('datatype');
+    $('#selectmultiplainputtext').remove();
+    switch (datatype) {
+        case "integer":
+            $('<input/>').attr({type: 'text', id: 'selectmultiplainputtext', name: 'selectmultiplainputtext'}).appendTo('#selectmultiplainputdiv');
+            break;
+        case "boolean":
+            $('<input/>').attr({type: 'checkbox', class: 'form-check', id: 'selectmultiplainputtext', name: 'selectmultiplainputtext'}).appendTo('#selectmultiplainputdiv');
+            break;
+        case "date":
+            $('<input/>').attr({type: 'text', class: 'bidatepicker', id: 'selectmultiplainputtext', name: 'selectmultiplainputtext'}).appendTo('#selectmultiplainputdiv');
+            break;
+        case "datetime":
+            $('<input/>').attr({type: 'text', class: 'bidatetimepicker', id: 'selectmultiplainputtext', name: 'selectmultiplainputtext'}).appendTo('#selectmultiplainputdiv');
+            break;
+        default:
+            break;
+    }
+    $('.bidatepicker').datetimepicker({
+        locale: 'it',
+        format: 'L'
+    });
+    $('.bidatetimepicker').datetimepicker({
+        locale: 'it'
+    });
+
+});
+
+//Gestione filtri
 $(document).on("click", '.filterable .btn-filter', function (e) {
     var panel = $(this).parents('.filterable');
     var filters = panel.find('.filters input.colonnatabellafiltro');

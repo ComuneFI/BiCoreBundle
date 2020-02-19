@@ -209,11 +209,15 @@ class ClienteController extends FiController {
     }
 
     public function preparazioneaggiornamentomultiplo(Request $request) {
-        //Migliorare con parametrizzazione tipi campo
+        $ritorno = array();
+        /* @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->get('doctrine')->getManager();
+        $eu = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($em);
+        $entitycolumns = $eu->getEntityColumns("App:Cliente");
         $parametri = array();
-        $parametri["campi"][] = array("id" => "Cliente.attivo", "value" => "Attivo");
-        $parametri["campi"][] = array("id" => "Cliente.punti", "value" => "Punti");
-        $parametri["campi"][] = array("id" => "Cliente.datanascita", "value" => "Data di nascita");
+        $parametri["campi"][] = array("id" => "Cliente.attivo", "value" => "Attivo", "datatype" => $entitycolumns["attivo"]["type"]);
+        $parametri["campi"][] = array("id" => "Cliente.punti", "value" => "Punti", "datatype" => $entitycolumns["punti"]["type"]);
+        $parametri["campi"][] = array("id" => "Cliente.datanascita", "value" => "Data di nascita", "datatype" => $entitycolumns["datanascita"]["type"]);
 
         return $this->render("Cliente/preparazioneaggiornamentomultiplo.html.twig", $parametri);
     }
@@ -222,9 +226,8 @@ class ClienteController extends FiController {
         $camposelezionato = $request->get("camposelezionato");
         $valoreselezionato = $request->get("valoreselezionato");
         $idsselezionati = $request->get("idsselezionati");
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->get('doctrine')->getManager();
-        $ritorno = array();
+
+
         try {
             $qb = $em->createQueryBuilder();
             $q = $qb->update('App:Cliente', 'Cliente')
