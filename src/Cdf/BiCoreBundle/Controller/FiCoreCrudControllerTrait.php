@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreCrudControllerTrait
 {
+
     use FiCoreCrudInlineControllerTrait;
 
     /**
@@ -34,11 +35,11 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, array('attr' => array(
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
             ),
-            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
+            'action' => $this->generateUrl($controller . '_new'), 'parametriform' => $parametriform,
         ));
 
         $form->handleRequest($request);
@@ -95,7 +96,7 @@ trait FiCoreCrudControllerTrait
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -104,16 +105,16 @@ trait FiCoreCrudControllerTrait
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -141,26 +142,28 @@ trait FiCoreCrudControllerTrait
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, 'edit');
+        $tabellatemplate = $this->getTabellaTemplate($controller);
+        $elencomodifiche = $this->elencoModifiche($controller, $id);
 
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             array('attr' => array(
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                     ),
-                    'action' => $this->generateUrl($controller.'_update', array('id' => $entity->getId())),
+                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
                 )
         );
 
@@ -184,7 +187,7 @@ trait FiCoreCrudControllerTrait
             if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
             }
         }
 
@@ -194,7 +197,9 @@ trait FiCoreCrudControllerTrait
                             'entity' => $entity,
                             'edit_form' => $editForm->createView(),
                             'nomecontroller' => ParametriTabella::setParameter($controller),
-                        )
+                            'tabellatemplate' => $tabellatemplate,
+                            'elencomodifiche' => $elencomodifiche,
+            )
         ), 400);
     }
 
