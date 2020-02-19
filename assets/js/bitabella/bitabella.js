@@ -87,11 +87,12 @@ class Tabella {
             typeof callback == "function" && callback();
         });
     }
-_submitHandler() {
+    _submitHandler() {
         var tabellaclass = this;
         //Gestione Submit
         //console.log(BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
-        var form = document.getElementById('formdati' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller));
+        var formname = 'formdati' + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller);
+        var form = document.getElementById(formname);
         if (form) {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
@@ -129,7 +130,8 @@ _submitHandler() {
                 }).fail(function (xhr, status, error) {
                     //in caso
                     if (xhr.status === 400) {
-                        form.replaceWith(xhr.responseText).promise().done(function () {
+                        var formhtml = $($.parseHTML(xhr.responseText)).filter('#' + formname);
+                        form.replaceWith(formhtml).promise().done(function () {
                             tabellaclass._submitHandler();
                             tabellaclass._tabellaAdjust();
                         });
@@ -639,10 +641,10 @@ _submitHandler() {
             callback: function (key, options) {
                 switch (key) {
                     /*case "selezionatutti":
-                        //Sul menu Modifica
-                        var table = options.$trigger.closest("table");
-                        $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", true);
-                        break;*/
+                     //Sul menu Modifica
+                     var table = options.$trigger.closest("table");
+                     $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", true);
+                     break;*/
                     case "modifica":
                         //Sul menu Modifica
                         var biid = options.$trigger.attr("data-bitableid");
