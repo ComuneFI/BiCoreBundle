@@ -291,7 +291,7 @@ class PannelloAmministrazioneController extends AbstractController
             $this->locksystem->acquire();
             $this->apppaths = $this->apppaths;
             $pammutils = $this->pautils;
-            $command = $this->apppaths->getConsole().' '.$simfonycommand;
+            $command = $this->apppaths->getConsoleExecute().' '.$simfonycommand;
             $result = $pammutils->runCommand($command);
 
             $this->locksystem->release();
