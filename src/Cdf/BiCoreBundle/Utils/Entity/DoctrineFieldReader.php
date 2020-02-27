@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Exception;
+use Doctrine\Common\Util\Inflector;
 
 class DoctrineFieldReader
 {
@@ -85,6 +86,11 @@ class DoctrineFieldReader
 
     private function getObjectProperty($field, $object)
     {
+        $inf = new Inflector();
+        $property = 'get'.$inf->camelize(ucfirst($field));
+        if (method_exists($object, $property)) {
+            return $property;
+        }
         $property = 'get'.ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
