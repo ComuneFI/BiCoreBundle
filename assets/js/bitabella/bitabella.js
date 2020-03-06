@@ -202,11 +202,16 @@ class Tabella {
             var elencocampi = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='" + biid + "'] input");
             this.abilitainputinline(elencocampi, biid);
         } else {
+            var parametriform;
+            if (typeof this.parametri.parametriform !== "undefined") {
+                parametriform = BiStringFunctions.getTabellaParameter(this.parametri.parametriform);
+            }
+
             var editurl = BiStringFunctions.getTabellaParameter(this.parametri.baseurl) + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + "/" + biid + "/edit";
             $.ajax({
                 url: editurl,
                 type: "GET",
-                async: true,
+                data: {parametriform: parametriform}, async: true,
                 error: function (xhr, textStatus, errorThrown) {
                     bootbox.alert({
                         size: "large",
