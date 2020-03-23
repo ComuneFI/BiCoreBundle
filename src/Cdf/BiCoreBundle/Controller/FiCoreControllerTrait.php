@@ -155,7 +155,7 @@ trait FiCoreControllerTrait
         );
     }
 
-    private function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
+    protected function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
     {
         if (isset($parametripassati[$keyparametro])) {
             $parametro = $parametripassati[$keyparametro];
