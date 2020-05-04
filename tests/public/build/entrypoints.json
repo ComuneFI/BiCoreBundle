@@ -2,10 +2,10 @@
   "entrypoints": {
     "bootstrapitalia": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/0.1e27c7fb.js",
-        "/build/1.dc2b504e.js",
-        "/build/bootstrapitalia.b2d1855c.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/0.d872ce79.js",
+        "/build/1.ac313568.js",
+        "/build/bootstrapitalia.41ed2f9d.js"
       ],
       "css": [
         "/build/bootstrapitalia.523f7a2a.css"
@@ -13,8 +13,8 @@
     },
     "bicore": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/bicore.130b5fe4.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/bicore.5eea12c8.js"
       ],
       "css": [
         "/build/bicore.0bccd34a.css"
@@ -22,8 +22,8 @@
     },
     "login": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/login.97cbc97b.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/login.80781509.js"
       ],
       "css": [
         "/build/login.1e0a1e19.css"
@@ -31,10 +31,10 @@
     },
     "bitabella": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/0.1e27c7fb.js",
-        "/build/1.dc2b504e.js",
-        "/build/bitabella.f6ab24ec.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/0.d872ce79.js",
+        "/build/1.ac313568.js",
+        "/build/bitabella.cad2d8fe.js"
       ],
       "css": [
         "/build/bitabella.604fcae7.css"
@@ -42,10 +42,10 @@
     },
     "bidemo": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/0.1e27c7fb.js",
-        "/build/1.dc2b504e.js",
-        "/build/bidemo.663b8bc2.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/0.d872ce79.js",
+        "/build/1.ac313568.js",
+        "/build/bidemo.ba3926e9.js"
       ],
       "css": [
         "/build/bidemo.604fcae7.css"
@@ -53,10 +53,10 @@
     },
     "adminpanel": {
       "js": [
-        "/build/runtime.cf4317a3.js",
-        "/build/0.1e27c7fb.js",
-        "/build/2.87b88f21.js",
-        "/build/adminpanel.8bf2bd70.js"
+        "/build/runtime.518d4a5c.js",
+        "/build/0.d872ce79.js",
+        "/build/2.51dc811c.js",
+        "/build/adminpanel.391715ac.js"
       ],
       "css": [
         "/build/adminpanel.9af09514.css"
