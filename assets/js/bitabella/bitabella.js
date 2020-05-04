@@ -10,8 +10,7 @@ import "bootstrap-confirmation2";
 import "font-awesome/css/font-awesome.min.css";
 import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 require('jquery-contextmenu');
-import moment from 'moment';
-import 'moment/locale/it';
+import * as moment from "moment/moment.js"
 moment.locale('it');
 
 class Tabella {
