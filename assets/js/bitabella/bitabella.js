@@ -478,6 +478,7 @@ class Tabella {
         $.ajax({
             url: BiStringFunctions.getTabellaParameter(this.parametri.urltabella),
             type: "POST",
+            dataType: "html",
             parametri: this.parametri,
             async: true,
             data: {parametri: this.parametri},
