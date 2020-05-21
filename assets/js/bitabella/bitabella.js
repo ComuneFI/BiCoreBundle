@@ -255,6 +255,7 @@ class Tabella {
                     $.ajax({
                         url: deleteturl,
                         type: "DELETE",
+                        dataType: "html",
                         async: false,
                         error: function (xhr, textStatus, errorThrown) {
                             if (xhr.status === 501) {
@@ -317,6 +318,7 @@ class Tabella {
                         $.ajax({
                             url: deleteturl,
                             type: "DELETE",
+                            dataType: "html",
                             async: true,
                             data: {id: recordsdacancellareids.join(",")},
                             error: function (xhr, textStatus, errorThrown) {
