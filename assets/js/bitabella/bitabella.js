@@ -172,6 +172,7 @@ class Tabella {
             $.ajax({
                 url: newurl,
                 type: "GET",
+                dataType: "html",
                 data: {parametriform: parametriform},
                 async: true,
                 error: function (xhr, textStatus, errorThrown) {
@@ -210,6 +211,7 @@ class Tabella {
             $.ajax({
                 url: editurl,
                 type: "GET",
+                dataType: "html",
                 data: {parametriform: parametriform}, async: true,
                 error: function (xhr, textStatus, errorThrown) {
                     bootbox.alert({
