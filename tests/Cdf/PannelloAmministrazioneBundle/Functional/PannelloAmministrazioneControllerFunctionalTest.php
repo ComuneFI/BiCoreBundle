@@ -15,14 +15,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         //url da testare
         $container = static::createClient()->getContainer();
         $apppath = $container->get('pannelloamministrazione.projectpath');
-        $checkentityprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
-        $checktypeprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
-        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
-                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
-        $checkindexprova = $checkviewsprova .
-                DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
+        $checkentityprova = $apppath->getSrcPath().
+                DIRECTORY_SEPARATOR.'Entity'.DIRECTORY_SEPARATOR.'Prova.php';
+        $checktypeprova = $apppath->getSrcPath().
+                DIRECTORY_SEPARATOR.'Form'.DIRECTORY_SEPARATOR.'ProvaType.php';
+        $checkviewsprova = $apppath->getSrcPath().DIRECTORY_SEPARATOR.'..'.
+                DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Prova';
+        $checkindexprova = $checkviewsprova.
+                DIRECTORY_SEPARATOR.'Crud'.DIRECTORY_SEPARATOR.'index.html.twig';
 
         $url = $this->getRoute('fi_pannello_amministrazione_homepage');
 
@@ -40,7 +40,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->pressButton('biconfirmok');
 
         $this->logout();
-        clearcache();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
 
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -56,7 +56,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->pressButton('biconfirmok');
 
         $this->logout();
-        clearcache();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
 
         $this->visit($url);
         $this->login('admin', 'admin');
@@ -76,9 +76,9 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->assertTrue(file_exists($checkindexprova));
 
         $this->logout();
-        //clearcache();
-        removecache();
-        
+        //\Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::removecache();
+
         $client->reload();
 
         try {
@@ -102,8 +102,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $fieldhtml = 'prova_descrizione';
-        
-        $client->waitFor('#' . $fieldhtml);
+
+        $client->waitFor('#'.$fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
 
@@ -113,7 +113,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
 
         $qb1 = $em->createQueryBuilder()
-                        ->select(array('Prova'))
+                        ->select(['Prova'])
                         ->from('App:Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest1)
@@ -121,7 +121,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $provaobj1 = $qb1[0];
         $rowid = $provaobj1->getId();
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
         $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary';
         $client->waitFor($contextmenuedit);
         $this->clickElement($contextmenuedit);
@@ -132,7 +132,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
         sleep(1);
-        $client->waitFor('#' . $fieldhtml);
+        $client->waitFor('#'.$fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
 
@@ -142,15 +142,15 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
         $qb2 = $em->createQueryBuilder()
-                        ->select(array("Prova"))
-                        ->from("App:Prova", "Prova")
-                        ->where("Prova.id = :id")
-                        ->setParameter("id", $rowid)
+                        ->select(['Prova'])
+                        ->from('App:Prova', 'Prova')
+                        ->where('Prova.id = :id')
+                        ->setParameter('id', $rowid)
                         ->getQuery()->getResult();
 
         $this->assertEquals($qb2[0]->getDescrizione(), $descrizionetest2);
 
-        $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
+        $this->clickElement('.bibottonimodificatabellaProva[data-biid="'.$rowid.'"]');
 
         $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
         $client->waitFor($contextmenuedit);
@@ -165,7 +165,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         sleep(1);
 
         $qb3 = $em->createQueryBuilder()
-                        ->select(array('Prova'))
+                        ->select(['Prova'])
                         ->from('App:Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest2)
@@ -189,9 +189,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     {
         static::createPantherClient()->quit();
         parent::tearDown();
-        cleanFilesystem();
-        removecache();
-        clearcache();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::cleanFilesystem();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::removecache();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
     }
-
 }
