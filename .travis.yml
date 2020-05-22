@@ -125,6 +125,23 @@ before_script:
 
 script:
   - ant
+  # - '[[ "$TRAVIS_PHP_VERSION" == "7.4" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+  # this checks that the YAML config files contain no syntax errors
+  - ./bin/console lint:yaml config --parse-tags
+  # this checks that the Twig template files contain no syntax errors
+  - ./bin/console lint:twig templates --env=prod
+  # this checks that the XLIFF translations contain no syntax errors
+  - ./bin/console lint:xliff translations
+  # this checks that arguments injected into services match type declarations
+  - ./bin/console lint:container
+  # TODO: replace the old security checker by the new checker provided by the 'symfony' binary
+  # this checks that the application doesn't use dependencies with known security vulnerabilities
+  #- ./bin/console security:check
+  # this checks that Doctrine's mapping configurations are valid
+  - ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+  #  Fail CI if the repo is in a dirty state after building assets (only for current release ie install)
+  #-  if [[ "$ACTION" == "install" ]]; then yarn install && yarn encore production && git add --all && git diff --staged --exit-code; fi
+  - composer validate --strict
   #- travis_wait 40 ant
   #- PANTHER_WEB_SERVER_DIR=/src/php/BiCoreBundle/tests/public PANTHER_NO_HEADLESS=1 vendor/bin/simple-phpunit -c tools/phpunit/phpunit.xml.dist --filter test20AdminpanelGenerateBundle
 
