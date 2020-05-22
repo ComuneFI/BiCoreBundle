@@ -10,7 +10,7 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "true"
-    bootstrap                   = "./tests/bootstrap.php" >
+    bootstrap                   = "./tests/config/bootstrap.php" >
 
     <testsuites>
         <testsuite name="Pannelloamministrazione">
