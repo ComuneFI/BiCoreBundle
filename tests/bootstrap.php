@@ -2,8 +2,8 @@
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 set_time_limit(0);
 
@@ -19,9 +19,6 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
     (new Dotenv(true))->load(__DIR__.'/../tests/.env');
 }
-$classLoader = new \Composer\Autoload\ClassLoader();
-$classLoader->addPsr4('Cdf\\BiCoreBundle\\Tests\\', __DIR__.'/Cdf/Tests', true);
-$classLoader->register();
 
 date_default_timezone_set('Europe/Rome');
 cleanFilesystem();
@@ -29,31 +26,21 @@ cleanFilesystem();
 //databaseinit();
 function clearcache()
 {
-    passthru(sprintf(
-                    '"%s/console" cache:clear --env=test', __DIR__.'/../bin'
-    ));
+    passthru(sprintf('"%s/console" cache:clear --env=test', __DIR__.'/../bin'));
 }
 
 function databaseinit()
 {
-    passthru(sprintf(
-                    '"%s/console" bicorebundle:dropdatabase --force', __DIR__.'/../bin'
-    ));
-    passthru(sprintf(
-                    '"%s/console" bicorebundle:install admin admin admin@admin.it', __DIR__.'/../bin'
-    ));
-    passthru(sprintf(
-                    '"%s/console" bicoredemo:loaddefauldata', __DIR__.'/../bin'
-    ));
-
-    //sleep(1);
+    passthru(sprintf('"%s/console" bicorebundle:dropdatabase --force', __DIR__.'/../bin'));
+    passthru(sprintf('"%s/console" bicorebundle:install admin admin admin@admin.it', __DIR__.'/../bin'));
+    passthru(sprintf('"%s/console" bicoredemo:loaddefauldata', __DIR__.'/../bin'));
 }
 
 function removecache()
 {
     $vendorDir = dirname(dirname(__FILE__));
     //$envs = ['test', 'dev', 'prod'];
-    $envs[] = getenv("APP_ENV");
+    $envs[] = getenv('APP_ENV');
     foreach ($envs as $env) {
         $cachedir = $vendorDir.'/tests/var/cache/'.$env;
         if (file_exists($cachedir)) {
@@ -136,7 +123,7 @@ function cleanFilesystem()
     if ($fs->exists($entityfile6)) {
         $fs->remove($entityfile6);
     }
-    
+
     $entityfile7 = $vendorDir.'/src/Entity/BaseTabellaMinuscola.php.ko';
 
     if ($fs->exists($entityfile7)) {
@@ -147,7 +134,7 @@ function cleanFilesystem()
     if ($fs->exists($entityfile8)) {
         $fs->remove($entityfile8);
     }
-    
+
     $routingfile = $vendorDir.'/config/routes/prova.yml';
 
     if ($fs->exists($routingfile)) {
@@ -229,7 +216,7 @@ function deleteLineFromFile($file, $DELETE)
 {
     $data = file($file);
 
-    $out = array();
+    $out = [];
 
     foreach ($data as $line) {
         if (trim($line) != $DELETE) {
