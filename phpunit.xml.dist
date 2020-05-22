@@ -36,18 +36,18 @@
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Functional</directory>
         </testsuite>
     </testsuites>
-    
+
     <php>
         <env name="KERNEL_CLASS" value="App\Kernel" />
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=47&amp;max[self]=0" />
-        
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=4864&amp;max[self]=4864" />
+
         <server name="PANTHER_WEB_SERVER_PORT" value="9090" />
         <ini name="max_execution_time" value="0"/>
     </php>
-    
+
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./src</directory>
@@ -58,14 +58,14 @@
                 <directory>./src/*/Bundle/*Bundle/Resources</directory>
             </exclude>
         </whitelist>
-        
+
     </filter>
-    
+
     <listeners>
         <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
 
         <listener class="Symfony\Component\Panther\ServerListener" />
         <!--<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />-->
         <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
-    </listeners>   
+    </listeners>
 </phpunit>

@@ -4,11 +4,11 @@ sudo: false
 
 addons:
   postgresql: 9.6
-  chrome: stable
+  #chrome: stable
   apt:
     packages:
       - apache2 libapache2-mod-fcgid make ant
-      
+
 cache:
     directories:
         - $HOME/.composer/cache/files
@@ -18,13 +18,13 @@ services:
   - mysql
   - postgresql
   - xvfb
-  
+
 env:
     global:
         - PANTHER_WEB_SERVER_DIR=$TRAVIS_BUILD_DIR/tests/public
         - PHPUNIT_FLAGS="-v"
         - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
-  
+
 matrix:
     fast_finish: true
     include:
@@ -46,7 +46,7 @@ matrix:
           env: DB=pgsql SYMFONY=4.4
         - php: 7.4
           env: DB=sqlite3 SYMFONY=4.4
-          
+
     allow_failures:
         #Sqlite fails on comparision date (equals)
         - php: 7.2
@@ -69,13 +69,19 @@ before_script:
   - sudo /sbin/mkswap /var/swap.1
   - sudo /sbin/swapon /var/swap.1
 
+  - export CHROME_BIN=chromium-browser
+  - CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+  - CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+  - curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+  - unzip chromedriver_linux64.zip -d ~/bin
+
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]] ; then pecl channel-update pecl.php.net; fi;
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu || true; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then echo "yes" | pecl install channel://pecl.php.net/apcu_bc || true; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-   
+
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/max_execution_time=1800/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/extension="apc.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
@@ -93,7 +99,7 @@ before_script:
   - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
   - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
   - sudo service apache2 restart
-  
+
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/tests/.env; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/bicore.pgsql.yml $TRAVIS_BUILD_DIR/tests/config/packages/bicore.yml; fi
@@ -102,17 +108,17 @@ before_script:
   - if [[ "$DB" == "pgsql" ]]; then psql -c "GRANT ALL PRIVILEGES ON DATABASE unittest TO biuser;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "ALTER USER biuser CREATEDB;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "alter role biuser superuser;" -U postgres; fi
-  
+
   - if [[ "$DB" == "mysql" ]]; then echo "PROVISIONING WITH MySQL"; fi
   - if [[ "$DB" == "mysql" ]]; then cp -f ./tests/build/.env.mysql $TRAVIS_BUILD_DIR/tests/.env; fi
   - if [[ "$DB" == "mysql" ]]; then mysql --version; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "CREATE DATABASE unittest;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "CREATE USER 'biuser'@'localhost' IDENTIFIED BY 'biuserpwd';"; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -u root -e "GRANT ALL ON unittest.* TO 'biuser'@'localhost';"; fi
-  
+
   - if [[ "$DB" == "sqlite3" ]]; then echo "PROVISIONING WITH Sqlite3"; fi
   - if [[ "$DB" == "sqlite3" ]]; then cp -f ./tests/build/.env.sqlite $TRAVIS_BUILD_DIR/tests/.env; fi
-  
+
   #- if [[ $SYMFONY == "5.0" ]]; then sed -i -e "s,4.4.\*,5.0.\*,g" $TRAVIS_BUILD_DIR/composer.json; fi
   #- if [[ $SYMFONY == "5.0" ]]; then sed -i '\|"sensio\/distribution-bundle"|d' $TRAVIS_BUILD_DIR/composer.json; fi
   #- if [[ $SYMFONY == "5.0" ]]; then sed -i '\"SensioDistributionBundle"d' $TRAVIS_BUILD_DIR/tests/config/bundles.php; fi
