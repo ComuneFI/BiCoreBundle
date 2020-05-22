@@ -2,13 +2,12 @@
 
 namespace Cdf\BiCoreBundle\Tests\Utils;
 
-use Symfony\Component\Panther\PantherTestCase;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Symfony\Component\Panther\PantherTestCase;
 
 abstract class BiTestAuthorizedClient extends PantherTestCase
 {
-
     const TIMEOUT = 4;
 
     /* @var $em \Doctrine\ORM\EntityManager */
@@ -22,13 +21,14 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         $this->autologin();
     }
 
-    protected function getRoute($name, $variables = array(), $absolutepath = false)
+    protected function getRoute($name, $variables = [], $absolutepath = false)
     {
         if ($absolutepath) {
             $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
         $container = static::createClient()->getContainer();
+
         return $container->get('router')->generate($name, $variables, $absolutepath);
     }
 
@@ -44,7 +44,6 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function getCurrentPageContent()
     {
-
         return static::createPantherClient()->getPageSource();
     }
 
@@ -74,7 +73,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function evaluateScript($script)
     {
-        return static::createPantherClient()->executeScript($script, array());
+        return static::createPantherClient()->executeScript($script, []);
     }
 
     public function executeScript($script)
@@ -84,7 +83,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function find($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -113,7 +112,6 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     private function getElementByWebDriver($webdriverby)
     {
-
         $elements = static::createPantherClient()->findElements($webdriverby);
         if (0 === count($elements)) {
             return null;
@@ -192,7 +190,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function findField($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -216,7 +214,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function fillField($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -249,7 +247,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function checkboxSelect($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -278,7 +276,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function checkboxIsChecked($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -300,14 +298,14 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function selectFieldOption($selector, $value, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
                 //$this->ajaxWait();
                 $select = $this->findField($selector);
                 if ($select) {
-                    $select->findElement(WebDriverBy::cssSelector("option[value='" . $value . "']"))
+                    $select->findElement(WebDriverBy::cssSelector("option[value='".$value."']"))
                             ->click();
 
                     return;
@@ -325,7 +323,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function pressButton($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -352,7 +350,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function clickLink($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -398,7 +396,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function clickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -426,7 +424,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function dblClickElement($selector, $timeout = self::TIMEOUT)
     {
-        $e = new \Exception('Impossibile trovare ' . $selector);
+        $e = new \Exception('Impossibile trovare '.$selector);
         $i = 0;
         while ($i < $timeout) {
             try {
@@ -521,10 +519,4 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
     {
         $this->visit('/logout');
     }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
 }
