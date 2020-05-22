@@ -91,7 +91,7 @@ class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClien
           $this->assertEquals(200, $client->getResponse()->getStatusCode());
          */
 
-        cleanFilesystem();
+        \Cdf\BiCoreBundle\Tests\Utils\BiTest::cleanFilesystem();
         //dump($client->getResponse());
     }
 
