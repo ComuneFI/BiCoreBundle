@@ -23,16 +23,16 @@ services:
     cdf.bicorebundle.twig.extension.objecttotabella:
         alias: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
         public: true
-            
+
     Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension:
         class: Cdf\BiCoreBundle\Twig\Extension\ObjectToTabellaExtension
         public: false
-        arguments: 
+        arguments:
             $tableprefix: "%bi_core.table_prefix%"
 
         tags:
             - { name: twig.extension }
-            
+
     cdf.bicorebundle.twig.extension.utilita:
         class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
         arguments: ["@service_container"]
@@ -49,36 +49,36 @@ services:
         class: Cdf\BiCoreBundle\Collector\DatabaseInfoDataCollector
         tags:
             - { name: data_collector , template: "@BiCore/Collector/databaseInfo", id: "databaseInfo" }
-            
+
     #Utility database
     cdf.bicorebundle.utility.database:
         alias: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         public: true
-    
+
     Cdf\BiCoreBundle\Utils\Database\DatabaseUtils:
         class: Cdf\BiCoreBundle\Utils\Database\DatabaseUtils
         arguments: [ '@kernel', '@doctrine.orm.entity_manager' ]
         public: false
-    
+
     #Permessi Utils
     cdf.bicorebundle.permessi:
         alias: Cdf\BiCoreBundle\Service\Permessi\PermessiManager
         public: true
-        
+
     Cdf\BiCoreBundle\Service\Permessi\PermessiManager:
         arguments: [ '@doctrine.orm.entity_manager', '@security.token_storage' ]
         public: false
-        
+
     #Utility entities
     cdf.bicorebundle.utility.entity:
         alias: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
         public: true
-    
+
     Cdf\BiCoreBundle\Utils\Entity\EntityUtils:
         class: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
         arguments: [ '@doctrine.orm.entity_manager' ]
         public: false
-            
+
     Cdf\BiCoreBundle\Utils\Entity\Finder:
         arguments: [ '@doctrine.orm.entity_manager' ]
         public: false
@@ -90,12 +90,12 @@ services:
     cdf.bicorebundle.utility.entity.system:
         alias: Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils
         public: true
-    
+
     Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils:
         class: Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils
         public: false
         arguments: [ '@doctrine.orm.entity_manager' ]
-        
+
     Cdf\BiCoreBundle\Utils\Arrays\ArrayUtils:
         public: false
 
@@ -103,56 +103,49 @@ services:
     cdf.bicorebundle.utils.export.tabellaxls:
         alias: Cdf\BiCoreBundle\Utils\Export\TabellaXls
         public: true
-        
+
     Cdf\BiCoreBundle\Utils\Export\TabellaXls:
         public: false
-        arguments: 
+        arguments:
             $tableprefix: "%bi_core.table_prefix%"
 
     #subscriber per aggiungere un suffisso alle tabelle di bi
     cdf.bicorebundle.subscriber.tableprefix:
         class: Cdf\BiCoreBundle\Subscriber\TablePrefixSubscriber
-        arguments: 
+        arguments:
             $tableprefix: "%bi_core.table_prefix%"
         tags:
             - { name: doctrine.event_subscriber }
-            
+
     #subscriber per aggiungere uno schema alle tabelle di bi
     cdf.bicorebundle.subscriber.schemaprefix:
         class: Cdf\BiCoreBundle\Subscriber\TableSchemaSubscriber
-        arguments: 
+        arguments:
             $schemaprefix: "%bi_core.table_schema%"
         tags:
             - { name: doctrine.event_subscriber }
 
-    #Entity type hidden
-    cdf.bicorebundle.entitytype.hidden:
-        class: Cdf\BiCoreBundle\Form\Type\EntityHiddenType
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-        - { name: form.type, alias: entity_hidden }
-        
     cdf.bicorebundle.utils.entity.doctrinefieldreader:
         alias: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
         public: true
-        
+
     Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader:
         class: Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader
         public: false
-        arguments: 
+        arguments:
             $tableprefix: "%bi_core.table_prefix%"
-        
+
     FOS\UserBundle\Util\UserManipulator:
         alias: fos_user.util.user_manipulator
-        
+
     #listener
     cdf.bicorebundle.kernel.listener.maintenance:
         class: Cdf\BiCoreBundle\Listener\MaintenanceListener
-        arguments: 
+        arguments:
             - "%bi_core.lockfile%"
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-            
+
     #Controllers
     cdf.bicorebundle.controller.ficontroller:
         alias: Cdf\BiCoreBundle\Controller\FiController
@@ -165,7 +158,7 @@ services:
               arguments:
                   - '@cdf.bicorebundle.utils.export.tabellaxls'
         #tags: ['controller.service_arguments']
-        
+
     cdf.bicorebundle.controller.operatori:
         class: Cdf\BiCoreBundle\Controller\OperatoriController
         bind:
@@ -173,13 +166,13 @@ services:
             $logger: '@logger'
             $permessi: '@cdf.bicorebundle.permessi'
             $usermanipulator: '@fos_user.util.user_manipulator'
-            
+
     cdf.bicorebundle.controller.permessi:
         class: Cdf\BiCoreBundle\Controller\PermessiController
-    
+
     cdf.bicorebundle.controller.ruoli:
         class: Cdf\BiCoreBundle\Controller\RuoliController
-    
+
     cdf.bicorebundle.controller.opzionitabelle:
         class: Cdf\BiCoreBundle\Controller\OpzionitabelleController
 
@@ -191,24 +184,24 @@ services:
 
     cdf.bicorebundle.controller.storicomodifiche:
         class: Cdf\BiCoreBundle\Controller\StoricomodificheController
-    
+
     #Commands as services
     cdf.bicorebundle.command.createdatabase:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleCreatedatabaseCommand
         public: false
         tags:
             -  { name: console.command }
-            
+
     cdf.bicorebundle.command.dropdatabase:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleDropdatabaseCommand
         public: false
         tags:
             -  { name: console.command }
-            
+
     cdf.bicorebundle.command.droptables:
         alias: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
         public: true
-            
+
     Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleDroptablesCommand
         public: false
@@ -218,7 +211,7 @@ services:
     cdf.bicorebundle.command.install:
         alias: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
         public: true
-            
+
     Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleInstallCommand
         public: false
@@ -231,13 +224,13 @@ services:
         arguments: ['%kernel.root_dir%']
         tags:
             -  { name: console.command }
-            
+
     cdf.bicorebundle.command.clonaruolo:
         class: Cdf\BiCoreBundle\Command\BiCoreBundleClonaruoloCommand
         public: false
         tags:
             -  { name: console.command }
-            
+
     cdf.bicorebundle.command.configuratorimport:
         alias: Cdf\BiCoreBundle\Command\BiCoreBundleConfiguratorimportCommand
         public: true
@@ -257,4 +250,3 @@ services:
         public: false
         tags:
             -  { name: console.command }
-            
