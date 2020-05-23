@@ -165,10 +165,4 @@ class FunctionalControllerIndexTest extends BiTestAuthorizedClient
         $this->assertSame($prodottifornitoreregistrati, count($prodottifornitore));
         $this->logout();
     }
-
-    public function tearDown(): void
-    {
-        static::createPantherClient()->quit();
-        parent::tearDown();
-    }
 }

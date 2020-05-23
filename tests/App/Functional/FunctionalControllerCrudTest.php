@@ -74,10 +74,4 @@ class FunctionalControllerCrudTest extends BiTestAuthorizedClient
 
         $this->logout();
     }
-
-    public function tearDown(): void
-    {
-        static::createPantherClient()->quit();
-        parent::tearDown();
-    }
 }
