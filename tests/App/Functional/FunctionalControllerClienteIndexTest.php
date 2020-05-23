@@ -4,7 +4,7 @@ namespace App\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalControllerIndexTest extends BiTestAuthorizedClient
+class FunctionalControllerClienteIndexTest extends BiTestAuthorizedClient
 {
     public function testFunctionalClienteIndex()
     {
@@ -82,87 +82,6 @@ class FunctionalControllerIndexTest extends BiTestAuthorizedClient
         sleep(1);
         $this->clickElement($selectorconfirm);
         sleep(1);
-        $this->logout();
-    }
-
-    public function testFunctionalFornitoreIndex()
-    {
-        $fornitoriregistrati = 3;
-        $htmltableid = 'tableFornitore';
-        $client = static::createPantherClient();
-        $testUrl = '/Fornitore/';
-        $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#'.$htmltableid); // Wait for the tabellaFornitore to appear
-        $this->assertSame(self::$baseUri.$testUrl, $client->getCurrentURL()); // Assert we're still on the same page
-        $fornitori = $crawler->filterXPath('//table[@id="'.$htmltableid.'"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
-            return $tr->filter('td')->each(function ($td, $i) {
-                return trim($td->text());
-            });
-        });
-        $this->assertSame($fornitoriregistrati, count($fornitori));
-        $this->logout();
-    }
-
-    public function testSecuredFunctionalMagazzinoIndex()
-    {
-        $url = $this->getRoute('Magazzino_container');
-        $client = static::createPantherClient();
-
-        $client->request('GET', $url);
-        $client->waitFor('.tabellasearch');
-
-        $this->pressButton('.tabellasearch');
-        $fieldhtml = 'html body div.tabella-container div#tabellaMagazzino div#TabMagazzinoContent.tab-content div#tabMagazzino1a.tab-pane.p-3.fade.active.show div div.panel.panel-primary.filterable table#tableMagazzino.table.table-sm.table-responsive-sm.table-striped.bitable.table-hover thead tr.filters.d-flex th.biw-19 input.form-control.colonnatabellafiltro';
-        $this->fillField($fieldhtml, 'ed');
-
-        $this->findField($fieldhtml)->sendKeys("\n");
-        sleep(5);
-        $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
-        $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
-        $this->assertEquals(5, $numrowstabella);
-
-        $this->pressButton('birimuovifiltriMagazzino');
-        sleep(5);
-        $crawler = new \Symfony\Component\DomCrawler\Crawler($this->getCurrentPageContent());
-        $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
-        $this->assertEquals(11, $numrowstabella);
-
-        $this->logout();
-    }
-
-    public function testFunctionalOrdineIndex()
-    {
-        $ordiniregistrati = 14;
-        $htmltableid = 'tableOrdine';
-        $client = static::createPantherClient();
-        $testUrl = '/Ordine/';
-        $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#'.$htmltableid); // Wait for the tabellaOrdine to appear
-        $this->assertSame(self::$baseUri.$testUrl, $client->getCurrentURL()); // Assert we're still on the same page
-        $ordini = $crawler->filterXPath('//table[@id="'.$htmltableid.'"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
-            return $tr->filter('td')->each(function ($td, $i) {
-                return trim($td->text());
-            });
-        });
-        $this->assertSame($ordiniregistrati, count($ordini));
-        $this->logout();
-    }
-
-    public function testFunctionalProdottofornitoreIndex()
-    {
-        $prodottifornitoreregistrati = 11;
-        $htmltableid = 'tableProdottofornitore';
-        $client = static::createPantherClient();
-        $testUrl = '/Prodottofornitore/';
-        $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#'.$htmltableid); // Wait for the tabellaProdottofornitore to appear
-        $this->assertSame(self::$baseUri.$testUrl, $client->getCurrentURL()); // Assert we're still on the same page
-        $prodottifornitore = $crawler->filterXPath('//table[@id="'.$htmltableid.'"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
-            return $tr->filter('td')->each(function ($td, $i) {
-                return trim($td->text());
-            });
-        });
-        $this->assertSame($prodottifornitoreregistrati, count($prodottifornitore));
         $this->logout();
     }
 }
