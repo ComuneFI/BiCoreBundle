@@ -4,7 +4,7 @@ namespace App\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalControllerTest2 extends BiTestAuthorizedClient
+class FunctionalControllerCrudTest extends BiTestAuthorizedClient
 {
     public function testFunctionalOrdineEditinline()
     {
@@ -13,8 +13,8 @@ class FunctionalControllerTest2 extends BiTestAuthorizedClient
         $client = static::createPantherClient();
         $testUrl = '/Ordine/';
         $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#' . $htmltableid); // Wait for the tabellaCliente to appear
-        ;
+        $client->waitFor('#'.$htmltableid); // Wait for the tabellaCliente to appear
+
         //$this->executeScript('$("#ParametriOrdine").attr("data-editinline","Ma==");');
         $this->executeScript("document.getElementById('ParametriOrdine').dataset.editinline= 'Ma=='");
         $this->pressButton('.tabellarefresh');
@@ -32,7 +32,7 @@ class FunctionalControllerTest2 extends BiTestAuthorizedClient
 
         //$this->executeScript("$('".$selectorinputqta."').val(".$qta1ex.')');
         sleep(1);
-        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta1ex);
+        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=".$qta1ex);
 
         //$this->executeScript("document.getElementById('" . $selectorinputqta . "').value = " . $qta1ex . '');
         sleep(1);
@@ -61,12 +61,11 @@ class FunctionalControllerTest2 extends BiTestAuthorizedClient
         sleep(2);
         $this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-edit');
         sleep(2);
-        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=" . $qta2ex);
+        $this->executeScript("document.querySelector('#tableOrdine > tbody > tr:nth-child(2) > td:nth-child(4) > div > input').value=".$qta2ex);
 
         sleep(1);
         $this->clickElement($selectorconfirm);
         sleep(5);
-
 
         /* qui */
         $em->clear();
@@ -75,30 +74,4 @@ class FunctionalControllerTest2 extends BiTestAuthorizedClient
 
         $this->logout();
     }
-
-    public function testFunctionalProdottofornitoreIndex()
-    {
-        $prodottifornitoreregistrati = 11;
-        $htmltableid = 'tableProdottofornitore';
-        $client = static::createPantherClient();
-        $testUrl = '/Prodottofornitore/';
-        $crawler = $client->request('GET', $testUrl);
-        $client->waitFor('#' . $htmltableid); // Wait for the tabellaProdottofornitore to appear
-        $this->assertSame(self::$baseUri . $testUrl, $client->getCurrentURL()); // Assert we're still on the same page
-        $prodottifornitore = $crawler->filterXPath('//table[@id="' . $htmltableid . '"]')->filter('tbody')->filter('tr')->each(function ($tr, $i) {
-            return $tr->filter('td')->each(function ($td, $i) {
-                        return trim($td->text());
-                    });
-        });
-        $this->assertSame($prodottifornitoreregistrati, count($prodottifornitore));
-        $this->logout();
-
-    }
-
-    public function tearDown(): void
-    {
-        static::createPantherClient()->quit();
-        parent::tearDown();
-    }
-
 }
