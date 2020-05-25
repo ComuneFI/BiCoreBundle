@@ -116,6 +116,7 @@ class Tabella {
                     async: false,
                     cache: false,
                     type: "POST",
+                    dataType: "html",
                     data: formSerialize,
                     enctype: 'multipart/form-data',
                     processData: false, // tell jQuery not to process the data
