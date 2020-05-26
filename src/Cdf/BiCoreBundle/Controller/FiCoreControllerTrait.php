@@ -32,7 +32,7 @@ trait FiCoreControllerTrait
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $modellocolonne = array(
+        $modellocolonne = [
                 /*
                   $controller . ".nominativo" => array(
                   "nometabella" => $controller,
@@ -52,14 +52,14 @@ trait FiCoreControllerTrait
                   ),
 
                  */
-        );
+        ];
 
-        $filtri = array();
-        $prefiltri = array();
+        $filtri = [];
+        $prefiltri = [];
         $entityutils = new EntityUtils($this->get('doctrine')->getManager());
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $colonneordinamento = array($tablenamefromentity.'.id' => 'DESC');
-        $parametritabella = array('em' => ParametriTabella::setParameter('default'),
+        $colonneordinamento = [$tablenamefromentity.'.id' => 'DESC'];
+        $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
@@ -83,9 +83,9 @@ trait FiCoreControllerTrait
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
             'traduzionefiltri' => ParametriTabella::setParameter(''),
-        );
+        ];
 
-        return $this->render($crudtemplate, array('parametritabella' => $parametritabella));
+        return $this->render($crudtemplate, ['parametritabella' => $parametritabella]);
     }
 
     /**
@@ -101,16 +101,16 @@ trait FiCoreControllerTrait
         $controller = $this->getController();
         $parametripassati = json_decode($request->get('parametripassati'), true);
 
-        $filtri = $this->getParametroIndexDettaglio($parametripassati, 'filtri', array());
-        $prefiltri = $this->getParametroIndexDettaglio($parametripassati, 'prefiltri', array());
+        $filtri = $this->getParametroIndexDettaglio($parametripassati, 'filtri', []);
+        $prefiltri = $this->getParametroIndexDettaglio($parametripassati, 'prefiltri', []);
         $titolotabella = $this->getParametroIndexDettaglio($parametripassati, 'titolotabella', 'Elenco '.$controller);
-        $modellocolonne = $this->getParametroIndexDettaglio($parametripassati, 'modellocolonne', array());
-        $colonneordinamento = $this->getParametroIndexDettaglio($parametripassati, 'colonneordinamento', array());
+        $modellocolonne = $this->getParametroIndexDettaglio($parametripassati, 'modellocolonne', []);
+        $colonneordinamento = $this->getParametroIndexDettaglio($parametripassati, 'colonneordinamento', []);
         $multiselezione = $this->getParametroIndexDettaglio($parametripassati, 'multiselezione', 0);
-        $parametriform = $this->getParametroIndexDettaglio($parametripassati, 'parametriform', array());
+        $parametriform = $this->getParametroIndexDettaglio($parametripassati, 'parametriform', []);
 
         $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
-        if (!$this->get("twig")->getLoader()->exists($template)) {
+        if (!$this->get('twig')->getLoader()->exists($template)) {
             $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
@@ -122,7 +122,7 @@ trait FiCoreControllerTrait
         $entityutils = new EntityUtils($this->get('doctrine')->getManager());
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $parametritabella = array('em' => ParametriTabella::setParameter('default'),
+        $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
@@ -145,13 +145,13 @@ trait FiCoreControllerTrait
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
             'traduzionefiltri' => ParametriTabella::setParameter(''),
-        );
+        ];
 
         return $this->render(
             $template,
-            array(
+            [
                             'parametritabella' => $parametritabella,
-                        )
+                        ]
         );
     }
 
@@ -179,9 +179,9 @@ trait FiCoreControllerTrait
         $em = $this->get('doctrine')->getManager();
         $righe = $em->getRepository($entityclassnotation)->findAll();
 
-        $lista = array();
+        $lista = [];
         foreach ($righe as $riga) {
-            $lista[] = array('id' => $riga->getId(), 'descrizione' => $riga->__toString());
+            $lista[] = ['id' => $riga->getId(), 'descrizione' => $riga->__toString()];
         }
 
         return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
@@ -190,9 +190,9 @@ trait FiCoreControllerTrait
     protected function getTabellaTemplate($controller)
     {
         $tabellatemplate = $controller.'/Tabella/tabellaform.html.twig';
-        if (!$this->get("twig")->getLoader()->exists($tabellatemplate)) {
+        if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
             $tabellatemplate = '@BiCore/'.$controller.'/Tabella/tabellaform.html.twig';
-            if (!$this->get("twig")->getLoader()->exists($tabellatemplate)) {
+            if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
                 $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
         }
@@ -203,9 +203,9 @@ trait FiCoreControllerTrait
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
         $crudtemplate = $bundle.'/'.$controller.'/Crud/'.$operation.'.html.twig';
-        if (!$this->get("twig")->getLoader()->exists($crudtemplate)) {
+        if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
             $crudtemplate = $controller.'/Crud/'.$operation.'.html.twig';
-            if (!$this->get("twig")->getLoader()->exists($crudtemplate)) {
+            if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
                 $crudtemplate = '@BiCore/Standard/Crud/'.$operation.'.html.twig';
             }
         }

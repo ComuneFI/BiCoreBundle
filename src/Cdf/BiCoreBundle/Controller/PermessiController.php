@@ -32,38 +32,39 @@ class PermessiController extends FiController
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $modellocolonne = array(
-            array(
+        $modellocolonne = [
+            [
                 'nomecampo' => '__bicorebundle_Permessi.modulo',
                 'nometabella' => '__bicorebundle_Permessi',
                 'etichetta' => 'Funzionalità',
-            ),
-            array(
+            ],
+            [
                 'nomecampo' => '__bicorebundle_Permessi.__bicorebundle_Operatori.username',
                 'escluso' => false,
-            ), /*
+            ], /*
                   $controller . ".operatori" => array(
                   "nometabella" => "__bicorebundle_Permessi",
                   "nomecampo" => "operatori",
                   "etichetta" => "Operatore",
                   ), */
-        );
+        ];
 
-        $colonneordinamento = array('__bicorebundle_Permessi.id' => 'DESC');
+        $colonneordinamento = ['__bicorebundle_Permessi.id' => 'DESC'];
+        $filtri = [];
         /* $filtri = array(array("nomecampo" => "__bicorebundle_Permessi.ruoli.superadmin",
           "operatore" => "=",
           "valore" => true
-          )); */
+          ));
         $filtri = array(
             array('nomecampo' => '__bicorebundle_Permessi.__bicorebundle_Operatori.__bicorebundle_Ruoli.user',
                 'operatore' => '=',
                 'valore' => true,
             ),
-        );
-        $prefiltri = array();
+        );*/
+        $prefiltri = [];
         $entityutils = new EntityUtils($this->get('doctrine')->getManager());
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $parametritabella = array('em' => ParametriTabella::setParameter('default'),
+        $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
@@ -86,8 +87,8 @@ class PermessiController extends FiController
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
             'traduzionefiltri' => ParametriTabella::setParameter(''),
-        );
+        ];
 
-        return $this->render($crudtemplate, array('parametritabella' => $parametritabella));
+        return $this->render($crudtemplate, ['parametritabella' => $parametritabella]);
     }
 }

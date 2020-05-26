@@ -37,7 +37,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Cdf\\BiCoreBundle\\Tests\\Utils\\": "tests/Cdf/Tests/Utils/"
+            "Cdf\\BiCoreBundle\\Tests\\": "tests/Cdf/Tests/"
         }
     },
     "require": {

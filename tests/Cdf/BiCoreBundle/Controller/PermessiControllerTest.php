@@ -21,7 +21,7 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient
         $client->request('POST', '/Permessi/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 1)',
+                'Pagina 1 di 1 (Righe estratte: 14)',
                 $client->getResponse()->getContent()
         );
 
