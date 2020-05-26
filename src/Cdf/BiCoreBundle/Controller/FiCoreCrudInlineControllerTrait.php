@@ -4,6 +4,7 @@ namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
+use function count;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use function count;
 
 trait FiCoreCrudInlineControllerTrait
 {
@@ -90,7 +90,7 @@ trait FiCoreCrudInlineControllerTrait
         $em->flush();
         $em->clear();
 
-        return new JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
+        return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
     protected function updateinline($id, $values, $token)
@@ -142,7 +142,7 @@ trait FiCoreCrudInlineControllerTrait
             $queryBuilder->getQuery()->execute();
         }
 
-        return new JsonResponse(array('errcode' => 0, 'message' => 'Registrazione eseguita'));
+        return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
     private function getValueAggiorna($field)

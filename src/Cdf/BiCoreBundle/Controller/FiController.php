@@ -3,14 +3,16 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
+use function count;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
-use function count;
 
 class FiController extends AbstractController
 {
-    use FiCoreControllerTrait, FiCoreCrudControllerTrait, FiCoreTabellaControllerTrait;
+    use FiCoreControllerTrait;
+    use FiCoreCrudControllerTrait;
+    use FiCoreTabellaControllerTrait;
 
     protected $bundle;
     protected $template;
@@ -19,7 +21,7 @@ class FiController extends AbstractController
 
     public function __construct(PermessiManager $permessi, Environment $template)
     {
-        $matches = array();
+        $matches = [];
         $controllo = new ReflectionClass(get_class($this));
 
         preg_match('/(.*)\\\(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
@@ -47,6 +49,7 @@ class FiController extends AbstractController
     {
         return $this->permessi;
     }
+
     protected function getTemplate()
     {
         return $this->template;

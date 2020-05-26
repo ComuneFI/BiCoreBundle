@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreCrudControllerTrait
 {
-
     use FiCoreCrudInlineControllerTrait;
 
     /**
@@ -29,26 +28,26 @@ trait FiCoreCrudControllerTrait
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
-        $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : array();
+        $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : [];
 
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass . 'Type';
-        $form = $this->createForm($formType, $entity, array('attr' => array(
-                'id' => 'formdati' . $controller,
-            ),
-            'action' => $this->generateUrl($controller . '_new'), 'parametriform' => $parametriform,
-        ));
+        $formType = $formclass.'Type';
+        $form = $this->createForm($formType, $entity, ['attr' => [
+                'id' => 'formdati'.$controller,
+            ],
+            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
+        ]);
 
         $form->handleRequest($request);
 
-        $twigparms = array(
+        $twigparms = [
             'form' => $form->createView(),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'tabellatemplate' => $tabellatemplate,
-        );
+        ];
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -96,7 +95,7 @@ trait FiCoreCrudControllerTrait
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $formType = $formclass . 'Type';
+        $formType = $formclass.'Type';
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -105,28 +104,28 @@ trait FiCoreCrudControllerTrait
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
+            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
-            array('attr' => array(
-                        'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-                )
+            ['attr' => [
+                        'id' => 'formdati'.$controller,
+                    ],
+                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                ]
         );
 
         return $this->render(
             $crudtemplate,
-            array(
+            [
                             'entity' => $entity,
                             'nomecontroller' => ParametriTabella::setParameter($controller),
                             'tabellatemplate' => $tabellatemplate,
                             'edit_form' => $editForm->createView(),
                             'elencomodifiche' => $elencomodifiche,
-                        )
+                        ]
         );
     }
 
@@ -147,24 +146,24 @@ trait FiCoreCrudControllerTrait
 
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
-        $formType = $formclass . 'Type';
+        $formType = $formclass.'Type';
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
-            array('attr' => array(
-                        'id' => 'formdati' . $controller,
-                    ),
-                    'action' => $this->generateUrl($controller . '_update', array('id' => $entity->getId())),
-                )
+            ['attr' => [
+                        'id' => 'formdati'.$controller,
+                    ],
+                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                ]
         );
 
         $editForm->submit($request->request->get($editForm->getName()));
@@ -187,19 +186,19 @@ trait FiCoreCrudControllerTrait
             if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller . '_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl($controller.'_edit', ['id' => $id]));
             }
         }
 
         return new Response($this->renderView(
             $crudtemplate,
-            array(
+            [
                             'entity' => $entity,
                             'edit_form' => $editForm->createView(),
                             'nomecontroller' => ParametriTabella::setParameter($controller),
                             'tabellatemplate' => $tabellatemplate,
                             'elencomodifiche' => $elencomodifiche,
-            )
+            ]
         ), 400);
     }
 
@@ -249,11 +248,11 @@ trait FiCoreCrudControllerTrait
     {
         $em = $this->getDoctrine()->getManager();
         $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
-            array(
+            [
                     'nometabella' => $controller,
                     'idtabella' => $id,
-                ),
-            array('giorno' => 'DESC')
+                ],
+            ['giorno' => 'DESC']
         );
 
         return $risultato;
