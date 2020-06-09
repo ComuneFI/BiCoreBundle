@@ -84,6 +84,9 @@
     "fi/osbundle": {
         "version": "2.0.5"
     },
+    "fi/swaggerinsurancebundle": {
+        "version": "v1.0.2"
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -107,6 +110,9 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
+    },
+    "hanneskod/classtools": {
+        "version": "1.2.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"

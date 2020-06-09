@@ -44,6 +44,10 @@ class PannelloAmministrazioneController extends AbstractController
         $prefix = 'App\\Entity\\';
         $prefixBase = 'Base';
         $entities = $this->get('doctrine')->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $additionalEntities = $this->findAPIModels();
+        //print_r(get_declared_classes());
+        //dump($entities);
+        //exit;
         foreach ($entities as $entity) {
             if (substr($entity, 0, strlen($prefix)) == $prefix) {
                 if (substr(substr($entity, strlen($prefix)), 0, strlen($prefixBase)) != $prefixBase) {
@@ -52,6 +56,32 @@ class PannelloAmministrazioneController extends AbstractController
             }
         }
 
+        $outcomes = array_merge($entitiesprogetto, $additionalEntities);
+        //dump($outcomes);
+        return $outcomes;
+    }
+
+    private function findAPIModels(): array 
+    {
+        $entitiesprogetto = array();
+        $finder = new Finder;
+        //dump(__DIR__);
+        //TODO: 
+        $iter = new \hanneskod\classtools\Iterator\ClassIterator($finder->in('../../vendor/fi'));
+       
+        $prefix = 'SwaggerInsurance\\Model\\Models';
+
+        // Print the file names of classes, interfaces and traits in 'src'
+        foreach ($iter->getClassMap() as $classname => $splFileInfo) {
+            if (substr($classname, 0, strlen($prefix)) == $prefix) {
+                //dump($classname);
+                $entitiesprogetto[] = substr($classname, strlen($prefix)).' (API)';
+                
+            }
+          
+            //echo $classname.' : '.$splFileInfo->getRealPath();
+        }
+        //dump($entitiesprogetto);
         return $entitiesprogetto;
     }
 
