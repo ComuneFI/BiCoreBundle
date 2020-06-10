@@ -192,6 +192,9 @@ class PannelloAmministrazioneController extends AbstractController
 
     /* FORMS */
 
+    /**
+     * Generate form item, controllers and twigs for the given entity/model
+     */
     public function generateFormCrud(Request $request)
     {
         if (!$this->locksystem->acquire()) {
@@ -199,12 +202,21 @@ class PannelloAmministrazioneController extends AbstractController
         } else {
             $entityform = $request->get('entityform');
             $generatemplate = 'true' === $request->get('generatemplate') ? true : false;
-            $this->locksystem->acquire();
+            //$this->locksystem->acquire();
 
+            //we are working with an API?
+            $isApi = false;
+            //verify if provided string belongs to an API model
+            if ( \str_contains($entityform, '(API)') ) {
+                $isApi = true;
+                $entityform = trim(\str_replace('(API)','',$entityform));
+            }
+
+            // Setup an utility pack of commands (Commands.php)
             $command = $this->pacommands;
-            $result = $command->generateFormCrud($entityform, $generatemplate);
+            $result = $command->generateFormCrud($entityform, $generatemplate, $isApi);
 
-            $this->locksystem->release();
+            //$this->locksystem->release();
             //$retcc = '';
             if ($result['errcode'] < 0) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => 'Generazione Form Crud', 'message' => $result['message']);

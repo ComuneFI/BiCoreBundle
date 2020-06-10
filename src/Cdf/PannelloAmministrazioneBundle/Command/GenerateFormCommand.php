@@ -17,12 +17,14 @@ use function count;
 
 class GenerateFormCommand extends Command
 {
+    //Task / Process customized for Form Creation
     protected static $defaultName = 'pannelloamministrazione:generateformcrud';
 
     protected $apppaths;
     protected $em;
     protected $pammutils;
     private $generatemplate;
+    private $isApi;
     private $kernel;
 
     protected function configure()
@@ -31,7 +33,8 @@ class GenerateFormCommand extends Command
                 ->setDescription('Genera le views per il crud')
                 ->setHelp('Genera le views per il crud, <br/>bi.mwb AppBundle default [--schemaupdate]<br/>')
                 ->addArgument('entityform', InputArgument::REQUIRED, 'Il nome entity del form da creare')
-                ->addOption('generatemplate', InputOption::VALUE_OPTIONAL);
+                ->addOption('generatemplate', 't', InputOption::VALUE_OPTIONAL)
+                ->addOption('isApi', 'a', InputOption::VALUE_OPTIONAL);
     }
 
     public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em)
@@ -52,8 +55,17 @@ class GenerateFormCommand extends Command
         $bundlename = 'App';
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
+        $this->isApi = $input->getOption('isApi');
 
-        $command = $this->apppaths->getConsoleExecute().' --env=dev'.' make:form '.$entityform.'Type '.$entityform;
+        //to be changed form generation in order to cover API/REST type
+        $command = $this->apppaths->getConsoleExecute().' --env=dev'.' make:form '.$entityform.'Type';
+        //Append also entity class if is an ORM
+        if($this->isApi) {
+            $command .= ' -n';
+        }
+        else {
+            $command .= ' '.$entityform;
+        }
         $resultcrud = $this->pammutils->runCommand($command);
         if (0 == $resultcrud['errcode']) {
             $fs = new Filesystem();
@@ -168,6 +180,9 @@ class GenerateFormCommand extends Command
         $this->em->flush();
     }
 
+    /**
+     *  It creates a Skeleton for a controller class that extends FiController 
+     *  */
     private function getControllerCode($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
@@ -188,6 +203,39 @@ use [bundle]\Form\[tabella]Type;
 */
 
 class [tabella]Controller extends FiController {
+
+}
+EOF;
+        $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
+        $code = str_replace('[tabella]', $tabella, $codebundle);
+
+        return $code;
+    }
+
+    /**
+     *  It creates a Skeleton for a controller class that extends ApiController 
+     *  */
+    private function getControllerCodeAPI($bundlename, $tabella)
+    {
+        $codeTemplate = <<<EOF
+<?php
+namespace [bundle]\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Controller\FiApiController;
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+//TODO: CHANGE THIS LINE
+use [bundle]\Entity\[tabella]; ---<---- CHANGE THIS LINE
+use [bundle]\Form\[tabella]Type;
+                
+/**
+* [tabella] controller.
+*
+*/
+
+class [tabella]Controller extends FiApiController {
 
 }
 EOF;

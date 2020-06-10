@@ -58,15 +58,19 @@ class Commands
             'message' => 'Eseguito comando:'.$command.';'.$result['message'], );
     }
 
-    public function generateFormCrud($entityform, $generatemplate)
+    public function generateFormCrud($entityform, $generatemplate, $isAPI=false)
     {
+        // check if some item already exist, and it interrupts the execution if any
         /* @var $fs Filesystem */
-        $resultchk = $this->checkFormCrud($entityform);
+        $resultchk = $this->checkFormCrud($entityform, $isAPI);
 
         if (0 !== $resultchk['errcode']) {
             return $resultchk;
         }
         $formcrudparms = array('entityform' => $entityform, '--generatemplate' => $generatemplate);
+        if( $isAPI ) {
+            $formcrudparms['--isApi'] = true;
+        }
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
@@ -79,7 +83,7 @@ class Commands
         return $retmsg;
     }
 
-    public function checkFormCrud($entityform)
+    public function checkFormCrud($entityform, bool $isAPI=false)
     {
         /* @var $fs Filesystem */
         $fs = new Filesystem();
@@ -88,14 +92,30 @@ class Commands
         if (!is_writable($appPath)) {
             return array('errcode' => -1, 'message' => $appPath.' non scrivibile');
         }
-        $formPath = $appPath.'/Form/'.$entityform.'Type.php';
 
-        $entityPath = $appPath.'/Entity'.DIRECTORY_SEPARATOR.$entityform.'.php';
-
-        if (!$fs->exists($entityPath)) {
-            return array('errcode' => -1, 'message' => $entityPath.' entity non trovata');
+        if (!$isAPI) {
+            //Look for Entities... but they should already exist...
+            $entityPath = $appPath.'/Entity'.DIRECTORY_SEPARATOR.$entityform.'.php';
+            if (!$fs->exists($entityPath)) {
+                return array('errcode' => -1, 'message' => $entityPath.' entity non trovata');
+            }
+        }
+        else {
+            //it checks if model class already exist
+            /** 
+            preg_match('/(.*)\\\(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
+            if (0 == count($matches)) {
+                preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
+            }
+            */
+            //TODO: TO CHANGE THE PATH
+            $prefix = '\\SwaggerInsurance\\Model\\Models';
+            if( !class_exists($prefix.$entityform) ) {
+                return array('errcode' => -1, 'message' => $prefix.$entityform.' model not found');
+            }
         }
 
+        $formPath = $appPath.'/Form/'.$entityform.'Type.php';
         if ($fs->exists($formPath)) {
             return array('errcode' => -1, 'message' => $formPath.' esistente');
         }
