@@ -53,6 +53,7 @@ class GenerateFormCommand extends Command
         set_time_limit(0);
 
         $bundlename = 'App';
+        $swaggerPath = 'SwaggerInsurance\\Models';
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
@@ -76,9 +77,15 @@ class GenerateFormCommand extends Command
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
 
-            array_splice($lines, 8, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
+            /**
+             * preg_match('/function register\(.*\)\s*{/', $classFileContent, $matches, PREG_OFFSET_CAPTURE);
+                $firstLinePos = strlen($matches[0][0]) + $matches[0][1];
+                $newClassFileContent = substr_replace($classFileContent, $codeToInsert, $firstLinePos, 0);
+             */
 
-            array_splice($lines, 14, 0, '        $submitparms = array('
+            array_splice($lines, 7, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
+
+            array_splice($lines, 13, 0, '        $submitparms = array('
                     ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
 
             array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
@@ -86,7 +93,7 @@ class GenerateFormCommand extends Command
             array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
             file_put_contents($formFile, implode("\n", $lines));
 
-            $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform);
+            $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform, $swaggerPath);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln('<info>Creato '.$controlleFile.'</info>');
 
@@ -181,9 +188,24 @@ class GenerateFormCommand extends Command
     }
 
     /**
+     * Return the portion of code for Controller
+     */
+    private function getControllerCode($bundlename, $tabella, String $swaggerPath): String
+    {
+        $code = '';
+        if ($this->isApi) {
+            $code = $this->getControllerCodeAPI($bundlename, $tabella, $swaggerPath);
+        }
+        else {
+            $code = $this->getControllerCodeORM($bundlename, $tabella);
+        }
+        return $code;
+    }
+
+    /**
      *  It creates a Skeleton for a controller class that extends FiController 
      *  */
-    private function getControllerCode($bundlename, $tabella)
+    private function getControllerCodeORM($bundlename, $tabella)
     {
         $codeTemplate = <<<EOF
 <?php
@@ -215,7 +237,7 @@ EOF;
     /**
      *  It creates a Skeleton for a controller class that extends ApiController 
      *  */
-    private function getControllerCodeAPI($bundlename, $tabella)
+    private function getControllerCodeAPI($bundlename, $tabella, String $swaggerPath)
     {
         $codeTemplate = <<<EOF
 <?php
@@ -226,8 +248,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Controller\FiApiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-//TODO: CHANGE THIS LINE
-use [bundle]\Entity\[tabella]; ---<---- CHANGE THIS LINE
+use [swaggerPath]\Models[tabella];
 use [bundle]\Form\[tabella]Type;
                 
 /**
@@ -240,6 +261,7 @@ class [tabella]Controller extends FiApiController {
 }
 EOF;
         $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
+        $codebundle = str_replace('[swaggerPath]', $swaggerPath, $codebundle);
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;
