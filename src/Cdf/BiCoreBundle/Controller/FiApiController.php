@@ -10,9 +10,9 @@ use Twig\Environment;
 
 class FiApiController extends AbstractController
 {
-    use FiCoreControllerTrait;
-    use FiCoreCrudControllerTrait;
-    use FiCoreTabellaControllerTrait;
+    use FiApiCoreControllerTrait;
+    use FiApiCoreCrudControllerTrait;
+    use FiApiCoreTabellaControllerTrait;
 
     protected $bundle;
     protected $template;

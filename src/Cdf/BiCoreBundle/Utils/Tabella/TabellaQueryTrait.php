@@ -124,6 +124,7 @@ trait TabellaQueryTrait
 
     public function getRecordstabella()
     {
+        //Look for all tables
         $qb = $this->biQueryBuilder();
 
         if (false === $this->estraituttirecords) {
@@ -159,4 +160,41 @@ trait TabellaQueryTrait
 
         return $this->records;
     }
+
+    /**
+     * Read the API in order to obtains the pages features
+     */
+    public function getApiRecordstabella()
+    {
+        if (false === $this->estraituttirecords) {
+            $newApi = $this->apiController;
+            $apiController = new $newApi();
+            $countMethod = $this->apiBook->getCount();
+            $count = $apiController->$countMethod();
+            //dump($count);
+            $this->righetotali = $count;
+            $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
+            /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
+            $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
+
+            $paginationMethod = $this->apiBook->getAll();
+            $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina());
+        }
+        else {
+            /* Dall'oggetto querybuilder si ottiene la query da eseguire */
+            $paginationMethod = $this->apiBook->getAll();
+            $recordsets = $apiController->$paginationMethod();
+            $this->righetotali = count($recordsets);
+            $this->paginetotali = 1;
+        }
+        $this->records = array();
+        $rigatabellahtml = array();
+        foreach ($recordsets as $record) {
+            $this->records[$record->getId()] = $record;
+            unset($rigatabellahtml);
+        }
+
+        return $this->records;
+    }
+
 }

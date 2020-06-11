@@ -109,7 +109,7 @@ class Commands
             }
             */
             //TODO: TO CHANGE THE PATH
-            $prefix = '\\SwaggerInsurance\\Model\\Models';
+            $prefix = '\\Swagger\\Insurance\\Model\\Models';
             if( !class_exists($prefix.$entityform) ) {
                 return array('errcode' => -1, 'message' => $prefix.$entityform.' model not found');
             }

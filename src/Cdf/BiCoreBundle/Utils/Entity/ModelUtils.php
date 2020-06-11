@@ -3,38 +3,76 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\Proxy;
 use function count;
 
-class EntityUtils
+class ModelUtils
 {
-    private $em;
 
-    public function __construct(ObjectManager $em)
-    {
-        $this->em = $em;
-    }
-
-    public function getClassNameToShortcutNotations($entity)
+    /*public function getClassNameToShortcutNotations($entity)
     {
         $cleanClassName = str_replace('\\Entity', '\:', $entity);
         $parts = explode('\\', $cleanClassName);
 
         return implode('', $parts);
-    }
+    }*/
 
     public function getEntityColumns($entity)
     {
-        $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
-        $colonne = array();
-        $fieldMappings = $infocolonne->fieldMappings;
+/*
+        "fieldName" => "id"
+        "type" => "integer"
+        "scale" => 0
+        "length" => null
+        "unique" => false
+        "nullable" => false
+        "precision" => 0
+        "id" => true
+        "columnName" => "id"
+        "inherited" => "App\Entity\BaseCliente"
+        "declared" => "App\Entity\BaseCliente"
+        
+          "event_id" => "int"
+            "id" => "int"
+            "policy_id" => "int"
+            "amount" => "double"
+             "damage" => "\Swagger\Insurance\Model\ModelsDamage"
+             "date_open" => "string"
+         "note" => "string"
+         "number" => "string"
+            "paymentdate" => "string"
+         "requiredamount" => "double"
+         "status" => "\Swagger\Insurance\Model\ModelsStatus"
+        */
+
+        $myInstance = new $entity();
+        $fieldMappings = $myInstance::swaggerTypes();
+
         //dump($fieldMappings);
-        foreach ($fieldMappings as $colonna) {
-            $colonne[$colonna['fieldName']] = $colonna;
-            $colonne[$colonna['fieldName']]['entityClass'] = $entity;
+        //dump($entity);
+        $colonne = array();
+        foreach ($fieldMappings as $fieldName=>$fieldType) {
+            if ( \str_contains( $fieldType ,'Swagger') ) {
+                //dump( $fieldType);
+            }
+            else {
+                //dump($fieldName);
+                //dump($fieldType);            
+                $colonne[$fieldName]['fieldName'] = $fieldName;
+                $colonne[$fieldName]['type'] = $fieldType;
+                $colonne[$fieldName]['entityClass'] = $entity;
+                $colonne[$fieldName]['columnName'] = $fieldName;
+                if ($fieldName == 'id') {
+                    $colonne[$fieldName]['id'] = true;
+                }
+                else {
+                    $colonne[$fieldName]['id'] = false;
+                }
+            }
         }
-        $joinTables = $this->getEntityJoinTables($entity);
+        //dump($colonne);
+        //exit;
+        //FOLLOWING LINES FOR RELATED TABLES
+       /* $joinTables = $this->getEntityJoinTables($entity);
         foreach ($joinTables as $entityjoin => $entityproperties) {
             $key = $entityproperties['entity']['fieldName'];
             $colonne[$key]['fieldName'] = $key;
@@ -43,10 +81,11 @@ class EntityUtils
             $colonne[$key]['sourceEntityClass'] = $entity;
             $colonne[$key]['association'] = true;
             $colonne[$key]['associationtable'] = $entityproperties['entity'];
-        }
+        }*/
+
         return $colonne;
     }
-
+/*
     public function getTableFromEntity($entity)
     {
         $metadata = $this->em->getClassMetadata($entity);
@@ -161,5 +200,5 @@ class EntityUtils
         }
 
         return null;
-    }
+    }*/
 }

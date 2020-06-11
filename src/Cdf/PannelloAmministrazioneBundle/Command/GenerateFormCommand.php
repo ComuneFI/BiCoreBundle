@@ -53,7 +53,7 @@ class GenerateFormCommand extends Command
         set_time_limit(0);
 
         $bundlename = 'App';
-        $swaggerPath = 'SwaggerInsurance\\Models';
+        $swaggerPath = 'Swagger\\Insurance\\Models';
         $entityform = $input->getArgument('entityform');
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
@@ -83,6 +83,7 @@ class GenerateFormCommand extends Command
                 $newClassFileContent = substr_replace($classFileContent, $codeToInsert, $firstLinePos, 0);
              */
 
+             //TODO: It doesn't work for entity ORM
             array_splice($lines, 7, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
 
             array_splice($lines, 13, 0, '        $submitparms = array('

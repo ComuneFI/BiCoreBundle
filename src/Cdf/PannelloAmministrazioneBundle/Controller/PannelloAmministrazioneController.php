@@ -64,7 +64,7 @@ class PannelloAmministrazioneController extends AbstractController
     private function findAPIModels(): array 
     {
         //set the prefix
-        $prefix = 'SwaggerInsurance\\Model\\Models';
+        $prefix = 'Swagger\\Insurance\\Model\\Models';
         $path = '../../vendor/fi';
         $models = array();
         $finder = new Finder;
