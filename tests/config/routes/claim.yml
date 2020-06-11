@@ -1,0 +1,51 @@
+Claim_container:
+    path:  /
+    controller: 'App\Controller\ClaimController::index'
+
+Claim_lista:
+    path:  /lista
+    controller: 'App\Controller\ClaimController::lista'
+    options:
+        expose: true
+
+Claim_indexdettaglio:
+    path:  /indexDettaglio
+    controller: 'App\Controller\ClaimController::indexDettaglio'
+    options:
+        expose: true
+
+Claim_new:
+    path:  /new
+    controller: 'App\Controller\ClaimController::new'
+    methods:    GET|POST
+
+Claim_edit:
+    path:  /{id}/edit
+    controller: 'App\Controller\ClaimController::edit'
+
+Claim_update:
+    path:  /{id}/update
+    controller: 'App\Controller\ClaimController::update'
+    methods:    POST|PUT
+
+Claim_aggiorna:
+    path:  /{id}/{token}/aggiorna
+    controller: 'App\Controller\ClaimController::aggiorna'
+    methods:    POST|PUT
+    options:
+        expose: true
+
+Claim_delete:
+    path:  /{id}/{token}/delete
+    controller: 'App\Controller\ClaimController::delete'
+    methods:    POST|DELETE
+
+Claim_deletemultiple:
+    path:  /{token}/delete
+    controller: 'App\Controller\ClaimController::delete'
+    methods:    POST|DELETE
+
+Claim_tabella:
+    path:  /tabella
+    controller: 'App\Controller\ClaimController::tabella'
+    methods:    POST

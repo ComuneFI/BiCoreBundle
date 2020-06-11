@@ -1,0 +1,25 @@
+{% extends '@BiCore/layout.html.twig' %}
+
+{% block javascripts %}
+    {{parent()}}
+    {{ encore_entry_script_tags('bitabella') }}
+{% endblock%}
+
+
+{% block stylesheets %}
+    {{parent()}}
+    {{ encore_entry_link_tags('bitabella') }}
+{% endblock%}
+
+{% block content -%}
+    <div id="main-tabella" class="main-tabella" data-nomecontroller="{{parametritabella.nomecontroller|getparametrotabella}}"></div>
+    <div class="tabella-container">
+        {% set parametri= '' %}
+        {% for key,parametro in parametritabella %}
+            {% set parametri = parametri ~ 'data-' ~ key ~ '="' ~ parametro~ '" ' %}
+        {% endfor %}
+
+        <div id="Parametri{{parametritabella.nomecontroller|getparametrotabella}}" class="parametri-tabella" {{parametri|raw}}></div>
+        <div id="tabella{{parametritabella.nomecontroller|getparametrotabella}}"></div>
+    </div>
+{% endblock %}

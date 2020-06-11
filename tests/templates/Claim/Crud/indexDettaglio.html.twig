@@ -1,0 +1,19 @@
+{% if asset_exists('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') %}
+    <script type="text/javascript" src="{{ asset('js/'~parametritabella.nomecontroller|getparametrotabella~'.js') }}" ></script>
+{%endif%}
+
+
+{% if asset_exists('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') %}
+    <link rel="stylesheet" href="{{ asset('css/'~parametritabella.nomecontroller|getparametrotabella~'.css') }}" >
+{%endif%}
+
+<div id="sub-tabella{{parametritabella.nomecontroller|getparametrotabella}}" class="sub-tabella" data-nomecontroller="{{parametritabella.nomecontroller|getparametrotabella}}"></div>
+<div class="tabella-container">
+    {% set parametri= '' %}
+    {% for key,parametro in parametritabella %}
+        {% set parametri = parametri ~ 'data-' ~ key ~ '="' ~ parametro~ '" ' %}
+    {% endfor %}
+
+    <div id="Parametri{{parametritabella.nomecontroller|getparametrotabella}}" class="parametri-tabella" {{parametri|raw}}></div>
+    <div id="tabella{{parametritabella.nomecontroller|getparametrotabella}}"></div>
+</div>

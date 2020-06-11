@@ -1,3 +1,7 @@
+App_Claim:
+  resource: routes/claim.yml
+  prefix: /Claim
+
 App_Magazzino:
   resource: routes/magazzino.yml
   prefix: /Magazzino
