@@ -16,6 +16,17 @@ class ModelUtils
         return implode('', $parts);
     }*/
 
+    public function getAttributes($model): array 
+    {
+        $myInstance = new $model();
+        $fieldMappings = $myInstance::swaggerTypes();
+        $outcomes = array();
+        foreach($fieldMappings as $fieldName=>$fieldType) {
+                $outcomes[$fieldName] = $fieldType;
+        }
+        return $outcomes;
+    }
+
     public function getEntityColumns($entity)
     {
 /*

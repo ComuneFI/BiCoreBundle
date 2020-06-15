@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use function count;
 
 class GenerateFormCommand extends Command
@@ -51,10 +52,12 @@ class GenerateFormCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         set_time_limit(0);
-
+        //TODO: remove these variables and pass 
         $bundlename = 'App';
-        $swaggerPath = 'Swagger\\Insurance\\Models';
+        $swaggerPath = '\\Swagger\\Insurance\\Model';
         $entityform = $input->getArgument('entityform');
+        $modelClass = $swaggerPath.'\\Models'.$entityform;
+
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
 
@@ -77,21 +80,45 @@ class GenerateFormCommand extends Command
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
 
-            /**
-             * preg_match('/function register\(.*\)\s*{/', $classFileContent, $matches, PREG_OFFSET_CAPTURE);
-                $firstLinePos = strlen($matches[0][0]) + $matches[0][1];
-                $newClassFileContent = substr_replace($classFileContent, $codeToInsert, $firstLinePos, 0);
-             */
 
+            $pos1 = $this->findPosition($lines, 'use Symfony\Component\Form\AbstractType');
+          
              //TODO: It doesn't work for entity ORM
-            array_splice($lines, 7, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
+            array_splice($lines, $pos1, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
 
-            array_splice($lines, 13, 0, '        $submitparms = array('
+            if($this->isApi) {
+                array_splice($lines, $pos1, 0, 'use '.$modelClass.';');
+            }
+
+            $pos2 = $this->findPosition($lines, '$builder', false);
+
+            array_splice($lines, $pos2, 0, '        $submitparms = array('
                     ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
+                       
+            if($this->isApi) {
+               $pos3 = $this->findPosition($lines, '->add(', false);
+                //comment the line ->add()
+               $lines[$pos3] = '//'.$lines[$pos3];
+               //in this position should be added form attributes
+               $modelUtil = new ModelUtils();
+               $attributes = $modelUtil->getAttributes($modelClass);
+               foreach(array_reverse($attributes) as $attributeName=>$attributeType) {
+                    array_splice($lines, $pos3+1, 0, "            ->add('".$attributeName."')");
+               }
+            }
 
-            array_splice($lines, 16, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
+            $pos3 = $this->findPosition($lines, '->add(', false);
+            array_splice($lines, $pos3+1, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
+
 
             array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
+
+            if($this->isApi) {
+                $pos4 = $this->findPosition($lines, '\'parametriform\' => array()', false);
+                array_splice($lines, $pos4, 0, "            'data_class' => Models".$entityform."::class,");
+            }
+
+
             file_put_contents($formFile, implode("\n", $lines));
 
             $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform, $swaggerPath);
@@ -113,6 +140,19 @@ class GenerateFormCommand extends Command
             return 1;
         }
     }
+
+    private function findPosition(array $arr, String $keyword, bool $first=true) {
+        $returnIndex = -1;
+        foreach($arr as $index => $string) {
+            if (strpos($string, $keyword) !== FALSE) {
+                $returnIndex = $index;
+                if($first) break;
+            }
+        }
+        return $returnIndex;
+    }
+
+
 
     private function generateFormRouting($entityform)
     {
