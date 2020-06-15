@@ -13,6 +13,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiApiCoreControllerTrait
 {
+
+
     /**
      * Lists all tables entities.
      */
@@ -30,16 +32,9 @@ trait FiApiCoreControllerTrait
         //$entityclassnotation = $this->getEntityClassNotation();
         //$entityclass = $this->getEntityClassName();
 
-        //TODO: input variables that must to be dynamic
-        $project = 'Insurance';
-        $model = 'Claim';
-        $collection = 'Claims';
-
-        $entityclassnotation = 'App:'.$model;
-        $entityclass = '\\Swagger\\'.$project.'\\Model\\Models'.$model;
-        $formclass = 'App\\Form\\'.$model;
+        $entityclassnotation = 'App:'.$this->model;
         // Variable containing API controller 
-        $apiController = '\\Swagger\\'.$project.'\\Api\\'.$collection.'Api';
+        $apiController = '\\Swagger\\'.$this->project.'\\Api\\'.$this->collection.'Api';
         //str_replace('Entity', 'Form', $entityclass);
 
         $modellocolonne = [
@@ -75,8 +70,8 @@ trait FiApiCoreControllerTrait
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
             'entityname' => ParametriTabella::setParameter($entityclassnotation),
-            'entityclass' => ParametriTabella::setParameter($entityclass),
-            'formclass' => ParametriTabella::setParameter($formclass),
+            'entityclass' => ParametriTabella::setParameter($this->modelClass),
+            'formclass' => ParametriTabella::setParameter($this->formClass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
             'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('/').$controller.'/'.'tabella'),
@@ -96,7 +91,7 @@ trait FiApiCoreControllerTrait
             'traduzionefiltri' => ParametriTabella::setParameter(''),
             'isApi' => ParametriTabella::setParameter('1'), 
             'apicontroller' => ParametriTabella::setParameter($apiController), 
-            'apicollection' => ParametriTabella::setParameter($collection)
+            'apicollection' => ParametriTabella::setParameter($this->collection)
         ];
 
         return $this->render($crudtemplate, ['parametritabella' => $parametritabella]);
@@ -240,7 +235,23 @@ trait FiApiCoreControllerTrait
         return $caller['function'];
     }
 
-   /* protected function getEntityClassNotation()
+    /**
+     * Return the model class name needed to instantiate it
+     */
+    protected function getModelClassName(): String
+    {
+        return $this->modelClass;
+    }
+
+    /**
+     * Return the form class name needed to reference the proper form
+     */
+    protected function getFormName(): String
+    {
+        return $this->formClass;
+    }
+
+       /* protected function getEntityClassNotation()
     {
         $em = $this->get('doctrine')->getManager();
         $entityutils = new EntityUtils($em);

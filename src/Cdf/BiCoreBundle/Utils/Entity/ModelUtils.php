@@ -31,17 +31,17 @@ class ModelUtils
         "inherited" => "App\Entity\BaseCliente"
         "declared" => "App\Entity\BaseCliente"
         
-          "event_id" => "int"
-            "id" => "int"
-            "policy_id" => "int"
-            "amount" => "double"
-             "damage" => "\Swagger\Insurance\Model\ModelsDamage"
-             "date_open" => "string"
-         "note" => "string"
-         "number" => "string"
-            "paymentdate" => "string"
-         "requiredamount" => "double"
-         "status" => "\Swagger\Insurance\Model\ModelsStatus"
+        "event_id" => "int"
+        "id" => "int"
+        "policy_id" => "int"
+        "amount" => "double"
+        "damage" => "\Swagger\Insurance\Model\ModelsDamage"
+        "date_open" => "string"
+        "note" => "string"
+        "number" => "string"
+        "paymentdate" => "string"
+        "requiredamount" => "double"
+        "status" => "\Swagger\Insurance\Model\ModelsStatus"
         */
 
         $myInstance = new $entity();

@@ -18,6 +18,12 @@ class FiApiController extends AbstractController
     protected $template;
     protected $controller;
     protected $permessi;
+    //API rest attributes
+    protected $project;
+    protected $model;
+    protected $collection;
+    protected $modelClass;
+    protected $formClass;
 
     public function __construct(PermessiManager $permessi, Environment $template)
     {
@@ -33,6 +39,13 @@ class FiApiController extends AbstractController
         $this->controller = $matches[count($matches) - 1];
         $this->permessi = $permessi;
         $this->template = $template;
+
+         //TODO: input variables that must to be dynamic
+        $this->project = 'Insurance';
+        $this->model = 'Claim';
+        $this->collection = 'Claims';
+        $this->modelClass = '\\Swagger\\'.$this->project.'\\Model\\Models'.$this->model;
+        $this->formClass = 'App\\Form\\'.$this->model;
     }
 
     protected function getBundle()

@@ -30,10 +30,11 @@ trait FiApiCoreCrudControllerTrait
 
         $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : [];
 
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
-
+        $entityclass = $this->getModelClassName();
         $entity = new $entityclass();
+
+        //$formclass = str_replace('Entity', 'Form', $entityclass);
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
         $form = $this->createForm($formType, $entity, ['attr' => [
                 'id' => 'formdati'.$controller,
@@ -49,6 +50,7 @@ trait FiApiCoreCrudControllerTrait
             'tabellatemplate' => $tabellatemplate,
         ];
 
+        //TODO: this part must be replaced with call to REST API services
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $entity = $form->getData();
