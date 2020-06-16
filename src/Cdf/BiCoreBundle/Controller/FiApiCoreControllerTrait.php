@@ -34,8 +34,6 @@ trait FiApiCoreControllerTrait
 
         $entityclassnotation = 'App:'.$this->model;
         // Variable containing API controller 
-        $apiController = '\\Swagger\\'.$this->project.'\\Api\\'.$this->collection.'Api';
-        //str_replace('Entity', 'Form', $entityclass);
 
         $modellocolonne = [
                 /*
@@ -90,7 +88,7 @@ trait FiApiCoreControllerTrait
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
             'traduzionefiltri' => ParametriTabella::setParameter(''),
             'isApi' => ParametriTabella::setParameter('1'), 
-            'apicontroller' => ParametriTabella::setParameter($apiController), 
+            'apicontroller' => ParametriTabella::setParameter($this->apiController), 
             'apicollection' => ParametriTabella::setParameter($this->collection)
         ];
 

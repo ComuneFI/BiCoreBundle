@@ -57,9 +57,9 @@ trait FiApiCoreCrudControllerTrait
             if ($form->isValid()) {
                 $entity = $form->getData();
 
-                $apiClass = '\\Swagger\\Insurance\\Api\\ClaimsApi';
+                $apiClass = $this->apiController;
                 $apiObject = new $apiClass();
-                $apiBook = new ApiUtils('claims');
+                $apiBook = new ApiUtils( strtolower($this->collection) );
                 $createMethod = $apiBook->getCreate();
 
                 //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));

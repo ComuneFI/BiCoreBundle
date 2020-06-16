@@ -45,27 +45,57 @@ class GenerateFormCommand extends Command
         $this->apppaths = $projectpath;
         $this->pammutils = $pammutils;
         $this->em = $em;
+        $this->loadTypesMapping();
 
         // you *must* call the parent constructor
         parent::__construct();
     }
 
+    /**
+     * Load mapping between types and loading methods
+     */
     private function loadTypesMapping() 
     {
         $this->typesMapping = array();
-        $this->typesMapping['datetime'] = 'addDateTime';
+        $this->typesMapping['datetime'] = 'addDateTimeType';
+        $this->typesMapping['number'] = 'addNumberType';
     }
 
-    private function addDateTime(array $lines, $position , $attributeName) 
+    /**
+     * It insert main types to be used into a Form
+     */
+    private function insertUseOfTypes(array &$lines, $position) {
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateTimeType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\NumberType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\CheckBoxType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\IntegerType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextAreaType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\MailType;');
+    }
+
+    /**
+     * Add portion of code to manage a field as datetime
+     */
+    private function addDateTimeType(array &$lines, $position , $attributeName) 
     {
         array_splice($lines, ++$position, 0, "            ->add('".$attributeName."', DateTimeType::class, array(");
         array_splice($lines, ++$position, 0, "                  'widget' => 'single_text',");
         array_splice($lines, ++$position, 0, "                  'format' => 'dd/MM/yyyy HH:mm',");
         array_splice($lines, ++$position, 0, "                  'attr' => array('class' => 'bidatetimepicker'),");
-
-        //aggiunta dello use generico
-        //use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+        array_splice($lines, ++$position, 0, "                  ))");
     }
+
+    /**
+     * Add portion of code to manage a field as float/number
+     */
+    private function addNumberType(array &$lines, $position , $attributeName) 
+    {
+        array_splice($lines, ++$position, 0, "            ->add('".$attributeName."',NumberType::class)");
+    }
+
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -102,9 +132,8 @@ class GenerateFormCommand extends Command
 
             $pos1 = $this->findPosition($lines, 'use Symfony\Component\Form\AbstractType');
           
-             //TODO: It doesn't work for entity ORM
-            array_splice($lines, $pos1, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
-
+             //Some objects to be used
+            $this->insertUseOfTypes($lines, $pos1);
             if($this->isApi) {
                 array_splice($lines, $pos1, 0, 'use '.$modelClass.';');
             }
@@ -113,9 +142,12 @@ class GenerateFormCommand extends Command
 
             array_splice($lines, $pos2, 0, '        $submitparms = array('
                     ."'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
-                       
+                    
+            $pos3 = $this->findPosition($lines, '->add(', false);
+            array_splice($lines, $pos3+1, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
+
             if($this->isApi) {
-               $pos3 = $this->findPosition($lines, '->add(', false);
+               $pos3 = $this->findPosition($lines, '->add(');
                 //comment the line ->add()
                $lines[$pos3] = '//'.$lines[$pos3];
                //in this position should be added form attributes
@@ -127,7 +159,8 @@ class GenerateFormCommand extends Command
                    }
                    else {
                        if( isset($this->typesMapping[$attribute['format']]) ) {
-                        $this->typesMapping[$attribute['format']]($lines, $pos3+1, $attributeName );
+                           $function = $this->typesMapping[$attribute['format']];
+                           $this->$function($lines, $pos3+1, $attributeName );
                        }
                        else {
                            //nothing
@@ -136,16 +169,12 @@ class GenerateFormCommand extends Command
                }
             }
 
-            $pos3 = $this->findPosition($lines, '->add(', false);
-            array_splice($lines, $pos3+1, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
-
-
             array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
 
-            if($this->isApi) {
+           /* if($this->isApi) {
                 $pos4 = $this->findPosition($lines, '\'parametriform\' => array()', false);
                 array_splice($lines, $pos4, 0, "            'data_class' => Models".$entityform."::class,");
-            }
+            }*/
 
 
             file_put_contents($formFile, implode("\n", $lines));
