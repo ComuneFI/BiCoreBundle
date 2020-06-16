@@ -58,7 +58,10 @@ class GenerateFormCommand extends Command
     {
         $this->typesMapping = array();
         $this->typesMapping['datetime'] = 'addDateTimeType';
-        $this->typesMapping['number'] = 'addNumberType';
+        $this->typesMapping['double'] = 'addNumberType';
+        $this->typesMapping['int'] = 'addIntegerType';
+        $this->typesMapping['int64'] = 'addIntegerType';
+        $this->typesMapping['void'] = 'addStringType';
     }
 
     /**
@@ -94,6 +97,22 @@ class GenerateFormCommand extends Command
     private function addNumberType(array &$lines, $position , $attributeName) 
     {
         array_splice($lines, ++$position, 0, "            ->add('".$attributeName."',NumberType::class)");
+    }
+
+    /**
+     * Add portion of code to manage a field as integer
+     */
+    private function addIntegerType(array &$lines, $position , $attributeName) 
+    {
+        array_splice($lines, ++$position, 0, "            ->add('".$attributeName."',IntegerType::class)");
+    }
+
+    /**
+     * Add portion of code to manage a field as string
+     */
+    private function addStringType(array &$lines, $position , $attributeName) 
+    {
+        array_splice($lines, ++$position, 0, "            ->add('".$attributeName."',TextType::class)");
     }
 
 
@@ -154,18 +173,15 @@ class GenerateFormCommand extends Command
                $modelUtil = new ModelUtils();
                $attributes = $modelUtil->getAttributes($controllerItem);
                foreach(array_reverse($attributes) as $attributeName=>$attribute) {
-                   if ( $attribute['format'] == null ) {
-                        array_splice($lines, $pos3+1, 0, "            ->add('".$attributeName."')");
-                   }
-                   else {
+                       $function = '';
                        if( isset($this->typesMapping[$attribute['format']]) ) {
                            $function = $this->typesMapping[$attribute['format']];
-                           $this->$function($lines, $pos3+1, $attributeName );
                        }
                        else {
-                           //nothing
+                           $function = $this->typesMapping['void'];
                        }
-                   }
+                       $this->$function($lines, $pos3, $attributeName );
+
                }
             }
 

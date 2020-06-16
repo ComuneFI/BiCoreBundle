@@ -52,7 +52,7 @@ trait FiApiCoreCrudControllerTrait
             'tabellatemplate' => $tabellatemplate,
         ];
 
-        //TODO: this part must be replaced with call to REST API services
+        //TODO: intercept APIExceptions
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $entity = $form->getData();
@@ -63,9 +63,7 @@ trait FiApiCoreCrudControllerTrait
                 $createMethod = $apiBook->getCreate();
 
                 //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));
-                //dump($httpBody);
-                //exit;
-
+                //TODO: manage the response
                 $response = $apiObject->$createMethod( $entity);
                 
                 return new Response(

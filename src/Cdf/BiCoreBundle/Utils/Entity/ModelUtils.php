@@ -25,6 +25,9 @@ class ModelUtils
         foreach($fieldMappings as $fieldName=>$fieldType) {
                 $outcomes[$fieldName]['type'] = $fieldType;
                 $outcomes[$fieldName]['format'] = $formatMappings[$fieldName];
+                if ( \str_contains( $fieldType ,'Swagger') ) {
+                    $outcomes[$fieldName]['format'] = 'int';
+                }
         }
         return $outcomes;
     }
