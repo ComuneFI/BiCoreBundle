@@ -27,6 +27,7 @@ class GenerateFormCommand extends Command
     private $generatemplate;
     private $isApi;
     private $kernel;
+    private $typesMapping;
 
     protected function configure()
     {
@@ -47,6 +48,23 @@ class GenerateFormCommand extends Command
 
         // you *must* call the parent constructor
         parent::__construct();
+    }
+
+    private function loadTypesMapping() 
+    {
+        $this->typesMapping = array();
+        $this->typesMapping['datetime'] = 'addDateTime';
+    }
+
+    private function addDateTime(array $lines, $position , $attributeName) 
+    {
+        array_splice($lines, ++$position, 0, "            ->add('".$attributeName."', DateTimeType::class, array(");
+        array_splice($lines, ++$position, 0, "                  'widget' => 'single_text',");
+        array_splice($lines, ++$position, 0, "                  'format' => 'dd/MM/yyyy HH:mm',");
+        array_splice($lines, ++$position, 0, "                  'attr' => array('class' => 'bidatetimepicker'),");
+
+        //aggiunta dello use generico
+        //use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -103,8 +121,18 @@ class GenerateFormCommand extends Command
                //in this position should be added form attributes
                $modelUtil = new ModelUtils();
                $attributes = $modelUtil->getAttributes($controllerItem);
-               foreach(array_reverse($attributes) as $attributeName=>$attributeType) {
-                    array_splice($lines, $pos3+1, 0, "            ->add('".$attributeName."')");
+               foreach(array_reverse($attributes) as $attributeName=>$attribute) {
+                   if ( $attribute['format'] == null ) {
+                        array_splice($lines, $pos3+1, 0, "            ->add('".$attributeName."')");
+                   }
+                   else {
+                       if( isset($this->typesMapping[$attribute['format']]) ) {
+                        $this->typesMapping[$attribute['format']]($lines, $pos3+1, $attributeName );
+                       }
+                       else {
+                           //nothing
+                       }
+                   }
                }
             }
 

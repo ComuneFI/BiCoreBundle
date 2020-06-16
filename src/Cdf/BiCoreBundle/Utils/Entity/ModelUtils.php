@@ -26,8 +26,6 @@ class ModelUtils
                 $outcomes[$fieldName]['type'] = $fieldType;
                 $outcomes[$fieldName]['format'] = $formatMappings[$fieldName];
         }
-        dump($outcomes);
-        exit;
         return $outcomes;
     }
 
