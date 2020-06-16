@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
 trait FiApiCoreCrudControllerTrait
 {
@@ -30,7 +31,8 @@ trait FiApiCoreCrudControllerTrait
 
         $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : [];
 
-        $entityclass = $this->getModelClassName();
+        //$entityclass = $this->getModelClassName();
+        $entityclass = $this->getControllerItemName();
         $entity = new $entityclass();
 
         //$formclass = str_replace('Entity', 'Form', $entityclass);
@@ -55,10 +57,17 @@ trait FiApiCoreCrudControllerTrait
             if ($form->isValid()) {
                 $entity = $form->getData();
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($entity);
-                $entityManager->flush();
+                $apiClass = '\\Swagger\\Insurance\\Api\\ClaimsApi';
+                $apiObject = new $apiClass();
+                $apiBook = new ApiUtils('claims');
+                $createMethod = $apiBook->getCreate();
 
+                //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));
+                //dump($httpBody);
+                //exit;
+
+                $response = $apiObject->$createMethod( $entity);
+                
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     200

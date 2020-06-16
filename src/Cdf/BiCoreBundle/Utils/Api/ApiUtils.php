@@ -7,6 +7,7 @@ class ApiUtils
 {
     private $getAll;
     private $getCount;
+    private $create;
     private $apiCollection;
 
     public function __construct($apiCollection)
@@ -14,6 +15,7 @@ class ApiUtils
         $this->apiCollection = $apiCollection;
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
+        $this->create = "ControllerCreate";
     }
 
     /**
@@ -30,6 +32,14 @@ class ApiUtils
     public function getCount(): String 
     {
         return $this->apiCollection.$this->getCount;
+    }
+
+    /**
+     * Return the method string to create an element 
+     */
+    public function getCreate(): String 
+    {
+        return $this->apiCollection.$this->create;
     }
 
 }

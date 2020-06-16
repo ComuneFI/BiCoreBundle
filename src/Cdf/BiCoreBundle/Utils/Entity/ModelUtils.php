@@ -16,45 +16,23 @@ class ModelUtils
         return implode('', $parts);
     }*/
 
-    public function getAttributes($model): array 
+    public function getAttributes($controllerItem): array 
     {
-        $myInstance = new $model();
+        $myInstance = new $controllerItem();
         $fieldMappings = $myInstance::swaggerTypes();
+        $formatMappings = $myInstance::swaggerFormats();
         $outcomes = array();
         foreach($fieldMappings as $fieldName=>$fieldType) {
-                $outcomes[$fieldName] = $fieldType;
+                $outcomes[$fieldName]['type'] = $fieldType;
+                $outcomes[$fieldName]['format'] = $formatMappings[$fieldName];
         }
+        dump($outcomes);
+        exit;
         return $outcomes;
     }
 
     public function getEntityColumns($entity)
     {
-/*
-        "fieldName" => "id"
-        "type" => "integer"
-        "scale" => 0
-        "length" => null
-        "unique" => false
-        "nullable" => false
-        "precision" => 0
-        "id" => true
-        "columnName" => "id"
-        "inherited" => "App\Entity\BaseCliente"
-        "declared" => "App\Entity\BaseCliente"
-        
-        "event_id" => "int"
-        "id" => "int"
-        "policy_id" => "int"
-        "amount" => "double"
-        "damage" => "\Swagger\Insurance\Model\ModelsDamage"
-        "date_open" => "string"
-        "note" => "string"
-        "number" => "string"
-        "paymentdate" => "string"
-        "requiredamount" => "double"
-        "status" => "\Swagger\Insurance\Model\ModelsStatus"
-        */
-
         $myInstance = new $entity();
         $fieldMappings = $myInstance::swaggerTypes();
 
@@ -80,19 +58,6 @@ class ModelUtils
                 }
             }
         }
-        //dump($colonne);
-        //exit;
-        //FOLLOWING LINES FOR RELATED TABLES
-       /* $joinTables = $this->getEntityJoinTables($entity);
-        foreach ($joinTables as $entityjoin => $entityproperties) {
-            $key = $entityproperties['entity']['fieldName'];
-            $colonne[$key]['fieldName'] = $key;
-            $colonne[$key]['columnName'] = $key;
-            $colonne[$key]['entityClass'] = $entityjoin;
-            $colonne[$key]['sourceEntityClass'] = $entity;
-            $colonne[$key]['association'] = true;
-            $colonne[$key]['associationtable'] = $entityproperties['entity'];
-        }*/
 
         return $colonne;
     }

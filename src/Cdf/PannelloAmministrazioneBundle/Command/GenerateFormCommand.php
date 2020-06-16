@@ -57,6 +57,7 @@ class GenerateFormCommand extends Command
         $swaggerPath = '\\Swagger\\Insurance\\Model';
         $entityform = $input->getArgument('entityform');
         $modelClass = $swaggerPath.'\\Models'.$entityform;
+        $controllerItem = $swaggerPath.'\\ControllersItem'.$entityform;
 
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
@@ -101,7 +102,7 @@ class GenerateFormCommand extends Command
                $lines[$pos3] = '//'.$lines[$pos3];
                //in this position should be added form attributes
                $modelUtil = new ModelUtils();
-               $attributes = $modelUtil->getAttributes($modelClass);
+               $attributes = $modelUtil->getAttributes($controllerItem);
                foreach(array_reverse($attributes) as $attributeName=>$attributeType) {
                     array_splice($lines, $pos3+1, 0, "            ->add('".$attributeName."')");
                }

@@ -24,6 +24,7 @@ class FiApiController extends AbstractController
     protected $collection;
     protected $modelClass;
     protected $formClass;
+    protected $controllerItem;
 
     public function __construct(PermessiManager $permessi, Environment $template)
     {
@@ -46,6 +47,7 @@ class FiApiController extends AbstractController
         $this->collection = 'Claims';
         $this->modelClass = '\\Swagger\\'.$this->project.'\\Model\\Models'.$this->model;
         $this->formClass = 'App\\Form\\'.$this->model;
+        $this->controllerItem = '\\Swagger\\'.$this->project.'\\Model\\ControllersItem'.$this->model;
     }
 
     protected function getBundle()

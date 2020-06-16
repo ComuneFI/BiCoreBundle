@@ -244,6 +244,14 @@ trait FiApiCoreControllerTrait
     }
 
     /**
+     * Return the controller item class name needed to instantiate it
+     */
+    protected function getControllerItemName(): String
+    {
+        return $this->controllerItem;
+    }
+
+    /**
      * Return the form class name needed to reference the proper form
      */
     protected function getFormName(): String
