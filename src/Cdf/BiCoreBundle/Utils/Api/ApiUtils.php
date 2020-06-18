@@ -25,6 +25,7 @@ class ApiUtils
         $this->getCount = "ControllerCount";
         $this->create = "ControllerCreate";
         $this->delete = "ControllerDeleteItem";
+        $this->get = "ControllerReadItem";
     }
 
     /**
@@ -68,6 +69,14 @@ class ApiUtils
     public function getAll(): String 
     {
         return $this->apiCollection.$this->getAll;
+    }
+
+    /**
+     * Return the method string to retrieve 1 element
+     */
+    public function getItem(): String 
+    {
+        return $this->apiCollection.$this->get;
     }
 
     /**

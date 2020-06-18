@@ -101,21 +101,42 @@ trait FiApiCoreCrudControllerTrait
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
-
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
+
+        $apiClass = $this->apiController;
+        $apiObject = new $apiClass();
+        $apiBook = new ApiUtils( strtolower($this->collection) );
+        $getMethod = $apiBook->getItem();
+
+        //TODO: response belongs to last operation
+        $entity = $apiObject->$getMethod( $id);
 
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        $em = $this->getDoctrine()->getManager();
+        //TODO: Open point regarding types
+        $entity->setDamage(0);
+        $entity->setStatus(0);
 
-        $entity = $em->getRepository($entityclass)->find($id);
+        //TODO: Parse data to display on form
+        $time = strtotime($entity->getDateOpen());
+        $date = new \DateTime(); 
+        $date->setTimestamp($time);
+        $entity->setDateOpen($date);
 
-        if (!$entity) {
+        $time2 = strtotime($entity->getPaymentDate());
+        $date2 = new \DateTime(); 
+        $date2->setTimestamp($time2);
+        $entity->setPaymentDate($date2);
+
+        //$em = $this->getDoctrine()->getManager();
+
+        //$entity = $em->getRepository($entityclass)->find($id);
+
+       /*if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
-        }
+        }*/
 
         $editForm = $this->createForm(
             $formType,
