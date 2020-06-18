@@ -58,6 +58,14 @@ class DoctrineFieldReader
                 case 'datetime':
                     $risposta = $object->format('d/m/Y H:i');
                     break;
+                case 'string2datetime':
+                    $time = strtotime($object);
+                    $risposta = date('d/m/Y H:i',$time);
+                    break;
+                case 'string2date':
+                    $time = strtotime($object);
+                    $risposta = date('d/m/Y',$time);
+                    break;
                 case 'boolean':
                     $risposta = $object ? 'SI' : 'NO';
                     break;

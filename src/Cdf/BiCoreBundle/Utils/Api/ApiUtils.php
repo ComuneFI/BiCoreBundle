@@ -2,6 +2,8 @@
 
 namespace Cdf\BiCoreBundle\Utils\Api;
 
+use Symfony\Component\Finder\Finder;
+
 
 class ApiUtils
 {
@@ -10,12 +12,54 @@ class ApiUtils
     private $create;
     private $apiCollection;
 
+    private static $apiBundlesPath = '../../vendor/fi';
+    private static $namespacePrefix = 'Swagger\\';
+    private static $namespaceModels = '\\Model\\Models';
+    private static $namespaceControllersItem = '\\Model\\ControllersItem';
+    private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\Models/';
+
     public function __construct($apiCollection)
     {
         $this->apiCollection = $apiCollection;
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
         $this->create = "ControllerCreate";
+        $this->delete = "ControllerDeleteItem";
+    }
+
+    /**
+     * Return path where core bundle will look for api models
+     */
+    public function bundlesPath() {
+        return self::$apiBundlesPath;
+    }
+
+    /**
+     * Return namespace prefix for api external bundles, i.e. Swagger\\\
+     */
+    public function namespacePrefix() {
+        return self::$namespacePrefix;
+    }
+
+    /**
+     * Return namespace component for api controller items of external bundles, i.e. \\\Model\\\ControllersItem*
+     */
+    public function namespaceControllersItem() {
+        return self::$namespaceControllersItem;
+    }
+
+    /**
+     * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
+     */
+    public function namespaceModels() {
+        return self::$namespaceModels;
+    }
+
+    /**
+     * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
+     */
+    public function regexPathModels() {
+        return self::$regexPathModels;
     }
 
     /**
@@ -40,6 +84,38 @@ class ApiUtils
     public function getCreate(): String 
     {
         return $this->apiCollection.$this->create;
+    }
+
+    /**
+     * Return the method string to delete an element 
+     */
+    public function getDelete(): String 
+    {
+        return $this->apiCollection.$this->delete;
+    }
+
+    /**
+     * It looks for Models existent into included external bundles.
+     * It uses ApiUtils in order to know where to search and what look for.
+     */
+    public function apiModels(): array 
+    {
+        //where to look for
+        $path = self::bundlesPath();
+        $regex = self::regexPathModels();
+        //what to look for   
+        $models = array();
+        $finder = new Finder;
+        $iter = new \hanneskod\classtools\Iterator\ClassIterator($finder->in($path));
+
+        // Print the file names of classes, interfaces and traits in given path
+        foreach ($iter->getClassMap() as $classname => $splFileInfo) {
+            preg_match($regex, $classname, $matches);
+            if( count($matches) > 0) {
+                $models[] = substr($classname, strlen($matches[0])).' (API)';
+            }
+        }
+        return $models;
     }
 
 }

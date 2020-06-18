@@ -61,7 +61,7 @@ trait FiApiCoreControllerTrait
         $prefiltri = [];
         //$entityutils = new EntityUtils($this->get('doctrine')->getManager());
         //$tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $tablenamefromentity = '';
+        $tablenamefromentity = $controller;
         $colonneordinamento = [$tablenamefromentity.'.id' => 'DESC'];
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),

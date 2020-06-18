@@ -221,7 +221,7 @@ trait FiApiCoreCrudControllerTrait
         if (!$this->getPermessi()->canDelete($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per eliminare questo contenuto');
         }
-        $entityclass = $this->getEntityClassName();
+        //$entityclass = $this->getEntityClassName();
 
         $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
 
@@ -230,20 +230,17 @@ trait FiApiCoreCrudControllerTrait
         }
 
         try {
-            $em = $this->getDoctrine()->getManager();
-            $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
-            $qb->delete($entityclass, 'u')
-                    ->andWhere('u.id IN (:ids)')
-                    ->setParameter('ids', $ids);
 
-            $query = $qb->getQuery();
-            $query->execute();
-        } catch (ForeignKeyConstraintViolationException $e) {
-            $response = new Response($e->getMessage());
-            $response->setStatusCode('501');
+            $apiClass = $this->apiController;
+            $apiObject = new $apiClass();
+            $apiBook = new ApiUtils( strtolower($this->collection) );
+            $deleteMethod = $apiBook->getDelete();
 
-            return $response;
+            foreach( $ids as $id) {
+              //TODO: response belongs to last operation
+               $response = $apiObject->$deleteMethod( $id);
+            }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
             $response->setStatusCode('200');

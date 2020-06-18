@@ -42,10 +42,11 @@ class FiApiController extends AbstractController
         $this->permessi = $permessi;
         $this->template = $template;
 
-         //TODO: input variables that must to be dynamic
+        //TODO: input variable that must to be dynamic
         $this->project = 'Insurance';
-        $this->model = 'Claim';
-        $this->collection = 'Claims';
+        $this->model = $this->controller; //they matches
+        //TODO: is it always true that adding an 's' we obtain what we want? 
+        $this->collection = $this->model.'s';
         $this->modelClass = '\\Swagger\\'.$this->project.'\\Model\\Models'.$this->model;
         $this->formClass = 'App\\Form\\'.$this->model;
         $this->controllerItem = '\\Swagger\\'.$this->project.'\\Model\\ControllersItem'.$this->model;

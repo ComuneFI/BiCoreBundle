@@ -16,6 +16,9 @@ class ModelUtils
         return implode('', $parts);
     }*/
 
+    /**
+     * Return the array of types and formats
+     */
     public function getAttributes($controllerItem): array 
     {
         $myInstance = new $controllerItem();
@@ -32,10 +35,14 @@ class ModelUtils
         return $outcomes;
     }
 
+    /**
+     * Return the entity columns for the grid display
+     */
     public function getEntityColumns($entity)
     {
         $myInstance = new $entity();
         $fieldMappings = $myInstance::swaggerTypes();
+        $formatMappings = $myInstance::swaggerFormats();
 
         //dump($fieldMappings);
         //dump($entity);
@@ -48,7 +55,8 @@ class ModelUtils
                 //dump($fieldName);
                 //dump($fieldType);            
                 $colonne[$fieldName]['fieldName'] = $fieldName;
-                $colonne[$fieldName]['type'] = $fieldType;
+                //$colonne[$fieldName]['type'] = $formatMappings[$fieldName];
+                $colonne[$fieldName]['type'] = $this->getTypeOfData( $fieldType, $formatMappings[$fieldName] );
                 $colonne[$fieldName]['entityClass'] = $entity;
                 $colonne[$fieldName]['columnName'] = $fieldName;
                 if ($fieldName == 'id') {
@@ -59,8 +67,27 @@ class ModelUtils
                 }
             }
         }
-
+        //dump($colonne);
+        //exit;
         return $colonne;
+    }
+
+
+    /**
+     * Try to insert in automatic way the conversion to a BiCore known type
+     */
+    private function getTypeOfData($fieldType, $formatType): String 
+    {
+        $type = $formatType;
+        if( $formatType == null) {
+            $type = 'string';
+        }
+        else if ( $fieldType != $formatType ) {
+            if ( $formatType == 'datetime' ) {
+                $type = 'string2'.$type;
+            }
+        }
+        return $type;
     }
 /*
     public function getTableFromEntity($entity)

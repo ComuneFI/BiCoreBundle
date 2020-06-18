@@ -14,6 +14,7 @@ use Symfony\Component\Lock\Store\FlockStore;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
 class PannelloAmministrazioneController extends AbstractController
 {
@@ -59,24 +60,29 @@ class PannelloAmministrazioneController extends AbstractController
     }
 
     /**
-     * It look for Models existent into included external bundles
+     * It looks for Models existent into included external bundles.
+     * It uses ApiUtils in order to know where to search and what look for.
      */
     private function findAPIModels(): array 
     {
-        //set the prefix
-        $prefix = 'Swagger\\Insurance\\Model\\Models';
-        $path = '../../vendor/fi';
+        return ApiUtils::apiModels();
+
+        //where to look for
+/**        $path = ApiUtils::bundlesPath();
+        $regex = ApiUtils::regexPathModels();
+        //what to look for   
         $models = array();
         $finder = new Finder;
         $iter = new \hanneskod\classtools\Iterator\ClassIterator($finder->in($path));
 
         // Print the file names of classes, interfaces and traits in given path
         foreach ($iter->getClassMap() as $classname => $splFileInfo) {
-            if (substr($classname, 0, strlen($prefix)) == $prefix) {
-                $models[] = substr($classname, strlen($prefix)).' (API)';
+            preg_match($regex, $classname, $matches);
+            if( count($matches) > 0) {
+                $models[] = substr($classname, strlen($matches[0])).' (API)';
             }
         }
-        return $models;
+        return $models;*/
     }
 
     public function index()
