@@ -116,7 +116,23 @@ class ModelUtils
         }
         return $entityout;
     }
-    
+
+    public function getControllerItem($modelEntity, $controllerItemClass) 
+    {
+        $controllerItem = new $controllerItemClass();
+        $setters = $controllerItem::setters();
+        $getters = $modelEntity::getters();
+
+        foreach($setters as $setterKey=>$setterMethod) {
+            if(isset($getters[$setterKey])) {
+                $getMethod = $getters[$setterKey];
+                $controllerItem->$setterMethod( $modelEntity->$getMethod() );
+            }
+        }
+
+        return $controllerItem;
+    }
+
     /**
      * Try to insert in automatic way the conversion to a BiCore known value
      */

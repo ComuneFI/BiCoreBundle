@@ -153,17 +153,19 @@ trait FiApiCoreCrudControllerTrait
         $tabellatemplate = $this->getTabellaTemplate($controller);
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        //TODO: Change this part with api rest management
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
 
-        //$em = $this->getDoctrine()->getManager();
-        //$entity = $em->getRepository($entityclass)->find($id);
+        $apiClass = $this->apiController;
+        $apiObject = new $apiClass();
+        $apiBook = new ApiUtils( strtolower($this->collection) );
+        $getMethod = $apiBook->getItem();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
-        }
+        //TODO: response belongs to last operation
+        $entityorig = $apiObject->$getMethod( $id);
+
+        $modelutils = new ModelUtils();
+        $entity = $modelutils->setApiValues($entityorig);
 
         $editForm = $this->createForm(
             $formType,
@@ -178,18 +180,21 @@ trait FiApiCoreCrudControllerTrait
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
-            $originalData = $em->getUnitOfWork()->getOriginalEntityData($entity);
 
-            $em->persist($entity);
-            $em->flush();
+            $modelEntity = $editForm->getData();
 
-            $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $em->getRepository('BiCoreBundle:Storicomodifiche');
-            $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
+            $entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
 
-            if ($changes) {
-                $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
-            }
+            //$entityclass = $this->getControllerItemName();
+            //$entityItem = new $entityclass($request->request->get($editForm->getName()));
+
+            //$entity = $editForm->getData();
+            $apiClass = $this->apiController;
+            $apiObject = new $apiClass();
+            $apiBook = new ApiUtils( strtolower($this->collection) );
+            $updateMethod = $apiBook->getUpdateItem();
+
+            $responseMessage = $apiObject->$updateMethod($entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {

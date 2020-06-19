@@ -26,6 +26,7 @@ class ApiUtils
         $this->create = "ControllerCreate";
         $this->delete = "ControllerDeleteItem";
         $this->get = "ControllerReadItem";
+        $this->update = "ControllerUpdateItem";
     }
 
     /**
@@ -77,6 +78,14 @@ class ApiUtils
     public function getItem(): String 
     {
         return $this->apiCollection.$this->get;
+    }
+
+    /**
+     * Return the method string to update 1 element
+     */
+    public function getUpdateItem(): String 
+    {
+        return $this->apiCollection.$this->update;
     }
 
     /**
