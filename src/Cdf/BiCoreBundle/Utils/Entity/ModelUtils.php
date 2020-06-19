@@ -89,6 +89,51 @@ class ModelUtils
         }
         return $type;
     }
+
+    /**
+     * It prepares entity values so that they can be used with types compliant with BiCoreBundle.
+     * For example it transforms a date that arrive in string format into a DateTime.
+     */
+    public function setApiValues($entityout)
+    {
+        //$entityout = clone($entity);
+        $fieldMappings = $entityout::swaggerTypes();
+        $formatMappings = $entityout::swaggerFormats();
+        $setters = $entityout::setters();
+        $getters = $entityout::getters();
+
+        foreach ($fieldMappings as $fieldName=>$fieldType) {
+            $setvalue = $setters[$fieldName];
+            if ( \str_contains( $fieldType ,'Swagger') ) {
+                //TODO: Implement this part of method           
+                $entityout->$setvalue(0);
+            }
+            else {
+                $getvalue = $getters[$fieldName];
+                $newvalue = $this->getValueOfData( $fieldType, $formatMappings[$fieldName] , $entityout->$getvalue() );
+                $entityout->$setvalue($newvalue);
+            }
+        }
+        return $entityout;
+    }
+    
+    /**
+     * Try to insert in automatic way the conversion to a BiCore known value
+     */
+    private function getValueOfData($fieldType, $formatType, $oldvalue)
+    {
+        $value = $oldvalue;
+        if( $formatType == null) {
+        }
+        else if ( $fieldType != $formatType ) {
+            if ( $formatType == 'datetime' ) {
+                $time = strtotime($oldvalue);
+                $value = new \DateTime();
+                $value->setTimestamp($time);
+            }
+        }
+        return $value;
+    }
 /*
     public function getTableFromEntity($entity)
     {

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 
 trait FiApiCoreCrudControllerTrait
 {
@@ -91,7 +92,6 @@ trait FiApiCoreCrudControllerTrait
      */
     public function edit(Request $request, $id)
     {
-        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
@@ -110,33 +110,12 @@ trait FiApiCoreCrudControllerTrait
         $getMethod = $apiBook->getItem();
 
         //TODO: response belongs to last operation
-        $entity = $apiObject->$getMethod( $id);
-
+        $entityorig = $apiObject->$getMethod( $id);
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        //TODO: Open point regarding types
-        $entity->setDamage(0);
-        $entity->setStatus(0);
-
-        //TODO: Parse data to display on form
-        $time = strtotime($entity->getDateOpen());
-        $date = new \DateTime(); 
-        $date->setTimestamp($time);
-        $entity->setDateOpen($date);
-
-        $time2 = strtotime($entity->getPaymentDate());
-        $date2 = new \DateTime(); 
-        $date2->setTimestamp($time2);
-        $entity->setPaymentDate($date2);
-
-        //$em = $this->getDoctrine()->getManager();
-
-        //$entity = $em->getRepository($entityclass)->find($id);
-
-       /*if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
-        }*/
+        $modelutils = new ModelUtils();
+        $entity = $modelutils->setApiValues($entityorig);
 
         $editForm = $this->createForm(
             $formType,
@@ -165,7 +144,6 @@ trait FiApiCoreCrudControllerTrait
      */
     public function update(Request $request, $id)
     {
-        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
@@ -175,13 +153,13 @@ trait FiApiCoreCrudControllerTrait
         $tabellatemplate = $this->getTabellaTemplate($controller);
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
+        //TODO: Change this part with api rest management
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
         $formType = $formclass.'Type';
 
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($entityclass)->find($id);
+        //$em = $this->getDoctrine()->getManager();
+        //$entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
