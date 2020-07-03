@@ -62,6 +62,7 @@ class Operatori extends BaseUser implements EquatableInterface
         $this->colonnetabelles = new ArrayCollection();
         $this->permessis = new ArrayCollection();
         $this->storicomodifiches = new ArrayCollection();
+        parent::__construct();
     }
 
     /**
