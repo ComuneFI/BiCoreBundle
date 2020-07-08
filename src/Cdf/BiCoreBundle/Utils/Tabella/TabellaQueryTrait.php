@@ -61,6 +61,7 @@ trait TabellaQueryTrait
         }
     }
 
+    //TODO: filtering
     protected function buildWhere(&$qb)
     {
         $filtro = '';
@@ -122,6 +123,25 @@ trait TabellaQueryTrait
         }
     }
 
+    /**
+     * Build the ordering string compliant with API REST services
+     */
+    protected function orderByApiBuilder(): String
+    {
+        $attributeMap = $this->entityname::attributeMap();
+        //TODO: USE attributeMap() of Models in order to use proper fieldnames
+        $orderingString = null;
+        foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
+            $fieldname = $attributeMap[ substr($nomecampo, strripos($nomecampo, '.') + 1) ];
+            $fieldname .= ':'.$tipoordinamento;
+            if( $orderingString != null ) {
+                $orderingString .= ',';
+            }
+            $orderingString .= $fieldname;
+        }
+        return $orderingString;
+    }
+
     public function getRecordstabella()
     {
         //Look for all tables
@@ -166,6 +186,7 @@ trait TabellaQueryTrait
      */
     public function getApiRecordstabella()
     {
+        
         if (false === $this->estraituttirecords) {
             $newApi = $this->apiController;
             $apiController = new $newApi();
@@ -177,15 +198,20 @@ trait TabellaQueryTrait
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
             $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
 
+            /*$offset = null, $limit = null, $sort = null, $condition = null*/
             $paginationMethod = $this->apiBook->getAll();
-            $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina());
+            //TODO: Insert sorting and condition
+            //dump($this->orderByApiBuilder());
+
+        $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina() , $this->orderByApiBuilder()/* "amount >= 5"*/);
+        //dump($recordsets);
         }
         else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-            $paginationMethod = $this->apiBook->getAll();
-            $recordsets = $apiController->$paginationMethod();
-            $this->righetotali = count($recordsets);
+            $paginationMethod = $this->apiBook->getAll();                   
+            $recordsets = $apiController->$paginationMethod(0, count($recordsets), $this->orderByApiBuilder() );
             $this->paginetotali = 1;
+            $this->righetotali = count($recordsets);
         }
         $this->records = array();
         $rigatabellahtml = array();
