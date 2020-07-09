@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Common\Collections\Expr\Comparison;
 use function count;
 
 trait TabellaQueryTrait
@@ -123,13 +124,91 @@ trait TabellaQueryTrait
         }
     }
 
+
+    /**
+     * It composes filtering string to be used with api rest services
+     */
+    protected function filterByApiBuilder(): ?String 
+    {
+        $filterString = null;
+        $filtro = '';
+        $prefiltro = '';
+        foreach ($this->prefiltri as $key => $prefiltro) {
+            $this->prefiltri[$key]['prefiltro'] = true;
+        }
+        foreach ($this->filtri as $key => $filtro) {
+            $this->filtri[$key]['prefiltro'] = false;
+        }
+        $tuttifiltri = array_merge($this->filtri, $this->prefiltri);
+        $parametribag = array();
+        if (count($tuttifiltri)) {
+            $attributeMap = $this->entityname::attributeMap();
+            $swaggerFormats = $this->entityname::swaggerFormats();
+            //compose the string
+            foreach ($tuttifiltri as $num => $filtrocorrente) {
+                $descrizionefiltri = '';
+                $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
+                $fieldname = ' '.$nomeCampo;
+                $fieldvalue = $this->getFieldValue($filtrocorrente['valore']);
+                $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
+                $fitrocorrenteqp = 'fitrocorrente'.$num;
+                $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
+                $criteria = new ParametriQueryTabellaDecoder(
+                    $fieldname,
+                    $fieldoperator,
+                    $fieldvalue,
+                    $fitrocorrenteqp,
+                    $filtronomecampocorrente
+                );
+                
+                $fieldstring = $attributeMap[ $nomeCampo ];
+                $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                if( $swaggerFormats[ $nomeCampo ] == null || $swaggerFormats[ $nomeCampo ] == 'datetime') {
+                    $fieldstring .= '\"'.$filtrocorrente['valore'].'\"';
+                }
+                else {
+                    $fieldstring .= $filtrocorrente['valore'];
+                }
+                if( $filterString != null ) {
+                    $filterString .= ' AND ';
+                }
+                $filterString .= $fieldstring;
+                $this->getDescrizioneFiltro($descrizionefiltri, $filtrocorrente, $criteria);
+            }
+            $this->traduzionefiltri = substr($descrizionefiltri, 2);
+        }
+        return $filterString;
+    }
+
+    /**
+     * Return the operator to be used
+     */
+    private function getApiOperator($operator)
+    {
+        switch (strtoupper($operator)) {
+            case Comparison::CONTAINS:
+                $operator = '~';
+                break;
+            /*case 'IN':
+                $operator = Comparison::IN;
+                break;
+            case 'NOT IN':
+                $operator = Comparison::NIN;
+                break;*/
+            default:
+                $operator = '=';
+                break;
+        }
+
+        return $operator;
+    }
+
     /**
      * Build the ordering string compliant with API REST services
      */
-    protected function orderByApiBuilder(): String
+    protected function orderByApiBuilder(): ?String
     {
         $attributeMap = $this->entityname::attributeMap();
-        //TODO: USE attributeMap() of Models in order to use proper fieldnames
         $orderingString = null;
         foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
             $fieldname = $attributeMap[ substr($nomecampo, strripos($nomecampo, '.') + 1) ];
@@ -192,7 +271,6 @@ trait TabellaQueryTrait
             $apiController = new $newApi();
             $countMethod = $this->apiBook->getCount();
             $count = $apiController->$countMethod();
-            //dump($count);
             $this->righetotali = $count;
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
@@ -200,16 +278,15 @@ trait TabellaQueryTrait
 
             /*$offset = null, $limit = null, $sort = null, $condition = null*/
             $paginationMethod = $this->apiBook->getAll();
-            //TODO: Insert sorting and condition
-            //dump($this->orderByApiBuilder());
+            //dump($this->filterByApiBuilder());
 
-        $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina() , $this->orderByApiBuilder()/* "amount >= 5"*/);
+        $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina() , $this->orderByApiBuilder(), $this->filterByApiBuilder());
         //dump($recordsets);
         }
         else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
             $paginationMethod = $this->apiBook->getAll();                   
-            $recordsets = $apiController->$paginationMethod(0, count($recordsets), $this->orderByApiBuilder() );
+            $recordsets = $apiController->$paginationMethod(0, count($recordsets), $this->orderByApiBuilder(), $this->filterByApiBuilder() );
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);
         }
