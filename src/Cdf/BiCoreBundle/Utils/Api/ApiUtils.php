@@ -12,6 +12,7 @@ class ApiUtils
     private $create;
     private $apiCollection;
 
+    //TODO: check these variables
     private static $apiBundlesPath = '../../vendor/fi';
     private static $namespacePrefix = 'Swagger\\';
     private static $namespaceModels = '\\Model\\Models';
