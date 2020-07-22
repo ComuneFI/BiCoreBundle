@@ -4,6 +4,7 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Exception;
 use Doctrine\Common\Inflector\Inflector;
+use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 class DoctrineFieldReader
 {
@@ -60,18 +61,18 @@ class DoctrineFieldReader
                     $risposta = print_r($object, true);
                     break;
                 case 'date':
-                    $risposta = $object->format($this->getEnvVar("DATE_FORMAT","d/m/Y"));
+                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATE_FORMAT","d/m/Y"));
                     break;
                 case 'datetime':
-                    $risposta = $object->format($this->getEnvVar("DATETIME_FORMAT","d/m/Y H:i"));
+                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATETIME_FORMAT","d/m/Y H:i"));
                     break;
                 case 'string2datetime':
                     $time = strtotime($object);
-                    $risposta = date($this->getEnvVar("DATETIME_FORMAT","d/m/Y H:i"),$time);
+                    $risposta = date(FieldTypeUtils::getEnvVar("DATETIME_FORMAT","d/m/Y H:i"),$time);
                     break;
                 case 'string2date':
                     $time = strtotime($object);
-                    $risposta = date($this->getEnvVar("DATE_FORMAT","d/m/Y"),$time);
+                    $risposta = date(FieldTypeUtils::getEnvVar("DATE_FORMAT","d/m/Y"),$time);
                     break;
                 case 'boolean':
                     $risposta = $object ? 'SI' : 'NO';

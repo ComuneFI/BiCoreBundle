@@ -4,6 +4,7 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 use function count;
 
 trait TabellaQueryTrait
@@ -138,13 +139,11 @@ trait TabellaQueryTrait
             //does it contain an hour ?
             $hour = strpos($fieldvalue, ":");
             $time = strtotime($fieldvalue);
-            $backend_format = "Y-m-d\TH:i";
+            $backend_format = FieldTypeUtils::getEnvVar("BE_DATETIME_FORMAT","Y-m-d\TH:i:sP");
             if( $hour === false ) {
-                $backend_format = "Y-m-d";
+                $backend_format = FieldTypeUtils::getEnvVar("BE_DATE_FORMAT","Y-m-d");
             }
             $filter = date($backend_format,$time);
-            //dump($filter);
-            //exit;
             $filterString .= $filter;
         }
         else {
