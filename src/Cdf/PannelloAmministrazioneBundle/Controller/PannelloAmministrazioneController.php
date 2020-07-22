@@ -67,22 +67,6 @@ class PannelloAmministrazioneController extends AbstractController
     {
         return ApiUtils::apiModels();
 
-        //where to look for
-/**        $path = ApiUtils::bundlesPath();
-        $regex = ApiUtils::regexPathModels();
-        //what to look for   
-        $models = array();
-        $finder = new Finder;
-        $iter = new \hanneskod\classtools\Iterator\ClassIterator($finder->in($path));
-
-        // Print the file names of classes, interfaces and traits in given path
-        foreach ($iter->getClassMap() as $classname => $splFileInfo) {
-            preg_match($regex, $classname, $matches);
-            if( count($matches) > 0) {
-                $models[] = substr($classname, strlen($matches[0])).' (API)';
-            }
-        }
-        return $models;*/
     }
 
     public function index()

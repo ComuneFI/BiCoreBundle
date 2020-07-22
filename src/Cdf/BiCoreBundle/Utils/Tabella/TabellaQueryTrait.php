@@ -126,6 +126,33 @@ trait TabellaQueryTrait
 
 
     /**
+     * It appends the new filter string part to the given filter string ($filterString)
+     */
+    private function appendFilterString(String &$filterString, $swaggerType, $fieldvalue) {
+        if( $swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
+            $filterString .= '"%'.$fieldvalue.'%"';
+        }
+        //TODO: HOW TO MANAGE DATETIME AND TIME
+        else if ( $swaggerType == 'datetime' || $swaggerType == 'date' ) {
+            $fieldvalue = \str_replace("/","-",$fieldvalue);
+            //does it contain an hour ?
+            $hour = strpos($fieldvalue, ":");
+            $time = strtotime($fieldvalue);
+            $backend_format = "Y-m-d\TH:i";
+            if( $hour === false ) {
+                $backend_format = "Y-m-d";
+            }
+            $filter = date($backend_format,$time);
+            //dump($filter);
+            //exit;
+            $filterString .= $filter;
+        }
+        else {
+            $filterString .= $fieldvalue;
+        }
+    }
+
+    /**
      * It composes filtering string to be used with api rest services
      */
     protected function filterByApiBuilder(): ?String 
@@ -145,11 +172,11 @@ trait TabellaQueryTrait
             $attributeMap = $this->entityname::attributeMap();
             $swaggerFormats = $this->entityname::swaggerFormats();
             //compose the string
-            foreach ($tuttifiltri as $num => $filtrocorrente) {
-                $descrizionefiltri = '';
+            $descrizionefiltri = '';
+            foreach ($tuttifiltri as $num => $filtrocorrente) {                
                 $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
                 $fieldname = ' '.$nomeCampo;
-                $fieldvalue = $this->getFieldValue($filtrocorrente['valore']);
+                $fieldvalue = urldecode($this->getFieldValue($filtrocorrente['valore']));
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
                 $fitrocorrenteqp = 'fitrocorrente'.$num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
@@ -163,12 +190,9 @@ trait TabellaQueryTrait
                 
                 $fieldstring = $attributeMap[ $nomeCampo ];
                 $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
-                if( $swaggerFormats[ $nomeCampo ] == null || $swaggerFormats[ $nomeCampo ] == 'datetime') {
-                    $fieldstring .= '\"'.$filtrocorrente['valore'].'\"';
-                }
-                else {
-                    $fieldstring .= $filtrocorrente['valore'];
-                }
+
+                $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
+
                 if( $filterString != null ) {
                     $filterString .= ' AND ';
                 }
