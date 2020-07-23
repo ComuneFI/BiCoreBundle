@@ -7,6 +7,7 @@ use function count;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
+use Symfony\Component\Inflector\Inflector;
 
 class FiApiController extends AbstractController {
 
@@ -45,8 +46,21 @@ class FiApiController extends AbstractController {
         $this->template = $template;
 
         $this->model = $this->controller; //they matches
-        //TODO: is it always true that adding an 's' we obtain what we want? 
-        $this->collection = $this->model . 's';
+        
+        $results = Inflector::pluralize($this->model);
+        if (is_array($results)) {
+            foreach($results as $result) {
+                if (class_exists('\\Swagger\\' . $this->project . '\\Api\\' . $result . 'Api')) {
+                    $this->collection = $result;
+                break;
+                }
+            }
+        }
+        else {
+            $this->collection = $results;
+            
+        }
+
         $this->modelClass = '\\Swagger\\' . $this->project . '\\Model\\Models' . $this->model;
         $this->formClass = 'App\\Form\\' . $this->model;
         $this->controllerItem = '\\Swagger\\' . $this->project . '\\Model\\ControllersItem' . $this->model;

@@ -18,7 +18,7 @@ class ApiUtils {
     private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\Models/';
 
     public function __construct($apiCollection) {
-        $this->apiCollection = $apiCollection;
+        $this->apiCollection = lcfirst($apiCollection);
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
         $this->create = "ControllerCreate";

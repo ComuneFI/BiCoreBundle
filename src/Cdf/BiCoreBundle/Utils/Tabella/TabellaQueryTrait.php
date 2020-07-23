@@ -293,6 +293,7 @@ trait TabellaQueryTrait
             $newApi = $this->apiController;
             $apiController = new $newApi();
             $countMethod = $this->apiBook->getCount();
+            
             $count = $apiController->$countMethod();
             $this->righetotali = $count;
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());

@@ -60,7 +60,7 @@ trait FiApiCoreCrudControllerTrait
 
                 $apiClass = $this->apiController;
                 $apiObject = new $apiClass();
-                $apiBook = new ApiUtils( strtolower($this->collection) );
+                $apiBook = new ApiUtils( $this->collection );
                 $createMethod = $apiBook->getCreate();
 
                 //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));
@@ -106,7 +106,7 @@ trait FiApiCoreCrudControllerTrait
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
-        $apiBook = new ApiUtils( strtolower($this->collection) );
+        $apiBook = new ApiUtils( $this->collection );
         $getMethod = $apiBook->getItem();
 
         //TODO: response belongs to last operation
@@ -158,7 +158,7 @@ trait FiApiCoreCrudControllerTrait
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
-        $apiBook = new ApiUtils( strtolower($this->collection) );
+        $apiBook = new ApiUtils( $this->collection );
         $getMethod = $apiBook->getItem();
 
         //TODO: response belongs to last operation
@@ -191,7 +191,7 @@ trait FiApiCoreCrudControllerTrait
             //$entity = $editForm->getData();
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
-            $apiBook = new ApiUtils( strtolower($this->collection) );
+            $apiBook = new ApiUtils( $this->collection );
             $updateMethod = $apiBook->getUpdateItem();
 
             $responseMessage = $apiObject->$updateMethod($entityItem, $id);
@@ -238,7 +238,7 @@ trait FiApiCoreCrudControllerTrait
 
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
-            $apiBook = new ApiUtils( strtolower($this->collection) );
+            $apiBook = new ApiUtils( $this->collection );
             $deleteMethod = $apiBook->getDelete();
 
             foreach( $ids as $id) {

@@ -83,7 +83,7 @@ class Tabella
         }
         else {
             $this->apiController = $this->getTabellaParameter('apicontroller');
-            $this->apiCollection = strtolower($this->getTabellaParameter('apicollection'));
+            $this->apiCollection = $this->getTabellaParameter('apicollection');
             $this->apiBook = new ApiUtils($this->apiCollection);
             //in this moment is not set for API
             $modelUtils = new ModelUtils();
