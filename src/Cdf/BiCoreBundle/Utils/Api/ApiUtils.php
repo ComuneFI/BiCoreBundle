@@ -4,14 +4,12 @@ namespace Cdf\BiCoreBundle\Utils\Api;
 
 use Symfony\Component\Finder\Finder;
 
+class ApiUtils {
 
-class ApiUtils
-{
     private $getAll;
     private $getCount;
     private $create;
     private $apiCollection;
-
     //TODO: check these variables
     private static $apiBundlesPath = '../../vendor/fi';
     private static $namespacePrefix = 'Swagger\\';
@@ -19,8 +17,7 @@ class ApiUtils
     private static $namespaceControllersItem = '\\Model\\ControllersItem';
     private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\Models/';
 
-    public function __construct($apiCollection)
-    {
+    public function __construct($apiCollection) {
         $this->apiCollection = $apiCollection;
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
@@ -68,57 +65,50 @@ class ApiUtils
     /**
      * Return the method string to retrieve all elements / or filtering on them
      */
-    public function getAll(): String 
-    {
-        return $this->apiCollection.$this->getAll;
+    public function getAll(): String {
+        return $this->apiCollection . $this->getAll;
     }
 
     /**
      * Return the method string to retrieve 1 element
      */
-    public function getItem(): String 
-    {
-        return $this->apiCollection.$this->get;
+    public function getItem(): String {
+        return $this->apiCollection . $this->get;
     }
 
     /**
      * Return the method string to update 1 element
      */
-    public function getUpdateItem(): String 
-    {
-        return $this->apiCollection.$this->update;
+    public function getUpdateItem(): String {
+        return $this->apiCollection . $this->update;
     }
 
     /**
      * Return the method string to count all elemements inside a collection
      */
-    public function getCount(): String 
-    {
-        return $this->apiCollection.$this->getCount;
+    public function getCount(): String {
+        return $this->apiCollection . $this->getCount;
     }
 
     /**
      * Return the method string to create an element 
      */
-    public function getCreate(): String 
-    {
-        return $this->apiCollection.$this->create;
+    public function getCreate(): String {
+        return $this->apiCollection . $this->create;
     }
 
     /**
      * Return the method string to delete an element 
      */
-    public function getDelete(): String 
-    {
-        return $this->apiCollection.$this->delete;
+    public function getDelete(): String {
+        return $this->apiCollection . $this->delete;
     }
 
     /**
      * It looks for Models existent into included external bundles.
      * It uses ApiUtils in order to know where to search and what look for.
      */
-    public function apiModels(): array 
-    {
+    public function apiModels(): array {
         //where to look for
         $path = self::bundlesPath();
         $regex = self::regexPathModels();
@@ -130,8 +120,9 @@ class ApiUtils
         // Print the file names of classes, interfaces and traits in given path
         foreach ($iter->getClassMap() as $classname => $splFileInfo) {
             preg_match($regex, $classname, $matches);
-            if( count($matches) > 0) {
-                $models[] = substr($classname, strlen($matches[0])).' (API)';
+
+            if (count($matches) > 0) {
+                $models[] = $matches[1] . '.' . substr($classname, strlen($matches[0])) . ' (API)';
             }
         }
         return $models;
