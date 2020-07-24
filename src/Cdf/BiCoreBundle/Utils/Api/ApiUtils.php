@@ -10,11 +10,21 @@ class ApiUtils {
     private $getCount;
     private $create;
     private $apiCollection;
+
+    //namespaces
+    private static $namespacePrefix = 'Swagger';
+    private static $namespaceApi = 'Api';
+    private static $namespaceModel = "Model";
+    private static $namespaceForm = "App\\Form";
+    //suffix and prefix
+    private static $suffixApiController = 'Api';
+    private static $prefixControllerModelItem = "ControllersItem";
+    private static $prefixModelItem= "Models";
+
+
     //TODO: check these variables
-    private static $apiBundlesPath = '../../vendor/fi';
-    private static $namespacePrefix = 'Swagger\\';
-    private static $namespaceModels = '\\Model\\Models';
-    private static $namespaceControllersItem = '\\Model\\ControllersItem';
+    private static $apiBundlesPath = '../../vendor/fi';    
+   
     private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\Models/';
 
     public function __construct($apiCollection) {
@@ -35,24 +45,61 @@ class ApiUtils {
     }
 
     /**
-     * Return namespace prefix for api external bundles, i.e. Swagger\\\
+     * Return namespace prefix for api external bundles, i.e. Swagger
      */
-    public function namespacePrefix() {
+    public static function namespacePrefix() {
         return self::$namespacePrefix;
-    }
-
-    /**
-     * Return namespace component for api controller items of external bundles, i.e. \\\Model\\\ControllersItem*
-     */
-    public function namespaceControllersItem() {
-        return self::$namespaceControllersItem;
     }
 
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public function namespaceModels() {
-        return self::$namespaceModels;
+    public static function namespaceModels() {
+        return self::$namespaceModel;
+    }
+
+    /**
+     * Return the name of Api Controller.
+     * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
+     * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
+     */
+    public static function getApiControllerClass($project, $entityName):String 
+    {
+        $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceApi."\\$entityName".self::$suffixApiController;
+        return $className;
+    }
+
+    /**
+     * Return the name of Model Controller.
+     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
+     * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
+     */
+    public static function getModelControllerClass($project, $modelName):String 
+    {
+        $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceModel."\\".self::$prefixControllerModelItem.$modelName;
+        return $className;
+    }
+
+    /**
+     * Return the name of Model Controller.
+     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
+     * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
+     */
+    public static function getModelClass($project, $modelName):String 
+    {
+        $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceModel."\\".self::$prefixModelItem.$modelName;
+        return $className;
+    }
+
+    /**
+     * Return the name of Form class.
+     * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
+     * class (i.e. App\\Form\\Claim)
+     */
+    public static function getFormClass($modelName):String 
+    {
+        $className = self::$namespaceForm."\\".$modelName;
+        return $className;
     }
 
     /**

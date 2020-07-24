@@ -4,6 +4,7 @@ namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
 class Commands {
     /* @var $apppaths ProjectPath */
@@ -103,9 +104,9 @@ class Commands {
                 return array('errcode' => -1, 'message' => $entityPath . ' entity non trovata');
             }
         } else {
-            $prefix = '\\Swagger\\' . $projectname . '\\Model\\Models';
-            if (!class_exists($prefix . $entityform)) {
-                return array('errcode' => -1, 'message' => $prefix . $entityform . ' model not found');
+            $modelClass = ApiUtils::getModelClass($projectname, $entityform);
+            if (!class_exists($modelClass)) {
+                return array('errcode' => -1, 'message' => $modelClass . ' model not found');
             }
         }
 

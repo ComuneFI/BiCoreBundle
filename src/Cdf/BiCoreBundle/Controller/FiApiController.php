@@ -8,6 +8,7 @@ use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
 use Symfony\Component\Inflector\Inflector;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
 class FiApiController extends AbstractController {
 
@@ -36,8 +37,6 @@ class FiApiController extends AbstractController {
         if (0 == count($matches)) {
             preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         }
-
-
         $this->project = $this->getProject();
 
         $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
@@ -50,7 +49,9 @@ class FiApiController extends AbstractController {
         $results = Inflector::pluralize($this->model);
         if (is_array($results)) {
             foreach($results as $result) {
-                if (class_exists('\\Swagger\\' . $this->project . '\\Api\\' . $result . 'Api')) {
+                //get name of api controller
+                $apiClassPath = ApiUtils::getApiControllerClass($this->project, $result);
+                if (class_exists($apiClassPath)) {
                     $this->collection = $result;
                 break;
                 }
@@ -61,10 +62,11 @@ class FiApiController extends AbstractController {
             
         }
 
-        $this->modelClass = '\\Swagger\\' . $this->project . '\\Model\\Models' . $this->model;
-        $this->formClass = 'App\\Form\\' . $this->model;
-        $this->controllerItem = '\\Swagger\\' . $this->project . '\\Model\\ControllersItem' . $this->model;
-        $this->apiController = '\\Swagger\\' . $this->project . '\\Api\\' . $this->collection . 'Api';
+        $this->modelClass = ApiUtils::getModelClass($this->project, $this->model);
+        $this->formClass =  ApiUtils::getFormClass($this->model);
+        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);    
+        $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
+        
     }
 
     protected function getBundle() {

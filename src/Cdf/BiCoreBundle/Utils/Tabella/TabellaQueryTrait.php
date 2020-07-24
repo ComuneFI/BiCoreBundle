@@ -63,7 +63,6 @@ trait TabellaQueryTrait
         }
     }
 
-    //TODO: filtering
     protected function buildWhere(&$qb)
     {
         $filtro = '';
@@ -133,7 +132,6 @@ trait TabellaQueryTrait
         if( $swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
             $filterString .= '"%'.$fieldvalue.'%"';
         }
-        //TODO: HOW TO MANAGE DATETIME AND TIME
         else if ( $swaggerType == 'datetime' || $swaggerType == 'date' ) {
             $fieldvalue = \str_replace("/","-",$fieldvalue);
             //does it contain an hour ?

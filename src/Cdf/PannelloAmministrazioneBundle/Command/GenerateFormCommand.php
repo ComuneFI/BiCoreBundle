@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use function count;
 
 class GenerateFormCommand extends Command {
@@ -114,13 +115,14 @@ class GenerateFormCommand extends Command {
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         set_time_limit(0);
+
+        $libraryPrefix = ApiUtils::namespacePrefix();
         //TODO: refactor variables
         $bundlename = 'App';
         $this->projectname = $input->getOption('projectname');
-        $swaggerPath = '\\Swagger\\' . $this->projectname . '\\Model';
         $entityform = $input->getArgument('entityform');
-        $modelClass = $swaggerPath . '\\Models' . $entityform;
-        $controllerItem = $swaggerPath . '\\ControllersItem' . $entityform;
+        $modelClass = ApiUtils::getModelClass($this->projectname, $entityform);
+        $controllerItem = ApiUtils::getModelControllerClass($this->projectname, $entityform);
 
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
@@ -188,7 +190,7 @@ class GenerateFormCommand extends Command {
 
             file_put_contents($formFile, implode("\n", $lines));
 
-            $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform, $swaggerPath);
+            $code = $this->getControllerCode(str_replace('/', '\\', $bundlename), $entityform, $modelClass);
             $fs->dumpFile($controlleFile, $code);
             $output->writeln('<info>Creato ' . $controlleFile . '</info>');
 
@@ -294,10 +296,10 @@ class GenerateFormCommand extends Command {
     /**
      * Return the portion of code for Controller
      */
-    private function getControllerCode($bundlename, $tabella, String $swaggerPath): String {
+    private function getControllerCode($bundlename, $tabella, String $swaggerModel): String {
         $code = '';
         if ($this->isApi) {
-            $code = $this->getControllerCodeAPI($bundlename, $tabella, $swaggerPath);
+            $code = $this->getControllerCodeAPI($bundlename, $tabella, $swaggerModel);
         } else {
             $code = $this->getControllerCodeORM($bundlename, $tabella);
         }
@@ -338,7 +340,7 @@ EOF;
     /**
      *  It creates a Skeleton for a controller class that extends ApiController 
      *  */
-    private function getControllerCodeAPI($bundlename, $tabella, String $swaggerPath) {
+    private function getControllerCodeAPI($bundlename, $tabella, String $modelPath) {
         $projectname = $this->projectname;
         $codeTemplate = <<<EOF
 <?php
@@ -349,7 +351,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Controller\FiApiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use [swaggerPath]\Models[tabella];
+use [modelPath];
 use [bundle]\Form\[tabella]Type;
                 
 /**
@@ -362,7 +364,7 @@ class [tabella]Controller extends FiApiController {
 }
 EOF;
         $codebundle = str_replace('[bundle]', $bundlename, $codeTemplate);
-        $codebundle = str_replace('[swaggerPath]', $swaggerPath, $codebundle);
+        $codebundle = str_replace('[modelPath]', $modelPath, $codebundle);
         $code = str_replace('[tabella]', $tabella, $codebundle);
 
         return $code;
