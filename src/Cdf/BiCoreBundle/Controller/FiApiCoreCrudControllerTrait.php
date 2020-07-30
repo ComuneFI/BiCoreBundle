@@ -147,6 +147,20 @@ trait FiApiCoreCrudControllerTrait
     }
 
     /**
+     * Update value of _id field with value selected on select list.
+     */
+    private function setIdfromSelect(&$parameters) {
+        foreach($parameters as $key => $parameter) {
+            if ( \str_contains( $key, '_id')) {
+                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                if (isset($parameters[$sourceKey])) {
+                    $parameters[$key] = $parameters[$sourceKey];
+                }
+            }
+        }
+    }
+
+    /**
      * Edits an existing table entity.
      */
     public function update(Request $request, $id)
@@ -193,12 +207,7 @@ trait FiApiCoreCrudControllerTrait
 
         $parameters = $request->request->get($editForm->getName());
 
-        //TODO: let it generic
-        $parameters['event_id'] = $parameters['event'];
-        $parameters['policy_id'] = $parameters['policy'];
-        //
-        //$request->request->set($editForm->getName(),$parameters);
-
+        $this->setIdfromSelect($parameters);
         $editForm->submit($parameters);
 
         if ($editForm->isValid()) {
@@ -207,16 +216,10 @@ trait FiApiCoreCrudControllerTrait
 
             $entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
 
-            //$entityclass = $this->getControllerItemName();
-            //$entityItem = new $entityclass($request->request->get($editForm->getName()));
-
-            //$entity = $editForm->getData();
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
             $apiBook = new ApiUtils( $this->collection );
             $updateMethod = $apiBook->getUpdateItem();
-
-            //$entityItem = $modelutils->setApiValues($entityItem);
 
             $responseMessage = $apiObject->$updateMethod($entityItem, $id);
 
