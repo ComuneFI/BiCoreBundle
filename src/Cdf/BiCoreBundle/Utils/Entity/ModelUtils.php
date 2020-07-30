@@ -3,6 +3,8 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
+use App\ApiModels\ModelsClaimExt;
+use Swagger\Insurance\Model\ModelsEvent;
 use function count;
 
 class ModelUtils
@@ -51,6 +53,11 @@ class ModelUtils
             if ( \str_contains( $fieldType ,'Swagger') ) {
                 //dump( $fieldType);
             }
+            else if (\str_contains( $fieldName ,'_id')) {
+                dump("entity columns not managed for ".$fieldName);
+                //dump($fieldName);
+                //dump($fieldType);
+            }
             else {
                 //dump($fieldName);
                 //dump($fieldType);            
@@ -96,19 +103,20 @@ class ModelUtils
      */
     public function setApiValues($entityout)
     {
-        //$entityout = clone($entity);
+    
         $fieldMappings = $entityout::swaggerTypes();
         $formatMappings = $entityout::swaggerFormats();
         $setters = $entityout::setters();
         $getters = $entityout::getters();
 
         foreach ($fieldMappings as $fieldName=>$fieldType) {
-            $setvalue = $setters[$fieldName];
             if ( \str_contains( $fieldType ,'Swagger') ) {
+                $setvalue = $setters[$fieldName];
                 //TODO: Implement this part of method           
                 $entityout->$setvalue(0);
             }
             else {
+                $setvalue = $setters[$fieldName];
                 $getvalue = $getters[$fieldName];
                 $newvalue = $this->getValueOfData( $fieldType, $formatMappings[$fieldName] , $entityout->$getvalue() );
                 $entityout->$setvalue($newvalue);

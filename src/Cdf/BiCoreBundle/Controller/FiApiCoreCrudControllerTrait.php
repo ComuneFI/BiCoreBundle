@@ -117,14 +117,21 @@ trait FiApiCoreCrudControllerTrait
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
 
+
+        $attrArray = ['attr' => [
+                        'id' => 'formdati'.$controller,
+                                ],
+                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                    'extra-options' => []
+                            ];
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
+        }
+
         $editForm = $this->createForm(
             $formType,
             $entity,
-            ['attr' => [
-                        'id' => 'formdati'.$controller,
-                    ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
-                ]
+            $attrArray
         );
 
         return $this->render(
@@ -167,17 +174,32 @@ trait FiApiCoreCrudControllerTrait
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
 
+        $attrArray = ['attr' => [
+            'id' => 'formdati'.$controller,
+                    ],
+        'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+        'extra-options' => []
+                ];
+
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
+        }
+
         $editForm = $this->createForm(
             $formType,
             $entity,
-            ['attr' => [
-                        'id' => 'formdati'.$controller,
-                    ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
-                ]
+            $attrArray
         );
 
-        $editForm->submit($request->request->get($editForm->getName()));
+        $parameters = $request->request->get($editForm->getName());
+
+        //TODO: let it generic
+        $parameters['event_id'] = $parameters['event'];
+        $parameters['policy_id'] = $parameters['policy'];
+        //
+        //$request->request->set($editForm->getName(),$parameters);
+
+        $editForm->submit($parameters);
 
         if ($editForm->isValid()) {
 
@@ -193,6 +215,8 @@ trait FiApiCoreCrudControllerTrait
             $apiObject = new $apiClass();
             $apiBook = new ApiUtils( $this->collection );
             $updateMethod = $apiBook->getUpdateItem();
+
+            //$entityItem = $modelutils->setApiValues($entityItem);
 
             $responseMessage = $apiObject->$updateMethod($entityItem, $id);
 

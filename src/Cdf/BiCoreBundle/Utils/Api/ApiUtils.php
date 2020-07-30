@@ -35,6 +35,7 @@ class ApiUtils {
         $this->delete = "ControllerDeleteItem";
         $this->get = "ControllerReadItem";
         $this->update = "ControllerUpdateItem";
+        $this->getAllToString = "ControllerReadAllToString";
     }
 
     /**
@@ -114,6 +115,13 @@ class ApiUtils {
      */
     public function getAll(): String {
         return $this->apiCollection . $this->getAll;
+    }
+
+    /**
+     * Return the method string to retrieve all elements descriptions (it's possible to filter them as for getAll)
+     */
+    public function getAllToString(): String {
+        return $this->apiCollection . $this->getAllToString;
     }
 
     /**

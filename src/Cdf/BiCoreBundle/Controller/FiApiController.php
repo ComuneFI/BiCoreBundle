@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
 use Symfony\Component\Inflector\Inflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use \Swagger\Insurance\Model\ModelsClaim;
 
 class FiApiController extends AbstractController {
 
@@ -29,6 +30,8 @@ class FiApiController extends AbstractController {
     protected $controllerItem;
     protected $apiController;
 
+    protected $options;
+
     public function __construct(PermessiManager $permessi, Environment $template) {
         $matches = [];
         $controllo = new ReflectionClass(get_class($this));
@@ -45,28 +48,75 @@ class FiApiController extends AbstractController {
         $this->template = $template;
 
         $this->model = $this->controller; //they matches
-        
-        $results = Inflector::pluralize($this->model);
+        $this->collection = $this->pluralize($this->model);        
+        $this->modelClass = ApiUtils::getModelClass($this->project, $this->model);
+        $this->formClass =  ApiUtils::getFormClass($this->model);
+        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);    
+        $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
+        $this->options = array();
+        //it generates options one time for all
+        $this->generateOptions();
+        //dump($this->options);
+    }
+
+    /**
+     * Pluralize a single form giving as response the correct plurale form matching with existent objects
+     */
+    private function pluralize( $singleForm ) {
+        $outcome = '';
+        $results = Inflector::pluralize($singleForm);
         if (is_array($results)) {
             foreach($results as $result) {
                 //get name of api controller
                 $apiClassPath = ApiUtils::getApiControllerClass($this->project, $result);
                 if (class_exists($apiClassPath)) {
-                    $this->collection = $result;
+                    $outcome = $result;
                 break;
                 }
             }
         }
         else {
-            $this->collection = $results;
+            $outcome = $results;
             
         }
+        return $outcome;
+    }
 
-        $this->modelClass = ApiUtils::getModelClass($this->project, $this->model);
-        $this->formClass =  ApiUtils::getFormClass($this->model);
-        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);    
-        $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
-        
+    /**
+     * Generate option choices for edit form
+     */
+    protected function generateOptions() {
+        $itemController = new $this->modelClass();
+        $fieldMappings = $itemController::swaggerTypes();
+
+        foreach ($fieldMappings as $fieldName=>$fieldType) {
+            if ( \str_contains( $fieldName ,'_id') ) {
+                //dump($fieldName);
+                $entityName = substr( $fieldName, 0, strpos($fieldName, '_id'));
+
+                $outcome = $this->pluralize(ucfirst($entityName));
+
+                //dump($outcome);
+                $apiControllerClass = ApiUtils::getApiControllerClass( $this->project, $outcome);
+                $apiController = new $apiControllerClass();
+
+                $apiBook = new ApiUtils($outcome);
+                $method = $apiBook->getAllToString();
+                //dump($apiControllerClass);
+                //dump($method);
+    
+                $results = $apiController->$method();
+                //dump($results);
+                $arrayContainer = array();
+                foreach($results as $key => $myItem) {
+                    //transform this items for options
+                    $element = array("id" => $myItem->getCode(), "descrizione" => $myItem->getText(), "valore" => $myItem->getText());
+                    array_push($arrayContainer, $element);
+                }
+                $this->options[$entityName] = $arrayContainer;
+            }
+        }
+
     }
 
     protected function getBundle() {
