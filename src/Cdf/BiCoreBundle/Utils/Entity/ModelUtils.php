@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use App\ApiModels\ModelsClaimExt;
 use Swagger\Insurance\Model\ModelsEvent;
 use function count;
@@ -48,12 +49,25 @@ class ModelUtils
 
         $colonne = array();
         foreach ($fieldMappings as $fieldName=>$fieldType) {
+            //dump($fieldName.'-'.$fieldType);
+            /*if (\str_contains( $fieldName ,'_id') ) {
+                //dump($fieldName);
+                $key = substr( $fieldName, 0, strpos($fieldName, '_id'));
+                dump($key.' found');
+                $colonne[$key]['fieldName'] = $key;   
+                $colonne[$key]['columnName'] = $key; 
+                $parametri = array('str' => $key, 'primamaiuscola' => true);
+                $outcome = StringUtils::toCamelCase($parametri);
+                $entityjoin = ApiUtils::getModelClass("Insurance", $outcome);
+                $colonne[$key]['entityClass'] = $entityjoin; 
+                $colonne[$key]['sourceEntityClass'] = $entity; 
+                $colonne[$key]['association'] = true;
+                $colonne[$key]['associationtable'] = [];
+            }
+            else*/ 
             if ( \str_contains( $fieldType ,'Swagger') ) {
                 //dump( $fieldType);
             }
-            /*else if (\str_contains( $fieldName ,'_id')) {
-                //dump("entity columns not managed for ".$fieldName);
-            }*/
             else {         
                 $colonne[$fieldName]['fieldName'] = $fieldName;
                 //$colonne[$fieldName]['type'] = $formatMappings[$fieldName];
@@ -69,7 +83,6 @@ class ModelUtils
             }
         }
         //dump($colonne);
-        //exit;
         return $colonne;
     }
 
