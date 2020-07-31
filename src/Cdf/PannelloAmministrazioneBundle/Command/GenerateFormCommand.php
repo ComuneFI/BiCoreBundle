@@ -104,6 +104,18 @@ class GenerateFormCommand extends Command {
     }
 
     /**
+     * It inserts submitparams options, and arraychoices filling if API form
+     */
+    private function insertParamsOptions(array &$lines, $position) {
+        if ($this->isApi) {
+            array_splice($lines, $position, 0, '        $arraychoices = $this->setExtraOption($options);');
+            $position++;
+        }
+        array_splice($lines, $position, 0, '        $submitparms = array('
+        . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
+    }
+
+    /**
      * Add portion of code to manage a field as datetime
      */
     private function addDateTimeType(array &$lines, $position, $attributeName) {
@@ -202,9 +214,7 @@ class GenerateFormCommand extends Command {
             }
             $pos2 = $this->findPosition($lines, '$builder', false);
 
-            array_splice($lines, $pos2, 0, '        $arraychoices = $this->setExtraOption($options);
-                    $submitparms = array('
-                    . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
+            $this->insertParamsOptions($lines, $pos2);
 
             $pos3 = $this->findPosition($lines, '->add(', false);
             array_splice($lines, $pos3 + 1, 0, "            ->add('submit', SubmitType::class, \$submitparms)");
