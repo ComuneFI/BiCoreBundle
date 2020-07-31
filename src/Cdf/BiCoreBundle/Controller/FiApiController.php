@@ -10,6 +10,7 @@ use Twig\Environment;
 use Symfony\Component\Inflector\Inflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use \Swagger\Insurance\Model\ModelsClaim;
+use Cdf\BiCoreBundle\Utils\String\StringUtils;
 
 class FiApiController extends AbstractController {
 
@@ -94,7 +95,10 @@ class FiApiController extends AbstractController {
                 //dump($fieldName);
                 $entityName = substr( $fieldName, 0, strpos($fieldName, '_id'));
 
-                $outcome = $this->pluralize(ucfirst($entityName));
+                //$outcome = $this->pluralize(ucfirst($entityName));
+                $parametri = array('str' => $entityName, 'primamaiuscola' => true);
+                $outcome = StringUtils::toCamelCase($parametri);
+                $outcome = $this->pluralize($outcome);
 
                 //dump($outcome);
                 $apiControllerClass = ApiUtils::getApiControllerClass( $this->project, $outcome);

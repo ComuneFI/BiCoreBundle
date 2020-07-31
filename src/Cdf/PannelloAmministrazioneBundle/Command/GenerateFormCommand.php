@@ -116,6 +116,7 @@ class GenerateFormCommand extends Command {
 
 
     private function addFkType(array &$lines, $position, $attributeName) {
+        //TODO: change the ucfirst as a camelize in order to manage choiceTypes as EventTypes
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $choiceName = substr( $attributeName, 0, strpos($attributeName, '_id'));
         $upperName = ucfirst($choiceName);

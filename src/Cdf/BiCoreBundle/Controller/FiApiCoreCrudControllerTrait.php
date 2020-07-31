@@ -39,11 +39,23 @@ trait FiApiCoreCrudControllerTrait
         //$formclass = str_replace('Entity', 'Form', $entityclass);
         $formclass = $this->getFormName();
         $formType = $formclass.'Type';
-        $form = $this->createForm($formType, $entity, ['attr' => [
-                'id' => 'formdati'.$controller,
-            ],
+
+        $attrArray = ['attr' => [
+            'id' => 'formdati'.$controller,
+                    ],
             'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
-        ]);
+            'extra-options' => []
+                ];
+
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
+        }
+
+        $form = $this->createForm(
+            $formType,
+            $entity,
+            $attrArray
+            );
 
         $form->handleRequest($request);
 
@@ -53,10 +65,12 @@ trait FiApiCoreCrudControllerTrait
             'tabellatemplate' => $tabellatemplate,
         ];
 
-        //TODO: intercept APIExceptions
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                //TODO: evaluate if this part can be improved
+                $parameters = $request->request->get($form->getName());
                 $entity = $form->getData();
+                $this->setIdObjectfromSelect($entity, $parameters);
 
                 $apiClass = $this->apiController;
                 $apiObject = new $apiClass();
@@ -156,6 +170,22 @@ trait FiApiCoreCrudControllerTrait
                 if (isset($parameters[$sourceKey])) {
                     $parameters[$key] = $parameters[$sourceKey];
                 }
+            }
+        }
+    }
+
+    /**
+     * Update value of _id fields of an object with value selected on select list.
+     * It forces the received field to be an INT (It applies a cast)
+     */
+    private function setIdObjectfromSelect(&$classItem, &$parameters) {
+        //TODO: (int) cast that is fixed
+        $setters = $classItem::setters();
+        foreach($parameters as $key => $parameter) {
+            if ( \str_contains( $key, '_id')) {
+                $setMethod = $setters[$key];
+                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                $classItem->$setMethod((int)$parameters[$sourceKey]);
             }
         }
     }
