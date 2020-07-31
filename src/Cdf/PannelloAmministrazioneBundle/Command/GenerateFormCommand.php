@@ -61,6 +61,7 @@ class GenerateFormCommand extends Command {
         $this->typesMapping['int'] = 'addIntegerType';
         $this->typesMapping['int64'] = 'addIntegerType';
         $this->typesMapping['void'] = 'addStringType';
+        $this->typesMapping['fk'] = 'addFkType';
     }
 
     /**
@@ -76,6 +77,30 @@ class GenerateFormCommand extends Command {
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\IntegerType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextAreaType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\MailType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\ChoiceType;');
+        array_splice($lines, ++$position, 0, 'use Cdf\BiCoreBundle\Utils\FieldType\HiddenIntegerType;');
+    }
+
+    /**
+     * It insert setExtraOption method to created form
+     */
+    private function insertSetExtraOptionFunction(array &$lines, $position) {
+        array_splice($lines, ++$position, 0, '
+    
+    private function setExtraOption(array $options):array 
+    {
+        $arraychoices = array();
+        if (isset($options["extra-options"])) {
+            foreach($options["extra-options"] as $key=>$value) {
+                foreach($value as $extraOption) {
+                    $arraychoices[$key][$extraOption["descrizione"]] = $extraOption["id"];
+                }
+            }
+        }
+        return $arraychoices;
+    }
+    
+    ');
     }
 
     /**
@@ -87,6 +112,22 @@ class GenerateFormCommand extends Command {
         array_splice($lines, ++$position, 0, "                  'format' => 'dd/MM/yyyy HH:mm',");
         array_splice($lines, ++$position, 0, "                  'attr' => array('class' => 'bidatetimepicker'),");
         array_splice($lines, ++$position, 0, "                  ))");
+    }
+
+
+    private function addFkType(array &$lines, $position, $attributeName) {
+        array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
+        $choiceName = substr( $attributeName, 0, strpos($attributeName, '_id'));
+        $upperName = ucfirst($choiceName);
+        array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
+            array(
+                    \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
+                    \'mapped\' => false,
+                    \'data\' => ($options["data"]->get'.$upperName.'Id() > 0) ? $options["data"]->get'.$upperName.'Id() : null ,
+                    \'placeholder\' => \'---\'
+                    )
+                )
+            ');
     }
 
     /**
@@ -154,9 +195,14 @@ class GenerateFormCommand extends Command {
                 array_splice($lines, $pos1, 0, 'use ' . $modelClass . ';');
             }
 
+            $pos2 = $this->findPosition($lines, '{', true);
+            if ($this->isApi) {
+                $this->insertSetExtraOptionFunction($lines, $pos2);
+            }
             $pos2 = $this->findPosition($lines, '$builder', false);
 
-            array_splice($lines, $pos2, 0, '        $submitparms = array('
+            array_splice($lines, $pos2, 0, '        $arraychoices = $this->setExtraOption($options);
+                    $submitparms = array('
                     . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
 
             $pos3 = $this->findPosition($lines, '->add(', false);
@@ -171,7 +217,10 @@ class GenerateFormCommand extends Command {
                 $attributes = $modelUtil->getAttributes($controllerItem);
                 foreach (array_reverse($attributes) as $attributeName => $attribute) {
                     $function = '';
-                    if (isset($this->typesMapping[$attribute['format']])) {
+                    if (\str_contains($attributeName, '_id')) {
+                        $function = $this->typesMapping['fk'];
+                    }
+                    else if (isset($this->typesMapping[$attribute['format']])) {
                         $function = $this->typesMapping[$attribute['format']];
                     } else {
                         $function = $this->typesMapping['void'];
@@ -180,7 +229,7 @@ class GenerateFormCommand extends Command {
                 }
             }
 
-            array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array()");
+            array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array(),'extra-options' => null,");
 
             /* if($this->isApi) {
               $pos4 = $this->findPosition($lines, '\'parametriform\' => array()', false);

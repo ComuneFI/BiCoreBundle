@@ -46,21 +46,15 @@ class ModelUtils
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
 
-        //dump($fieldMappings);
-        //dump($entity);
         $colonne = array();
         foreach ($fieldMappings as $fieldName=>$fieldType) {
             if ( \str_contains( $fieldType ,'Swagger') ) {
                 //dump( $fieldType);
             }
-            else if (\str_contains( $fieldName ,'_id')) {
-                dump("entity columns not managed for ".$fieldName);
-                //dump($fieldName);
-                //dump($fieldType);
-            }
-            else {
-                //dump($fieldName);
-                //dump($fieldType);            
+            /*else if (\str_contains( $fieldName ,'_id')) {
+                //dump("entity columns not managed for ".$fieldName);
+            }*/
+            else {         
                 $colonne[$fieldName]['fieldName'] = $fieldName;
                 //$colonne[$fieldName]['type'] = $formatMappings[$fieldName];
                 $colonne[$fieldName]['type'] = $this->getTypeOfData( $fieldType, $formatMappings[$fieldName] );
