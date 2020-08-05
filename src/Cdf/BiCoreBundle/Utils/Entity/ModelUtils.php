@@ -35,6 +35,8 @@ class ModelUtils
                     $outcomes[$fieldName]['format'] = 'int';
                 }
         }
+        //dump("attributes");
+        //dump($outcomes);
         return $outcomes;
     }
 
@@ -47,26 +49,11 @@ class ModelUtils
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
 
+        //dump($fieldMappings);
         $colonne = array();
         foreach ($fieldMappings as $fieldName=>$fieldType) {
-            //dump($fieldName.'-'.$fieldType);
-            /*if (\str_contains( $fieldName ,'_id') ) {
-                //dump($fieldName);
-                $key = substr( $fieldName, 0, strpos($fieldName, '_id'));
-                dump($key.' found');
-                $colonne[$key]['fieldName'] = $key;   
-                $colonne[$key]['columnName'] = $key; 
-                $parametri = array('str' => $key, 'primamaiuscola' => true);
-                $outcome = StringUtils::toCamelCase($parametri);
-                $entityjoin = ApiUtils::getModelClass("Insurance", $outcome);
-                $colonne[$key]['entityClass'] = $entityjoin; 
-                $colonne[$key]['sourceEntityClass'] = $entity; 
-                $colonne[$key]['association'] = true;
-                $colonne[$key]['associationtable'] = [];
-            }
-            else*/ 
-            if ( \str_contains( $fieldType ,'Swagger') ) {
-                //dump( $fieldType);
+            if ( \str_contains( $fieldName ,'NOTenum') ) {
+                dump("Trovato enum ".$fieldName);
             }
             else {         
                 $colonne[$fieldName]['fieldName'] = $fieldName;
@@ -82,7 +69,7 @@ class ModelUtils
                 }
             }
         }
-        //dump($colonne);
+        //dump("colonne");
         return $colonne;
     }
 
@@ -119,7 +106,14 @@ class ModelUtils
         foreach ($fieldMappings as $fieldName=>$fieldType) {
             if ( \str_contains( $fieldType ,'Swagger') ) {
                 $setvalue = $setters[$fieldName];
+                $getvalue = $getters[$fieldName];
                 //TODO: Implement this part of method           
+                
+                //dump($fieldType);
+                //dump($fieldName);
+                //dump($entityout->$getvalue());
+
+                
                 $entityout->$setvalue(0);
             }
             else {
@@ -129,6 +123,7 @@ class ModelUtils
                 $entityout->$setvalue($newvalue);
             }
         }
+        //dump($entityout);
         return $entityout;
     }
 

@@ -57,6 +57,12 @@ trait FiApiCoreControllerTrait
                  */
         ];
 
+        //append automatic computed enum options
+        $modellocolonne = array_merge($modellocolonne, $this->enumOptions );
+
+        //dump($modellocolonne);
+        //dump($this->enumOptions);
+
         $filtri = [];
         $prefiltri = [];
         //$entityutils = new EntityUtils($this->get('doctrine')->getManager());
@@ -68,7 +74,7 @@ trait FiApiCoreControllerTrait
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'bundle' => ParametriTabella::setParameter($bundle),
             'entityname' => ParametriTabella::setParameter($entityclassnotation),
-            'entityclass' => ParametriTabella::setParameter($this->modelClass),
+            'entityclass' => ParametriTabella::setParameter($this->controllerItem),
             'formclass' => ParametriTabella::setParameter($this->formClass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),

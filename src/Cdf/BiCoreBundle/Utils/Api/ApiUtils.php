@@ -18,7 +18,7 @@ class ApiUtils {
     private static $namespaceForm = "App\\Form";
     //suffix and prefix
     private static $suffixApiController = 'Api';
-    private static $prefixControllerModelItem = "ControllersItem";
+    private static $prefixControllerModelItem = "DaosRow";
     private static $prefixModelItem= "Models";
 
 

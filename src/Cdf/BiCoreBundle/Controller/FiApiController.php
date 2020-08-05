@@ -32,6 +32,8 @@ class FiApiController extends AbstractController {
     protected $apiController;
 
     protected $options;
+    protected $enumOptions;
+    protected $inflectorExceptions;
 
     public function __construct(PermessiManager $permessi, Environment $template) {
         $matches = [];
@@ -55,17 +57,39 @@ class FiApiController extends AbstractController {
         $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);    
         $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
         $this->options = array();
+        $this->enumOptions = array();
+        $this->inflectorExceptions = array();
         //it generates options one time for all
-        $this->generateOptions();
+        $this->loadInflectorExceptions();
+        $this->generateEnumAndOptions();
         //dump($this->options);
+    }
+
+    protected function loadInflectorExceptions() {
+        $vars = getenv("INFLECTOR_EXCEPTIONS");
+        if (isset($vars)) {
+            $values = json_decode($vars, true);
+            $this->inflectorExceptions = $values;
+        }
+    }
+
+    /**
+     * Copy this method into your controller in case of exceptions
+     */
+    protected function pluralizeForm( $singleForm ) {
+        if ( isset($this->inflectorExceptions[$singleForm]) ) {
+            return $this->inflectorExceptions[$singleForm];
+        }
+        return Inflector::pluralize($singleForm);
     }
 
     /**
      * Pluralize a single form giving as response the correct plurale form matching with existent objects
      */
-    private function pluralize( $singleForm ) {
+    protected function pluralize( $singleForm ) {
         $outcome = '';
-        $results = Inflector::pluralize($singleForm);
+        $results = $this->pluralizeForm($singleForm);
+
         if (is_array($results)) {
             foreach($results as $result) {
                 //get name of api controller
@@ -86,41 +110,80 @@ class FiApiController extends AbstractController {
     /**
      * Generate option choices for edit form
      */
-    protected function generateOptions() {
-        $itemController = new $this->modelClass();
+    protected function generateEnumAndOptions() {
+        $itemController = new $this->controllerItem();
         $fieldMappings = $itemController::swaggerTypes();
 
+        //dump($fieldMappings);
+
         foreach ($fieldMappings as $fieldName=>$fieldType) {
+            //is it a foreign key field?
             if ( \str_contains( $fieldName ,'_id') ) {
-                //dump($fieldName);
-                $entityName = substr( $fieldName, 0, strpos($fieldName, '_id'));
+                $tools = $this->getApiTools($fieldName, '_id');              
+                $apiController = $tools['controller'];
+                $apiBook = $tools['book'];
 
-                //$outcome = $this->pluralize(ucfirst($entityName));
-                $parametri = array('str' => $entityName, 'primamaiuscola' => true);
-                $outcome = StringUtils::toCamelCase($parametri);
-                $outcome = $this->pluralize($outcome);
-
-                //dump($outcome);
-                $apiControllerClass = ApiUtils::getApiControllerClass( $this->project, $outcome);
-                $apiController = new $apiControllerClass();
-
-                $apiBook = new ApiUtils($outcome);
-                $method = $apiBook->getAllToString();
-                //dump($apiControllerClass);
-                //dump($method);
-    
+                $method = $apiBook->getAllToString();    
                 $results = $apiController->$method();
-                //dump($results);
+
                 $arrayContainer = array();
                 foreach($results as $key => $myItem) {
                     //transform this items for options
                     $element = array("id" => $myItem->getCode(), "descrizione" => $myItem->getText(), "valore" => $myItem->getText());
                     array_push($arrayContainer, $element);
                 }
-                $this->options[$entityName] = $arrayContainer;
+                $this->options[$tools['entity']] = $arrayContainer;
+            }
+            else if ( \str_contains( $fieldName ,'_enum') ) {
+                //dump("in fieldname ".$fieldName );
+                $tools = $this->getApiTools($fieldName, '_enum');              
+                $apiController = $tools['controller'];
+                $apiBook = $tools['book'];
+
+                $getAllToStringMethod = $apiBook->getAllToString();
+                $results = $apiController->$getAllToStringMethod();
+
+                $decodeMap = array();
+                foreach($results as $result) {
+                    $decodeMap[$result['code']] = $result['text'];
+                }
+        
+                $arrayItem = array('nometabella' => $this->controller, 'nomecampo' => "$this->controller.$fieldName", 'etichetta' => "$fieldName",
+                 'escluso' => false,
+                'decodifiche' => $decodeMap);
+
+                array_push($this->enumOptions, $arrayItem);
+
             }
         }
 
+    }
+
+    /**
+     * It returns an array with 'controller' with the apiController 
+     * and 'book' the apiBook
+     * and 'entity' the given fieldName less the suffix
+     */
+    protected function getApiTools($fieldName, $suffixString): array 
+    {
+        $entityName = substr( $fieldName, 0, strpos($fieldName, $suffixString));
+
+        $parametri = array('str' => $entityName, 'primamaiuscola' => true);
+        $outcome = StringUtils::toCamelCase($parametri);
+        $outcome = $this->pluralize($outcome);
+
+        $apiControllerClass = ApiUtils::getApiControllerClass( $this->project, $outcome);
+        $apiController = new $apiControllerClass();
+
+        //$apiBook = new ApiUtils($entityName);
+        $apiBook = new ApiUtils($outcome);
+
+        $results = [
+            'controller' => $apiController, 
+            'book' => $apiBook, 
+            'entity' => $entityName,
+        ];
+        return $results;
     }
 
     protected function getBundle() {

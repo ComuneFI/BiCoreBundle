@@ -176,7 +176,7 @@ class GenerateFormCommand extends Command {
         $this->projectname = $input->getOption('projectname');
         $entityform = $input->getArgument('entityform');
         $modelClass = ApiUtils::getModelClass($this->projectname, $entityform);
-        $controllerItem = ApiUtils::getModelControllerClass($this->projectname, $entityform);
+        //$controllerItem = ApiUtils::getModelControllerClass($this->projectname, $entityform);
 
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
@@ -225,7 +225,8 @@ class GenerateFormCommand extends Command {
                 $lines[$pos3] = '//' . $lines[$pos3];
                 //in this position should be added form attributes
                 $modelUtil = new ModelUtils();
-                $attributes = $modelUtil->getAttributes($controllerItem);
+                //TOCHECK: Verify this part
+                $attributes = $modelUtil->getAttributes($modelClass);
                 foreach (array_reverse($attributes) as $attributeName => $attribute) {
                     $function = '';
                     if (\str_contains($attributeName, '_id')) {
