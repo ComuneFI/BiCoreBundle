@@ -65,11 +65,11 @@ before_script:
   - sudo /sbin/mkswap /var/swap.1
   - sudo /sbin/swapon /var/swap.1
 
-  - export CHROME_BIN=chromium-browser
-  - CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
-  - CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
-  - curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
-  - unzip chromedriver_linux64.zip -d ~/bin
+  #- export CHROME_BIN=chromium-browser
+  #- CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+  #- CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+  #- curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+  #- unzip chromedriver_linux64.zip -d ~/bin
 
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]]; then phpenv config-add ./tests/build/travis.php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ hhvm ]] ; then pecl channel-update pecl.php.net; fi;
