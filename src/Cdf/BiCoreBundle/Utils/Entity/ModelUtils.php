@@ -53,7 +53,7 @@ class ModelUtils
         $colonne = array();
         foreach ($fieldMappings as $fieldName=>$fieldType) {
             if ( \str_contains( $fieldName ,'NOTenum') ) {
-                dump("Trovato enum ".$fieldName);
+                //dump("Trovato enum ".$fieldName);
             }
             else {         
                 $colonne[$fieldName]['fieldName'] = $fieldName;
@@ -104,26 +104,17 @@ class ModelUtils
         $getters = $entityout::getters();
 
         foreach ($fieldMappings as $fieldName=>$fieldType) {
-            if ( \str_contains( $fieldType ,'Swagger') ) {
+            /*if ( \str_contains( $fieldType ,'Swagger') ) {
                 $setvalue = $setters[$fieldName];
                 $getvalue = $getters[$fieldName];
-                //TODO: Implement this part of method           
-                
-                //dump($fieldType);
-                //dump($fieldName);
-                //dump($entityout->$getvalue());
-
-                
-                $entityout->$setvalue(0);
             }
-            else {
+            else {*/
                 $setvalue = $setters[$fieldName];
                 $getvalue = $getters[$fieldName];
                 $newvalue = $this->getValueOfData( $fieldType, $formatMappings[$fieldName] , $entityout->$getvalue() );
                 $entityout->$setvalue($newvalue);
-            }
+            /*}*/
         }
-        //dump($entityout);
         return $entityout;
     }
 

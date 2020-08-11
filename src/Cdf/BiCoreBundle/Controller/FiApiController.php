@@ -144,9 +144,13 @@ class FiApiController extends AbstractController {
                 $results = $apiController->$getAllToStringMethod();
 
                 $decodeMap = array();
+                $arrayContainer = array();
                 foreach($results as $result) {
                     $decodeMap[$result['code']] = $result['text'];
+                    $element = array("id" => $result['code'], "descrizione" => $result['text'], "valore" => $result['text']);
+                    array_push($arrayContainer, $element);
                 }
+                $this->options[$tools['entity']] = $arrayContainer;
         
                 $arrayItem = array('nometabella' => $this->controller, 'nomecampo' => "$this->controller.$fieldName", 'etichetta' => "$fieldName",
                  'escluso' => false,

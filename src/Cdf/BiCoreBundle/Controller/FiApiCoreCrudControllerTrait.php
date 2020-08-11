@@ -162,11 +162,18 @@ trait FiApiCoreCrudControllerTrait
 
     /**
      * Update value of _id field with value selected on select list.
+     * //TODO: review duplicated code
      */
     private function setIdfromSelect(&$parameters) {
         foreach($parameters as $key => $parameter) {
             if ( \str_contains( $key, '_id')) {
                 $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                if (isset($parameters[$sourceKey])) {
+                    $parameters[$key] = $parameters[$sourceKey];
+                }
+            }
+            else if ( \str_contains( $key, '_enum')) {
+                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
                 if (isset($parameters[$sourceKey])) {
                     $parameters[$key] = $parameters[$sourceKey];
                 }
@@ -185,6 +192,11 @@ trait FiApiCoreCrudControllerTrait
             if ( \str_contains( $key, '_id')) {
                 $setMethod = $setters[$key];
                 $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                $classItem->$setMethod((int)$parameters[$sourceKey]);
+            }
+            else if( \str_contains( $key, '_enum') ) {
+                $setMethod = $setters[$key];
+                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
                 $classItem->$setMethod((int)$parameters[$sourceKey]);
             }
         }
@@ -242,9 +254,10 @@ trait FiApiCoreCrudControllerTrait
 
         if ($editForm->isValid()) {
 
-            $modelEntity = $editForm->getData();
+            $entityItem = $editForm->getData();
 
-            $entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
+            //$entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
+            
 
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
