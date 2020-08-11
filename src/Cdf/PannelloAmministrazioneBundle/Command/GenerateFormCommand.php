@@ -62,6 +62,30 @@ class GenerateFormCommand extends Command {
         $this->typesMapping['int64'] = 'addIntegerType';
         $this->typesMapping['void'] = 'addStringType';
         $this->typesMapping['fk'] = 'addFkType';
+        $this->typesMapping['enum'] = 'addEnumType';
+    }
+
+    /**
+     * Browse available functions and return the function to be used for source code portion.
+     */
+    private function getFunctionForSourceCode(&$attribute, $attributeName) {
+        $function = null;
+        if (\str_contains($attributeName, '_id')) {
+            $function = $this->typesMapping['fk'];
+        }
+        else if (\str_contains($attributeName, '_enum')) {
+            $function = $this->typesMapping['enum'];
+        }
+        else if ($attributeName == 'id') {
+            //the record will be ignored and not included into the form
+        }
+        else if (isset($this->typesMapping[$attribute['format']])) {
+            $function = $this->typesMapping[$attribute['format']];
+        }
+        else {
+            $function = $this->typesMapping['void'];
+        }
+        return $function;
     }
 
     /**
@@ -137,6 +161,22 @@ class GenerateFormCommand extends Command {
                     \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
                     \'mapped\' => false,
                     \'data\' => ($options["data"]->get'.$upperName.'Id() > 0) ? $options["data"]->get'.$upperName.'Id() : null ,
+                    \'placeholder\' => \'---\'
+                    )
+                )
+            ');
+    }
+
+    private function addEnumType(array &$lines, $position, $attributeName) {
+        //TODO: change the ucfirst as a camelize in order to manage choiceTypes as EventTypes
+        array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
+        $choiceName = substr( $attributeName, 0, strpos($attributeName, '_enum'));
+        $upperName = ucfirst($choiceName);
+        array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
+            array(
+                    \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
+                    \'mapped\' => false,
+                    \'data\' => ($options["data"]->get'.$upperName.'Enum() >= 0) ? $options["data"]->get'.$upperName.'Enum() : null ,
                     \'placeholder\' => \'---\'
                     )
                 )
@@ -225,29 +265,16 @@ class GenerateFormCommand extends Command {
                 $lines[$pos3] = '//' . $lines[$pos3];
                 //in this position should be added form attributes
                 $modelUtil = new ModelUtils();
-                //TOCHECK: Verify this part
                 $attributes = $modelUtil->getAttributes($modelClass);
                 foreach (array_reverse($attributes) as $attributeName => $attribute) {
-                    $function = '';
-                    if (\str_contains($attributeName, '_id')) {
-                        $function = $this->typesMapping['fk'];
+                    $function = $this->getFunctionForSourceCode($attribute, $attributeName);
+                    if (isset($function)) {
+                        $this->$function($lines, $pos3, $attributeName);
                     }
-                    else if (isset($this->typesMapping[$attribute['format']])) {
-                        $function = $this->typesMapping[$attribute['format']];
-                    } else {
-                        $function = $this->typesMapping['void'];
-                    }
-                    $this->$function($lines, $pos3, $attributeName);
                 }
             }
 
             array_splice($lines, count($lines) - 3, 0, "            'parametriform' => array(),'extra-options' => null,");
-
-            /* if($this->isApi) {
-              $pos4 = $this->findPosition($lines, '\'parametriform\' => array()', false);
-              array_splice($lines, $pos4, 0, "            'data_class' => Models".$entityform."::class,");
-              } */
-
 
             file_put_contents($formFile, implode("\n", $lines));
 

@@ -29,11 +29,14 @@ class ModelUtils
         $formatMappings = $myInstance::swaggerFormats();
         $outcomes = array();
         foreach($fieldMappings as $fieldName=>$fieldType) {
-                $outcomes[$fieldName]['type'] = $fieldType;
+            if ( \str_contains( $fieldType ,'Swagger') ) {
+                $fieldName .= '_enum';
+                $outcomes[$fieldName]['format'] = 'int';
+            }
+            else {
                 $outcomes[$fieldName]['format'] = $formatMappings[$fieldName];
-                if ( \str_contains( $fieldType ,'Swagger') ) {
-                    $outcomes[$fieldName]['format'] = 'int';
-                }
+            }
+            $outcomes[$fieldName]['type'] = $fieldType;
         }
         //dump("attributes");
         //dump($outcomes);
