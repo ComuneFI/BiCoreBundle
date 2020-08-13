@@ -65,9 +65,11 @@ before_script:
   - sudo /sbin/mkswap /var/swap.1
   - sudo /sbin/swapon /var/swap.1
 
-  - export CHROME_BIN=chromium-browser
+  #- export CHROME_BIN=chromium-browser
   - CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+  - echo $CHROME_MAIN_VERSION
   - CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+  - echo $CHROMEDRIVER_VERSION
   - curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
   - unzip chromedriver_linux64.zip -d ~/bin
 
