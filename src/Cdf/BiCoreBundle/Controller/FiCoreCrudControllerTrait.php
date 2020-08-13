@@ -86,7 +86,7 @@ trait FiCoreCrudControllerTrait
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        if (!$this->getPermessi()->canUpdate($this->getController())) {
+        if (!$this->getPermessi()->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
@@ -125,6 +125,7 @@ trait FiCoreCrudControllerTrait
                             'tabellatemplate' => $tabellatemplate,
                             'edit_form' => $editForm->createView(),
                             'elencomodifiche' => $elencomodifiche,
+                            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
                         ]
         );
     }
