@@ -47,6 +47,7 @@ trait FiCoreCrudControllerTrait
             'form' => $form->createView(),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'tabellatemplate' => $tabellatemplate,
+            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
         ];
 
         if ($form->isSubmitted()) {
