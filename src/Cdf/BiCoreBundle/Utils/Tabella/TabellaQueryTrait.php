@@ -286,10 +286,10 @@ trait TabellaQueryTrait
      */
     public function getApiRecordstabella()
     {
-        
+        $newApi = $this->apiController;
+        $apiController = new $newApi();
+
         if (false === $this->estraituttirecords) {
-            $newApi = $this->apiController;
-            $apiController = new $newApi();
             $countMethod = $this->apiBook->getCount();
             
             $count = $apiController->$countMethod();
@@ -308,7 +308,7 @@ trait TabellaQueryTrait
         else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
             $paginationMethod = $this->apiBook->getAll();                   
-            $recordsets = $apiController->$paginationMethod(0, count($recordsets), $this->orderByApiBuilder(), $this->filterByApiBuilder() );
+            $recordsets = $apiController->$paginationMethod(0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder() );
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);
         }

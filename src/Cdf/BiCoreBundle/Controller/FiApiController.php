@@ -16,7 +16,7 @@ class FiApiController extends AbstractController {
 
     use FiApiCoreControllerTrait;
     use FiApiCoreCrudControllerTrait;
-    use FiApiCoreTabellaControllerTrait;
+    use FiCoreTabellaControllerTrait;
 
     protected $bundle;
     protected $template;
