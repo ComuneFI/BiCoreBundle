@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use function count;
 
 class GenerateFormCommand extends Command {
@@ -63,6 +64,8 @@ class GenerateFormCommand extends Command {
         $this->typesMapping['void'] = 'addStringType';
         $this->typesMapping['fk'] = 'addFkType';
         $this->typesMapping['enum'] = 'addEnumType';
+        $this->typesMapping['comment'] = 'addComment';
+        $this->typesMapping['bool'] = 'addCheckbox';
     }
 
     /**
@@ -76,8 +79,15 @@ class GenerateFormCommand extends Command {
         else if (\str_contains($attributeName, '_enum')) {
             $function = $this->typesMapping['enum'];
         }
+        else if (\str_contains($attributeName, '_desc')) {
+            $function = $this->typesMapping['comment'];
+        }
         else if ($attributeName == 'id') {
             //the record will be ignored and not included into the form
+        }
+        //for booleans
+        else if (isset($this->typesMapping[$attribute['type']]) && $attribute['type'] == 'bool') {
+            $function = $this->typesMapping[$attribute['type']];
         }
         else if (isset($this->typesMapping[$attribute['format']])) {
             $function = $this->typesMapping[$attribute['format']];
@@ -96,7 +106,7 @@ class GenerateFormCommand extends Command {
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateTimeType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\NumberType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextType;');
-        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\CheckBoxType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\CheckboxType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\IntegerType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextAreaType;');
@@ -152,10 +162,14 @@ class GenerateFormCommand extends Command {
 
 
     private function addFkType(array &$lines, $position, $attributeName) {
-        //TODO: change the ucfirst as a camelize in order to manage choiceTypes as EventTypes
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $choiceName = substr( $attributeName, 0, strpos($attributeName, '_id'));
-        $upperName = ucfirst($choiceName);
+        
+        //it fixes cases such as event_type_id
+        $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
+        $upperName = StringUtils::toCamelCase($parametri);
+        
+        //$upperName = ucfirst($choiceName);
         array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
             array(
                     \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
@@ -168,16 +182,33 @@ class GenerateFormCommand extends Command {
     }
 
     private function addEnumType(array &$lines, $position, $attributeName) {
-        //TODO: change the ucfirst as a camelize in order to manage choiceTypes as EventTypes
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $choiceName = substr( $attributeName, 0, strpos($attributeName, '_enum'));
-        $upperName = ucfirst($choiceName);
+        
+        //it fixes cases such as event_type_id
+        $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
+        $upperName = StringUtils::toCamelCase($parametri);
+
+        //$upperName = ucfirst($choiceName);
         array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
             array(
                     \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
                     \'mapped\' => false,
                     \'data\' => ($options["data"]->get'.$upperName.'Enum() >= 0) ? $options["data"]->get'.$upperName.'Enum() : null ,
                     \'placeholder\' => \'---\'
+                    )
+                )
+            ');
+    }
+
+    /**
+     * Add a boolean checkbox
+     */
+    private function addCheckbox(array &$lines, $position, $attributeName) {
+        array_splice($lines, ++$position, 0, '            ->add(\''.$attributeName.'\',CheckboxType::class,
+            array(
+                    \'false_values\' => [0, false, null], 
+                    \'required\' => false
                     )
                 )
             ');
@@ -198,10 +229,21 @@ class GenerateFormCommand extends Command {
     }
 
     /**
+     * Add portion of code to manage a commmented string
+     */
+    private function addComment(array &$lines, $position, $attributeName, $commented = false) {
+        $this->addStringType($lines, $position, $attributeName, true );    
+    }
+
+    /**
      * Add portion of code to manage a field as string
      */
-    private function addStringType(array &$lines, $position, $attributeName) {
-        array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',TextType::class)");
+    private function addStringType(array &$lines, $position, $attributeName, $commented = false) {
+        $comment = '';
+        if ($commented) {
+            $comment = '//';
+        }
+        array_splice($lines, ++$position, 0, $comment."            ->add('" . $attributeName . "',TextType::class)");
     }
 
     /**

@@ -19,13 +19,14 @@ class ApiUtils {
     //suffix and prefix
     private static $suffixApiController = 'Api';
     private static $prefixControllerModelItem = "DaosRow";
-    private static $prefixModelItem= "Models";
+    private static $prefixModelItem= "DaosRow";
 
 
     //TODO: check these variables
     private static $apiBundlesPath = '../../vendor/fi';    
    
-    private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\Models/';
+    //TODO: evaluate to move this variable into configs
+    private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
 
     public function __construct($apiCollection) {
         $this->apiCollection = lcfirst($apiCollection);
