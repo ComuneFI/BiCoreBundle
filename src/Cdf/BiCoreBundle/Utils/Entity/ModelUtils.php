@@ -83,7 +83,10 @@ class ModelUtils
     private function getTypeOfData($fieldType, $formatType): String 
     {
         $type = $formatType;
-        if( $formatType == null) {
+        if( $fieldType == 'bool') {
+            $type = 'string2bool';
+        }
+        else if( $formatType == null) {
             $type = 'string';
         }
         else if ( $fieldType != $formatType ) {

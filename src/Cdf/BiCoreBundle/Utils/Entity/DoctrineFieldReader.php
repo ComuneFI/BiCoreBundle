@@ -74,6 +74,9 @@ class DoctrineFieldReader
                     $time = strtotime($object);
                     $risposta = date(FieldTypeUtils::getEnvVar("DATE_FORMAT","d/m/Y"),$time);
                     break;
+                case 'string2bool':
+                    $risposta = $object ? 'SI' : 'NO';
+                    break;
                 case 'boolean':
                     $risposta = $object ? 'SI' : 'NO';
                     break;
