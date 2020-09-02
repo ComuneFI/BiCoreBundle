@@ -102,11 +102,12 @@ trait FiCoreTabellaControllerTrait
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
+            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
             'paginetotali' => $configurazionetabella->getPaginetotali(),
             'righetotali' => $configurazionetabella->getRighetotali(),
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
-            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
+        
         ];
 
         return $parametritabella;
@@ -134,12 +135,12 @@ trait FiCoreTabellaControllerTrait
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
+            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
             'paginetotali' => $configurazionetabella->getPaginetotali(),
             'righetotali' => $configurazionetabella->getRighetotali(),
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
-            'nomecontroller' => ParametriTabella::getParameter($parametripassati['nomecontroller']),
-            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
+            'nomecontroller' => ParametriTabella::getParameter($parametripassati['nomecontroller']),            
         ];
 
         return $parametritabella;
