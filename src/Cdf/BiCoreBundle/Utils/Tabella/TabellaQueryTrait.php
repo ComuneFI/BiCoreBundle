@@ -173,22 +173,39 @@ trait TabellaQueryTrait
             foreach ($tuttifiltri as $num => $filtrocorrente) {                
                 $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
                 $fieldname = ' '.$nomeCampo;
-                $fieldvalue = urldecode($this->getFieldValue($filtrocorrente['valore']));
+                $filteringValues = $this->getFieldValue($filtrocorrente['valore']);
+
+                if(!is_array( $filteringValues )) {
+                    $arrayContainer = array();
+                    $arrayContainer[0] = $filteringValues;
+                    $filteringValues = $arrayContainer;
+                }
+
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
                 $fitrocorrenteqp = 'fitrocorrente'.$num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
+
                 $criteria = new ParametriQueryTabellaDecoder(
                     $fieldname,
                     $fieldoperator,
-                    $fieldvalue,
+                    $filteringValues,
                     $fitrocorrenteqp,
                     $filtronomecampocorrente
                 );
-                
-                $fieldstring = $attributeMap[ $nomeCampo ];
-                $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
 
-                $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
+                $fieldstring =  '( ';               
+
+                foreach( $filteringValues as $num => $filterValue ) {
+                    $fieldstring .= $attributeMap[ $nomeCampo ];              
+                    $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                    $fieldvalue = urldecode($filterValue);
+                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
+                    if( $num < count($filteringValues)-1) {
+                        $fieldstring .= ' OR ';
+                    }
+                }
+                $fieldstring .=  ' )';
+                
 
                 if( $filterString != null ) {
                     $filterString .= ' AND ';
