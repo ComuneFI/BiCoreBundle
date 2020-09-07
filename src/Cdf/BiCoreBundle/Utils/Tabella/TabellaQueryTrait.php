@@ -175,11 +175,6 @@ trait TabellaQueryTrait
                 $fieldname = ' '.$nomeCampo;
                 $filteringValues = $this->getFieldValue($filtrocorrente['valore']);
 
-                if(!is_array( $filteringValues )) {
-                    $arrayContainer = array();
-                    $arrayContainer[0] = $filteringValues;
-                    $filteringValues = $arrayContainer;
-                }
 
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
                 $fitrocorrenteqp = 'fitrocorrente'.$num;
@@ -193,19 +188,25 @@ trait TabellaQueryTrait
                     $filtronomecampocorrente
                 );
 
-                $fieldstring =  '( ';               
-
-                foreach( $filteringValues as $num => $filterValue ) {
-                    $fieldstring .= $attributeMap[ $nomeCampo ];              
-                    $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
-                    $fieldvalue = urldecode($filterValue);
-                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
-                    if( $num < count($filteringValues)-1) {
-                        $fieldstring .= ' OR ';
+                if( is_array($filteringValues) ) {
+                    $fieldstring =  '( ';               
+                    foreach( $filteringValues as $num => $filterValue ) {
+                        $fieldstring .= $attributeMap[ $nomeCampo ];              
+                        $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                        $fieldvalue = urldecode($filterValue);
+                        $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
+                        if( $num < count($filteringValues)-1) {
+                            $fieldstring .= ' OR ';
+                        }
                     }
+                    $fieldstring .=  ' )';
                 }
-                $fieldstring .=  ' )';
-                
+                else {
+                    $fieldstring = $attributeMap[ $nomeCampo ];              
+                    $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                    $fieldvalue = urldecode($filteringValues);
+                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $filteringValues);
+                }
 
                 if( $filterString != null ) {
                     $filterString .= ' AND ';
