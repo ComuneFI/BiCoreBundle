@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 
-trait FiCoreCrudControllerTrait
+trait FiApiCoreCrudControllerTrait
 {
-    use FiCoreCrudInlineControllerTrait;
+    use FiApiCoreCrudInlineControllerTrait;
 
     /**
      * Displays a form to create a new table entity.
@@ -30,16 +32,30 @@ trait FiCoreCrudControllerTrait
 
         $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : [];
 
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
-
+        //$entityclass = $this->getModelClassName();
+        $entityclass = $this->getControllerItemName();
         $entity = new $entityclass();
+
+        //$formclass = str_replace('Entity', 'Form', $entityclass);
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
-        $form = $this->createForm($formType, $entity, ['attr' => [
-                'id' => 'formdati'.$controller,
-            ],
+
+        $attrArray = ['attr' => [
+            'id' => 'formdati'.$controller,
+                    ],
             'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
-        ]);
+            'extra-options' => []
+                ];
+
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
+        }
+
+        $form = $this->createForm(
+            $formType,
+            $entity,
+            $attrArray
+            );
 
         $form->handleRequest($request);
 
@@ -47,17 +63,24 @@ trait FiCoreCrudControllerTrait
             'form' => $form->createView(),
             'nomecontroller' => ParametriTabella::setParameter($controller),
             'tabellatemplate' => $tabellatemplate,
-            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
         ];
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                //TODO: evaluate if this part can be improved
+                $parameters = $request->request->get($form->getName());
                 $entity = $form->getData();
+                $this->setIdObjectfromSelect($entity, $parameters);
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($entity);
-                $entityManager->flush();
+                $apiClass = $this->apiController;
+                $apiObject = new $apiClass();
+                $apiBook = new ApiUtils( $this->collection );
+                $createMethod = $apiBook->getCreate();
 
+                //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));
+                //TODO: manage the response
+                $response = $apiObject->$createMethod( $entity);
+                
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     200
@@ -83,39 +106,46 @@ trait FiCoreCrudControllerTrait
      */
     public function edit(Request $request, $id)
     {
-        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
-        if (!$this->getPermessi()->canRead($this->getController())) {
+        if (!$this->getPermessi()->canUpdate($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
         $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
-
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
+
+        $apiClass = $this->apiController;
+        $apiObject = new $apiClass();
+        $apiBook = new ApiUtils( $this->collection );
+        $getMethod = $apiBook->getItem();
+
+        //TODO: response belongs to last operation
+        $entityorig = $apiObject->$getMethod( $id);
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        $em = $this->getDoctrine()->getManager();
+        $modelutils = new ModelUtils();
+        $entity = $modelutils->setApiValues($entityorig);
 
-        $entity = $em->getRepository($entityclass)->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
+        $attrArray = ['attr' => [
+                        'id' => 'formdati'.$controller,
+                                ],
+                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                    'extra-options' => []
+                            ];
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
-            ['attr' => [
-                        'id' => 'formdati'.$controller,
-                    ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
-                ]
+            $attrArray
         );
 
         return $this->render(
@@ -126,9 +156,50 @@ trait FiCoreCrudControllerTrait
                             'tabellatemplate' => $tabellatemplate,
                             'edit_form' => $editForm->createView(),
                             'elencomodifiche' => $elencomodifiche,
-                            'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
                         ]
         );
+    }
+
+    /**
+     * Update value of _id field with value selected on select list.
+     * //TODO: review duplicated code
+     */
+    private function setIdfromSelect(&$parameters) {
+        foreach($parameters as $key => $parameter) {
+            if ( \str_contains( $key, '_id')) {
+                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                if (isset($parameters[$sourceKey])) {
+                    $parameters[$key] = $parameters[$sourceKey];
+                }
+            }
+            else if ( \str_contains( $key, '_enum')) {
+                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
+                if (isset($parameters[$sourceKey])) {
+                    $parameters[$key] = $parameters[$sourceKey];
+                }
+            }
+        }
+    }
+
+    /**
+     * Update value of _id fields of an object with value selected on select list.
+     * It forces the received field to be an INT (It applies a cast)
+     */
+    private function setIdObjectfromSelect(&$classItem, &$parameters) {
+        //TODO: (int) cast that is fixed
+        $setters = $classItem::setters();
+        foreach($parameters as $key => $parameter) {
+            if ( \str_contains( $key, '_id')) {
+                $setMethod = $setters[$key];
+                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                $classItem->$setMethod((int)$parameters[$sourceKey]);
+            }
+            else if( \str_contains( $key, '_enum') ) {
+                $setMethod = $setters[$key];
+                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
+                $classItem->$setMethod((int)$parameters[$sourceKey]);
+            }
+        }
     }
 
     /**
@@ -136,7 +207,6 @@ trait FiCoreCrudControllerTrait
      */
     public function update(Request $request, $id)
     {
-        /* @var $em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
@@ -146,43 +216,55 @@ trait FiCoreCrudControllerTrait
         $tabellatemplate = $this->getTabellaTemplate($controller);
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        $entityclass = $this->getEntityClassName();
-        $formclass = str_replace('Entity', 'Form', $entityclass);
+        $formclass = $this->getFormName();
         $formType = $formclass.'Type';
 
-        $em = $this->getDoctrine()->getManager();
+        $apiClass = $this->apiController;
+        $apiObject = new $apiClass();
+        $apiBook = new ApiUtils( $this->collection );
+        $getMethod = $apiBook->getItem();
 
-        $entity = $em->getRepository($entityclass)->find($id);
+        //TODO: response belongs to last operation
+        $entityorig = $apiObject->$getMethod( $id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+        $modelutils = new ModelUtils();
+        $entity = $modelutils->setApiValues($entityorig);
+
+        $attrArray = ['attr' => [
+            'id' => 'formdati'.$controller,
+                    ],
+        'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+        'extra-options' => []
+                ];
+
+        foreach($this->options as $key=>$option) {
+            $attrArray['extra-options'][$key] = $option;
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
-            ['attr' => [
-                        'id' => 'formdati'.$controller,
-                    ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
-                ]
+            $attrArray
         );
 
-        $editForm->submit($request->request->get($editForm->getName()));
+        $parameters = $request->request->get($editForm->getName());
+
+        $this->setIdfromSelect($parameters);
+        $editForm->submit($parameters);
 
         if ($editForm->isValid()) {
-            $originalData = $em->getUnitOfWork()->getOriginalEntityData($entity);
 
-            $em->persist($entity);
-            $em->flush();
+            $entityItem = $editForm->getData();
 
-            $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $em->getRepository('BiCoreBundle:Storicomodifiche');
-            $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
+            //$entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
+            
 
-            if ($changes) {
-                $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
-            }
+            $apiClass = $this->apiController;
+            $apiObject = new $apiClass();
+            $apiBook = new ApiUtils( $this->collection );
+            $updateMethod = $apiBook->getUpdateItem();
+
+            $responseMessage = $apiObject->$updateMethod($entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
@@ -213,7 +295,7 @@ trait FiCoreCrudControllerTrait
         if (!$this->getPermessi()->canDelete($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per eliminare questo contenuto');
         }
-        $entityclass = $this->getEntityClassName();
+        //$entityclass = $this->getEntityClassName();
 
         $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
 
@@ -222,20 +304,17 @@ trait FiCoreCrudControllerTrait
         }
 
         try {
-            $em = $this->getDoctrine()->getManager();
-            $qb = $em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
-            $qb->delete($entityclass, 'u')
-                    ->andWhere('u.id IN (:ids)')
-                    ->setParameter('ids', $ids);
 
-            $query = $qb->getQuery();
-            $query->execute();
-        } catch (ForeignKeyConstraintViolationException $e) {
-            $response = new Response($e->getMessage());
-            $response->setStatusCode('501');
+            $apiClass = $this->apiController;
+            $apiObject = new $apiClass();
+            $apiBook = new ApiUtils( $this->collection );
+            $deleteMethod = $apiBook->getDelete();
 
-            return $response;
+            foreach( $ids as $id) {
+              //TODO: response belongs to last operation
+               $response = $apiObject->$deleteMethod( $id);
+            }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
             $response->setStatusCode('200');
