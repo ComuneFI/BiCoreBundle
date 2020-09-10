@@ -9,7 +9,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
@@ -29,7 +29,7 @@ class PannelloAmministrazioneController extends AbstractController
     public function __construct($appname, $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils)
     {
         $store = new FlockStore(sys_get_temp_dir());
-        $factory = new Factory($store);
+        $factory = new LockFactory($store);
         $this->locksystem = $factory->createLock('pannelloamministrazione-command');
         $this->locksystem->release();
         $this->appname = $appname;
