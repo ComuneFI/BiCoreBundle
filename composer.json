@@ -49,7 +49,6 @@
     "require": {
         "php": ">=7.2",
         "fi/osbundle": "~2.0",
-        "fi/swaggerinsurancebundle": "^1.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "friendsofsymfony/user-bundle": "^2.1",
         "hanneskod/classtools": "^1.2",
