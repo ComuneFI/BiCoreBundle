@@ -40,13 +40,6 @@ class DoctrineFieldReader
         return $object;
     }
 
-    /**
-     * Try to read the .env Key value provided as $key, otherwise return the default value
-     */
-    private function getEnvVar(String $key, String $defaultValue) {
-        return (getenv($key)===false)?$defaultValue:getenv($key);
-    }
-
     public function object2View($object, $type = null, $decodifiche = null)
     {
         $risposta = null;
@@ -61,18 +54,18 @@ class DoctrineFieldReader
                     $risposta = print_r($object, true);
                     break;
                 case 'date':
-                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATE_FORMAT","d/m/Y"));
+                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATE_FORMAT", "d/m/Y"));
                     break;
                 case 'datetime':
-                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATETIME_FORMAT","d/m/Y H:i"));
+                    $risposta = $object->format(FieldTypeUtils::getEnvVar("DATETIME_FORMAT", "d/m/Y H:i"));
                     break;
                 case 'string2datetime':
                     $time = strtotime($object);
-                    $risposta = date(FieldTypeUtils::getEnvVar("DATETIME_FORMAT","d/m/Y H:i"),$time);
+                    $risposta = date(FieldTypeUtils::getEnvVar("DATETIME_FORMAT", "d/m/Y H:i"), $time);
                     break;
                 case 'string2date':
                     $time = strtotime($object);
-                    $risposta = date(FieldTypeUtils::getEnvVar("DATE_FORMAT","d/m/Y"),$time);
+                    $risposta = date(FieldTypeUtils::getEnvVar("DATE_FORMAT", "d/m/Y"), $time);
                     break;
                 case 'string2bool':
                     $risposta = $object ? 'SI' : 'NO';

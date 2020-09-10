@@ -128,23 +128,22 @@ trait TabellaQueryTrait
     /**
      * It appends the new filter string part to the given filter string ($filterString)
      */
-    private function appendFilterString(String &$filterString, $swaggerType, $fieldvalue) {
-        if( $swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
+    private function appendFilterString(String &$filterString, $swaggerType, $fieldvalue)
+    {
+        if ($swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
             $filterString .= '"%'.$fieldvalue.'%"';
-        }
-        else if ( $swaggerType == 'datetime' || $swaggerType == 'date' ) {
-            $fieldvalue = \str_replace("/","-",$fieldvalue);
+        } elseif ($swaggerType == 'datetime' || $swaggerType == 'date') {
+            $fieldvalue = \str_replace("/", "-", $fieldvalue);
             //does it contain an hour ?
             $hour = strpos($fieldvalue, ":");
             $time = strtotime($fieldvalue);
-            $backend_format = FieldTypeUtils::getEnvVar("BE_DATETIME_FORMAT","Y-m-d\TH:i:sP");
-            if( $hour === false ) {
-                $backend_format = FieldTypeUtils::getEnvVar("BE_DATE_FORMAT","Y-m-d");
+            $backend_format = FieldTypeUtils::getEnvVar("BE_DATETIME_FORMAT", "Y-m-d\TH:i:sP");
+            if ($hour === false) {
+                $backend_format = FieldTypeUtils::getEnvVar("BE_DATE_FORMAT", "Y-m-d");
             }
-            $filter = date($backend_format,$time);
+            $filter = date($backend_format, $time);
             $filterString .= $filter;
-        }
-        else {
+        } else {
             $filterString .= $fieldvalue;
         }
     }
@@ -152,7 +151,7 @@ trait TabellaQueryTrait
     /**
      * It composes filtering string to be used with api rest services
      */
-    protected function filterByApiBuilder(): ?String 
+    protected function filterByApiBuilder(): ?String
     {
         $filterString = null;
         $filtro = '';
@@ -164,13 +163,13 @@ trait TabellaQueryTrait
             $this->filtri[$key]['prefiltro'] = false;
         }
         $tuttifiltri = array_merge($this->filtri, $this->prefiltri);
-        $parametribag = array();
+        //$parametribag = array();
         if (count($tuttifiltri)) {
             $attributeMap = $this->entityname::attributeMap();
             $swaggerFormats = $this->entityname::swaggerFormats();
             //compose the string
             $descrizionefiltri = '';
-            foreach ($tuttifiltri as $num => $filtrocorrente) {                
+            foreach ($tuttifiltri as $num => $filtrocorrente) {
                 $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
                 $fieldname = ' '.$nomeCampo;
                 $filteringValues = $this->getFieldValue($filtrocorrente['valore']);
@@ -188,27 +187,26 @@ trait TabellaQueryTrait
                     $filtronomecampocorrente
                 );
 
-                if( is_array($filteringValues) ) {
-                    $fieldstring =  '( ';               
-                    foreach( $filteringValues as $num => $filterValue ) {
-                        $fieldstring .= $attributeMap[ $nomeCampo ];              
+                if (is_array($filteringValues)) {
+                    $fieldstring =  '( ';
+                    foreach ($filteringValues as $num => $filterValue) {
+                        $fieldstring .= $attributeMap[ $nomeCampo ];
                         $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
                         $fieldvalue = urldecode($filterValue);
                         $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
-                        if( $num < count($filteringValues)-1) {
+                        if ($num < count($filteringValues)-1) {
                             $fieldstring .= ' OR ';
                         }
                     }
                     $fieldstring .=  ' )';
-                }
-                else {
-                    $fieldstring = $attributeMap[ $nomeCampo ];              
+                } else {
+                    $fieldstring = $attributeMap[ $nomeCampo ];
                     $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
                     $fieldvalue = urldecode($filteringValues);
                     $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $filteringValues);
                 }
 
-                if( $filterString != null ) {
+                if ($filterString != null) {
                     $filterString .= ' AND ';
                 }
                 $filterString .= $fieldstring;
@@ -252,7 +250,7 @@ trait TabellaQueryTrait
         foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
             $fieldname = $attributeMap[ substr($nomecampo, strripos($nomecampo, '.') + 1) ];
             $fieldname .= ':'.$tipoordinamento;
-            if( $orderingString != null ) {
+            if ($orderingString != null) {
                 $orderingString .= ',';
             }
             $orderingString .= $fieldname;
@@ -320,13 +318,17 @@ trait TabellaQueryTrait
             $paginationMethod = $this->apiBook->getAll();
             //dump($this->filterByApiBuilder());
 
-        $recordsets = $apiController->$paginationMethod($offsetrecords, $this->getRigheperpagina() , $this->orderByApiBuilder(), $this->filterByApiBuilder());
+            $recordsets = $apiController->$paginationMethod(
+                $offsetrecords,
+                $this->getRigheperpagina(),
+                $this->orderByApiBuilder(),
+                $this->filterByApiBuilder()
+            );
         //dump($recordsets);
-        }
-        else {
+        } else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-            $paginationMethod = $this->apiBook->getAll();                   
-            $recordsets = $apiController->$paginationMethod(0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder() );
+            $paginationMethod = $this->apiBook->getAll();
+            $recordsets = $apiController->$paginationMethod(0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder());
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);
         }
@@ -339,5 +341,4 @@ trait TabellaQueryTrait
 
         return $this->records;
     }
-
 }

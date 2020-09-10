@@ -63,10 +63,9 @@ class PannelloAmministrazioneController extends AbstractController
      * It looks for Models existent into included external bundles.
      * It uses ApiUtils in order to know where to search and what look for.
      */
-    private function findAPIModels(): array 
+    private function findAPIModels(): array
     {
         return ApiUtils::apiModels();
-
     }
 
     public function index()
@@ -197,9 +196,9 @@ class PannelloAmministrazioneController extends AbstractController
             //we are working with an API?
             $isApi = false;
             //verify if provided string belongs to an API model
-            if ( \str_contains($entityform, '(API)') ) {
+            if (\str_contains($entityform, '(API)')) {
                 $isApi = true;
-                $entityform = trim(\str_replace('(API)','',$entityform));
+                $entityform = trim(\str_replace('(API)', '', $entityform));
             }
 
             // Setup an utility pack of commands (Commands.php)

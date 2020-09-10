@@ -6,20 +6,23 @@ use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
-class Commands {
+class Commands
+{
     /* @var $apppaths ProjectPath */
 
     private $apppaths;
     /* @var $pammutils Utility */
     private $pammutils;
 
-    public function __construct(ProjectPath $projectpath, Utility $pautils) {
+    public function __construct(ProjectPath $projectpath, Utility $pautils)
+    {
         $this->apppaths = $projectpath;
         $this->pammutils = $pautils;
     }
 
     // @codeCoverageIgnoreStart
-    public function getVcs() {
+    public function getVcs()
+    {
         $fs = new Filesystem();
 
         $projectDir = $this->apppaths->getRootPath();
@@ -37,7 +40,8 @@ class Commands {
     }
 
     // @codeCoverageIgnoreEnd
-    public function generateEntity($wbFile) {
+    public function generateEntity($wbFile)
+    {
         $command = 'pannelloamministrazione:generateormentities';
         $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
 
@@ -55,7 +59,8 @@ class Commands {
             'message' => 'Eseguito comando:' . $command . ';' . $result['message'],);
     }
 
-    public function generateFormCrud($entityform, $generatemplate, $isAPI = false) {
+    public function generateFormCrud($entityform, $generatemplate, $isAPI = false)
+    {
         // check if some item already exist, and it interrupts the execution if any
         $pannelloamministrazioneentity = $entityform;
         /* @var $fs Filesystem */
@@ -88,7 +93,8 @@ class Commands {
         return $retmsg;
     }
 
-    public function checkFormCrud($entityform, string $projectname = "", bool $isAPI = false) {
+    public function checkFormCrud($entityform, string $projectname = "", bool $isAPI = false)
+    {
         /* @var $fs Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
@@ -130,7 +136,8 @@ class Commands {
         return array('errcode' => 0, 'message' => 'OK');
     }
 
-    public function clearcache() {
+    public function clearcache()
+    {
         $cmdoutput = '';
         //$envs = array('dev', 'test', 'prod');
         $envs[] = getenv("APP_ENV");
@@ -146,10 +153,10 @@ class Commands {
         return $result;
     }
 
-    public function aggiornaSchemaDatabase() {
+    public function aggiornaSchemaDatabase()
+    {
         $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));
 
         return $result;
     }
-
 }

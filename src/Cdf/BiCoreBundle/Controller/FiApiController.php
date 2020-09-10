@@ -12,7 +12,8 @@ use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use \Swagger\Insurance\Model\ModelsClaim;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 
-class FiApiController extends AbstractController {
+class FiApiController extends AbstractController
+{
 
     use FiApiCoreControllerTrait;
     use FiApiCoreCrudControllerTrait;
@@ -35,7 +36,8 @@ class FiApiController extends AbstractController {
     protected $enumOptions;
     protected $inflectorExceptions;
 
-    public function __construct(PermessiManager $permessi, Environment $template) {
+    public function __construct(PermessiManager $permessi, Environment $template)
+    {
         $matches = [];
         $controllo = new ReflectionClass(get_class($this));
 
@@ -51,10 +53,10 @@ class FiApiController extends AbstractController {
         $this->template = $template;
 
         $this->model = $this->controller; //they matches
-        $this->collection = $this->pluralize($this->model);        
+        $this->collection = $this->pluralize($this->model);
         $this->modelClass = ApiUtils::getModelClass($this->project, $this->model);
         $this->formClass =  ApiUtils::getFormClass($this->model);
-        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);    
+        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);
         $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
         $this->options = array();
         $this->enumOptions = array();
@@ -65,7 +67,8 @@ class FiApiController extends AbstractController {
         //dump($this->options);
     }
 
-    protected function loadInflectorExceptions() {
+    protected function loadInflectorExceptions()
+    {
         $vars = getenv("INFLECTOR_EXCEPTIONS");
         if (isset($vars)) {
             $values = json_decode($vars, true);
@@ -76,8 +79,9 @@ class FiApiController extends AbstractController {
     /**
      * Copy this method into your controller in case of exceptions
      */
-    protected function pluralizeForm( $singleForm ) {
-        if ( isset($this->inflectorExceptions[$singleForm]) ) {
+    protected function pluralizeForm($singleForm)
+    {
+        if (isset($this->inflectorExceptions[$singleForm])) {
             return $this->inflectorExceptions[$singleForm];
         }
         return Inflector::pluralize($singleForm);
@@ -86,23 +90,22 @@ class FiApiController extends AbstractController {
     /**
      * Pluralize a single form giving as response the correct plurale form matching with existent objects
      */
-    protected function pluralize( $singleForm ) {
+    protected function pluralize($singleForm)
+    {
         $outcome = '';
         $results = $this->pluralizeForm($singleForm);
 
         if (is_array($results)) {
-            foreach($results as $result) {
+            foreach ($results as $result) {
                 //get name of api controller
                 $apiClassPath = ApiUtils::getApiControllerClass($this->project, $result);
                 if (class_exists($apiClassPath)) {
                     $outcome = $result;
-                break;
+                    break;
                 }
             }
-        }
-        else {
+        } else {
             $outcome = $results;
-            
         }
         return $outcome;
     }
@@ -110,33 +113,33 @@ class FiApiController extends AbstractController {
     /**
      * Generate option choices for edit form
      */
-    protected function generateEnumAndOptions() {
+    protected function generateEnumAndOptions()
+    {
         $itemController = new $this->controllerItem();
         $fieldMappings = $itemController::swaggerTypes();
 
         //dump($fieldMappings);
 
-        foreach ($fieldMappings as $fieldName=>$fieldType) {
+        foreach (array_keys($fieldMappings) as $fieldName) {
             //is it a foreign key field?
-            if ( \str_contains( $fieldName ,'_id') ) {
-                $tools = $this->getApiTools($fieldName, '_id');              
+            if (\str_contains($fieldName, '_id')) {
+                $tools = $this->getApiTools($fieldName, '_id');
                 $apiController = $tools['controller'];
                 $apiBook = $tools['book'];
 
-                $method = $apiBook->getAllToString();    
+                $method = $apiBook->getAllToString();
                 $results = $apiController->$method();
 
                 $arrayContainer = array();
-                foreach($results as $key => $myItem) {
+                foreach ($results as $myItem) {
                     //transform this items for options
                     $element = array("id" => $myItem->getCode(), "descrizione" => $myItem->getText(), "valore" => $myItem->getText());
                     array_push($arrayContainer, $element);
                 }
                 $this->options[$tools['entity']] = $arrayContainer;
-            }
-            else if ( \str_contains( $fieldName ,'_enum') ) {
+            } elseif (\str_contains($fieldName, '_enum')) {
                 //dump("in fieldname ".$fieldName );
-                $tools = $this->getApiTools($fieldName, '_enum');              
+                $tools = $this->getApiTools($fieldName, '_enum');
                 $apiController = $tools['controller'];
                 $apiBook = $tools['book'];
 
@@ -145,7 +148,7 @@ class FiApiController extends AbstractController {
 
                 $decodeMap = array();
                 $arrayContainer = array();
-                foreach($results as $result) {
+                foreach ($results as $result) {
                     $decodeMap[$result['code']] = $result['text'];
                     $element = array("id" => $result['code'], "descrizione" => $result['text'], "valore" => $result['text']);
                     array_push($arrayContainer, $element);
@@ -157,61 +160,63 @@ class FiApiController extends AbstractController {
                 'decodifiche' => $decodeMap);
 
                 array_push($this->enumOptions, $arrayItem);
-
             }
         }
-
     }
 
     /**
-     * It returns an array with 'controller' with the apiController 
+     * It returns an array with 'controller' with the apiController
      * and 'book' the apiBook
      * and 'entity' the given fieldName less the suffix
      */
-    protected function getApiTools($fieldName, $suffixString): array 
+    protected function getApiTools($fieldName, $suffixString): array
     {
-        $entityName = substr( $fieldName, 0, strpos($fieldName, $suffixString));
+        $entityName = substr($fieldName, 0, strpos($fieldName, $suffixString));
 
         $parametri = array('str' => $entityName, 'primamaiuscola' => true);
         $outcome = StringUtils::toCamelCase($parametri);
         $outcome = $this->pluralize($outcome);
 
-        $apiControllerClass = ApiUtils::getApiControllerClass( $this->project, $outcome);
+        $apiControllerClass = ApiUtils::getApiControllerClass($this->project, $outcome);
         $apiController = new $apiControllerClass();
 
         //$apiBook = new ApiUtils($entityName);
         $apiBook = new ApiUtils($outcome);
 
         $results = [
-            'controller' => $apiController, 
-            'book' => $apiBook, 
+            'controller' => $apiController,
+            'book' => $apiBook,
             'entity' => $entityName,
         ];
         return $results;
     }
 
-    protected function getBundle() {
+    protected function getBundle()
+    {
         return $this->bundle;
     }
 
-    protected function getController() {
+    protected function getController()
+    {
         return $this->controller;
     }
 
-    protected function getPermessi() {
+    protected function getPermessi()
+    {
         return $this->permessi;
     }
 
-    protected function getTemplate() {
+    protected function getTemplate()
+    {
         return $this->template;
     }
 
-    public function getProject() {
+    public function getProject()
+    {
         $annotations = array();
         $r = new ReflectionClass(get_class($this));
         $doc = $r->getDocComment();
         preg_match_all('#@var\(biproject="(.*?)"\)\n#s', $doc, $annotations);
         return $annotations[1][0];
     }
-
 }

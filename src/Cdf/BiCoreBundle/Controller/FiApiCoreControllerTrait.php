@@ -33,7 +33,7 @@ trait FiApiCoreControllerTrait
         //$entityclass = $this->getEntityClassName();
 
         $entityclassnotation = 'App:'.$this->model;
-        // Variable containing API controller 
+        // Variable containing API controller
 
         $modellocolonne = [
                 /*
@@ -58,7 +58,7 @@ trait FiApiCoreControllerTrait
         ];
 
         //append automatic computed enum options
-        $modellocolonne = array_merge($modellocolonne, $this->enumOptions );
+        $modellocolonne = array_merge($modellocolonne, $this->enumOptions);
 
         //dump($modellocolonne);
         //dump($this->enumOptions);
@@ -93,8 +93,8 @@ trait FiApiCoreControllerTrait
             'filtri' => ParametriTabella::setParameter(json_encode($filtri)),
             'prefiltri' => ParametriTabella::setParameter(json_encode($prefiltri)),
             'traduzionefiltri' => ParametriTabella::setParameter(''),
-            'isApi' => ParametriTabella::setParameter('1'), 
-            'apicontroller' => ParametriTabella::setParameter($this->apiController), 
+            'isApi' => ParametriTabella::setParameter('1'),
+            'apicontroller' => ParametriTabella::setParameter($this->apiController),
             'apicollection' => ParametriTabella::setParameter($this->collection)
         ];
 

@@ -3,8 +3,10 @@
 namespace Cdf\BiCoreBundle\Utils\Api;
 
 use Symfony\Component\Finder\Finder;
+use hanneskod\classtools\Iterator\ClassIterator;
 
-class ApiUtils {
+class ApiUtils
+{
 
     private $getAll;
     private $getCount;
@@ -23,12 +25,13 @@ class ApiUtils {
 
 
     //TODO: check these variables
-    private static $apiBundlesPath = '../../vendor/fi';    
+    private static $apiBundlesPath = '../../vendor/fi';
    
     //TODO: evaluate to move this variable into configs
     private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
 
-    public function __construct($apiCollection) {
+    public function __construct($apiCollection)
+    {
         $this->apiCollection = lcfirst($apiCollection);
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
@@ -42,21 +45,24 @@ class ApiUtils {
     /**
      * Return path where core bundle will look for api models
      */
-    public function bundlesPath() {
+    public function bundlesPath()
+    {
         return self::$apiBundlesPath;
     }
 
     /**
      * Return namespace prefix for api external bundles, i.e. Swagger
      */
-    public static function namespacePrefix() {
+    public static function namespacePrefix()
+    {
         return self::$namespacePrefix;
     }
 
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public static function namespaceModels() {
+    public static function namespaceModels()
+    {
         return self::$namespaceModel;
     }
 
@@ -65,7 +71,7 @@ class ApiUtils {
      * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
      * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
      */
-    public static function getApiControllerClass($project, $entityName):String 
+    public static function getApiControllerClass($project, $entityName):String
     {
         $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceApi."\\$entityName".self::$suffixApiController;
         return $className;
@@ -76,7 +82,7 @@ class ApiUtils {
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
      */
-    public static function getModelControllerClass($project, $modelName):String 
+    public static function getModelControllerClass($project, $modelName):String
     {
         $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceModel."\\".self::$prefixControllerModelItem.$modelName;
         return $className;
@@ -87,7 +93,7 @@ class ApiUtils {
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
      */
-    public static function getModelClass($project, $modelName):String 
+    public static function getModelClass($project, $modelName):String
     {
         $className = "\\".self::$namespacePrefix."\\$project\\".self::$namespaceModel."\\".self::$prefixModelItem.$modelName;
         return $className;
@@ -98,7 +104,7 @@ class ApiUtils {
      * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. App\\Form\\Claim)
      */
-    public static function getFormClass($modelName):String 
+    public static function getFormClass($modelName):String
     {
         $className = self::$namespaceForm."\\".$modelName;
         return $className;
@@ -107,72 +113,84 @@ class ApiUtils {
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public function regexPathModels() {
+    public function regexPathModels()
+    {
         return self::$regexPathModels;
     }
 
     /**
      * Return the method string to retrieve all elements / or filtering on them
      */
-    public function getAll(): String {
+    public function getAll(): String
+    {
         return $this->apiCollection . $this->getAll;
     }
 
     /**
      * Return the method string to retrieve all elements descriptions (it's possible to filter them as for getAll)
      */
-    public function getAllToString(): String {
+    public function getAllToString(): String
+    {
         return $this->apiCollection . $this->getAllToString;
     }
 
     /**
      * Return the method string to retrieve 1 element
      */
-    public function getItem(): String {
+    public function getItem(): String
+    {
         return $this->apiCollection . $this->get;
     }
 
     /**
      * Return the method string to update 1 element
      */
-    public function getUpdateItem(): String {
+    public function getUpdateItem(): String
+    {
         return $this->apiCollection . $this->update;
     }
 
     /**
      * Return the method string to count all elemements inside a collection
      */
-    public function getCount(): String {
+    public function getCount(): String
+    {
         return $this->apiCollection . $this->getCount;
     }
 
     /**
-     * Return the method string to create an element 
+     * Return the method string to create an element
      */
-    public function getCreate(): String {
+    public function getCreate(): String
+    {
         return $this->apiCollection . $this->create;
     }
 
     /**
-     * Return the method string to delete an element 
+     * Return the method string to delete an element
      */
-    public function getDelete(): String {
+    public function getDelete(): String
+    {
         return $this->apiCollection . $this->delete;
     }
 
     /**
      * It looks for Models existent into included external bundles.
      * It uses ApiUtils in order to know where to search and what look for.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    public function apiModels(): array {
+    public function apiModels(): array
+    {
         //where to look for
         $path = self::bundlesPath();
         $regex = self::regexPathModels();
-        //what to look for   
+        //what to look for
         $models = array();
         $finder = new Finder;
-        $iter = new \hanneskod\classtools\Iterator\ClassIterator($finder->in($path));
+        $iter = new ClassIterator($finder->in($path));
 
+        $matches = array();
         // Print the file names of classes, interfaces and traits in given path
         foreach ($iter->getClassMap() as $classname => $splFileInfo) {
             preg_match($regex, $classname, $matches);
@@ -183,5 +201,4 @@ class ApiUtils {
         }
         return $models;
     }
-
 }

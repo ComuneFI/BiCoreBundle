@@ -60,9 +60,9 @@ trait FiCoreTabellaControllerTrait
      */
     private function isApi(&$parametripassati): bool
     {
-        $isapi = false;	
-        if (isset($parametripassati['isapi'])) {	
-            $isapi = true;	
+        $isapi = false;
+        if (isset($parametripassati['isapi'])) {
+            $isapi = true;
         }
         return $isapi;
     }
@@ -79,7 +79,11 @@ trait FiCoreTabellaControllerTrait
                     'status' => '200',
                     'file' => 'data:application/vnd.ms-excel;base64,'.base64_encode(file_get_contents($filexls)),
                 ];
-                @unlink($filexls);
+                try {
+                    unlink($filexls);
+                } catch (\Exception $e) {
+                    //IGNORE THE ERROR OF UNLINK
+                }
             } else {
                 $response = [
                     'status' => '501',
@@ -102,7 +106,7 @@ trait FiCoreTabellaControllerTrait
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
-            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
+            'recordstabella' => $this->getRecordsTabella($this->isApi($parametripassati), $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
             'paginetotali' => $configurazionetabella->getPaginetotali(),
             'righetotali' => $configurazionetabella->getRighetotali(),
@@ -117,13 +121,12 @@ trait FiCoreTabellaControllerTrait
      * Append records to the given parameters of table.
      * It deals the difference between an API service or a ORM service.
      */
-    private function getRecordsTabella($isApi, &$configurazionetabella) 
+    private function getRecordsTabella($isApi, &$configurazionetabella)
     {
         $results = [];
-        if( $isApi ) {
+        if ($isApi) {
             $results = $configurazionetabella->getApiRecordstabella();
-        }
-        else {
+        } else {
             $results = $configurazionetabella->getRecordstabella();
         }
         return $results;
@@ -135,12 +138,12 @@ trait FiCoreTabellaControllerTrait
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
-            'recordstabella' => $this->getRecordsTabella( $this->isApi($parametripassati) , $configurazionetabella),
+            'recordstabella' => $this->getRecordsTabella($this->isApi($parametripassati), $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
             'paginetotali' => $configurazionetabella->getPaginetotali(),
             'righetotali' => $configurazionetabella->getRighetotali(),
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
-            'nomecontroller' => ParametriTabella::getParameter($parametripassati['nomecontroller']),            
+            'nomecontroller' => ParametriTabella::getParameter($parametripassati['nomecontroller']),
         ];
 
         return $parametritabella;

@@ -18,7 +18,11 @@ use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use function count;
 
-class GenerateFormCommand extends Command {
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class GenerateFormCommand extends Command
+{
 
     //Task / Process customized for Form Creation
     protected static $defaultName = 'pannelloamministrazione:generateformcrud';
@@ -31,7 +35,8 @@ class GenerateFormCommand extends Command {
     private $kernel;
     private $typesMapping;
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
                 ->setDescription('Genera le views per il crud')
                 ->setHelp('Genera le views per il crud, <br/>bi.mwb AppBundle default [--schemaupdate]<br/>')
@@ -41,7 +46,8 @@ class GenerateFormCommand extends Command {
                 ->addOption('isApi', 'a', InputOption::VALUE_OPTIONAL);
     }
 
-    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em) {
+    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em)
+    {
         $this->kernel = $kernel;
         $this->apppaths = $projectpath;
         $this->pammutils = $pammutils;
@@ -55,7 +61,8 @@ class GenerateFormCommand extends Command {
     /**
      * Load mapping between types and loading methods
      */
-    private function loadTypesMapping() {
+    private function loadTypesMapping()
+    {
         $this->typesMapping = array();
         $this->typesMapping['datetime'] = 'addDateTimeType';
         $this->typesMapping['double'] = 'addNumberType';
@@ -71,28 +78,22 @@ class GenerateFormCommand extends Command {
     /**
      * Browse available functions and return the function to be used for source code portion.
      */
-    private function getFunctionForSourceCode(&$attribute, $attributeName) {
+    private function getFunctionForSourceCode(&$attribute, $attributeName)
+    {
         $function = null;
         if (\str_contains($attributeName, '_id')) {
             $function = $this->typesMapping['fk'];
-        }
-        else if (\str_contains($attributeName, '_enum')) {
+        } elseif (\str_contains($attributeName, '_enum')) {
             $function = $this->typesMapping['enum'];
-        }
-        else if (\str_contains($attributeName, '_desc')) {
+        } elseif (\str_contains($attributeName, '_desc')) {
             $function = $this->typesMapping['comment'];
-        }
-        else if ($attributeName == 'id') {
+        } elseif ($attributeName == 'id') {
             //the record will be ignored and not included into the form
-        }
-        //for booleans
-        else if (isset($this->typesMapping[$attribute['type']]) && $attribute['type'] == 'bool') {
+        } elseif (isset($this->typesMapping[$attribute['type']]) && $attribute['type'] == 'bool') {
             $function = $this->typesMapping[$attribute['type']];
-        }
-        else if (isset($this->typesMapping[$attribute['format']])) {
+        } elseif (isset($this->typesMapping[$attribute['format']])) {
             $function = $this->typesMapping[$attribute['format']];
-        }
-        else {
+        } else {
             $function = $this->typesMapping['void'];
         }
         return $function;
@@ -101,7 +102,8 @@ class GenerateFormCommand extends Command {
     /**
      * It insert main types to be used into a Form
      */
-    private function insertUseOfTypes(array &$lines, $position) {
+    private function insertUseOfTypes(array &$lines, $position)
+    {
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateTimeType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\NumberType;');
@@ -118,7 +120,8 @@ class GenerateFormCommand extends Command {
     /**
      * It insert setExtraOption method to created form
      */
-    private function insertSetExtraOptionFunction(array &$lines, $position) {
+    private function insertSetExtraOptionFunction(array &$lines, $position)
+    {
         array_splice($lines, ++$position, 0, '
     
     private function setExtraOption(array $options):array 
@@ -140,7 +143,8 @@ class GenerateFormCommand extends Command {
     /**
      * It inserts submitparams options, and arraychoices filling if API form
      */
-    private function insertParamsOptions(array &$lines, $position) {
+    private function insertParamsOptions(array &$lines, $position)
+    {
         if ($this->isApi) {
             array_splice($lines, $position, 0, '        $arraychoices = $this->setExtraOption($options);');
             $position++;
@@ -151,8 +155,11 @@ class GenerateFormCommand extends Command {
 
     /**
      * Add portion of code to manage a field as datetime
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addDateTimeType(array &$lines, $position, $attributeName) {
+    private function addDateTimeType(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "', DateTimeType::class, array(");
         array_splice($lines, ++$position, 0, "                  'widget' => 'single_text',");
         array_splice($lines, ++$position, 0, "                  'format' => 'dd/MM/yyyy HH:mm',");
@@ -160,10 +167,13 @@ class GenerateFormCommand extends Command {
         array_splice($lines, ++$position, 0, "                  ))");
     }
 
-
-    private function addFkType(array &$lines, $position, $attributeName) {
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
+    private function addFkType(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr( $attributeName, 0, strpos($attributeName, '_id'));
+        $choiceName = substr($attributeName, 0, strpos($attributeName, '_id'));
         
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -181,9 +191,13 @@ class GenerateFormCommand extends Command {
             ');
     }
 
-    private function addEnumType(array &$lines, $position, $attributeName) {
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
+    private function addEnumType(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr( $attributeName, 0, strpos($attributeName, '_enum'));
+        $choiceName = substr($attributeName, 0, strpos($attributeName, '_enum'));
         
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -203,8 +217,11 @@ class GenerateFormCommand extends Command {
 
     /**
      * Add a boolean checkbox
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addCheckbox(array &$lines, $position, $attributeName) {
+    private function addCheckbox(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, '            ->add(\''.$attributeName.'\',CheckboxType::class,
             array(
                     \'false_values\' => [0, false, null], 
@@ -216,29 +233,39 @@ class GenerateFormCommand extends Command {
 
     /**
      * Add portion of code to manage a field as float/number
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addNumberType(array &$lines, $position, $attributeName) {
+    private function addNumberType(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',NumberType::class)");
     }
 
     /**
      * Add portion of code to manage a field as integer
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addIntegerType(array &$lines, $position, $attributeName) {
+    private function addIntegerType(array &$lines, $position, $attributeName)
+    {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',IntegerType::class)");
     }
 
     /**
      * Add portion of code to manage a commmented string
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addComment(array &$lines, $position, $attributeName, $commented = false) {
-        $this->addStringType($lines, $position, $attributeName, true );    
+    private function addComment(array &$lines, $position, $attributeName, $commented = false)
+    {
+        $this->addStringType($lines, $position, $attributeName, true);
     }
 
     /**
      * Add portion of code to manage a field as string
      */
-    private function addStringType(array &$lines, $position, $attributeName, $commented = false) {
+    private function addStringType(array &$lines, $position, $attributeName, $commented = false)
+    {
         $comment = '';
         if ($commented) {
             $comment = '//';
@@ -249,10 +276,11 @@ class GenerateFormCommand extends Command {
     /**
      * Execute command in order to create the new form class
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         set_time_limit(0);
 
-        $libraryPrefix = ApiUtils::namespacePrefix();
+        //$libraryPrefix = ApiUtils::namespacePrefix();
         //TODO: refactor variables
         $bundlename = 'App';
         $this->projectname = $input->getOption('projectname');
@@ -340,19 +368,22 @@ class GenerateFormCommand extends Command {
         }
     }
 
-    private function findPosition(array $arr, String $keyword, bool $first = true) {
+    private function findPosition(array $arr, String $keyword, bool $first = true)
+    {
         $returnIndex = -1;
         foreach ($arr as $index => $string) {
-            if (strpos($string, $keyword) !== FALSE) {
+            if (strpos($string, $keyword) !== false) {
                 $returnIndex = $index;
-                if ($first)
+                if ($first) {
                     break;
+                }
             }
         }
         return $returnIndex;
     }
 
-    private function generateFormRouting($entityform) {
+    private function generateFormRouting($entityform)
+    {
         //Routing del form
         $bundlename = 'App';
         $fs = new Filesystem();
@@ -379,7 +410,8 @@ class GenerateFormCommand extends Command {
         return $retmsg;
     }
 
-    private function copyTableStructureWiew($entityform) {
+    private function copyTableStructureWiew($entityform)
+    {
         $fs = new Filesystem();
         /* $publicfolder = $this->apppaths->getPublicPath();
 
@@ -406,7 +438,8 @@ class GenerateFormCommand extends Command {
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
     }
 
-    private function generateFormsDefaultTableValues($entityform) {
+    private function generateFormsDefaultTableValues($entityform)
+    {
         //Si inserisce il record di default nella tabella permessi
         $ruoloAmm = $this->em->getRepository('BiCoreBundle:Ruoli')->findOneBy(array('superadmin' => true)); //SuperAdmin
 
@@ -426,7 +459,8 @@ class GenerateFormCommand extends Command {
     /**
      * Return the portion of code for Controller
      */
-    private function getControllerCode($bundlename, $tabella, String $swaggerModel): String {
+    private function getControllerCode($bundlename, $tabella, String $swaggerModel): String
+    {
         $code = '';
         if ($this->isApi) {
             $code = $this->getControllerCodeAPI($bundlename, $tabella, $swaggerModel);
@@ -437,9 +471,10 @@ class GenerateFormCommand extends Command {
     }
 
     /**
-     *  It creates a Skeleton for a controller class that extends FiController 
+     *  It creates a Skeleton for a controller class that extends FiController
      *  */
-    private function getControllerCodeORM($bundlename, $tabella) {
+    private function getControllerCodeORM($bundlename, $tabella)
+    {
         $codeTemplate = <<<EOF
 <?php
 namespace [bundle]\Controller;
@@ -468,9 +503,10 @@ EOF;
     }
 
     /**
-     *  It creates a Skeleton for a controller class that extends ApiController 
+     *  It creates a Skeleton for a controller class that extends ApiController
      *  */
-    private function getControllerCodeAPI($bundlename, $tabella, String $modelPath) {
+    private function getControllerCodeAPI($bundlename, $tabella, String $modelPath)
+    {
         $projectname = $this->projectname;
         $codeTemplate = <<<EOF
 <?php
@@ -500,7 +536,8 @@ EOF;
         return $code;
     }
 
-    private function getRoutingCode($bundlename, $tabella) {
+    private function getRoutingCode($bundlename, $tabella)
+    {
         $codeTemplate = <<<'EOF'
 [tabella]_container:
     path:  /
@@ -559,5 +596,4 @@ EOF;
 
         return $code;
     }
-
 }

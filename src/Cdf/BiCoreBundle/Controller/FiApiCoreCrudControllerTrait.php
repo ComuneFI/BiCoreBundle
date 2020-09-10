@@ -47,7 +47,7 @@ trait FiApiCoreCrudControllerTrait
             'extra-options' => []
                 ];
 
-        foreach($this->options as $key=>$option) {
+        foreach ($this->options as $key => $option) {
             $attrArray['extra-options'][$key] = $option;
         }
 
@@ -55,7 +55,7 @@ trait FiApiCoreCrudControllerTrait
             $formType,
             $entity,
             $attrArray
-            );
+        );
 
         $form->handleRequest($request);
 
@@ -74,12 +74,11 @@ trait FiApiCoreCrudControllerTrait
 
                 $apiClass = $this->apiController;
                 $apiObject = new $apiClass();
-                $apiBook = new ApiUtils( $this->collection );
+                $apiBook = new ApiUtils($this->collection);
                 $createMethod = $apiBook->getCreate();
 
-                //$httpBody = \GuzzleHttp\json_encode(\Swagger\Insurance\ObjectSerializer::sanitizeForSerialization($entity));
-                //TODO: manage the response
-                $response = $apiObject->$createMethod( $entity);
+                /*$response = */
+                $apiObject->$createMethod($entity);
                 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
@@ -120,11 +119,11 @@ trait FiApiCoreCrudControllerTrait
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
-        $apiBook = new ApiUtils( $this->collection );
+        $apiBook = new ApiUtils($this->collection);
         $getMethod = $apiBook->getItem();
 
         //TODO: response belongs to last operation
-        $entityorig = $apiObject->$getMethod( $id);
+        $entityorig = $apiObject->$getMethod($id);
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -138,7 +137,7 @@ trait FiApiCoreCrudControllerTrait
                     'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
                     'extra-options' => []
                             ];
-        foreach($this->options as $key=>$option) {
+        foreach ($this->options as $key => $option) {
             $attrArray['extra-options'][$key] = $option;
         }
 
@@ -164,16 +163,16 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id field with value selected on select list.
      * //TODO: review duplicated code
      */
-    private function setIdfromSelect(&$parameters) {
-        foreach($parameters as $key => $parameter) {
-            if ( \str_contains( $key, '_id')) {
-                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+    private function setIdfromSelect(&$parameters)
+    {
+        foreach (array_keys($parameters) as $key) {
+            if (\str_contains($key, '_id')) {
+                $sourceKey = substr($key, 0, strpos($key, '_id'));
                 if (isset($parameters[$sourceKey])) {
                     $parameters[$key] = $parameters[$sourceKey];
                 }
-            }
-            else if ( \str_contains( $key, '_enum')) {
-                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
+            } elseif (\str_contains($key, '_enum')) {
+                $sourceKey = substr($key, 0, strpos($key, '_enum'));
                 if (isset($parameters[$sourceKey])) {
                     $parameters[$key] = $parameters[$sourceKey];
                 }
@@ -185,18 +184,18 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id fields of an object with value selected on select list.
      * It forces the received field to be an INT (It applies a cast)
      */
-    private function setIdObjectfromSelect(&$classItem, &$parameters) {
+    private function setIdObjectfromSelect(&$classItem, &$parameters)
+    {
         //TODO: (int) cast that is fixed
         $setters = $classItem::setters();
-        foreach($parameters as $key => $parameter) {
-            if ( \str_contains( $key, '_id')) {
+        foreach (array_keys($parameters) as $key) {
+            if (\str_contains($key, '_id')) {
                 $setMethod = $setters[$key];
-                $sourceKey = substr( $key, 0, strpos($key, '_id'));
+                $sourceKey = substr($key, 0, strpos($key, '_id'));
                 $classItem->$setMethod((int)$parameters[$sourceKey]);
-            }
-            else if( \str_contains( $key, '_enum') ) {
+            } elseif (\str_contains($key, '_enum')) {
                 $setMethod = $setters[$key];
-                $sourceKey = substr( $key, 0, strpos($key, '_enum'));
+                $sourceKey = substr($key, 0, strpos($key, '_enum'));
                 $classItem->$setMethod((int)$parameters[$sourceKey]);
             }
         }
@@ -221,11 +220,11 @@ trait FiApiCoreCrudControllerTrait
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
-        $apiBook = new ApiUtils( $this->collection );
+        $apiBook = new ApiUtils($this->collection);
         $getMethod = $apiBook->getItem();
 
         //TODO: response belongs to last operation
-        $entityorig = $apiObject->$getMethod( $id);
+        $entityorig = $apiObject->$getMethod($id);
 
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
@@ -237,7 +236,7 @@ trait FiApiCoreCrudControllerTrait
         'extra-options' => []
                 ];
 
-        foreach($this->options as $key=>$option) {
+        foreach ($this->options as $key => $option) {
             $attrArray['extra-options'][$key] = $option;
         }
 
@@ -253,7 +252,6 @@ trait FiApiCoreCrudControllerTrait
         $editForm->submit($parameters);
 
         if ($editForm->isValid()) {
-
             $entityItem = $editForm->getData();
 
             //$entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
@@ -261,10 +259,11 @@ trait FiApiCoreCrudControllerTrait
 
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
-            $apiBook = new ApiUtils( $this->collection );
+            $apiBook = new ApiUtils($this->collection);
             $updateMethod = $apiBook->getUpdateItem();
 
-            $responseMessage = $apiObject->$updateMethod($entityItem, $id);
+            /*$responseMessage = */
+            $apiObject->$updateMethod($entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
@@ -308,12 +307,12 @@ trait FiApiCoreCrudControllerTrait
 
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
-            $apiBook = new ApiUtils( $this->collection );
+            $apiBook = new ApiUtils($this->collection);
             $deleteMethod = $apiBook->getDelete();
 
-            foreach( $ids as $id) {
+            foreach ($ids as $id) {
               //TODO: response belongs to last operation
-               $response = $apiObject->$deleteMethod( $id);
+                $response = $apiObject->$deleteMethod($id);
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());

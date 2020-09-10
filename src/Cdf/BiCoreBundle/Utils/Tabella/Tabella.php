@@ -56,8 +56,7 @@ class Tabella
         $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {
             $this->em = $doctrine->getManager(ParametriTabella::getParameter($this->parametri['em']));
-        }
-        else {
+        } else {
             $this->em = $doctrine->getManager();
         }
 
@@ -80,8 +79,7 @@ class Tabella
         if (!isset($this->parametri['isapi'])) {
             $utils = new EntityUtils($this->em, $this->entityname);
             $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
-        }
-        else {
+        } else {
             $this->apiController = $this->getTabellaParameter('apicontroller');
             $this->apiCollection = $this->getTabellaParameter('apicollection');
             $this->apiBook = new ApiUtils($this->apiCollection);
