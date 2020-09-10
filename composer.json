@@ -3,12 +3,6 @@
     "description": "Bootstrap italia CoreBundle by Comune Di Firenze",
     "homepage": "https://github.com/ComuneFI/BiCoreBundle",
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://satis.comune.intranet"
-        }
-    ],
     "type": "symfony-bundle",
     "authors": [{
             "name": "Andrea Manzi",
