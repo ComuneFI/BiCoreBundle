@@ -191,7 +191,7 @@ class PannelloAmministrazioneController extends AbstractController
         } else {
             $entityform = $request->get('entityform');
             $generatemplate = 'true' === $request->get('generatemplate') ? true : false;
-            //$this->locksystem->acquire();
+            $this->locksystem->acquire();
 
             //we are working with an API?
             $isApi = false;
@@ -205,7 +205,7 @@ class PannelloAmministrazioneController extends AbstractController
             $command = $this->pacommands;
             $result = $command->generateFormCrud($entityform, $generatemplate, $isApi);
 
-            //$this->locksystem->release();
+            $this->locksystem->release();
             //$retcc = '';
             if ($result['errcode'] < 0) {
                 $twigparms = array('errcode' => $result['errcode'], 'command' => 'Generazione Form Crud', 'message' => $result['message']);
