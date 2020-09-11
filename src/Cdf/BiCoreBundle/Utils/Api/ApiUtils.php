@@ -13,21 +13,25 @@ class ApiUtils
     private $create;
     private $apiCollection;
     //namespaces
-    private static $namespacePrefix = 'Swagger';
-    private static $namespaceApi = 'Api';
-    private static $namespaceModel = "Model";
-    private static $namespaceForm = "App\\Form";
+    private $namespacePrefix = 'Swagger';
+    private $namespaceApi = 'Api';
+    private $namespaceModel = "Model";
+    private $namespaceForm = "App\\Form";
     //suffix and prefix
-    private static $suffixApiController = 'Api';
-    private static $prefixControllerModelItem = "DaosRow";
-    private static $prefixModelItem = "DaosRow";
+    private $suffixApiController = 'Api';
+    private $prefixControllerModelItem = "DaosRow";
+    private $prefixModelItem = "DaosRow";
 
     //TODO: evaluate to move this variable into configs
-    private static $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
+    private $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
 
-    public function __construct($apiCollection)
+    private $rootDir;
+
+    public function __construct($apiCollection = null)
     {
-        $this->apiCollection = lcfirst($apiCollection);
+        if (isset($apiCollection)) {
+            $this->apiCollection = lcfirst($apiCollection);
+        }
         $this->getAll = "ControllerReadAll";
         $this->getCount = "ControllerCount";
         $this->create = "ControllerCreate";
@@ -35,6 +39,26 @@ class ApiUtils
         $this->get = "ControllerReadItem";
         $this->update = "ControllerUpdateItem";
         $this->getAllToString = "ControllerReadAllToString";
+
+        $this->initVariables();
+    }
+
+    private function initVariables()
+    {
+        $this->namespacePrefix = 'Swagger';
+        $this->namespaceApi = 'Api';
+        $this->namespaceModel = "Model";
+        $this->namespaceForm = "App\\Form";
+        //suffix and prefix
+        $this->suffixApiController = 'Api';
+        $this->prefixControllerModelItem = "DaosRow";
+        $this->prefixModelItem = "DaosRow";
+        $this->regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
+    }
+
+    public function setRootDir($rootDir)
+    {
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -42,23 +66,23 @@ class ApiUtils
      */
     public function bundlesPath()
     {
-        return dirname(__FILE__) . '/../../../../../vendor/fi';
+        return $this->rootDir . '/fi';
     }
 
     /**
      * Return namespace prefix for api external bundles, i.e. Swagger
      */
-    public static function namespacePrefix()
+    public function namespacePrefix()
     {
-        return self::$namespacePrefix;
+        return $this->namespacePrefix;
     }
 
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public static function namespaceModels()
+    public function namespaceModels()
     {
-        return self::$namespaceModel;
+        return $this->namespaceModel;
     }
 
     /**
@@ -66,9 +90,9 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
      * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
      */
-    public static function getApiControllerClass($project, $entityName): String
+    public function getApiControllerClass($project, $entityName): String
     {
-        $className = "\\" . self::$namespacePrefix . "\\$project\\" . self::$namespaceApi . "\\$entityName" . self::$suffixApiController;
+        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceApi . "\\$entityName" . $this->suffixApiController;
         return $className;
     }
 
@@ -77,9 +101,9 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
      */
-    public static function getModelControllerClass($project, $modelName): String
+    public function getModelControllerClass($project, $modelName): String
     {
-        $className = "\\" . self::$namespacePrefix . "\\$project\\" . self::$namespaceModel . "\\" . self::$prefixControllerModelItem . $modelName;
+        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixControllerModelItem . $modelName;
         return $className;
     }
 
@@ -88,9 +112,9 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
      */
-    public static function getModelClass($project, $modelName): String
+    public function getModelClass($project, $modelName): String
     {
-        $className = "\\" . self::$namespacePrefix . "\\$project\\" . self::$namespaceModel . "\\" . self::$prefixModelItem . $modelName;
+        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixModelItem . $modelName;
         return $className;
     }
 
@@ -99,9 +123,9 @@ class ApiUtils
      * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. App\\Form\\Claim)
      */
-    public static function getFormClass($modelName): String
+    public function getFormClass($modelName): String
     {
-        $className = self::$namespaceForm . "\\" . $modelName;
+        $className = $this->namespaceForm . "\\" . $modelName;
         return $className;
     }
 
@@ -110,7 +134,7 @@ class ApiUtils
      */
     public function regexPathModels()
     {
-        return self::$regexPathModels;
+        return $this->regexPathModels;
     }
 
     /**
@@ -178,8 +202,8 @@ class ApiUtils
     public function apiModels(): array
     {
         //where to look for
-        $path = self::bundlesPath();
-        $regex = self::regexPathModels();
+        $path = $this->bundlesPath();
+        $regex = $this->regexPathModels();
         //what to look for
         $models = array();
         $finder = new Finder;

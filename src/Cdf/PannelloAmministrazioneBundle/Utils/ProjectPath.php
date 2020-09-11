@@ -59,11 +59,17 @@ class ProjectPath
 
     public function getVendorBinPath()
     {
-        $vendorbindir = $this->getProjectPath().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin';
+        $vendorbindir = $this->getVendorPath().DIRECTORY_SEPARATOR.'bin';
+        return $vendorbindir;
+    }
+
+    public function getVendorPath()
+    {
+        $vendorbindir = $this->getProjectPath().DIRECTORY_SEPARATOR.'vendor';
         if (!file_exists($vendorbindir)) {
-            $vendorbindir = dirname($this->getProjectPath()).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'bin';
+            $vendorbindir = dirname($this->getProjectPath()).DIRECTORY_SEPARATOR.'vendor';
             if (!file_exists($vendorbindir)) {
-                throw new Exception('Cartella Bin in vendor non trovata', -100);
+                throw new Exception('Cartella vendor non trovata', -100);
             }
         }
 

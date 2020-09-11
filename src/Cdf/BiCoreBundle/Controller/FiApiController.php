@@ -54,10 +54,11 @@ class FiApiController extends AbstractController
 
         $this->model = $this->controller; //they matches
         $this->collection = $this->pluralize($this->model);
-        $this->modelClass = ApiUtils::getModelClass($this->project, $this->model);
-        $this->formClass =  ApiUtils::getFormClass($this->model);
-        $this->controllerItem = ApiUtils::getModelControllerClass($this->project, $this->model);
-        $this->apiController = ApiUtils::getApiControllerClass($this->project, $this->collection);
+        $apiUtil = new ApiUtils();
+        $this->modelClass = $apiUtil->getModelClass($this->project, $this->model);
+        $this->formClass =  $apiUtil->getFormClass($this->model);
+        $this->controllerItem = $apiUtil->getModelControllerClass($this->project, $this->model);
+        $this->apiController = $apiUtil->getApiControllerClass($this->project, $this->collection);
         $this->options = array();
         $this->enumOptions = array();
         $this->inflectorExceptions = array();
@@ -96,9 +97,10 @@ class FiApiController extends AbstractController
         $results = $this->pluralizeForm($singleForm);
 
         if (is_array($results)) {
+            $apiUtil = new ApiUtils();
             foreach ($results as $result) {
                 //get name of api controller
-                $apiClassPath = ApiUtils::getApiControllerClass($this->project, $result);
+                $apiClassPath = $apiUtil->getApiControllerClass($this->project, $result);
                 if (class_exists($apiClassPath)) {
                     $outcome = $result;
                     break;
@@ -177,7 +179,8 @@ class FiApiController extends AbstractController
         $outcome = StringUtils::toCamelCase($parametri);
         $outcome = $this->pluralize($outcome);
 
-        $apiControllerClass = ApiUtils::getApiControllerClass($this->project, $outcome);
+        $apiUtil = new ApiUtils();
+        $apiControllerClass = $apiUtil->getApiControllerClass($this->project, $outcome);
         $apiController = new $apiControllerClass();
 
         //$apiBook = new ApiUtils($entityName);
