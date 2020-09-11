@@ -65,7 +65,9 @@ class PannelloAmministrazioneController extends AbstractController
      */
     private function findAPIModels(): array
     {
-        return ApiUtils::apiModels();
+        $apiUtil = new ApiUtils();
+        $apiUtil->setRootDir($this->apppaths->getVendorPath());
+        return $apiUtil->apiModels();
     }
 
     public function index()

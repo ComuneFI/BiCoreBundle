@@ -110,7 +110,8 @@ class Commands
                 return array('errcode' => -1, 'message' => $entityPath . ' entity non trovata');
             }
         } else {
-            $modelClass = ApiUtils::getModelClass($projectname, $entityform);
+            $apiUtil = new ApiUtils();
+            $modelClass = $apiUtil->getModelClass($projectname, $entityform);
             if (!class_exists($modelClass)) {
                 return array('errcode' => -1, 'message' => $modelClass . ' model not found');
             }

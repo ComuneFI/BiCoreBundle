@@ -280,13 +280,12 @@ class GenerateFormCommand extends Command
     {
         set_time_limit(0);
 
-        //$libraryPrefix = ApiUtils::namespacePrefix();
         //TODO: refactor variables
         $bundlename = 'App';
         $this->projectname = $input->getOption('projectname');
         $entityform = $input->getArgument('entityform');
-        $modelClass = ApiUtils::getModelClass($this->projectname, $entityform);
-        //$controllerItem = ApiUtils::getModelControllerClass($this->projectname, $entityform);
+        $apiUtil = new ApiUtils();
+        $modelClass = $apiUtil->getModelClass($this->projectname, $entityform);
 
         $this->generatemplate = $input->getOption('generatemplate');
         $this->isApi = $input->getOption('isApi');
