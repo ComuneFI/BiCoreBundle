@@ -64,4 +64,12 @@ abstract class FieldTypeUtils
 
         return $date;
     }
+
+    /**
+     * Try to read the .env Key value provided as $key, otherwise return the default value
+     */
+    public static function getEnvVar(String $key, String $defaultValue)
+    {
+        return (getenv($key)===false)?$defaultValue:getenv($key);
+    }
 }

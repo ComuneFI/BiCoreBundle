@@ -11,7 +11,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 require('jquery-contextmenu');
 import * as moment from "moment/moment.js"
-moment.locale('it');
+        moment.locale('it');
 
 class Tabella {
 
@@ -58,7 +58,7 @@ class Tabella {
         $("#bititletable" + nometabella).attr("colspan", colCount);
         //Se si hanno i permessi per update si abilita il doppioclick per scatenare l'edir
         var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
-        if (permessi.update === true) {
+        if (permessi.read === true) {
             //Doppio click su riga per edit
             var tabellaclass = this;
             $('#table' + this.nometabella + ' > tbody > tr').dblclick(function () {
@@ -615,6 +615,12 @@ class Tabella {
         });
         //Per impostare il layout delle select come bootstrapitalia
         $(".bootstrap-select-wrapper select").selectpicker('refresh');
+
+        var permessi = JSON.parse(BiStringFunctions.getTabellaParameter(this.parametri.permessi));
+        if (!permessi.create && !permessi.update) {
+            $(".bisubmit").remove();
+        }
+
     }
     _generatemenuconfirmation()
     {

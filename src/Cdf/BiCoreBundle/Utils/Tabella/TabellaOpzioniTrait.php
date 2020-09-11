@@ -17,8 +17,11 @@ trait TabellaOpzioniTrait
             // Inserire dati da definizione entity
             $this->setOpzioniTabellaDefault($colonnadatabase, $opzionibuilder, null, false);
         }
+        //TODO: verify if is an issue or it's wanted that colonnadatabase is the last item of iterated columns
+        if (isset($colonnadatabase)) {
+            $this->setOpzioniTabellaFromCore($colonnadatabase, $opzionibuilder);
+        }
         $this->setOpzioniTabellaFromModellocolonne($opzionibuilder);
-        $this->setOpzioniTabellaFromCore($colonnadatabase, $opzionibuilder);
         $this->setOrdinaColonneTabella($opzionibuilder);
         $this->setLarghezzaColonneTabella($opzionibuilder);
 
@@ -83,7 +86,7 @@ trait TabellaOpzioniTrait
 
     private function getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder)
     {
-        $larghezzatotalepercentuale = 0;
+        $larghezzatotalepercentuale = 1;
         foreach ($opzionibuilder as $opzione) {
             if (false === $opzione['escluso']) {
                 $larghezzatotalepercentuale += $opzione['larghezza'];

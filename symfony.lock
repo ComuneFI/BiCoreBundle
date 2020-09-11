@@ -111,8 +111,8 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
+    "hanneskod/classtools": {
+        "version": "1.2.1"
     },
     "maennchen/zipstream-php": {
         "version": "2.1.0"

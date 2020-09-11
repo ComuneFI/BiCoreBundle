@@ -160,7 +160,7 @@ class BaseParametriQueryTabellaDecoder
         if (is_array($this->fieldvalue)) {
             foreach ($this->fieldvalue as $value) {
                 if (is_numeric($value)) {
-                    $descrizionevalore = $descrizionevalore . ', ' . $value;
+                    $descrizionevalore = $descrizionevalore . $value . ', ';
                 } else {
                     $descrizionevalore = $descrizionevalore . "'" . $value . "', ";
                 }

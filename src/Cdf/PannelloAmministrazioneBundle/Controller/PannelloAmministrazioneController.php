@@ -9,11 +9,12 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
+use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 
 class PannelloAmministrazioneController extends AbstractController
 {
@@ -28,7 +29,7 @@ class PannelloAmministrazioneController extends AbstractController
     public function __construct($appname, $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils)
     {
         $store = new FlockStore(sys_get_temp_dir());
-        $factory = new Factory($store);
+        $factory = new LockFactory($store);
         $this->locksystem = $factory->createLock('pannelloamministrazione-command');
         $this->locksystem->release();
         $this->appname = $appname;
@@ -44,6 +45,8 @@ class PannelloAmministrazioneController extends AbstractController
         $prefix = 'App\\Entity\\';
         $prefixBase = 'Base';
         $entities = $this->get('doctrine')->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        // compute additional API models since external bundles
+        $additionalEntities = $this->findAPIModels();
         foreach ($entities as $entity) {
             if (substr($entity, 0, strlen($prefix)) == $prefix) {
                 if (substr(substr($entity, strlen($prefix)), 0, strlen($prefixBase)) != $prefixBase) {
@@ -51,8 +54,18 @@ class PannelloAmministrazioneController extends AbstractController
                 }
             }
         }
+        // merge of found arrays
+        $outcomes = array_merge($entitiesprogetto, $additionalEntities);
+        return $outcomes;
+    }
 
-        return $entitiesprogetto;
+    /**
+     * It looks for Models existent into included external bundles.
+     * It uses ApiUtils in order to know where to search and what look for.
+     */
+    private function findAPIModels(): array
+    {
+        return ApiUtils::apiModels();
     }
 
     public function index()
@@ -168,6 +181,9 @@ class PannelloAmministrazioneController extends AbstractController
 
     /* FORMS */
 
+    /**
+     * Generate form item, controllers and twigs for the given entity/model
+     */
     public function generateFormCrud(Request $request)
     {
         if (!$this->locksystem->acquire()) {
@@ -177,8 +193,17 @@ class PannelloAmministrazioneController extends AbstractController
             $generatemplate = 'true' === $request->get('generatemplate') ? true : false;
             $this->locksystem->acquire();
 
+            //we are working with an API?
+            $isApi = false;
+            //verify if provided string belongs to an API model
+            if (\str_contains($entityform, '(API)')) {
+                $isApi = true;
+                $entityform = trim(\str_replace('(API)', '', $entityform));
+            }
+
+            // Setup an utility pack of commands (Commands.php)
             $command = $this->pacommands;
-            $result = $command->generateFormCrud($entityform, $generatemplate);
+            $result = $command->generateFormCrud($entityform, $generatemplate, $isApi);
 
             $this->locksystem->release();
             //$retcc = '';

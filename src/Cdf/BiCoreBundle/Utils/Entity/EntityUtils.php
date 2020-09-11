@@ -29,6 +29,7 @@ class EntityUtils
         $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
         $colonne = array();
         $fieldMappings = $infocolonne->fieldMappings;
+        //dump($fieldMappings);
         foreach ($fieldMappings as $colonna) {
             $colonne[$colonna['fieldName']] = $colonna;
             $colonne[$colonna['fieldName']]['entityClass'] = $entity;
@@ -43,7 +44,6 @@ class EntityUtils
             $colonne[$key]['association'] = true;
             $colonne[$key]['associationtable'] = $entityproperties['entity'];
         }
-
         return $colonne;
     }
 
