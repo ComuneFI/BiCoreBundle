@@ -68,7 +68,17 @@ $(document).on("keypress", '.filterable .filters input', function (e) {
                             var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': parseFloat(valorefiltro)};
                             break;
                         case "boolean":
-                            var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': (valorefiltro == 'SI' ? true : false)};
+                            var filterInput = valorefiltro.toUpperCase();
+                            var filterValue = valorefiltro;
+                            switch (filterInput) {
+                                case "SI":
+                                    filterValue = true;
+                                    break;
+                                case "NO":
+                                    filterValue = false;
+                                    break;
+                            }
+                            var elem = {'nomecampo': $(this).data('nomecampo'), 'operatore': '=', 'valore': filterValue};
                             break;
                         case "date":
                             var date = tab.getDateTimeTabella(valorefiltro + " 00:00:00");
