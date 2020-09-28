@@ -207,7 +207,7 @@ class ApiUtils
         //what to look for
         $models = array();
         $finder = new Finder;
-        $iter = new ClassIterator($finder->in($path));
+        $iter = new ClassIterator($finder->files()->in($path));
 
         $matches = array();
         // Print the file names of classes, interfaces and traits in given path
