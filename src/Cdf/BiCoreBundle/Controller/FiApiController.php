@@ -219,7 +219,7 @@ class FiApiController extends AbstractController
         $annotations = array();
         $r = new ReflectionClass(get_class($this));
         $doc = $r->getDocComment();
-        preg_match_all('#@var\(biproject="(.*?)"\)\n#s', $doc, $annotations);
+        preg_match_all('#@var\(biproject="(.*?)"\)[\r\n]+#s', $doc, $annotations);
         return $annotations[1][0];
     }
 }
