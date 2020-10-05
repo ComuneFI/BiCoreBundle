@@ -17,7 +17,8 @@ import "./bidemo/tabellaestesa.js";
 
 import "./bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
 import "bootstrap-confirmation2";
-import "font-awesome/css/font-awesome.min.css";
+
+require('@fortawesome/fontawesome-free/css/all.min.css');
 
 import "../css/bootstrap-datetimepicker.min.css";
 import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
