@@ -205,7 +205,7 @@
   table thead .sorting_desc_disabled:before {
     content: "\f0de";
     font-family: "Font Awesome 5 Free";
-    font-size: 1rem
+    font-weight: 900; /* regular style/weight */
   }
 
   table thead .sorting:after,
@@ -215,7 +215,7 @@
   table thead .sorting_desc_disabled:after {
     content: "\f0dd";
     font-family: "Font Awesome 5 Free";
-    font-size: 1rem
+    font-weight: 900; /* regular style/weight */
   }
 
   table thead .sorting_asc:before,

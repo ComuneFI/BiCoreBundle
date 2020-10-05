@@ -6,3 +6,7 @@
 .btn {
     width: 320px;
 }
+
+.biconfirmyes, .biconfirmno {
+    width: 160px;
+}
