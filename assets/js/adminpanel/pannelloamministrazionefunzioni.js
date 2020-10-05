@@ -10,12 +10,12 @@ class Pannelloamministrazione {
             message: domanda,
             buttons: {
                 cancel: {
-                    className: 'btn btn-default biconfirmno',
-                    label: '<i class="fa fa-times"></i> Annulla'
+                    className: 'btn-secondary biconfirmno',
+                    label: '<i class="fas fa-times"></i> Annulla'
                 },
                 confirm: {
-                    className: 'btn btn-primary biconfirmyes',
-                    label: '<i class="fa fa-check"></i> Si'
+                    className: 'btn-primary biconfirmyes',
+                    label: '<i class="fas fa-check"></i> Si'
                 }
             },
             callback: function (confirm) {
@@ -33,7 +33,7 @@ class Pannelloamministrazione {
                             buttons: {
                                 ok: {
                                     className: 'btn btn-primary biconfirmok',
-                                    label: '<i class="fa fa-check"></i> Ok'
+                                    label: '<i class="fas fa-check"></i> Ok'
                                 }
                             }
                         });

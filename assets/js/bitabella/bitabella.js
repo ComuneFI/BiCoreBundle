@@ -242,11 +242,11 @@ class Tabella {
             buttons: {
                 cancel: {
                     className: 'btn btn-default biconfirmno',
-                    label: '<i class="fa fa-times"></i> Annulla'
+                    label: '<i class="fas fa-times"></i> Annulla'
                 },
                 confirm: {
                     className: 'btn btn-primary biconfirmyes',
-                    label: '<i class="fa fa-check"></i> Si'
+                    label: '<i class="fas fa-check"></i> Si'
                 }
             },
             callback: function (confirm) {
@@ -306,11 +306,11 @@ class Tabella {
                 buttons: {
                     cancel: {
                         className: 'btn btn-default biconfirmno',
-                        label: '<i class="fa fa-times"></i> Annulla'
+                        label: '<i class="fas fa-times"></i> Annulla'
                     },
                     confirm: {
                         className: 'btn btn-primary biconfirmyes',
-                        label: '<i class="fa fa-check"></i> Si'
+                        label: '<i class="fas fa-check"></i> Si'
                     }
                 },
                 callback: function (confirm) {
