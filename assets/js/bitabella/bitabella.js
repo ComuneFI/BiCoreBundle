@@ -7,7 +7,7 @@ import bootbox from 'bootbox';
 import "../../js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
 import "../../css/bootstrap-datetimepicker.min.css";
 import "bootstrap-confirmation2";
-import "font-awesome/css/font-awesome.min.css";
+require('@fortawesome/fontawesome-free/css/all.min.css');
 import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
 require('jquery-contextmenu');
 import * as moment from "moment/moment.js"
