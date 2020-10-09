@@ -3,4 +3,4 @@ CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATES
 curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
 unzip chromedriver_linux64.zip -d vendor/symfony/panther/chromedriver-bin
 mv vendor/symfony/panther/chromedriver-bin/chromedriver vendor/symfony/panther/chromedriver-bin/chromedriver_linux64
-
+rm chromedriver_linux64.zip
