@@ -2,9 +2,8 @@
 
 namespace App\Command;
 
-use Swift_Attachment;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +18,7 @@ class TestMailCommand extends Command
                 ->setDescription('Invia mail di test')
         ;
     }
-    public function __construct(Swift_Mailer $mailer)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
 
@@ -44,7 +43,18 @@ class TestMailCommand extends Command
 
         // Send the message
         try {
-            $result = $this->mailer->send($message);
+            $email = (new Email())
+                    ->from("bicorebundle@test.mail")
+                    ->to("dst@test.mail")
+                    //->cc('cc@example.com')
+                    //->bcc('bcc@example.com')
+                    //->replyTo('fabien@example.com')
+                    //->priority(Email::PRIORITY_HIGH)
+                    ->subject("Test email")
+                    ->text("Text email")
+                    ->html("Html mail");
+
+            $this->mailer->send($email);
         } catch (\Swift_TransportException $e) {
             echo 'Message could not be sent.';
             echo 'Mailer Error: ' . $e->getMessage();

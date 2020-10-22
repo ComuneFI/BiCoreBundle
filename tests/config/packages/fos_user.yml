@@ -1,0 +1,7 @@
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: Cdf\BiCoreBundle\Entity\Operatori
+    from_email:
+        address: "%env(resolve:mailer_user)%"
+        sender_name: "%env(resolve:mailer_user)%"

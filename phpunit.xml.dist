@@ -46,6 +46,9 @@
 
     <server name="PANTHER_WEB_SERVER_PORT" value="9090"/>
     <ini name="max_execution_time" value="0"/>
+        <!-- ###+ symfony/mailer ### -->
+        <!-- MAILER_DSN=smtp://localhost -->
+        <!-- ###- symfony/mailer ### -->
   </php>
 
   <filter>

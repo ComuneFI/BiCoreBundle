@@ -3,7 +3,7 @@
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
 
 class HeaderTabellaExtension extends AbstractExtension
 {
@@ -13,7 +13,7 @@ class HeaderTabellaExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('sort_class', array($this, 'sortClass', 'is_safe' => array('html'))),
+            new TwigFunction('sort_class', array($this, 'sortClass', 'is_safe' => array('html'))),
         );
     }
 
