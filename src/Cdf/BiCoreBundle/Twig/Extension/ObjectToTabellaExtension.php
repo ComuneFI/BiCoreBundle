@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 use Twig\Extension\AbstractExtension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
 
 class ObjectToTabellaExtension extends AbstractExtension
 {
@@ -18,9 +18,9 @@ class ObjectToTabellaExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('object2view', array($this, 'object2View', 'is_safe' => array('html'))),
-            new Twig_SimpleFunction('field2object', array($this, 'field2Object', 'is_safe' => array('html'))),
-            new Twig_SimpleFunction('joinfieldid', array($this, 'joinFieldId', 'is_safe' => array('html'))),
+            new TwigFunction('object2view', array($this, 'object2View', 'is_safe' => array('html'))),
+            new TwigFunction('field2object', array($this, 'field2Object', 'is_safe' => array('html'))),
+            new TwigFunction('joinfieldid', array($this, 'joinFieldId', 'is_safe' => array('html'))),
         );
     }
 

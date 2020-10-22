@@ -8,8 +8,8 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Extension\AbstractExtension;
-use Twig_Environment;
-use Twig_SimpleFunction;
+use Twig\Environment as TwigEnvironment;
+use Twig\TwigFunction;
 use function count;
 
 class MenuExtension extends AbstractExtension
@@ -30,14 +30,14 @@ class MenuExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('generamenu', [$this, 'generamenu'], [
+            new TwigFunction('generamenu', [$this, 'generamenu'], [
                 'needs_environment' => true,
                 'is_safe' => ['html'],
                     ]),
         ];
     }
 
-    public function generamenu(Twig_Environment $environment)
+    public function generamenu(TwigEnvironment $environment)
     {
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();
