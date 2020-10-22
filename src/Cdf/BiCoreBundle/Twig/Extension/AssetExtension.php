@@ -3,7 +3,7 @@
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
 
 class AssetExtension extends AbstractExtension
 {
@@ -16,7 +16,7 @@ class AssetExtension extends AbstractExtension
 
     public function getFunctions()
     {
-        return [new Twig_SimpleFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
+        return [new TwigFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
     }
 
     public function assetExists($path)
