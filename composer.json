@@ -55,6 +55,7 @@
         "symfony/flex": "^1.0",
         "symfony/form": "4.4.*",
         "symfony/lock": "4.4.*",
+        "symfony/mailer": "4.4.*",
         "symfony/maker-bundle": "^1.7",
         "symfony/monolog-bundle": "^3.2",
         "symfony/orm-pack": "^1.0",

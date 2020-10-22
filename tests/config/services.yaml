@@ -12,7 +12,7 @@ fos_user:
         address: "%env(resolve:mailer_user)%"
         sender_name: "%env(resolve:mailer_user)%"
     service:
-        mailer: 'fos_user.mailer.noop'
+        mailer: fos_user.mailer.twig_swift
 
 services:
     # default configuration for services in *this* file

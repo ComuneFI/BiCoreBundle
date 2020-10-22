@@ -342,6 +342,18 @@
     "symfony/lock": {
         "version": "v4.4.3"
     },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "tests/config/packages/mailer.yaml"
+        ]
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -446,23 +458,23 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.4",
-            "ref": "30efd98dd3b4ead6e9ad4713b1efc43bbe94bf77"
+            "ref": "7b4408dc203049666fe23fabed23cbadc6d8440f"
         },
         "files": [
             "tests/config/packages/security.yaml"
         ]
     },
     "symfony/security-core": {
-        "version": "v4.4.3"
+        "version": "v4.4.15"
     },
     "symfony/security-csrf": {
-        "version": "v4.4.3"
+        "version": "v4.4.15"
     },
     "symfony/security-guard": {
-        "version": "v4.4.3"
+        "version": "v4.4.15"
     },
     "symfony/security-http": {
-        "version": "v4.4.3"
+        "version": "v4.4.15"
     },
     "symfony/serializer": {
         "version": "v4.4.3"
@@ -488,7 +500,7 @@
         ]
     },
     "symfony/templating": {
-        "version": "v4.4.3"
+        "version": "v4.4.15"
     },
     "symfony/test-pack": {
         "version": "v1.0.6"
