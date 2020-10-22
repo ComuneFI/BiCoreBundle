@@ -33,6 +33,7 @@ class OrdineType extends AbstractType
                 ->add('quantita')
                 ->add('data', DateTimeType::class, array(
                     'widget' => 'single_text',
+                    'html5' => false,
                     'format' => 'dd/MM/yyyy HH:mm',
                     'attr' => array('class' => 'bidatetimepicker'),
                 ))

@@ -24,6 +24,7 @@ class MagazzinoType extends AbstractType
                 ->add('giornodellasettimana')
                 ->add('dataspedizione', DateTimeType::class, array(
                     'widget' => 'single_text',
+                    'html5' => false,
                     'format' => 'dd/MM/yyyy HH:mm',
                     'attr' => array('class' => 'bidatetimepicker'),
                 ))

@@ -42,7 +42,8 @@
     <env name="APP_ENV" value="test"/>
     <env name="APP_DEBUG" value="1"/>
     <env name="APP_SECRET" value="s$cretf0rt3st"/>
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=9999"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=0"/>
+    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=9999"/> -->
 
     <server name="PANTHER_WEB_SERVER_PORT" value="9090"/>
     <ini name="max_execution_time" value="0"/>
@@ -65,10 +66,13 @@
   </filter>
 
   <listeners>
-    <!--<listener class="Symfony\Component\Panther\ServerListener" />-->
 
-    <listener class="Symfony\Component\Panther\ServerListener"/>
-    <!--<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />-->
-    <!--<listener class="Symfony\Bridge\PhpUnit\CoverageListener" />-->
+    <listener class="Symfony\Component\Panther\ServerListener" />
+    <!-- PHP 7.3+-->
+    <!-- <listener class="Symfony\Component\Panther\ServerExtension" /> -->
+    
+    <!-- <listener class="Symfony\Component\Panther\ServerListener"/> -->
+    <!-- <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" /> -->
+    <!-- <listener class="Symfony\Bridge\PhpUnit\CoverageListener" /> -->
   </listeners>
 </phpunit>

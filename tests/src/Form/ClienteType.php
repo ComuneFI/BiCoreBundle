@@ -25,12 +25,14 @@ class ClienteType extends AbstractType
                 ->add('attivo')
                 ->add('datanascita', DateTimeType::class, array(
                     'widget' => 'single_text',
+                    'html5' => false,
                     'format' => 'dd/MM/yyyy',
                     'attr' => array('class' => 'bidatepicker'),
                 ))
                 ->add('punti', NumberType::class)
                 ->add('iscrittoil', DateTimeType::class, array(
                     'widget' => 'single_text',
+                    'html5' => false,
                     'format' => 'dd/MM/yyyy HH:mm',
                     'attr' => array('class' => 'bidatetimepicker'),
                 ))
