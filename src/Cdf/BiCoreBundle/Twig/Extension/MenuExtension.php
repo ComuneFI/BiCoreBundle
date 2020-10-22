@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Extension\AbstractExtension;
-use Twig_Environment;
+use Twig\Environment as TwigEnvironment;
 use Twig\TwigFunction;
 use function count;
 
@@ -37,7 +37,7 @@ class MenuExtension extends AbstractExtension
         ];
     }
 
-    public function generamenu(Twig_Environment $environment)
+    public function generamenu(TwigEnvironment $environment)
     {
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();

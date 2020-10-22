@@ -3,7 +3,8 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Exception;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 class DoctrineFieldReader
@@ -98,7 +99,9 @@ class DoctrineFieldReader
 
     private function getObjectProperty($field, $object)
     {
-        $property = 'get'.Inflector::camelize(ucfirst($field));
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+
+        $property = 'get'.$inflector->camelize(ucfirst($field));
         if (method_exists($object, $property)) {
             return $property;
         }
