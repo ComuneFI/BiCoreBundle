@@ -1,7 +1,6 @@
 os: linux
 dist: bionic
 language: php
-sudo: false
 
 addons:
   postgresql: 9.6
