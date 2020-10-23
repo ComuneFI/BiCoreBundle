@@ -36,3 +36,5 @@ MAILER_URL=null://localhost
 ###< symfony/swiftmailer-bundle ###
 
 locale="it"
+
+MAILER_DSN=smtp://localhost
