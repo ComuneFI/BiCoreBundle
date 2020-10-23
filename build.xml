@@ -12,6 +12,7 @@
                     phpcs-ci,
                     phpcpd-ci,
                     phpmd-ci,
+                    phpstan-ci,
                     php-security-checker,
                     phpunit-ci,
                     finish">
@@ -142,6 +143,13 @@
     <target name="phpcpd-ci" description="Find duplicate code using PHPCPD">
         <exec executable="vendor/bin/phpcpd" failonerror="false">
             <arg path="src"/>
+        </exec>
+    </target>
+
+    <target name="phpstan-ci" description="PHPStan finds bugs in your code without writing tests">
+        <exec executable="vendor/bin/phpstan" failonerror="true">
+            <arg value="analyze"/>
+            <arg value="src"/>
         </exec>
     </target>
     

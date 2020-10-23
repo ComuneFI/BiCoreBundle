@@ -14,7 +14,9 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 class ChecksrcCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checksrc';
-
+    
+    private $apppaths;
+    
     protected function configure()
     {
         $this

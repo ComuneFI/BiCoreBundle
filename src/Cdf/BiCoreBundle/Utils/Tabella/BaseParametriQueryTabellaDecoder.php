@@ -14,6 +14,7 @@ class BaseParametriQueryTabellaDecoder
     protected $fieldqueryparameter;
     protected $criteria;
     protected $parameters;
+    protected $fieldinfo;
 
     public function __construct($fieldname, $fieldoperator, $fieldvalue, $fieldqueryparameter, $fieldinfo)
     {
@@ -27,6 +28,7 @@ class BaseParametriQueryTabellaDecoder
         $this->fieldqueryparameter = $fieldqueryparameter;
         $this->fieldinfo = $fieldinfo;
         $this->parameters = array();
+        /** @phpstan-ignore-next-line */
         $this->buildQuery();
     }
 

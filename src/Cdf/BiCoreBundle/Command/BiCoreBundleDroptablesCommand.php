@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class BiCoreBundleDroptablesCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:droptables';
+    private $em;
 
     protected function configure()
     {

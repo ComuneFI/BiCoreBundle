@@ -5,6 +5,10 @@ namespace Cdf\BiCoreBundle\Utils\Api;
 use Symfony\Component\Finder\Finder;
 use hanneskod\classtools\Iterator\ClassIterator;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
+
 class ApiUtils
 {
 
@@ -21,6 +25,11 @@ class ApiUtils
     private $suffixApiController = 'Api';
     private $prefixControllerModelItem = "DaosRow";
     private $prefixModelItem = "DaosRow";
+    
+    private $delete;
+    private $get;
+    private $update;
+    private $getAllToString;
 
     //TODO: evaluate to move this variable into configs
     private $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';

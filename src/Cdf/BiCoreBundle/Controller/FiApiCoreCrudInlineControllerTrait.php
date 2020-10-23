@@ -56,6 +56,7 @@ trait FiApiCoreCrudInlineControllerTrait
 
         /* @var $em EntityManager */
         $controller = $this->getController();
+        /** @phpstan-ignore-next-line */
         $entityclass = $this->getEntityClassName();
 
         $em = $this->getDoctrine()->getManager();
@@ -99,6 +100,7 @@ trait FiApiCoreCrudInlineControllerTrait
 
         /* @var $em EntityManager */
         $controller = $this->getController();
+        /** @phpstan-ignore-next-line */
         $entityclass = $this->getEntityClassName();
 
         $em = $this->getDoctrine()->getManager();

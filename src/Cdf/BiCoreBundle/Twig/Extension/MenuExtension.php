@@ -18,6 +18,7 @@ class MenuExtension extends AbstractExtension
     protected $em;
     protected $urlgenerator;
     protected $user;
+    protected $rootpath;
 
     public function __construct(ObjectManager $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, $rootpath)
     {

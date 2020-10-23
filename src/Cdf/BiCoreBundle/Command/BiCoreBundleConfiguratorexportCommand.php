@@ -19,6 +19,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     private $em;
     private $systementity;
     private $output;
+    private $entityutility;
 
     protected function configure()
     {
