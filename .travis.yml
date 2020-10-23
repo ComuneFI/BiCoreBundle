@@ -62,9 +62,9 @@ jobs:
     #  env: DB=pgsql
 
 before_script:
-  - /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
-  - /sbin/mkswap /var/swap.1
-  - /sbin/swapon /var/swap.1
+  - sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+  - sudo /sbin/mkswap /var/swap.1
+  - sudo /sbin/swapon /var/swap.1
 
   #- export CHROME_BIN=chromium-browser
   #- CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
@@ -90,18 +90,18 @@ before_script:
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then sed -i '/extension="apcu.so"/d' ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]] ; then phpenv config-add ./tests/build/ini/apc-7.ini; fi
   #- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
-  - a2enmod rewrite actions alias
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp ./tests/build/www.conf ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/; fi
+  - sudo a2enmod rewrite actions alias
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
-  #- if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then chown -R travis:travis /var/lib/apache2/fastcgi; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars; fi
+  #- if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo chown -R travis:travis /var/lib/apache2/fastcgi; fi
   - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm; fi
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
-  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi
-  - sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
-  - sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
-  - service apache2 restart
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo cp -f ./tests/build/travis-ci-apache /etc/apache2/sites-available/000-default.conf; fi
+  - if [[ ! $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf; fi
+  - sudo sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
+  - sudo sed -i 's/NameVirtualHost \*:80/NameVirtualHost \*:8000/' /etc/apache2/ports.conf
+  - sudo service apache2 restart
 
   - if [[ "$DB" == "pgsql" ]]; then echo "PROVISIONING WITH PostgreSQL"; fi
   - if [[ "$DB" == "pgsql" ]]; then cp -f ./tests/build/.env.pgsql $TRAVIS_BUILD_DIR/tests/.env; fi
@@ -148,13 +148,13 @@ after_success:
   #- kill `ps -ef | grep selenium | awk '{ print $2 }'`
 
 after_failure:
-  - cat /var/log/apache2/error.log
-  - cat /var/log/apache2/access.log
-  - cat /var/log/apache2/other_vhosts_access.log
-  - cat /var/log/apache2/bi_error.log
-  - cat /var/log/apache2/bi_access.log
-  - cat $TRAVIS_BUILD_DIR/tests/var/logs/test.log
-  #- cat /tmp/screenshot.txt
+  - sudo cat /var/log/apache2/error.log
+  - sudo cat /var/log/apache2/access.log
+  - sudo cat /var/log/apache2/other_vhosts_access.log
+  - sudo cat /var/log/apache2/bi_error.log
+  - sudo cat /var/log/apache2/bi_access.log
+  - sudo cat $TRAVIS_BUILD_DIR/tests/var/logs/test.log
+  #- sudo cat /tmp/screenshot.txt
 
 notifications:
   email:
