@@ -1,6 +1,6 @@
+os: linux
 dist: bionic
 language: php
-sudo: false
 
 addons:
   postgresql: 9.6
@@ -26,7 +26,7 @@ env:
         - PHPUNIT_FLAGS="-v"
         - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
 
-matrix:
+jobs:
     fast_finish: true
     include:
         - php: 7.2

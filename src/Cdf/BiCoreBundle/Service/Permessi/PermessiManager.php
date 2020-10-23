@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PermessiManager
 {
+    private $em;
+    private $user;
+    
     public function __construct(ObjectManager $em, TokenStorageInterface $user)
     {
         $this->em = $em;

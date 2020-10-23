@@ -12,6 +12,8 @@ use Symfony\Component\Finder\Finder;
 class BiCoreBundlePubblicamanualeCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:pubblicamanuale';
+    private $projectdir;
+    private $fs;
 
     protected function configure()
     {

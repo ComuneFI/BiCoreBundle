@@ -16,7 +16,9 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 class CheckgitversionCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checkgitversion';
-
+    
+    private $projectpath;
+    
     protected function configure()
     {
         $this
