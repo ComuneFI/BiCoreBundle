@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * App\Entity\Ordine.
+ * App\Entity\Ordine
  *
  * @ORM\Entity()
  * @ORM\Table(name="Ordine", indexes={@ORM\Index(name="fk_Cliente_has_Fornitore_Cliente_idx", columns={"cliente_id"}), @ORM\Index(name="fk_Ordine_Prodottofornitore1_idx", columns={"prodottofornitore_id"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseOrdine", "extended":"Ordine"})
+ * @ORM\DiscriminatorMap({"base": "BaseOrdine", "extended": "Ordine"})
  */
 class BaseOrdine
 {
@@ -69,8 +69,7 @@ class BaseOrdine
     /**
      * Set the value of id.
      *
-     * @param int $id
-     *
+     * @param integer $id
      * @return \App\Entity\Ordine
      */
     public function setId($id)
@@ -83,7 +82,7 @@ class BaseOrdine
     /**
      * Get the value of id.
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -93,8 +92,7 @@ class BaseOrdine
     /**
      * Set the value of cliente_id.
      *
-     * @param int $cliente_id
-     *
+     * @param integer $cliente_id
      * @return \App\Entity\Ordine
      */
     public function setClienteId($cliente_id)
@@ -107,7 +105,7 @@ class BaseOrdine
     /**
      * Get the value of cliente_id.
      *
-     * @return int
+     * @return integer
      */
     public function getClienteId()
     {
@@ -117,8 +115,7 @@ class BaseOrdine
     /**
      * Set the value of prodottofornitore_id.
      *
-     * @param int $prodottofornitore_id
-     *
+     * @param integer $prodottofornitore_id
      * @return \App\Entity\Ordine
      */
     public function setProdottofornitoreId($prodottofornitore_id)
@@ -131,7 +128,7 @@ class BaseOrdine
     /**
      * Get the value of prodottofornitore_id.
      *
-     * @return int
+     * @return integer
      */
     public function getProdottofornitoreId()
     {
@@ -142,7 +139,6 @@ class BaseOrdine
      * Set the value of data.
      *
      * @param \DateTime $data
-     *
      * @return \App\Entity\Ordine
      */
     public function setData($data)
@@ -165,8 +161,7 @@ class BaseOrdine
     /**
      * Set the value of quantita.
      *
-     * @param int $quantita
-     *
+     * @param integer $quantita
      * @return \App\Entity\Ordine
      */
     public function setQuantita($quantita)
@@ -179,7 +174,7 @@ class BaseOrdine
     /**
      * Get the value of quantita.
      *
-     * @return int
+     * @return integer
      */
     public function getQuantita()
     {
@@ -190,7 +185,6 @@ class BaseOrdine
      * Add Magazzino entity to collection (one to many).
      *
      * @param \App\Entity\Magazzino $magazzino
-     *
      * @return \App\Entity\Ordine
      */
     public function addMagazzino(Magazzino $magazzino)
@@ -204,7 +198,6 @@ class BaseOrdine
      * Remove Magazzino entity from collection (one to many).
      *
      * @param \App\Entity\Magazzino $magazzino
-     *
      * @return \App\Entity\Ordine
      */
     public function removeMagazzino(Magazzino $magazzino)
@@ -228,7 +221,6 @@ class BaseOrdine
      * Set Cliente entity (many to one).
      *
      * @param \App\Entity\Cliente $cliente
-     *
      * @return \App\Entity\Ordine
      */
     public function setCliente(Cliente $cliente = null)
@@ -252,7 +244,6 @@ class BaseOrdine
      * Set Prodottofornitore entity (many to one).
      *
      * @param \App\Entity\Prodottofornitore $prodottofornitore
-     *
      * @return \App\Entity\Ordine
      */
     public function setProdottofornitore(Prodottofornitore $prodottofornitore = null)
