@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreTabellaControllerTrait
 {
+
     private $tabellaxls;
 
     public function tabella(Request $request)
@@ -24,7 +25,7 @@ trait FiCoreTabellaControllerTrait
                 json_decode(ParametriTabella::getParameter($parametripassati['parametriform']), true) : [];
         $classbundle = ParametriTabella::getParameter($parametripassati['entityclass']);
         $formbundle = ParametriTabella::getParameter($parametripassati['formclass']);
-        $formType = $formbundle.'Type';
+        $formType = $formbundle . 'Type';
 
         $entity = new $classbundle();
         $controller = ParametriTabella::getParameter($parametripassati['nomecontroller']);
@@ -32,9 +33,9 @@ trait FiCoreTabellaControllerTrait
             $formType,
             $entity,
             ['attr' => [
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                     ],
-                    'action' => $this->generateUrl($controller.'_new'),
+                    'action' => $this->generateUrl($controller . '_new'),
                     'parametriform' => $parametriform,
                 ]
         );
@@ -49,13 +50,13 @@ trait FiCoreTabellaControllerTrait
             ['parametri' => $parametri]
         );
     }
-
     public function setTabellaxls(TabellaXls $tabellaxls)
     {
         $this->tabellaxls = $tabellaxls;
     }
-
+    
     /**
+     * @codeCoverageIgnore
      * It returns true if the request belongs to an API service, false otherwise
      */
     private function isApi(&$parametripassati): bool
@@ -66,7 +67,6 @@ trait FiCoreTabellaControllerTrait
         }
         return $isapi;
     }
-
     public function exportXls(Request $request)
     {
         try {
@@ -77,7 +77,7 @@ trait FiCoreTabellaControllerTrait
             if (file_exists($filexls)) {
                 $response = [
                     'status' => '200',
-                    'file' => 'data:application/vnd.ms-excel;base64,'.base64_encode(file_get_contents($filexls)),
+                    'file' => 'data:application/vnd.ms-excel;base64,' . base64_encode(file_get_contents($filexls)),
                 ];
                 try {
                     unlink($filexls);
@@ -93,13 +93,12 @@ trait FiCoreTabellaControllerTrait
         } catch (\Exception $exc) {
             $response = [
                 'status' => '500',
-                'file' => $exc->getFile().' -> Riga: '.$exc->getLine().' -> '.$exc->getMessage(),
+                'file' => $exc->getFile() . ' -> Riga: ' . $exc->getLine() . ' -> ' . $exc->getMessage(),
             ];
         }
 
         return new JsonResponse($response);
     }
-
     protected function getParametriTabella(array $parametripassati)
     {
         $doctrine = $this->get('doctrine');
@@ -111,12 +110,10 @@ trait FiCoreTabellaControllerTrait
             'paginetotali' => $configurazionetabella->getPaginetotali(),
             'righetotali' => $configurazionetabella->getRighetotali(),
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
-        
         ];
 
         return $parametritabella;
     }
-
     /**
      * Append records to the given parameters of table.
      * It deals the difference between an API service or a ORM service.
@@ -131,7 +128,6 @@ trait FiCoreTabellaControllerTrait
         }
         return $results;
     }
-
     protected function getParametriTabellaXls(array $parametripassati)
     {
         $doctrine = $this->get('doctrine');
@@ -148,17 +144,16 @@ trait FiCoreTabellaControllerTrait
 
         return $parametritabella;
     }
-
     protected function getTabellaTemplateInformations($controller)
     {
-        $template = $controller.'/Tabella/tabellacontainer.html.twig';
-        $path = $controller.'/';
+        $template = $controller . '/Tabella/tabellacontainer.html.twig';
+        $path = $controller . '/';
         if (!$this->get('twig')->getLoader()->exists($template)) {
-            $template = '@BiCore/'.$controller.'/Tabella/tabellacontainer.html.twig';
-            $path = '@BiCore/'.$controller.'/';
+            $template = '@BiCore/' . $controller . '/Tabella/tabellacontainer.html.twig';
+            $path = '@BiCore/' . $controller . '/';
             if (!$this->get('twig')->getLoader()->exists($template)) {
                 $path = '@BiCore/Standard/';
-                $template = $path.'Tabella/tabellacontainer.html.twig';
+                $template = $path . 'Tabella/tabellacontainer.html.twig';
             }
         }
 

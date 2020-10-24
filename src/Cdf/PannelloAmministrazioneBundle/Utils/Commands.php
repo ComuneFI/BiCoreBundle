@@ -23,6 +23,7 @@ class Commands
     // @codeCoverageIgnoreStart
     public function getVcs()
     {
+        $command = "";
         $fs = new Filesystem();
 
         $projectDir = $this->apppaths->getRootPath();

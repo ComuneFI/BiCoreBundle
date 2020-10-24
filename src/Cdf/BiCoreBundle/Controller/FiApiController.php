@@ -9,9 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
 use Symfony\Component\Inflector\Inflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
-use \Swagger\Insurance\Model\ModelsClaim;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FiApiController extends AbstractController
 {
 
@@ -71,7 +73,7 @@ class FiApiController extends AbstractController
     protected function loadInflectorExceptions()
     {
         $vars = getenv("INFLECTOR_EXCEPTIONS");
-        if (isset($vars)) {
+        if (($vars)) {
             $values = json_decode($vars, true);
             $this->inflectorExceptions = $values;
         }

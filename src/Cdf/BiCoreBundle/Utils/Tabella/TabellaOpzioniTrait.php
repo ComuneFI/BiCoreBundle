@@ -126,7 +126,7 @@ trait TabellaOpzioniTrait
     private function elaboraJoin(&$opzionibuilder, $colonnadatabase, $ancestors)
     {
         $entitycollegata = $colonnadatabase['associationtable']['targetEntity'];
-        $utils = new EntityUtils($this->em, $entitycollegata);
+        $utils = new EntityUtils($this->em);
         $tablecollegataname = $this->em->getClassMetadata($entitycollegata)->getTableName();
         $colonnecollegate = $utils->getEntityColumns($entitycollegata);
         foreach ($colonnecollegate as $colonnacorrente) {

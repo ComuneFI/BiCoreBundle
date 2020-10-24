@@ -9,6 +9,9 @@ use Swagger\Insurance\Model\ModelsEvent;
 use DateTime;
 use function count;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ModelUtils
 {
 

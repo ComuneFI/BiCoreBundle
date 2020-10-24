@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait FiApiCoreCrudControllerTrait
 {
     use FiApiCoreCrudInlineControllerTrait;

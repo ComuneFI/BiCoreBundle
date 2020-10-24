@@ -7,6 +7,7 @@ use hanneskod\classtools\Iterator\ClassIterator;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyFields)
+ * @codeCoverageIgnore
  */
 
 class ApiUtils
