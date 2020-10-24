@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait FiApiCoreCrudInlineControllerTrait
 {
     private function checkAggiornaRight($id, $token)

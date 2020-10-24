@@ -11,6 +11,9 @@ use Symfony\Component\Inflector\Inflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FiApiController extends AbstractController
 {
 
