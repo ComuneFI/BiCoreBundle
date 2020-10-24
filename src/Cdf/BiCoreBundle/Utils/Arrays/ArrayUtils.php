@@ -81,7 +81,7 @@ class ArrayUtils
         $vettorerisultati = array();
 
         foreach ($search as $key => $singolaricerca) {
-            $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key, $debug);
+            $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key);
 
             if (false === $trovato) {
                 $vettorerisultati = false;
@@ -178,6 +178,7 @@ class ArrayUtils
      */
     public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true)
     {
+        $temp_array = array();
         //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
         if (!self::isSortArray($array, $subkey)) {
             if (count($array)) {

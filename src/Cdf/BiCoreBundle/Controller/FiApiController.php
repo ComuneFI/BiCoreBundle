@@ -70,7 +70,7 @@ class FiApiController extends AbstractController
     protected function loadInflectorExceptions()
     {
         $vars = getenv("INFLECTOR_EXCEPTIONS");
-        if (isset($vars)) {
+        if (($vars)) {
             $values = json_decode($vars, true);
             $this->inflectorExceptions = $values;
         }

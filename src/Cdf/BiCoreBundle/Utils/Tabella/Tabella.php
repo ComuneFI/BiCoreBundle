@@ -77,7 +77,7 @@ class Tabella
         $this->user = $this->parametri['user'];
 
         if (!isset($this->parametri['isapi'])) {
-            $utils = new EntityUtils($this->em, $this->entityname);
+            $utils = new EntityUtils($this->em);
             $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
         } else {
             $this->apiController = $this->getTabellaParameter('apicontroller');
