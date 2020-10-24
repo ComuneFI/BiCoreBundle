@@ -5,13 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * App\Entity\Magazzino.
+ * App\Entity\Magazzino
  *
  * @ORM\Entity()
  * @ORM\Table(name="Magazzino", indexes={@ORM\Index(name="fk_Magazzino_Ordine1_idx", columns={"ordine_id"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseMagazzino", "extended":"Magazzino"})
+ * @ORM\DiscriminatorMap({"base": "BaseMagazzino", "extended": "Magazzino"})
  */
 class BaseMagazzino
 {
@@ -55,8 +55,7 @@ class BaseMagazzino
     /**
      * Set the value of id.
      *
-     * @param int $id
-     *
+     * @param integer $id
      * @return \App\Entity\Magazzino
      */
     public function setId($id)
@@ -69,7 +68,7 @@ class BaseMagazzino
     /**
      * Get the value of id.
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -79,8 +78,7 @@ class BaseMagazzino
     /**
      * Set the value of ordine_id.
      *
-     * @param int $ordine_id
-     *
+     * @param integer $ordine_id
      * @return \App\Entity\Magazzino
      */
     public function setOrdineId($ordine_id)
@@ -93,7 +91,7 @@ class BaseMagazzino
     /**
      * Get the value of ordine_id.
      *
-     * @return int
+     * @return integer
      */
     public function getOrdineId()
     {
@@ -103,8 +101,7 @@ class BaseMagazzino
     /**
      * Set the value of evaso.
      *
-     * @param bool $evaso
-     *
+     * @param boolean $evaso
      * @return \App\Entity\Magazzino
      */
     public function setEvaso($evaso)
@@ -117,7 +114,7 @@ class BaseMagazzino
     /**
      * Get the value of evaso.
      *
-     * @return bool
+     * @return boolean
      */
     public function getEvaso()
     {
@@ -128,36 +125,11 @@ class BaseMagazzino
      * Set the value of dataspedizione.
      *
      * @param \DateTime $dataspedizione
-     *
      * @return \App\Entity\Magazzino
      */
     public function setDataspedizione($dataspedizione)
     {
         $this->dataspedizione = $dataspedizione;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of giornodellasettimana.
-     *
-     * @return \integer
-     */
-    public function getGiornodellasettimana()
-    {
-        return $this->giornodellasettimana;
-    }
-
-    /**
-     * Set the value of giornodellasettimana.
-     *
-     * @param \integer $giornodellasettimana
-     *
-     * @return \App\Entity\Magazzino
-     */
-    public function setGiornodellasettimana($giornodellasettimana)
-    {
-        $this->giornodellasettimana = $giornodellasettimana;
 
         return $this;
     }
@@ -173,10 +145,32 @@ class BaseMagazzino
     }
 
     /**
+     * Set the value of giornodellasettimana.
+     *
+     * @param integer $giornodellasettimana
+     * @return \App\Entity\Magazzino
+     */
+    public function setGiornodellasettimana($giornodellasettimana)
+    {
+        $this->giornodellasettimana = $giornodellasettimana;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of giornodellasettimana.
+     *
+     * @return integer
+     */
+    public function getGiornodellasettimana()
+    {
+        return $this->giornodellasettimana;
+    }
+
+    /**
      * Set Ordine entity (many to one).
      *
      * @param \App\Entity\Ordine $ordine
-     *
      * @return \App\Entity\Magazzino
      */
     public function setOrdine(Ordine $ordine = null)
@@ -198,6 +192,6 @@ class BaseMagazzino
 
     public function __sleep()
     {
-        return array('id', 'ordine_id', 'evaso', 'dataspedizione');
+        return array('id', 'ordine_id', 'evaso', 'dataspedizione', 'giornodellasettimana');
     }
 }

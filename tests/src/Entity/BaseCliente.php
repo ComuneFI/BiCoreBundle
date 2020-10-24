@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * App\Entity\Cliente.
+ * App\Entity\Cliente
  *
  * @ORM\Entity()
  * @ORM\Table(name="Cliente")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseCliente", "extended":"Cliente"})
+ * @ORM\DiscriminatorMap({"base": "BaseCliente", "extended": "Cliente"})
  */
 class BaseCliente
 {
@@ -72,8 +72,7 @@ class BaseCliente
     /**
      * Set the value of id.
      *
-     * @param int $id
-     *
+     * @param integer $id
      * @return \App\Entity\Cliente
      */
     public function setId($id)
@@ -86,7 +85,7 @@ class BaseCliente
     /**
      * Get the value of id.
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -97,7 +96,6 @@ class BaseCliente
      * Set the value of nominativo.
      *
      * @param string $nominativo
-     *
      * @return \App\Entity\Cliente
      */
     public function setNominativo($nominativo)
@@ -120,8 +118,7 @@ class BaseCliente
     /**
      * Set the value of attivo.
      *
-     * @param bool $attivo
-     *
+     * @param boolean $attivo
      * @return \App\Entity\Cliente
      */
     public function setAttivo($attivo)
@@ -134,7 +131,7 @@ class BaseCliente
     /**
      * Get the value of attivo.
      *
-     * @return bool
+     * @return boolean
      */
     public function getAttivo()
     {
@@ -145,7 +142,6 @@ class BaseCliente
      * Set the value of datanascita.
      *
      * @param \DateTime $datanascita
-     *
      * @return \App\Entity\Cliente
      */
     public function setDatanascita($datanascita)
@@ -168,8 +164,7 @@ class BaseCliente
     /**
      * Set the value of punti.
      *
-     * @param int $punti
-     *
+     * @param integer $punti
      * @return \App\Entity\Cliente
      */
     public function setPunti($punti)
@@ -182,7 +177,7 @@ class BaseCliente
     /**
      * Get the value of punti.
      *
-     * @return int
+     * @return integer
      */
     public function getPunti()
     {
@@ -193,7 +188,6 @@ class BaseCliente
      * Set the value of iscrittoil.
      *
      * @param \DateTime $iscrittoil
-     *
      * @return \App\Entity\Cliente
      */
     public function setIscrittoil($iscrittoil)
@@ -217,7 +211,6 @@ class BaseCliente
      * Set the value of creditoresiduo.
      *
      * @param float $creditoresiduo
-     *
      * @return \App\Entity\Cliente
      */
     public function setCreditoresiduo($creditoresiduo)
@@ -241,7 +234,6 @@ class BaseCliente
      * Set the value of note.
      *
      * @param string $note
-     *
      * @return \App\Entity\Cliente
      */
     public function setNote($note)
@@ -265,7 +257,6 @@ class BaseCliente
      * Add Ordine entity to collection (one to many).
      *
      * @param \App\Entity\Ordine $ordine
-     *
      * @return \App\Entity\Cliente
      */
     public function addOrdine(Ordine $ordine)
@@ -279,7 +270,6 @@ class BaseCliente
      * Remove Ordine entity from collection (one to many).
      *
      * @param \App\Entity\Ordine $ordine
-     *
      * @return \App\Entity\Cliente
      */
     public function removeOrdine(Ordine $ordine)

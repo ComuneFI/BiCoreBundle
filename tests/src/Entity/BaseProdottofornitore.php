@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * App\Entity\Prodottofornitore.
+ * App\Entity\Prodottofornitore
  *
  * @ORM\Entity()
  * @ORM\Table(name="Prodottofornitore", indexes={@ORM\Index(name="fk_Prodottofornitore_Fornitore1_idx", columns={"fornitore_id"})})
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseProdottofornitore", "extended":"Prodottofornitore"})
+ * @ORM\DiscriminatorMap({"base": "BaseProdottofornitore", "extended": "Prodottofornitore"})
  */
 class BaseProdottofornitore
 {
@@ -63,8 +63,7 @@ class BaseProdottofornitore
     /**
      * Set the value of id.
      *
-     * @param int $id
-     *
+     * @param integer $id
      * @return \App\Entity\Prodottofornitore
      */
     public function setId($id)
@@ -77,7 +76,7 @@ class BaseProdottofornitore
     /**
      * Get the value of id.
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -87,8 +86,7 @@ class BaseProdottofornitore
     /**
      * Set the value of fornitore_id.
      *
-     * @param int $fornitore_id
-     *
+     * @param integer $fornitore_id
      * @return \App\Entity\Prodottofornitore
      */
     public function setFornitoreId($fornitore_id)
@@ -101,7 +99,7 @@ class BaseProdottofornitore
     /**
      * Get the value of fornitore_id.
      *
-     * @return int
+     * @return integer
      */
     public function getFornitoreId()
     {
@@ -112,7 +110,6 @@ class BaseProdottofornitore
      * Set the value of descrizione.
      *
      * @param string $descrizione
-     *
      * @return \App\Entity\Prodottofornitore
      */
     public function setDescrizione($descrizione)
@@ -135,8 +132,7 @@ class BaseProdottofornitore
     /**
      * Set the value of quantitadisponibile.
      *
-     * @param int $quantitadisponibile
-     *
+     * @param integer $quantitadisponibile
      * @return \App\Entity\Prodottofornitore
      */
     public function setQuantitadisponibile($quantitadisponibile)
@@ -149,7 +145,7 @@ class BaseProdottofornitore
     /**
      * Get the value of quantitadisponibile.
      *
-     * @return int
+     * @return integer
      */
     public function getQuantitadisponibile()
     {
@@ -160,7 +156,6 @@ class BaseProdottofornitore
      * Set the value of prezzo.
      *
      * @param float $prezzo
-     *
      * @return \App\Entity\Prodottofornitore
      */
     public function setPrezzo($prezzo)
@@ -184,7 +179,6 @@ class BaseProdottofornitore
      * Add Ordine entity to collection (one to many).
      *
      * @param \App\Entity\Ordine $ordine
-     *
      * @return \App\Entity\Prodottofornitore
      */
     public function addOrdine(Ordine $ordine)
@@ -198,7 +192,6 @@ class BaseProdottofornitore
      * Remove Ordine entity from collection (one to many).
      *
      * @param \App\Entity\Ordine $ordine
-     *
      * @return \App\Entity\Prodottofornitore
      */
     public function removeOrdine(Ordine $ordine)
@@ -222,7 +215,6 @@ class BaseProdottofornitore
      * Set Fornitore entity (many to one).
      *
      * @param \App\Entity\Fornitore $fornitore
-     *
      * @return \App\Entity\Prodottofornitore
      */
     public function setFornitore(Fornitore $fornitore = null)
