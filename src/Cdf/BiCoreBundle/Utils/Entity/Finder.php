@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use function count;
 
@@ -10,7 +10,7 @@ class Finder
 {
     private $em;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

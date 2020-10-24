@@ -3,7 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Database;
 
 use DateTime;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,7 +16,7 @@ class DatabaseUtils
     private $em;
     private $kernel;
 
-    public function __construct($kernel, ObjectManager $em)
+    public function __construct($kernel, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
         $this->em = $em;

@@ -3,7 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\Proxy;
 use function count;
 
@@ -11,7 +11,7 @@ class EntityUtils
 {
     private $em;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

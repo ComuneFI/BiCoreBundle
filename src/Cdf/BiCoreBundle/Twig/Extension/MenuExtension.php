@@ -3,7 +3,7 @@
 namespace Cdf\BiCoreBundle\Twig\Extension;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -20,7 +20,7 @@ class MenuExtension extends AbstractExtension
     protected $user;
     protected $rootpath;
 
-    public function __construct(ObjectManager $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, $rootpath)
+    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, $rootpath)
     {
         $this->em = $em;
         $this->urlgenerator = $urlgenerator;

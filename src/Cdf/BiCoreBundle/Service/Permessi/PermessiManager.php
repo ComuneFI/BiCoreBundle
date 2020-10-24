@@ -9,7 +9,7 @@
 namespace Cdf\BiCoreBundle\Service\Permessi;
 
 use Cdf\BiCoreBundle\Entity\Permessi;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PermessiManager
@@ -17,7 +17,7 @@ class PermessiManager
     private $em;
     private $user;
     
-    public function __construct(ObjectManager $em, TokenStorageInterface $user)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $user)
     {
         $this->em = $em;
         $this->user = $user->getToken()->getUser();
