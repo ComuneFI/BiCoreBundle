@@ -30,9 +30,9 @@ trait FiCoreTabellaControllerTrait
         $entity = new $classbundle();
         $controller = ParametriTabella::getParameter($parametripassati['nomecontroller']);
         $form = $this->createForm(
-                $formType,
-                $entity,
-                ['attr' => [
+            $formType,
+            $entity,
+            ['attr' => [
                         'id' => 'formdati' . $controller,
                     ],
                     'action' => $this->generateUrl($controller . '_new'),
@@ -46,8 +46,8 @@ trait FiCoreTabellaControllerTrait
         $parametri['templatelocation'] = $templateobj['path'];
 
         return $this->render(
-                        $templateobj['template'],
-                        ['parametri' => $parametri]
+            $templateobj['template'],
+            ['parametri' => $parametri]
         );
     }
     public function setTabellaxls(TabellaXls $tabellaxls)
