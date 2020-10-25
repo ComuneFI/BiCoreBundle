@@ -20,8 +20,8 @@ class ProjectPath
 
     public function setRootDir($projectDir)
     {
-        $this->projectdir = dirname($projectDir);
-        $this->rootdir = dirname($projectDir);
+        $this->projectdir = $projectDir;
+        $this->rootdir = $projectDir;
     }
 
     public function setCacheDir($cacheDir)
