@@ -32,7 +32,7 @@ services:
     Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath:
         public: false
         calls:
-             - [setRootDir, ['%kernel.root_dir%']]
+             - [setRootDir, ['%kernel.project_dir%']]
              - [setCacheDir, ['%kernel.cache_dir%']]
              - [setLogsDir, ['%kernel.logs_dir%']]
 

@@ -200,6 +200,9 @@ class MenuExtension extends AbstractExtension
 
     protected function routeExists($name)
     {
+        if ($name === null) {
+            return false;
+        }
         $router = $this->urlgenerator;
 
         if ((null === $router->getRouteCollection()->get($name)) ? false : true) {
