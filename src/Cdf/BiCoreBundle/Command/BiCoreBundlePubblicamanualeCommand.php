@@ -24,7 +24,7 @@ class BiCoreBundlePubblicamanualeCommand extends Command
 
     public function __construct($projectdir, Filesystem $fs)
     {
-        $this->projectdir = dirname($projectdir);
+        $this->projectdir = $projectdir;
         $this->fs = $fs;
 
         // you *must* call the parent constructor

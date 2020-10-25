@@ -2,7 +2,7 @@
 
 namespace Cdf\BiCoreBundle\Listener;
 
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 class MaintenanceListener
@@ -14,7 +14,7 @@ class MaintenanceListener
         $this->lockFilePath = $lockFilePath;
     }
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         $lockfile = $this->lockFilePath;
         if (!file_exists($lockfile)) {
