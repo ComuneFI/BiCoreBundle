@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use \Throwable;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
@@ -17,7 +18,7 @@ class DatabaseInfoDataCollector extends DataCollector
         $this->em = $em;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, Throwable $exception = null)
     {
         $this->data = array(
             'database_driver' => $this->em->getConnection()->getDriver()->getName(),
