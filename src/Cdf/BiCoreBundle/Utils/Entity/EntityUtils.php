@@ -4,7 +4,7 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Common\Proxy\Proxy;
 use function count;
 
 class EntityUtils

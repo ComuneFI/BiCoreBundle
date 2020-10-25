@@ -336,7 +336,6 @@ echo "git pull"
 echo "git checkout develop"
 echo "git flow release start "$(compose)
 echo "git flow release finish "$(compose)
-echo "git flow release finish "$(compose)
 echo "git push origin develop master --tags"
 
 # is proposed tag in conflict with any other TAG
