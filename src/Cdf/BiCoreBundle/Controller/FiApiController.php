@@ -7,7 +7,7 @@ use function count;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
-use Symfony\Component\Inflector\Inflector;
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 
@@ -87,7 +87,8 @@ class FiApiController extends AbstractController
         if (isset($this->inflectorExceptions[$singleForm])) {
             return $this->inflectorExceptions[$singleForm];
         }
-        return Inflector::pluralize($singleForm);
+        $inflector = new EnglishInflector();
+        return $inflector->pluralize($singleForm);
     }
 
     /**
