@@ -157,7 +157,7 @@
         "version": "2.7.0"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.2"
     },
     "php-coveralls/php-coveralls": {
         "version": "v2.2.0"
