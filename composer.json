@@ -68,7 +68,6 @@
         "php-coveralls/php-coveralls": "^2.0",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "^0.12.51",
-        "sebastian/phpcpd": "^4.0|^5.0|^6.0",
         "sensiolabs/security-checker": "^6.0",
         "squizlabs/php_codesniffer": "^3.3",
         "symfony/browser-kit": "5.1.*",
