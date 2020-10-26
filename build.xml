@@ -10,7 +10,6 @@
                     bicoredemo-loaddefaultdata,
                     php-lint-ci,
                     phpcs-ci,
-                    phpcpd-ci,
                     phpmd-ci,
                     phpstan-ci,
                     php-security-checker,
@@ -18,6 +17,7 @@
                     finish">
     </target>
     <!-- upgradechromedriver, -->
+    <!-- phpcpd-ci -->
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
         <delete dir="build/artifacts/logs"/>
