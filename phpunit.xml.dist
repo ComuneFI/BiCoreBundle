@@ -18,7 +18,6 @@
         </testsuite>
         <testsuite name="App">
             <directory suffix=".php">./tests/App/Controller</directory>
-            <directory suffix=".php">./tests/App/Functional</directory>
 
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Collector</directory>
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Command</directory>
@@ -29,6 +28,9 @@
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Utils</directory>
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Listener</directory>
 
+        </testsuite>
+        <testsuite name="AppFunctional">
+            <directory suffix=".php">./tests/App/Functional</directory>
             <directory suffix=".php">./tests/Cdf/BiCoreBundle/Functional</directory>
         </testsuite>
     </testsuites>
