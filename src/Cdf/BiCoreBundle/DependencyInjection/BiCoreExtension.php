@@ -40,5 +40,7 @@ class BiCoreExtension extends Extension
 
         $container->setParameter('bi_core.userreadroles4test', $config['userreadroles4test']);
         $container->setParameter('bi_core.userreadrolespwd4test', $config['userreadrolespwd4test']);
+
+        $container->setParameter('bi_core.api_inflector_exceptions', $config['api_inflector_exceptions']);
     }
 }

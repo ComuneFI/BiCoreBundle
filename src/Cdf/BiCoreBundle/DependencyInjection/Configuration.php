@@ -33,7 +33,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('usernorolespwd4test')->defaultValue('usernoroles')->end()
                 ->scalarNode('userreadroles4test')->defaultValue('userreadroles')->end()
                 ->scalarNode('userreadrolespwd4test')->defaultValue('userreadroles')->end()
+                ->scalarNode('api_inflector_exceptions')->defaultValue('')->end()
                 ->booleanNode('solosso')->defaultFalse()->end()
+                
                 ->end();
 
         return $treeBuilder;
