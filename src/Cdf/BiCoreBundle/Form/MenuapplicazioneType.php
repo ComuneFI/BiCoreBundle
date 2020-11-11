@@ -7,9 +7,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Cdf\BiCoreBundle\Entity\Menuapplicazione;
+use Cdf\BiCoreBundle\Form\Datatransformer\MenuapplicazioneTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class MenuapplicazioneType extends AbstractType
 {
+
+    private $transformer;
+
+    public function __construct(MenuapplicazioneTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -21,11 +31,16 @@ class MenuapplicazioneType extends AbstractType
             'attr' => array(
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-        ), );
+            ),);
         $builder
                 ->add('nome')
                 ->add('percorso')
-                ->add('padre')
+                ->add('padre', EntityType::class, [
+                    'class' => Menuapplicazione::class,
+                    // validation message if the data transformer fails
+                    'invalid_message' => 'Padre non valido',
+                    'required' => false
+                ])
                 ->add('ordine')
                 ->add('attivo')
                 ->add('target')
@@ -33,8 +48,9 @@ class MenuapplicazioneType extends AbstractType
                 ->add('notifiche')
                 ->add('autorizzazionerichiesta')
                 ->add('percorsonotifiche')
-                ->add('submit', SubmitType::class, $submitparms)
-        ;
+                ->add('submit', SubmitType::class, $submitparms);
+
+        $builder->get('padre')->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)
