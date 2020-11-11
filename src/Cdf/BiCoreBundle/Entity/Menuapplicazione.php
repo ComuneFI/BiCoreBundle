@@ -25,4 +25,8 @@ class Menuapplicazione extends BaseMenuapplicazione
     {
         return $this->getNotifiche();
     }
+    public function __toString()
+    {
+        return $this->getNome();
+    }
 }
