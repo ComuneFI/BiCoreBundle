@@ -13,6 +13,7 @@
                     phpmd-ci,
                     phpstan-ci,
                     php-security-checker,
+                    upgradechromedriver,
                     phpunit-ci,
                     finish">
     </target>
