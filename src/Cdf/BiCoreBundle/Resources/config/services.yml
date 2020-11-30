@@ -170,8 +170,8 @@ services:
     cdf.bicorebundle.form.menuapplicazionetype:
         class: Cdf\BiCoreBundle\Form\MenuapplicazioneType
         arguments:
-            - "@cdf.bicorebundle.form.menuapplicazionetransformer"    
-            
+            - "@cdf.bicorebundle.form.menuapplicazionetransformer"
+
     cdf.bicorebundle.form.menuapplicazionetransformer:
         class: Cdf\BiCoreBundle\Form\Datatransformer\MenuapplicazioneTransformer
         arguments:
