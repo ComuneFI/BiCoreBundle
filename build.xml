@@ -152,6 +152,7 @@
             <arg value="analyze"/>
             <arg value="src"/>
             <arg value="--level=1"/>
+            <arg value="-memory-limit=-1"/>            
         </exec>
     </target>
     
