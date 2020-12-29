@@ -1,0 +1,47 @@
+image: $CI_REGISTRY/docker/php7.4-apache
+
+stages:
+    - build
+
+variables:
+  # symfony 4
+  http_proxy: 'http://proxyhttp.comune.intranet:8080/'
+  https_proxy: 'http://proxyhttps.comune.intranet:8080/'
+  ftp_proxy: 'http://proxyftp.comune.intranet:8080/'
+  no_proxy: 'localhost,127.0.0.1,.localhost,.comune.intranet'
+  https_proxy_request_fulluri: 0
+  HTTP_PROXY: 'http://proxyhttp.comune.intranet:8080/'
+  HTTPS_PROXY: 'http://proxyhttps.comune.intranet:8080/'
+  FTP_PROXY: 'http://proxyftp.comune.intranet:8080/'
+  NO_PROXY: 'localhost,127.0.0.1,.localhost,.comune.intranet'
+  HTTPS_PROXY_REQUEST_FULLURI: 0
+  NSS_SSL_CBC_RANDOM_IV: 0
+  ANT_OPTS: '-Dhttp.proxyHost=proxyhttp.comune.intranet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxyhttps.comune.intranet -Dhttps.proxyPort=8080'
+  
+cache:
+  paths:
+  - vendor/
+
+before_script:
+      - mkdir ~/.ssh
+      - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+      - chmod 644 ~/.ssh/known_hosts
+      - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client  -y )'
+      #- 'which sshpass || ( apt-get update -y && apt-get install sshpass  -y )'
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      - chmod 700 ~/.ssh
+      - chmod 644 ~/.ssh/known_hosts
+      - echo -e "Host *\n\tStrictHostKeyChecking no\n\tLogLevel=quiet\n\n" > ~/.ssh/config
+      - php -m
+
+build:
+    only:
+      refs:
+        - develop
+    stage: build
+    script:
+      - ant
+    after_script:
+      - cat ./tests/var/log/test.log
+
