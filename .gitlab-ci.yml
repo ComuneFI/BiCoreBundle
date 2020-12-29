@@ -23,16 +23,6 @@ cache:
   - vendor/
 
 before_script:
-      - mkdir ~/.ssh
-      - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-      - chmod 644 ~/.ssh/known_hosts
-      - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client  -y )'
-      #- 'which sshpass || ( apt-get update -y && apt-get install sshpass  -y )'
-      - eval $(ssh-agent -s)
-      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-      - chmod 700 ~/.ssh
-      - chmod 644 ~/.ssh/known_hosts
-      - echo -e "Host *\n\tStrictHostKeyChecking no\n\tLogLevel=quiet\n\n" > ~/.ssh/config
       - php -m
 
 build:
