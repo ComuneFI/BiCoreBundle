@@ -17,7 +17,6 @@
                     phpunit-ci,
                     finish">
     </target>
-    <!-- upgradechromedriver, -->
     <!-- phpcpd-ci -->
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
