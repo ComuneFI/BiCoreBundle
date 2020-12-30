@@ -61,9 +61,9 @@ build:
       - ant
     when: on_success
     artifacts:
-    paths:
-      - build/artifacts/coverage/clover.xml
-    expire_in: 1 week
+      paths:
+        - build/artifacts/coverage/clover.xml
+      expire_in: 1 week
     
 cleanup_build_job:
   stage: cleanup_build
