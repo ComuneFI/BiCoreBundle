@@ -1,5 +1,8 @@
 image: $CI_REGISTRY/docker/php7.4-apache
 
+services:
+  - postgres:12.2-alpine
+
 stages:
     - build
 
@@ -17,6 +20,9 @@ variables:
   HTTPS_PROXY_REQUEST_FULLURI: 0
   NSS_SSL_CBC_RANDOM_IV: 0
   ANT_OPTS: '-Dhttp.proxyHost=proxyhttp.comune.intranet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxyhttps.comune.intranet -Dhttps.proxyPort=8080'
+  POSTGRES_DB: bicorebundletest
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: "adminpass"
   
 cache:
   paths:
