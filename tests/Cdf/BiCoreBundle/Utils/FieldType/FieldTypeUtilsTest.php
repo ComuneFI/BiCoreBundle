@@ -20,9 +20,7 @@ class FieldTypeUtilsTest extends WebTestCase
     public function testGetDateTimeValueFromTimestamp()
     {
         $data = 1272508903;
-        $data1 = new \DateTime('2010-04-29 04:41:43');
-        $data2 = FieldTypeUtils::getDateTimeValueFromTimestamp($data);
-        $this->assertEquals($data1->format("Y-m-d H:i:s"), $data2->format("Y-m-d H:i:s"));
+        $this->assertEquals(new \DateTime('2010-04-29 04:41:43'), FieldTypeUtils::getDateTimeValueFromTimestamp($data));
     }
 
     public function testExtractDateTime()
