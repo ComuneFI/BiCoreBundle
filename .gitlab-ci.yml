@@ -5,7 +5,9 @@ services:
 
 stages:
     - build
-
+    - cleanup_build
+    - test_coverage
+    
 variables:
   # symfony 4
   http_proxy: 'http://proxyhttp.comune.intranet:8080/'
@@ -57,12 +59,17 @@ build:
     stage: build
     script:
       - ant
-    after_script:
-      - |
-        if [ -e success ]; then
-            php vendor/bin/php-coveralls -v
-            wget https://scrutinizer-ci.com/ocular.phar -t 3
-            php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml
-        else
-          cat ./tests/var/logs/test.log
-        fi
+
+cleanup_build_job:
+  stage: cleanup_build
+  script:
+  - cat ./tests/var/logs/test.log
+  when: on_failure
+
+test_coverage_job:
+  stage: test_coverage
+  script:
+  - php vendor/bin/php-coveralls -v
+  - wget https://scrutinizer-ci.com/ocular.phar -t 3
+  - php ocular.phar code-coverage:upload --format=php-clover build/artifacts/coverage/clover.xml
+
