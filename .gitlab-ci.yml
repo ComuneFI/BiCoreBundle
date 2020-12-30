@@ -30,7 +30,7 @@ variables:
   MAILER_DSN: $MAILER_DSN
   
   CHROMEDRIVER_DIR: /chromedriver
-  
+  DISPLAY: ":0.0"
 cache:
   paths:
   - vendor/
@@ -46,9 +46,8 @@ before_script:
     # Install ChromeDriver
     #- mkdir $CHROMEDRIVER_DIR
     #- CHROME_VERSION=$(google-chrome --product-version | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,4\}[0-9][^.]\).*/\1/p') && CHROMEDRIVER_VERSION=$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR      
-    - export DISPLAY=:99.0
     - apt-get update && apt-get install -y xvfb fontconfig pcregrep
-    - Xvfb :99 -ac &
+    - Xvfb :0 -ac -screen 0 1024x768x24 &
 
 
 build:
