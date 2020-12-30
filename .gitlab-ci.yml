@@ -23,6 +23,8 @@ variables:
   POSTGRES_DB: bicorebundletest
   POSTGRES_USER: admin
   POSTGRES_PASSWORD: "adminpass"
+  DATABASE_URL: $DATABASE_URL
+  MAILER_DSN: $MAILER_DSN
   
 cache:
   paths:
