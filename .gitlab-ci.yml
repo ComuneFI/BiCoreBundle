@@ -82,4 +82,4 @@ test_coverage_job:
     - wget https://scrutinizer-ci.com/ocular.phar -t 3
     - php ocular.phar code-coverage:upload --format=php-clover clover.xml
   dependencies:
-    - build_job
+    - build
