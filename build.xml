@@ -168,7 +168,7 @@
             <env key="PANTHER_NO_SANDBOX" value="1"/>
             <env key="PANTHER_WEB_SERVER_PORT" value="9080"/>
             <arg line="--configuration=${basedir}/phpunit.xml.dist"/>
-            <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
+            <arg line="--coverage-clover=${basedir}/build/logs/clover.xml"/>
         </exec>
     </target>
 </project>
