@@ -1,0 +1,72 @@
+image: $CI_REGISTRY/docker/php7.4-xdebug-apache
+
+services:
+  - postgres:12.2-alpine
+
+stages:
+    - build
+    - cleanup_build
+    
+variables:
+  # symfony 4
+  http_proxy: 'http://proxyhttp.comune.intranet:8080/'
+  https_proxy: 'http://proxyhttps.comune.intranet:8080/'
+  ftp_proxy: 'http://proxyftp.comune.intranet:8080/'
+  no_proxy: 'localhost,127.0.0.1,.localhost,.comune.intranet'
+  https_proxy_request_fulluri: 0
+  HTTP_PROXY: 'http://proxyhttp.comune.intranet:8080/'
+  HTTPS_PROXY: 'http://proxyhttps.comune.intranet:8080/'
+  FTP_PROXY: 'http://proxyftp.comune.intranet:8080/'
+  NO_PROXY: 'localhost,127.0.0.1,.localhost,.comune.intranet'
+  HTTPS_PROXY_REQUEST_FULLURI: 0
+  NSS_SSL_CBC_RANDOM_IV: 0
+  
+  ANT_OPTS: '-Dhttp.proxyHost=proxyhttp.comune.intranet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxyhttps.comune.intranet -Dhttps.proxyPort=8080'
+  
+  POSTGRES_DB: bicorebundletest
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: "adminpass"
+  
+  DATABASE_URL: $DATABASE_URL
+  MAILER_DSN: $MAILER_DSN
+  
+  DISPLAY: ":0.0"
+  
+  COVERALLS_RUN_LOCALLY: 1
+  COVERALLS_REPO_TOKEN: $COVERALLS_REPO_TOKEN
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - vendor/
+    - .composer_cache
+
+before_script:
+    - php -m
+    - apt-get update && apt-get install -y xvfb fontconfig pcregrep
+    - Xvfb :0 -ac -screen 0 1024x768x24 &
+    - echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    - composer config cache-files-dir .composer_cache
+
+build:
+    only:
+      refs:
+        - develop
+    stage: build
+    script:
+      - ant
+      - php vendor/bin/php-coveralls -v
+      - wget https://scrutinizer-ci.com/ocular.phar -t 3
+      - php ocular.phar code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
+
+    when: on_success
+    artifacts:
+      paths:
+        - build/logs/clover.xml
+      expire_in: 1 week
+    
+cleanup_build_job:
+  stage: cleanup_build
+  script:
+    - cat ./tests/var/logs/test.log
+  when: on_failure

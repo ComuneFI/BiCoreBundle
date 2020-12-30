@@ -90,6 +90,9 @@
     "fi/osbundle": {
         "version": "2.0.5"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.1"
+    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -113,6 +116,15 @@
     },
     "hanneskod/classtools": {
         "version": "1.2.1"
+    },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
     },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
@@ -140,9 +152,6 @@
     },
     "ocramius/package-versions": {
         "version": "1.4.2"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
     },
     "pdepend/pdepend": {
         "version": "2.7.0"
@@ -429,6 +438,9 @@
     "symfony/property-access": {
         "version": "v4.4.3"
     },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.4.18"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -572,11 +584,5 @@
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
-    },
-    "zendframework/zend-code": {
-        "version": "3.4.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }
