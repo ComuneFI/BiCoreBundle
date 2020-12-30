@@ -36,16 +36,20 @@ cache:
   - vendor/
 
 before_script:
-      - php -m
-      - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-      - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - php -m
+    #- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    #- sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 
-      # Install Chrome
-      - apt-get update && apt-get install -y google-chrome-stable 
-      
-      # Install ChromeDriver
-      - mkdir $CHROMEDRIVER_DIR
-      - CHROME_VERSION=$(google-chrome --product-version | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,4\}[0-9][^.]\).*/\1/p') && CHROMEDRIVER_VERSION=$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR      
+    # Install Chrome
+    #- apt-get update && apt-get install -y google-chrome-stable 
+
+    # Install ChromeDriver
+    #- mkdir $CHROMEDRIVER_DIR
+    #- CHROME_VERSION=$(google-chrome --product-version | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,4\}[0-9][^.]\).*/\1/p') && CHROMEDRIVER_VERSION=$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION) && wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR      
+    - export DISPLAY=:99.0
+    - apt-get update && apt-get install -y xvfb fontconfig pcregrep
+    - Xvfb :99 -ac &
+
 
 build:
     only:
