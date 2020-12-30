@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/docker/php7.4-apache
+image: $CI_REGISTRY/docker/php7.4-xdebug-apache
 
 services:
   - postgres:12.2-alpine
@@ -29,7 +29,6 @@ variables:
   DATABASE_URL: $DATABASE_URL
   MAILER_DSN: $MAILER_DSN
   
-  CHROMEDRIVER_DIR: /chromedriver
   DISPLAY: ":0.0"
 cache:
   paths:
@@ -58,5 +57,5 @@ build:
     script:
       - ant
     after_script:
-      - cat ./tests/var/log/test.log
+      - cat ./tests/var/logs/test.log
 
