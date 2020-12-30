@@ -49,9 +49,9 @@ before_script:
     - composer config cache-files-dir .composer_cache
 
 build:
-    only:
-      refs:
-        - develop
+#    only:
+#      refs:
+#        - develop
     stage: build
     script:
       - ant
