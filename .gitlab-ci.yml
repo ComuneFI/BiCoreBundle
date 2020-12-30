@@ -19,12 +19,17 @@ variables:
   NO_PROXY: 'localhost,127.0.0.1,.localhost,.comune.intranet'
   HTTPS_PROXY_REQUEST_FULLURI: 0
   NSS_SSL_CBC_RANDOM_IV: 0
+  
   ANT_OPTS: '-Dhttp.proxyHost=proxyhttp.comune.intranet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxyhttps.comune.intranet -Dhttps.proxyPort=8080'
+  
   POSTGRES_DB: bicorebundletest
   POSTGRES_USER: admin
   POSTGRES_PASSWORD: "adminpass"
+  
   DATABASE_URL: $DATABASE_URL
   MAILER_DSN: $MAILER_DSN
+  
+  CHROMEDRIVER_DIR: /chromedriver
   
 cache:
   paths:
@@ -32,6 +37,18 @@ cache:
 
 before_script:
       - php -m
+      - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+      - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+
+      # Install Chrome
+      - apt-get update && apt-get install -y google-chrome-stable 
+      
+      # Install ChromeDriver
+      - mkdir $CHROMEDRIVER_DIR
+      - CHROME_VERSION=$(google-chrome --product-version | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,4\}[0-9][^.]\).*/\1/p'); \
+      - CHROMEDRIVER_VERSION=$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION); \
+      - wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+      - unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR      
 
 build:
     only:
