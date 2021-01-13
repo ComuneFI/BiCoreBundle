@@ -87,6 +87,9 @@
     "egulias/email-validator": {
         "version": "2.1.15"
     },
+    "ezyang/htmlpurifier": {
+        "version": "v4.13.0"
+    },
     "fi/osbundle": {
         "version": "2.0.5"
     },

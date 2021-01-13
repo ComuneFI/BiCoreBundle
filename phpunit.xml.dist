@@ -62,14 +62,16 @@
 
     </filter>
 
-    <listeners>
-
-        <listener class="Symfony\Component\Panther\ServerListener" />
-        <!-- PHP 7.3+-->
-        <!-- <listener class="Symfony\Component\Panther\ServerExtension" /> -->
+    <!-- PHP <7.3-->
+    <!-- <listeners>-->
+    <!--<listener class="Symfony\Component\Panther\ServerListener" /> -->
+    <!-- <listener class="Symfony\Component\Panther\ServerListener"/> -->
+    <!-- <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" /> -->
+    <!-- <listener class="Symfony\Bridge\PhpUnit\CoverageListener" /> -->
+    <!-- </listeners>-->
     
-        <!-- <listener class="Symfony\Component\Panther\ServerListener"/> -->
-        <!-- <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" /> -->
-        <!-- <listener class="Symfony\Bridge\PhpUnit\CoverageListener" /> -->
-    </listeners>
+    <!-- PHP 7.3+-->
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension" />
+    </extensions>
 </phpunit>
