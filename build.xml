@@ -12,11 +12,11 @@
                     phpcs-ci,
                     phpmd-ci,
                     phpstan-ci,
-                    php-security-checker,
                     upgradechromedriver,
                     phpunit-ci,
                     finish">
     </target>
+    <!-- php-security-checker,-->
     <!-- phpcpd-ci -->
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>

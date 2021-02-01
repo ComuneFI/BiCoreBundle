@@ -201,18 +201,6 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
-    "sensiolabs/security-checker": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
-        },
-        "files": [
-            "tests/config/packages/security_checker.yaml"
-        ]
-    },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
         "recipe": {
