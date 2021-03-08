@@ -23,6 +23,9 @@ class DoctrineFieldReader
         $propertyfound = false;
         $subfields = explode('.', str_replace($this->tableprefix, '', $fieldname));
         foreach ($subfields as $field) {
+            if ($object == null) {
+                return null;
+            }
             $property = $this->getObjectProperty($field, $object);
             if ($property) {
                 $object = $object->$property();
