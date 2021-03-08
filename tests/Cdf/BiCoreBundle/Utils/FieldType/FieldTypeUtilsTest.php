@@ -33,7 +33,7 @@ class FieldTypeUtilsTest extends WebTestCase
         $this->assertEquals(new \DateTime($data), FieldTypeUtils::extractDateTime($data));
         $datacomposta = \Cdf\BiCoreBundle\Utils\Tabella\DatetimeTabella::createFromFormat('Y-m-d', '2018-01-01');
         $datetabella = (json_decode(json_encode($datacomposta), true));
-        $this->assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-01'), FieldTypeUtils::extractDateTime($datetabella));
+        $this->assertEquals(\DateTime::createFromFormat('Y-m-d', '2018-01-01')->format("Y-m-d H:i:s"), FieldTypeUtils::extractDateTime($datetabella)->format("Y-m-d H:i:s"));
         $data = 'prova';
         $this->assertEquals(null, FieldTypeUtils::extractDateTime($data));
         $data = true;
