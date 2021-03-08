@@ -120,6 +120,15 @@
     "hanneskod/classtools": {
         "version": "1.2.1"
     },
+    "jms/metadata": {
+        "version": "1.7.0"
+    },
+    "jms/parser-lib": {
+        "version": "1.0.0"
+    },
+    "jms/serializer": {
+        "version": "1.10.0"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -168,11 +177,17 @@
     "php-webdriver/webdriver": {
         "version": "1.7.1"
     },
+    "phpcollection/phpcollection": {
+        "version": "0.5.0"
+    },
     "phpmd/phpmd": {
         "version": "2.8.1"
     },
     "phpoffice/phpspreadsheet": {
         "version": "1.10.1"
+    },
+    "phpoption/phpoption": {
+        "version": "1.7.5"
     },
     "phpstan/phpstan": {
         "version": "0.12.51"
@@ -200,6 +215,9 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "scrutinizer/ocular": {
+        "version": "1.8.1"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
