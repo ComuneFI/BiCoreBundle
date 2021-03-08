@@ -31,7 +31,7 @@ class ClonaruoloCommandTest extends WebTestCase
         $commandTesterClonaruolo->execute(array("ruoloesistente" => "Amministratore", "nuovoruolo" => $nuovoruolo));
         $outputclonaruolo = $commandTesterClonaruolo->getDisplay();
         //echo $outputclonaruolo;
-        $this->assertRegExp('/.../', $outputclonaruolo);
+        $this->assertMatchesRegularExpression('/.../', $outputclonaruolo);
 
         $query = $em->createQueryBuilder()
                 ->select('p')
