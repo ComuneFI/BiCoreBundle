@@ -65,6 +65,7 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^0.3.0",
         "php-coveralls/php-coveralls": "^2.0",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "^0.12.51",
@@ -73,7 +74,7 @@
         "symfony/browser-kit": "4.4.*",
         "symfony/css-selector": "4.4.*",
         "symfony/framework-bundle": "4.4.*",
-        "symfony/panther": "^0.8.0",
+        "symfony/panther": "^1.0.0",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/profiler-pack": "^1.0",
         "symfony/test-pack": "^1.0",

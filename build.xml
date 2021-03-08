@@ -12,12 +12,14 @@
                     phpcs-ci,
                     phpmd-ci,
                     phpstan-ci,
-                    upgradechromedriver,
+                    install-chromedriver,
                     phpunit-ci,
                     finish">
     </target>
     <!-- php-security-checker,-->
     <!-- phpcpd-ci -->
+    <!-- upgrade-chromedriver -->
+
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
         <delete dir="build/artifacts/logs"/>
@@ -155,7 +157,14 @@
         </exec>
     </target>
     
-    <target name="upgradechromedriver" description="Upgrade chromedriver for panther issue #356">
+    <target name="install-chromedriver" description="Install chromedriver for panther">
+        <exec executable="vendor/bin/bdi" failonerror="false">
+            <arg value="detect"/>
+            <arg value="drivers"/>
+        </exec>
+    </target>
+
+    <target name="upgrade-chromedriver" description="Upgrade chromedriver for panther issue #356">
         <exec executable="tests/build/upgradePantherChromedriver.sh" failonerror="false">
         </exec>
     </target>
