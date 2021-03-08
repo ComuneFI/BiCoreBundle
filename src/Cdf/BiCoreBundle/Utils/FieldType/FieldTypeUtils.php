@@ -48,11 +48,11 @@ abstract class FieldTypeUtils
         $date = null;
         if (is_string($value) || (is_array($value) && (isset($value['date'])))) {
             switch (true) {
-                case DateTime::createFromFormat(\DateTime::ISO8601, $value):
-                    $date = DateTime::createFromFormat(\DateTime::ISO8601, $value);
-                    break;
                 case isset($value['date']):
                     $date = new Datetime($value['date']);
+                    break;
+                case DateTime::createFromFormat(\DateTime::ISO8601, $value):
+                    $date = DateTime::createFromFormat(\DateTime::ISO8601, $value);
                     break;
                 case DateTime::createFromFormat('Y-m-d H:i:s', $value):
                     $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
