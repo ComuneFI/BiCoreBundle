@@ -81,3 +81,5 @@ yarn-error.log
 ###< squizlabs/php_codesniffer ###
 /.php-version
 /version.properties
+
+/drivers

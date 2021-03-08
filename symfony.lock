@@ -8,6 +8,9 @@
     "comunedifirenze/user-bundle": {
         "version": "1.2.2.1"
     },
+    "dbrekelmans/bdi": {
+        "version": "0.3"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
