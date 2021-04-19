@@ -17,7 +17,7 @@ class ColonnetabelleRepository extends EntityRepository
         $qb->andWhere('t.nomecampo is not null');
         $qb->orderBy('t.ordineindex', 'asc');
         $qb->setParameter('tabella', $tabella);
-        if ($user && !$user->isSuperadmin()) {
+        if ($user && !$user->getRuoli()->isSuperadmin()) {
             $qb->andWhere('t.operatori_id = :operatore');
             $qb->setParameter('operatore', $user->getId());
         }
