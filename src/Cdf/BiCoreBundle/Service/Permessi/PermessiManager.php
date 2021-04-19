@@ -32,7 +32,7 @@ class PermessiManager
                 $canread = true;
             }
         } else {
-            if ($this->user->isSuperadmin()) {
+            if ($this->user->getRuoli()->isSuperadmin()) {
                 $canread = true;
             }
         }
@@ -49,7 +49,7 @@ class PermessiManager
                 $cancreate = true;
             }
         } else {
-            if ($this->user->isSuperadmin()) {
+            if ($this->user->getRuoli()->isSuperadmin()) {
                 $cancreate = true;
             }
         }
@@ -66,7 +66,7 @@ class PermessiManager
                 $canupdate = true;
             }
         } else {
-            if ($this->user->isSuperadmin()) {
+            if ($this->user->getRuoli()->isSuperadmin()) {
                 $canupdate = true;
             }
         }
@@ -83,7 +83,7 @@ class PermessiManager
                 $candelete = true;
             }
         } else {
-            if ($this->user->isSuperadmin()) {
+            if ($this->user->getRuoli()->isSuperadmin()) {
                 $candelete = true;
             }
         }
