@@ -1,0 +1,95 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+applicationSuite: BiCore
+categories:
+  - application-development
+description:
+  it:
+    features:
+      - bootstrap
+      - jquery
+      - symfony
+    genericName: BiCoreBundle
+    longDescription: |
+      # Intro:
+
+
+      BiCoreBundle è un bundle per symfony (3.4 o superiori) che poggia su
+      framework Open Source (JQuery e Bootstrap e [Bootstrap
+      Italia](https://github.com/italia/bootstrap-italia)),  costruito in modo
+      da essere un accelleratore di produttività riusabile e  ridistribuibile. I
+      prodotti creati con BiCoreBundle sono facilmente manutenibili, la 
+      documentazione dei componenti è ampiamente diffusa on line. Le funzioni
+      che servono ripetitivamente (p.e. login, creazione di  interfacce per le
+      tabelle, etc.) sono nativamente disponibili in tutti i  programmi creati
+      con questo prodotto. Utilizzando doctrine si può generare velocemente una
+      base dati su Mysql,  Postgresql o sqlite (utilizzato per i test)
+      BiCoreBundle è in grado di convertire uno schema database creato tramite 
+      Mysqlworkbench in entity class gestite da symfony tramite doctrine 
+      (indipendentemete dal tipo di database scelto). BiCoreBundle è inoltre
+      dotato di un proprio pannello di amministrazione  che permette velocemente
+      di pubblicare aggiornamenti (tramite Git/Svn),  di creare nuovi form per
+      la procedura che si intende sviluppare,  aggiornare lo schema database
+      partendo dal file generato tramite  Mysqlworkbench, pulizia della cache, e
+      lancio di comandi shell (con le  limitazione dell'utente con cui è in
+      esecuzione il servizio web) tutto  tramite pochi click.
+
+
+      # Obiettivi, destinatari e contesto:
+
+
+      I software sviluppati internamente al Comune di Firenze sono fruiti  da
+      due tipi di soggetti: da una parte i colleghi del Comune di Firenze  hanno
+      bisogno di accedere a una interfaccia che sia coerente, di  semplice
+      utilizzo e pratica. Dall’altra parte i cittadini hanno la necessità di
+      accedere ai servizi  che il Comune mette a disposizione in modo semplice e
+      intuitivo. Per esempio, il software di gestione del Patrimonio Immobiliare
+      è  composto da molti moduli, sia rivolti a chi si occupa di gestire il 
+      patrimonio internamente, sia ai colleghi che si occupano di gestire i 
+      Bandi, sia ai cittadini che possono immettere la domanda direttamente 
+      attraverso una semplice interfaccia fruibile anche da tablet e 
+      smartphone.
+    shortDescription: |-
+      Bundle per symfony che poggia su framework Open Source (JQuery e Bootstrap
+      e Bootstrap Italia)
+developmentStatus: stable
+intendedAudience:
+  scope:
+    - government
+it:
+  conforme:
+    gdpr: false
+    lineeGuidaDesign: true
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+  riuso:
+    codiceIPA: c_d612
+legal:
+  license: MIT
+  mainCopyrightOwner: Comune di Firenze
+  repoOwner: Comune di Firenze
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email: direzione.sistemiinformativi@comune.fi.it
+      name: Direzione Sistemi Informativi
+  type: internal
+name: BiCoreBundle
+platforms:
+  - linux
+releaseDate: '2021-04-19'
+softwareType: library
+softwareVersion: 2.2.5
+url: 'https://github.com/ComuneFI/BiCoreBundle'
