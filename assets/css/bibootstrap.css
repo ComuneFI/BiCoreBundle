@@ -227,3 +227,7 @@
   table thead .sorting_desc_disabled:after {
     opacity: 0
 }
+
+.text-truncate {
+    max-width: calc( 70 * 1vw );
+}
