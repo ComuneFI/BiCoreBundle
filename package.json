@@ -21,6 +21,6 @@
         "jquery-contextmenu": "^2.9.0",
         "moment": "^2.29.1",
         "popover": "^2.4.1",
-        "sweetalert2": "^10.13.0"
+        "sweetalert2": "^11.0.0"
     }
 }
