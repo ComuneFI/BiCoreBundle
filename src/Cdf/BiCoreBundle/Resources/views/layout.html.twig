@@ -35,7 +35,7 @@
         {% endblock %}
         {% block footer %}
             {% if software_version is defined %}
-                <div class="fixed-bottom" role="complementary" aria-label="Versione della applicazione">
+                <div class="fixed-bottom" role="contentinfo" aria-label="Versione della applicazione">
                     <div class="chip chip-sm">
                         <span class="chip-label">{{ parameter('bi_core.appname')}} {{ software_version }}</span>
                     </div>
