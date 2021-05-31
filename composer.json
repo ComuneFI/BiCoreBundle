@@ -45,7 +45,7 @@
         "fi/osbundle": "~2.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "hanneskod/classtools": "^1.2",
-        "kimai/user-bundle": "^2.0",
+        "kimai/user-bundle": "^1.0|^2.0",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "3.0.*",
         "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
         "phpoffice/phpspreadsheet": "^1.4",
