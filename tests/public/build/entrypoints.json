@@ -18,7 +18,7 @@
         "/build/bicore.3dea0a7a.js"
       ],
       "css": [
-        "/build/bicore.6217edd3.css"
+        "/build/bicore.b8275134.css"
       ]
     },
     "login": {
@@ -35,14 +35,14 @@
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
         "/build/981.51afc3c7.js",
-        "/build/994.8b12a548.js",
-        "/build/93.91a5d815.js",
+        "/build/994.d0a01763.js",
+        "/build/93.e180f6df.js",
         "/build/24.b89736e9.js",
         "/build/bitabella.b0311a1d.js"
       ],
       "css": [
         "/build/93.f2da5c07.css",
-        "/build/24.6f7186d9.css"
+        "/build/24.e7e573cf.css"
       ]
     },
     "bidemo": {
@@ -50,25 +50,25 @@
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
         "/build/981.51afc3c7.js",
-        "/build/994.8b12a548.js",
-        "/build/93.91a5d815.js",
+        "/build/994.d0a01763.js",
+        "/build/93.e180f6df.js",
         "/build/24.b89736e9.js",
         "/build/bidemo.b5923dde.js"
       ],
       "css": [
         "/build/93.f2da5c07.css",
-        "/build/24.6f7186d9.css"
+        "/build/24.e7e573cf.css"
       ]
     },
     "adminpanel": {
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/994.8b12a548.js",
+        "/build/994.d0a01763.js",
         "/build/adminpanel.1f7245d3.js"
       ],
       "css": [
-        "/build/adminpanel.159bde85.css"
+        "/build/adminpanel.feba0325.css"
       ]
     }
   }
