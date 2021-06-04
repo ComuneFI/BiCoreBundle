@@ -325,3 +325,11 @@ table thead .sorting_asc_disabled:before,
 table thead .sorting_desc_disabled:after {
     opacity: 0
 }
+
+.bicore-menu-item-level-1 {
+font-size: 1.3em !important;
+}
+
+.bicore-menu-item-level-2 {
+font-size: 1.1em !important;
+}
