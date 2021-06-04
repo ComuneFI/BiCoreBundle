@@ -40,7 +40,7 @@
                             </div>
                         </li>                        
                     {% else %}
-                        <li role="menuitem" class="nav-item"{% if i.classe is defined %} class="nav-link {{ i.classe }}" {% endif %} >
+                        <li class="nav-item"{% if i.classe is defined %} class="nav-link {{ i.classe }}" {% endif %} >
                             <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}" class="nav-link" >
                                 <span>{{ i.nome }} </span>
                             </a>
