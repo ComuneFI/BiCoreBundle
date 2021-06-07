@@ -18,39 +18,153 @@
                     {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
                         <li class="nav-item dropdown megamenu">
                             <a class="nav-link dropdown-toggle bicore-menu-item-level-1" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
-                            <div class="dropdown-menu col-9">
-                                <div class="row">
+                            <div class="dropdown-menu">
+                                <div class="row d-flex justify-content-center automargin bottomborder neutral-2-border-color-b2">
                                     {% set numerolinks = 0 %}
-                                    <div class="col-9 col-lg-3">
+                                    <div class="col-12 col-lg-3">
                                         <div class="link-list-wrapper">
                                             <ul class="link-list">
                                                 {% for sottomenu in i.sottolivello %}
                                                     {% set numerolinks = numerolinks + 1 %}
                                                     {% if (numerolinks > 5) %}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            {% set numerolinks = 0 %}
-                                        {% endif %}
-                                        {% if (numerolinks == 0) %}
-                                            <div class="col-9 col-lg-3">
-                                                <div class="link-list-wrapper">
-                                                    <ul class="link-list">
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        {% set numerolinks = 0 %}
+                                                    {% endif %}
+                                                    {% if (numerolinks == 0) %}
+                                                        <div class="col-12 col-lg-3">
+                                                            <div class="link-list-wrapper">
+                                                                <ul class="link-list">
                                                     {% endif %}
                                                     {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
                                                         <li class="no_toc text-uppercase"><strong>{{sottomenu.nome}}</strong></li>
-                                                                {% set numerolinks = numerolinks + 1 %}
+                                                        {% set numerolinks = numerolinks + 1 %}
                                                         <li><span class="divider">&nbsp;</span></li>
-                                                            {% for sottosubmenu in sottomenu.sottolivello %}
-                                                                {% set numerolinks = numerolinks + 1 %}
-                                                            <li role="menuitem"><a class="list-item bicore-menu-item-level-2" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
-                                                            {% endfor %}
+                                                        {% for sottosubmenu in sottomenu.sottolivello %}
+                                                            {% set numerolinks = numerolinks + 1 %}
+                                                            <li>
+                                                                <a class="list-item bicore-menu-item-level-2" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}">
+                                                                    <span>
+                                                                        <svg class="icon icon-sm icon-primary"><use xlink:href="{{asset('build/svg/sprite.svg#it-chevron-right')}}"></use></svg>
+                                                                        {{ sottosubmenu.nome }}
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
                                                         <li><span class="divider">&nbsp;</span>
-                                                        {% else  %}
+                                                    {% else  %}
+                                                        </li>                              
+                                                        <li>
+                                                            <a class="list-item bicore-menu-item-level-2" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}">
+                                                                <svg class="icon icon-sm icon-primary"><use xlink:href="{{asset('build/svg/sprite.svg#it-chevron-right')}}"></use></svg>
+                                                                <span>{{ sottomenu.nome }}
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    {% endif  %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-label="Chiudi menù">
+                                        <span>
+                                            <svg class="icon icon-sm icon-secondary"><use xlink:href="{{asset('build/svg/sprite.svg#it-collapse')}}"></use></svg>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>                        
+                    {% else %}
+                        <li class="nav-item"{% if i.classe is defined %} class="nav-link {{ i.classe }}" {% endif %} >
+                            <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}" class="nav-link bicore-menu-item-level-1">
+                                <svg class="icon icon-sm icon-white"><use xlink:href="{{asset('build/svg/sprite.svg#it-chevron-right')}}"></use></svg>
+                                <span>{{ i.nome }} </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--
+<nav id="main-toolbar" aria-label="Main Toolbar" class="navbar navbar-expand-lg has-megamenu"><span>&nbsp;</span>
+    <button class="custom-navbar-toggler" type="button" aria-controls="navbarNavB" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarNavB">
+        <svg class="icon icon-sm icon-light"><use xlink:href="{{asset('build/svg/sprite.svg#it-list')}}"></use></svg>
+    </button>
+    <div class="navbar-collapsable" id="navbarNavB">
+        <div class="overlay"></div>
+        <div class="skiplinks">
+            <a class="sr-only sr-only-focusable" href="#main-content">Vai al contenuto principale</a>
+        </div>
+        <div class="close-div sr-only">
+            <button class="btn close-menu" type="button">
+                <svg class="icon icon-sm icon-light"><use xlink:href="{{asset('build/svg/sprite.svg#it-close')}}"></use></svg>close
+            </button>
+        </div>
+        <div class="menu-wrapper">
+            <ul class="navbar-nav">
+                {% for i in risposta %}
+                    {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
+                        {% set contatorevoci = 0 %}
+                        {% set numerocolonne = 1 %}
+                        {% for sottomenu in i.sottolivello %}
+                            {% set contatorevoci = contatorevoci + 1 %}
+                            {% if contatorevoci >= 6 %}
+                                {% set contatorevoci = 0 %}
+                                {% set numerocolonne = numerocolonne + 1 %}
+                            {% endif %}
+                            {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
+                                {% set contatorevoci = contatorevoci + 1 %}
+                                {% for sottosubmenu in sottomenu.sottolivello %}
+                                    {% set contatorevoci = contatorevoci + 1 %}
+                                    {% if contatorevoci >= 6 %}
+                                        {% set contatorevoci = 0 %}
+                                        {% set numerocolonne = numerocolonne + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif  %}
+                        {% endfor %}
+                        {% set valorelarghezza = (3 * numerocolonne) %}
+                        <li class="nav-item dropdown {% if numerocolonne > 1 %}megamenu{% endif %}">
+                            <a class="nav-link dropdown-toggle bicore-menu-item-level-1" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
+                            <div class="dropdown-menu col-{{valorelarghezza|number_format}}">
+                                <div class="row">
+                                    {% set numerolinks = 0 %}
+                                    <div class="col">
+                                        <div class="link-list-wrapper">
+                                            <ul class="link-list">
+                                                {% for sottomenu in i.sottolivello %}
+                                                    {% set numerolinks = numerolinks + 1 %}
+                                                    {% if (numerolinks > 5) %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        {% set numerolinks = 0 %}
+                                                    {% endif %}
+                                                    {% if (numerolinks == 0) %}
+                                                        <div class="col">
+                                                            <div class="link-list-wrapper">
+                                                                <ul class="link-list">
+                                                    {% endif %}
+                                                    {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
+                                                        <li class="no_toc text-uppercase"><strong>{{sottomenu.nome}}</strong></li>
+                                                        {% set numerolinks = numerolinks + 1 %}
+                                                        <li><span class="divider">&nbsp;</span></li>
+                                                        {% for sottosubmenu in sottomenu.sottolivello %}
+                                                            {% set numerolinks = numerolinks + 1 %}
+                                                            <li role="menuitem"><a class="list-item bicore-menu-item-level-2" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
+                                                        {% endfor %}
+                                                        <li><span class="divider">&nbsp;</span>
+                                                    {% else  %}
                                                         </li>                              
                                                         <li><a role="menuitem" class="list-item bicore-menu-item-level-2" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
-                                                        {% endif  %}
-                                                    {% endfor %}
+                                                    {% endif  %}
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
@@ -69,3 +183,4 @@
         </div>
     </div>
 </nav>
+-->
