@@ -1,5 +1,6 @@
 BiCoreBundle
 =============
+[![Build Status](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/build-status/master)
 [![Coverage Status](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/coverage.png?b=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/?branch=master)
 
