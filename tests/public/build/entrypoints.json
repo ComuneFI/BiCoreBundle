@@ -15,10 +15,12 @@
     "bicore": {
       "js": [
         "/build/runtime.24085de5.js",
-        "/build/bicore.3dea0a7a.js"
+        "/build/755.f5cf308f.js",
+        "/build/619.4a6f55eb.js",
+        "/build/bicore.66d2e9c1.js"
       ],
       "css": [
-        "/build/bicore.eebe5470.css"
+        "/build/bicore.e7c900e9.css"
       ]
     },
     "login": {
@@ -34,38 +36,41 @@
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
+        "/build/619.4a6f55eb.js",
         "/build/981.51afc3c7.js",
-        "/build/994.d0a01763.js",
-        "/build/93.e180f6df.js",
+        "/build/765.5ddecf95.js",
+        "/build/93.aad28d20.js",
         "/build/24.b89736e9.js",
-        "/build/bitabella.b0311a1d.js"
+        "/build/bitabella.2ab173aa.js"
       ],
       "css": [
         "/build/93.f2da5c07.css",
-        "/build/24.fa05ad48.css"
+        "/build/24.7f1b75f8.css"
       ]
     },
     "bidemo": {
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
+        "/build/619.4a6f55eb.js",
         "/build/981.51afc3c7.js",
-        "/build/994.d0a01763.js",
-        "/build/93.e180f6df.js",
+        "/build/765.5ddecf95.js",
+        "/build/93.aad28d20.js",
         "/build/24.b89736e9.js",
-        "/build/bidemo.b5923dde.js"
+        "/build/bidemo.732bd148.js"
       ],
       "css": [
         "/build/93.f2da5c07.css",
-        "/build/24.fa05ad48.css"
+        "/build/24.7f1b75f8.css"
       ]
     },
     "adminpanel": {
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/994.d0a01763.js",
-        "/build/adminpanel.1f7245d3.js"
+        "/build/619.4a6f55eb.js",
+        "/build/765.5ddecf95.js",
+        "/build/adminpanel.be1349a9.js"
       ],
       "css": [
         "/build/adminpanel.feba0325.css"

@@ -327,18 +327,13 @@ table thead .sorting_desc_disabled:after {
 }
 
 .bicore-menu-item-level-1 {
-font-size: 1.3em !important;
-}
-
-.bicore-menu-item-level-2 {
 font-size: 1.1em !important;
 }
 
-.automargin {
-    margin: auto !important; 
+.bicore-menu-item-level-2 {
+font-size: 0.9em !important;
 }
-.bottomborder
-{    
-    border-bottom-style: solid !important;
-    border-bottom-width: 1px !important;
+
+.mainmenu-dropdown-menu{
+    z-index:999999 !important;
 }
