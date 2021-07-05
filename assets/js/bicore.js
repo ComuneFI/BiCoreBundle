@@ -25,7 +25,7 @@ function ComponiMenu() {
     var menus = $('#menuhide').data("items");
     $("#navbar-menu").html('');
     var desktopmode = ($(window).width() >= 980) ? true : false;
-    console.log($(window).width());
+    //console.log($(window).width());
     $(menus).each(function (index) {
         if (menus[index].hasOwnProperty('sottolivello') && menus[index].sottolivello.length > 0) {
             var contatorevoci = 0;
