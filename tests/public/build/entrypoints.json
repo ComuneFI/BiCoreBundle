@@ -16,8 +16,8 @@
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/619.4a6f55eb.js",
-        "/build/bicore.66d2e9c1.js"
+        "/build/619.0c494ffb.js",
+        "/build/bicore.5e19e4cc.js"
       ],
       "css": [
         "/build/bicore.e7c900e9.css"
@@ -36,10 +36,10 @@
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/619.4a6f55eb.js",
+        "/build/619.0c494ffb.js",
         "/build/981.51afc3c7.js",
         "/build/765.5ddecf95.js",
-        "/build/93.aad28d20.js",
+        "/build/93.82b05394.js",
         "/build/24.b89736e9.js",
         "/build/bitabella.2ab173aa.js"
       ],
@@ -52,10 +52,10 @@
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/619.4a6f55eb.js",
+        "/build/619.0c494ffb.js",
         "/build/981.51afc3c7.js",
         "/build/765.5ddecf95.js",
-        "/build/93.aad28d20.js",
+        "/build/93.82b05394.js",
         "/build/24.b89736e9.js",
         "/build/bidemo.732bd148.js"
       ],
@@ -68,7 +68,7 @@
       "js": [
         "/build/runtime.24085de5.js",
         "/build/755.f5cf308f.js",
-        "/build/619.4a6f55eb.js",
+        "/build/619.0c494ffb.js",
         "/build/765.5ddecf95.js",
         "/build/adminpanel.be1349a9.js"
       ],
