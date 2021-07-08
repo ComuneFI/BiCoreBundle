@@ -145,6 +145,7 @@ trait TabellaQueryTrait
                 $fieldvalue = 'false';
                 break;
             default:
+                $fieldvalue = 'false';
                 break;
         }
         return $fieldvalue;
