@@ -129,7 +129,8 @@ trait TabellaQueryTrait
     /**
      * Attempt to translate the user given value into a boolean valid field
      */
-    private function translateBoolValue($fieldvalue) {
+    private function translateBoolValue($fieldvalue)
+    {
         switch (strtoupper($fieldvalue)) {
             case 'SI':
                 $fieldvalue = 'true';
