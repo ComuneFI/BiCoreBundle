@@ -159,7 +159,8 @@ trait TabellaQueryTrait
         if ($swaggerKind == 'bool') {
             $filterString .= $this->translateBoolValue($fieldvalue);
         } elseif ($swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
-            $filterString .= '"%'.$fieldvalue.'%"';
+            //"%" chars will be applied by insurance back-end API
+            $filterString .= '"'.$fieldvalue.'"';
         } elseif ($swaggerType == 'datetime' || $swaggerType == 'date') {
             $fieldvalue = \str_replace("/", "-", $fieldvalue);
             //does it contain an hour ?
