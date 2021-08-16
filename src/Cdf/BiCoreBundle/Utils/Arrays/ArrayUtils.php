@@ -159,11 +159,9 @@ class ArrayUtils
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
-     * @param $array Array da ordinare
+     * @param $array Array da ordinare passato per riferimento
      * @param $subkey string Nome della chiave dell'array associato alla chiave per cui ordinare
      * @param $sort_ascending boolean Tipo di ordinamento true ASC, false DESC
-     *
-     * @return array Ritorna l'array ordinato
      *
      * @example sortMultiAssociativeArray($rubrica, "ordine", true);<code>
      *          array["nominativo" => ["nomecampo" => "nominativo","ordine" => 30],<br/><br/>

@@ -1,7 +1,7 @@
 BiCoreBundle
 =============
-[![Build Status](https://travis-ci.com/ComuneFI/BiCoreBundle.svg?branch=master)](https://travis-ci.com/ComuneFI/BiCoreBundle)
-[![Coverage Status](https://coveralls.io/repos/github/ComuneFI/BiCoreBundle/badge.svg?branch=master)](https://coveralls.io/github/ComuneFI/BiCoreBundle?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/build-status/master)
+[![Coverage Status](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/coverage.png?b=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/?branch=master)
 
 > ⚠️ **WORK IN PROGRESS** ⚠️

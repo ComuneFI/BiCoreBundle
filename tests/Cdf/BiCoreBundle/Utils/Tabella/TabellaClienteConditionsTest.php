@@ -347,7 +347,7 @@ class TabellaClienteConditionsTest extends KernelTestCase
                 array(
                     'nomecampo' => $this->controller.'.datanascita',
                     'operatore' => '=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '05/02/1980 00:00:00'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '05/02/1980 00:00:00')->format('Y-m-d'),
                 ),
             ),
             'prefiltri' => array(
@@ -489,7 +489,7 @@ class TabellaClienteConditionsTest extends KernelTestCase
                 array(
                     'nomecampo' => $this->controller.'.datanascita',
                     'operatore' => '>=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y', '01/01/1980'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y', '01/01/1980')->format('Y-m-d'),
                 ),
             ),
             'prefiltri' => array(
@@ -517,7 +517,7 @@ class TabellaClienteConditionsTest extends KernelTestCase
                 array(
                     'nomecampo' => $this->controller.'.datanascita',
                     'operatore' => '>=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y', '01/01/1970'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y', '01/01/1970')->format('Y-m-d'),
                 ),
             ),
             'prefiltri' => array(
@@ -545,12 +545,12 @@ class TabellaClienteConditionsTest extends KernelTestCase
                 array(
                     'nomecampo' => $this->controller.'.iscrittoil',
                     'operatore' => '>=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '01/01/2000 00:00:00'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '01/01/2000 00:00:00')->format('Y-m-d'),
                 ),
                 array(
                     'nomecampo' => $this->controller.'.iscrittoil',
                     'operatore' => '<=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '31/12/2005 00:00:00'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '31/12/2005 00:00:00')->format('Y-m-d'),
                 ),
             ),
             'prefiltri' => array(
@@ -578,12 +578,12 @@ class TabellaClienteConditionsTest extends KernelTestCase
                 array(
                     'nomecampo' => $this->controller.'.iscrittoil',
                     'operatore' => '>=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '01/01/2000 00:00:00'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '01/01/2000 00:00:00')->format('Y-m-d'),
                 ),
                 array(
                     'nomecampo' => $this->controller.'.iscrittoil',
                     'operatore' => '<=',
-                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '31/12/2005 00:00:00'),
+                    'valore' => DatetimeTabella::createFromFormat('d/m/Y H:i:s', '31/12/2005 00:00:00')->format('Y-m-d'),
                 ),
             ),
             'prefiltri' => array(

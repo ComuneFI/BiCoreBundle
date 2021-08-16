@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}{% if software_version is defined %}{{ parameter('bi_core.appname')}} {{ software_version }}{% endif %}{% endblock %}</title>
         {% block favicon %}<link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />{% endblock %}
         <script type="text/javascript">
             window.__PUBLIC_PATH__ = '{{ asset('build/fonts') }}';
@@ -33,10 +33,20 @@
         {% endfor %}
         {% block content %}
         {% endblock %}
+        {% block footer %}
+            {% if software_version is defined %}
+                <div class="fixed-bottom" role="contentinfo" aria-label="Versione della applicazione">
+                    <div class="chip chip-sm">
+                        <span class="chip-label">{{ parameter('bi_core.appname')}} {{ software_version }}</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
         {% block bootstrapitaliajavascript %}
             <!--Consigliato da developer italia caricare il js di bootstrap in fondo alla pagina per una questione di velocità-->
             <!--ma anche perchè altrimenti nella console arriva un errore di typeerror e-->
             {{ encore_entry_script_tags('bootstrapitalia') }}
+            {{ encore_entry_script_tags('bicore') }}
 
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>

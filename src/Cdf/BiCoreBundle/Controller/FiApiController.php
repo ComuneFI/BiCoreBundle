@@ -10,6 +10,7 @@ use Twig\Environment;
 use Symfony\Component\String\Inflector\EnglishInflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * @codeCoverageIgnore
@@ -33,12 +34,12 @@ class FiApiController extends AbstractController
     protected $formClass;
     protected $controllerItem;
     protected $apiController;
-
     protected $options;
     protected $enumOptions;
     protected $inflectorExceptions;
+    protected $params;
 
-    public function __construct(PermessiManager $permessi, Environment $template)
+    public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params)
     {
         $matches = [];
         $controllo = new ReflectionClass(get_class($this));
@@ -48,6 +49,7 @@ class FiApiController extends AbstractController
             preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         }
         $this->project = $this->getProject();
+        $this->params = $params;
 
         $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
         $this->controller = $matches[count($matches) - 1];
@@ -58,7 +60,7 @@ class FiApiController extends AbstractController
         $this->collection = $this->pluralize($this->model);
         $apiUtil = new ApiUtils();
         $this->modelClass = $apiUtil->getModelClass($this->project, $this->model);
-        $this->formClass =  $apiUtil->getFormClass($this->model);
+        $this->formClass = $apiUtil->getFormClass($this->model);
         $this->controllerItem = $apiUtil->getModelControllerClass($this->project, $this->model);
         $this->apiController = $apiUtil->getApiControllerClass($this->project, $this->collection);
         $this->options = array();
@@ -72,7 +74,7 @@ class FiApiController extends AbstractController
 
     protected function loadInflectorExceptions()
     {
-        $vars = getenv("INFLECTOR_EXCEPTIONS");
+        $vars = $this->params->get("bi_core.api_inflector_exceptions");
         if (($vars)) {
             $values = json_decode($vars, true);
             $this->inflectorExceptions = $values;
@@ -159,12 +161,26 @@ class FiApiController extends AbstractController
                     array_push($arrayContainer, $element);
                 }
                 $this->options[$tools['entity']] = $arrayContainer;
-        
+
                 $arrayItem = array('nometabella' => $this->controller, 'nomecampo' => "$this->controller.$fieldName", 'etichetta' => "$fieldName",
-                 'escluso' => false,
-                'decodifiche' => $decodeMap);
+                    'escluso' => false,
+                    'decodifiche' => $decodeMap);
 
                 array_push($this->enumOptions, $arrayItem);
+            }
+        }
+    }
+
+    /**
+     * It checks if there are some enum collections having a match with defined column fields
+     * and append attribute "decofiche" to them.
+     * THIS HAVE TO BE INVOKED BY SPECIFIC ENTITY CONTROLLER.
+     */
+    protected function mergeColumnsAndEnumOptions(array &$modellocolonne)
+    {
+        foreach ($this->enumOptions as $enumOption) {
+            if (isset($modellocolonne[$enumOption['nomecampo']])) {
+                $modellocolonne[$enumOption['nomecampo']]['decodifiche'] = $enumOption['decodifiche'];
             }
         }
     }

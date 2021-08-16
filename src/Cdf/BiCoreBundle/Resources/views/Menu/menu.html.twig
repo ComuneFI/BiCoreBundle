@@ -1,50 +1,21 @@
-<nav class="navbar navbar-expand-lg has-megamenu"><span>&nbsp;</span>
+<div id="menuhide" style="display: none" data-items="{{ risposta|json_encode() }}"></div>
+
+<nav id="main-toolbar" aria-label="Main Toolbar" class="navbar navbar-expand-lg has-megamenu"><span>&nbsp;</span>
     <button class="custom-navbar-toggler" type="button" aria-controls="navbarNavB" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarNavB">
         <svg class="icon icon-sm icon-light"><use xlink:href="{{asset('build/svg/sprite.svg#it-list')}}"></use></svg>
     </button>
     <div class="navbar-collapsable" id="navbarNavB">
         <div class="overlay"></div>
+        <div class="skiplinks">
+            <a class="sr-only sr-only-focusable" href="#main-content">Vai al contenuto principale</a>
+        </div>
         <div class="close-div sr-only">
             <button class="btn close-menu" type="button">
                 <svg class="icon icon-sm icon-light"><use xlink:href="{{asset('build/svg/sprite.svg#it-close')}}"></use></svg>close
             </button>
         </div>
         <div class="menu-wrapper">
-            <ul class="navbar-nav">
-                {% for i in risposta %}
-                    {% if i.sottolivello is defined and i.sottolivello|length > 0 %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{ i.percorso.percorso }}" data-toggle="dropdown" aria-expanded="false"><span>{{ i.nome }} </span></a>
-                            <div class="dropdown-menu">
-                                <div class="link-list-wrapper">
-                                    <ul class="link-list">
-                                        {% for sottomenu in i.sottolivello %}
-                                            {% if (sottomenu.sottolivello is defined and sottomenu.sottolivello|length > 0) %}
-                                                <li><h6 class="dropdown-header">{{sottomenu.nome}}</h6></li>
-                                                <li><span class="divider">&nbsp;</span>
-                                                </li>
-                                                {% for sottosubmenu in sottomenu.sottolivello %}
-                                                    <li role="menuitem"><a class="list-item" href="{{ sottosubmenu.percorso }}" target="{{ sottosubmenu.target }}"><span>{{ sottosubmenu.nome }} </span></a></li>
-                                                    {% endfor %}
-                                                <li><span class="divider">&nbsp;</span>
-                                                {% else  %}
-                                                </li>                               
-                                                <li><a role="menuitem" class="list-item" href="{{ sottomenu.percorso }}" target="{{ sottomenu.target }}"><span>{{ sottomenu.nome }} </span></a></li>
-                                                {% endif  %}
-                                            {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>                        
-                    {% else %}
-                        <li role="menuitem" class="nav-item"{% if i.classe is defined %} class="nav-link {{ i.classe }}" {% endif %} >
-                            <a href = "{{ i.percorso.percorso }}" target="{{ i.target }}" class="nav-link" >
-                                <span>{{ i.nome }} </span>
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+            <ul id="navbar-menu" class="navbar-nav"></ul>
         </div>
     </div>
 </nav>

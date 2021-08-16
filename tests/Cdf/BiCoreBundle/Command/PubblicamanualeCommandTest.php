@@ -26,7 +26,7 @@ class PubblicamanualeCommandTest extends WebTestCase
         $commandTesterPubblicamanuale = new CommandTester($commandpubblicamanuale);
         $commandTesterPubblicamanuale->execute(array());
         $outputpubblicamanuale = $commandTesterPubblicamanuale->getDisplay();
-        $this->assertRegExp('/.../', $outputpubblicamanuale);
+        $this->assertMatchesRegularExpression('/.../', $outputpubblicamanuale);
 
         $apppath = $kernel->getContainer()->get('pannelloamministrazione.projectpath');
         $filename = $apppath->getPublicPath() . DIRECTORY_SEPARATOR . "manuale.pdf";

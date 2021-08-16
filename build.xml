@@ -12,12 +12,14 @@
                     phpcs-ci,
                     phpmd-ci,
                     phpstan-ci,
-                    php-security-checker,
+                    install-chromedriver,
                     phpunit-ci,
                     finish">
     </target>
-    <!-- upgradechromedriver, -->
+    <!-- php-security-checker,-->
     <!-- phpcpd-ci -->
+    <!-- upgrade-chromedriver -->
+
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
         <delete dir="build/artifacts/logs"/>
@@ -151,10 +153,18 @@
             <arg value="analyze"/>
             <arg value="src"/>
             <arg value="--level=1"/>
+            <arg value="--memory-limit=-1"/>            
         </exec>
     </target>
     
-    <target name="upgradechromedriver" description="Upgrade chromedriver for panther issue #356">
+    <target name="install-chromedriver" description="Install chromedriver for panther">
+        <exec executable="vendor/bin/bdi" failonerror="false">
+            <arg value="detect"/>
+            <arg value="drivers"/>
+        </exec>
+    </target>
+
+    <target name="upgrade-chromedriver" description="Upgrade chromedriver for panther issue #356">
         <exec executable="tests/build/upgradePantherChromedriver.sh" failonerror="false">
         </exec>
     </target>
@@ -163,9 +173,10 @@
         <exec executable="vendor/bin/simple-phpunit" failonerror="true">
             <env key="PANTHER_WEB_SERVER_DIR" value="${basedir}/tests/public"/>
             <env key="PANTHER_NO_HEADLESS" value="0"/>
-            <env key="PANTHER_NO_SANDBOX" value="0"/>
+            <env key="PANTHER_NO_SANDBOX" value="1"/>
+            <env key="PANTHER_WEB_SERVER_PORT" value="9080"/>
             <arg line="--configuration=${basedir}/phpunit.xml.dist"/>
-            <arg line="--coverage-clover=${basedir}/build/artifacts/coverage/clover.xml"/>
+            <arg line="--coverage-clover=${basedir}/build/logs/clover.xml"/>
         </exec>
     </target>
 </project>

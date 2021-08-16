@@ -166,6 +166,16 @@ services:
             $logger: '@logger'
             $permessi: '@cdf.bicorebundle.permessi'
             $usermanipulator: '@fos_user.util.user_manipulator'
+            
+    cdf.bicorebundle.form.menuapplicazionetype:
+        class: Cdf\BiCoreBundle\Form\MenuapplicazioneType
+        arguments:
+            - "@cdf.bicorebundle.form.menuapplicazionetransformer"
+
+    cdf.bicorebundle.form.menuapplicazionetransformer:
+        class: Cdf\BiCoreBundle\Form\Datatransformer\MenuapplicazioneTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     cdf.bicorebundle.controller.permessi:
         class: Cdf\BiCoreBundle\Controller\PermessiController

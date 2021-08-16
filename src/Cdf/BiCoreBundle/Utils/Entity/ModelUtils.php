@@ -137,7 +137,7 @@ class ModelUtils
         $value = $oldvalue;
         if ($formatType == null) {
         } elseif ($fieldType != $formatType) {
-            if ($formatType == 'datetime') {
+            if ($formatType == 'datetime' && $oldvalue != null) {
                 $time = strtotime($oldvalue);
                 $value = new DateTime();
                 $value->setTimestamp($time);

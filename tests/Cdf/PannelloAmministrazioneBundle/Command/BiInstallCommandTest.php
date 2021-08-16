@@ -25,7 +25,7 @@ class BiInstallCommandTest extends WebTestCase {
         $commandTesterdroptables->execute(array('--force' => true));
         $outputdroptables = $commandTesterdroptables->getDisplay();
 
-        $this->assertRegExp('/.../', $outputdroptables);
+        $this->assertMatchesRegularExpression('/.../', $outputdroptables);
         //$this->assertStringContainsString('Cosa cercare', $outputimport);
 
         $commanddropdatabase = $application->find('bicorebundle:dropdatabase');
@@ -33,7 +33,7 @@ class BiInstallCommandTest extends WebTestCase {
         $commandTesterdropdatabase->execute(array('--force' => true));
         $outputdropdatabase = $commandTesterdropdatabase->getDisplay();
 
-        $this->assertRegExp('/.../', $outputdropdatabase);
+        $this->assertMatchesRegularExpression('/.../', $outputdropdatabase);
         //$this->assertStringContainsString('Cosa cercare', $outputdropdatabase);
 
         $commandinstall = $application->find('bicorebundle:install');
@@ -41,7 +41,7 @@ class BiInstallCommandTest extends WebTestCase {
         $commandTesterinstall->execute(array('admin' => 'admin', 'adminpass' => 'admin', 'adminemail' => 'admin@admin.it'));
         $outputinstall = $commandTesterinstall->getDisplay();
 
-        $this->assertRegExp('/.../', $outputinstall);
+        $this->assertMatchesRegularExpression('/.../', $outputinstall);
 
         //$this->assertStringContainsString('Cosa cercare', $outputimport);
         $commandloaddata = $application->find('bicoredemo:loaddefauldata');
@@ -49,7 +49,7 @@ class BiInstallCommandTest extends WebTestCase {
         $commandTesterLoaddata->execute(array());
         $outputloaddata = $commandTesterLoaddata->getDisplay();
 
-        $this->assertRegExp('/.../', $outputloaddata);
+        $this->assertMatchesRegularExpression('/.../', $outputloaddata);
         $this->assertStringContainsString('Done', $outputloaddata);
 
         /*
@@ -58,7 +58,7 @@ class BiInstallCommandTest extends WebTestCase {
           $commandTestercc->execute(array('--env' => 'test'));
           $outputcc = $commandTestercc->getDisplay();
 
-          $this->assertRegExp('/.../', $outputcc);
+          $this->assertMatchesRegularExpression('/.../', $outputcc);
          */
     }
 

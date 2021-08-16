@@ -130,6 +130,9 @@ class ClienteController extends FiController {
                 //, "escluso" => false, "larghezza" => 15, "association" => false, "tipocampo"=>"string", "editabile"=>false
         );
 
+        //Decode enum options Api
+        //$this->mergeColumnsAndEnumOptions($modellocolonne);
+        
         $colonneordinamento = array($controller . '.id' => 'ASC');
 
         $filtri = array(

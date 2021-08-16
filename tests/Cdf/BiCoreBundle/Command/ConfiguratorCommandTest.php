@@ -34,7 +34,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterImport->execute(array('--forceupdate' => true, '--verboso' => true));
         $outputimport = $commandTesterImport->getDisplay();
 
-        $this->assertRegExp('/.../', $outputimport);
+        $this->assertMatchesRegularExpression('/.../', $outputimport);
         $this->assertStringContainsString('Non trovato file ' . $fixturefile, $outputimport);
 
         $commandexport = $application->find('bicorebundle:configuratorexport');
@@ -42,7 +42,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $commandTesterExport->execute(array());
         $outputexport = $commandTesterExport->getDisplay();
 
-        $this->assertRegExp('/.../', $outputexport);
+        $this->assertMatchesRegularExpression('/.../', $outputexport);
         $this->assertStringContainsString('Export Entity: Cdf\\BiCoreBundle\\Entity\\' . $entity, $outputexport);
 
         /* Rimuovo utente per generare l'inserimento tramite import */

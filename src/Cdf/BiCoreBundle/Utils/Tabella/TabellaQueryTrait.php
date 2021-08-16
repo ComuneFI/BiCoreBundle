@@ -65,6 +65,7 @@ trait TabellaQueryTrait
 
     protected function buildWhere(&$qb)
     {
+
         $filtro = '';
         $prefiltro = '';
         foreach ($this->prefiltri as $key => $prefiltro) {
@@ -126,12 +127,40 @@ trait TabellaQueryTrait
 
 
     /**
+     * Attempt to translate the user given value into a boolean valid field
+     */
+    private function translateBoolValue($fieldvalue)
+    {
+        switch (strtoupper($fieldvalue)) {
+            case 'SI':
+                $fieldvalue = 'true';
+                break;
+            case '1':
+                $fieldvalue = 'true';
+                break;
+            case 'NO':
+                $fieldvalue = 'false';
+                break;
+            case '0':
+                $fieldvalue = 'false';
+                break;
+            default:
+                $fieldvalue = 'false';
+                break;
+        }
+        return $fieldvalue;
+    }
+
+    /**
      * It appends the new filter string part to the given filter string ($filterString)
      */
-    private function appendFilterString(String &$filterString, $swaggerType, $fieldvalue)
+    private function appendFilterString(String &$filterString, $swaggerType, $swaggerKind, $fieldvalue)
     {
-        if ($swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
-            $filterString .= '"%'.$fieldvalue.'%"';
+        if ($swaggerKind == 'bool') {
+            $filterString .= $this->translateBoolValue($fieldvalue);
+        } elseif ($swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
+            //"%" chars will be applied by insurance back-end API
+            $filterString .= '"'.$fieldvalue.'"';
         } elseif ($swaggerType == 'datetime' || $swaggerType == 'date') {
             $fieldvalue = \str_replace("/", "-", $fieldvalue);
             //does it contain an hour ?
@@ -167,14 +196,13 @@ trait TabellaQueryTrait
         if (count($tuttifiltri)) {
             $attributeMap = $this->entityname::attributeMap();
             $swaggerFormats = $this->entityname::swaggerFormats();
+            $swaggerTypes = $this->entityname::swaggerTypes();
             //compose the string
             $descrizionefiltri = '';
             foreach ($tuttifiltri as $num => $filtrocorrente) {
                 $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
                 $fieldname = ' '.$nomeCampo;
                 $filteringValues = $this->getFieldValue($filtrocorrente['valore']);
-
-
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
                 $fitrocorrenteqp = 'fitrocorrente'.$num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
@@ -193,7 +221,7 @@ trait TabellaQueryTrait
                         $fieldstring .= $attributeMap[ $nomeCampo ];
                         $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
                         $fieldvalue = urldecode($filterValue);
-                        $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $fieldvalue);
+                        $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $swaggerTypes[ $nomeCampo ], $fieldvalue);
                         if ($num < count($filteringValues)-1) {
                             $fieldstring .= ' OR ';
                         }
@@ -203,7 +231,7 @@ trait TabellaQueryTrait
                     $fieldstring = $attributeMap[ $nomeCampo ];
                     $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
                     $fieldvalue = urldecode($filteringValues);
-                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $filteringValues);
+                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $swaggerTypes[ $nomeCampo ], $filteringValues);
                 }
 
                 if ($filterString != null) {

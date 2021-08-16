@@ -45,39 +45,40 @@
         "fi/osbundle": "~2.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "hanneskod/classtools": "^1.2",
-        "comunedifirenze/user-bundle": "^1.2",
+        "comunedifirenze/user-bundle": "^1.0|^2.0",
         "mysql-workbench-schema-exporter/doctrine2-exporter": "3.0.*",
         "mysql-workbench-schema-exporter/mysql-workbench-schema-exporter": "^3.0",
         "phpoffice/phpspreadsheet": "^1.4",
-        "symfony/asset": "5.1.*",
-        "symfony/console": "5.1.*",
-        "symfony/dotenv": "5.1.*",
+        "symfony/asset": "5.3.*",
+        "symfony/console": "5.3.*",
+        "symfony/dotenv": "5.3.*",
         "symfony/flex": "^1.0",
-        "symfony/form": "5.1.*",
-        "symfony/lock": "5.1.*",
-        "symfony/mailer": "5.1.*",
+        "symfony/form": "5.3.*",
+        "symfony/lock": "5.3.*",
+        "symfony/mailer": "5.3.*",
         "symfony/maker-bundle": "^1.7",
         "symfony/monolog-bundle": "^3.2",
         "symfony/orm-pack": "^2.0",
-        "symfony/process": "5.1.*",
-        "symfony/translation": "5.1.*",
+        "symfony/process": "5.3.*",
+        "symfony/translation": "5.3.*",
         "symfony/webpack-encore-bundle": "^1.5",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "5.3.*"
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^0.3.0",
         "php-coveralls/php-coveralls": "^2.0",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "^0.12.51",
-        "sensiolabs/security-checker": "^6.0",
+        "scrutinizer/ocular": "^1.8",
         "squizlabs/php_codesniffer": "^3.3",
-        "symfony/browser-kit": "5.1.*",
-        "symfony/css-selector": "5.1.*",
-        "symfony/framework-bundle": "5.1.*",
-        "symfony/panther": "^0.8.0",
+        "symfony/browser-kit": "5.3.*",
+        "symfony/css-selector": "5.3.*",
+        "symfony/framework-bundle": "5.3.*",
+        "symfony/panther": "^1.0.0",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/profiler-pack": "^1.0",
         "symfony/test-pack": "^1.0",
-        "symfony/var-dumper": "5.1.*"
+        "symfony/var-dumper": "5.3.*"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -94,8 +95,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     },
     "config": {
@@ -118,7 +118,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.1.*"
+            "require": "5.3.*"
         },
         "public-dir": "tests/public",
         "conf-dir": "tests/conf",

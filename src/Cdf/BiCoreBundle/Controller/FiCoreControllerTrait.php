@@ -34,17 +34,17 @@ trait FiCoreControllerTrait
 
         $modellocolonne = [
                 /*
-                  $controller . ".nominativo" => array(
+                  array(
                   "nometabella" => $controller,
-                  "nomecampo" => "nominativo",
+                  "nomecampo" => $controller . ".nominativo",
                   "etichetta" => "Nominativo",
                   "ordine" => 10,
                   "larghezza" => 200,
                   "escluso" => false
                   ),
-                  $controller . ".datanascita" => array(
+                  array(
                   "nometabella" => $controller,
-                  "nomecampo" => "datanascita",
+                  "nomecampo" => $controller . ".datanascita",
                   "etichetta" => "Data di nascita",
                   "ordine" => 20,
                   "larghezza" => 100,
