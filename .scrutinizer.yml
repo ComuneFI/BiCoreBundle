@@ -24,6 +24,7 @@ checks:
 build:
     environment:
         php:
+            version: 7.4
             ini:
                 'memory_limit': '4G'
         node: "v14.15.4"
