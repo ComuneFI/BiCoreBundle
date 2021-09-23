@@ -29,7 +29,8 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
         $container = static::createClient()->getContainer();
 
-        return $container->get('router')->generate($name, $variables, $absolutepath);
+        //return $container->get('router')->generate($name, $variables, $absolutepath);
+        return $container->get('router')->generate($name);
     }
 
     public function getCurrentPage()
