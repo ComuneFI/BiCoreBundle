@@ -517,6 +517,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.23.1"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.23.0"
     },
@@ -549,6 +552,9 @@
     },
     "symfony/property-access": {
         "version": "v4.4.25"
+    },
+    "symfony/property-info": {
+        "version": "v5.3.7"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.25"
@@ -599,6 +605,9 @@
     },
     "symfony/stopwatch": {
         "version": "v4.4.25"
+    },
+    "symfony/string": {
+        "version": "v5.3.7"
     },
     "symfony/test-pack": {
         "version": "v1.0.8"
