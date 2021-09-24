@@ -99,6 +99,9 @@ class Tabella {
                 //var formid = $(form).attr('id');
                 //$("#" + formid).children('input[type="submit"]').click()
                 var url = form.attr('action');
+                $.each(form.find('input:disabled, select:disabled'), function (i, tag) {
+                   $(this).removeAttr('disabled');
+                });
                 var formSerialize = new FormData();
                 var formParams = form.serializeArray();
                 //var formSerialize = form.serialize();

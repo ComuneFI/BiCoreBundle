@@ -24,8 +24,11 @@ checks:
 build:
     environment:
         php:
+            version: 7.4
             ini:
                 'memory_limit': '4G'
+            pecl_extensions:
+              - zip
         node: "v14.15.4"
     nodes:
         analysis:
