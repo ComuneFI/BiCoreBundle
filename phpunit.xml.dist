@@ -33,11 +33,11 @@
         <server name="KERNEL_CLASS" value="App\Kernel"/>
         <server name="APP_ENV" value="test" force="true"/>
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=0"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=906"/>
         <!-- <server name="PANTHER_WEB_SERVER_PORT" value="9090"/> -->
         <!-- <server name="PANTHER_WEB_SERVER_ROUTER" value="/{FULLPATH}/tests/router.php"/> -->
         <!-- <server name="PANTHER_WEB_SERVER_DIR" value="/{FULLPATH}/tests/public"/> -->
-        <server name="PANTHER_NO_HEADLESS" value="1"/>
+        <server name="PANTHER_NO_HEADLESS" value="0"/>
         <server name="PANTHER_NO_SANDBOX" value="1"/>
     
         <!-- ###+ symfony/mailer ### -->

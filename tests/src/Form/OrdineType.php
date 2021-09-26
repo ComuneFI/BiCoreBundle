@@ -49,6 +49,10 @@ class OrdineType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Ordine::class,
             'parametriform' => array(),
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // a unique key to help generate the secret token
+            'csrf_token_id' => "Ordine"
         ));
     }
 }

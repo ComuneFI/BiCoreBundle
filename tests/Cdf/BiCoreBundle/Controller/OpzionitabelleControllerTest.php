@@ -5,11 +5,9 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
-{
+class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
 
-    public function testSecuredOpzionitabelleIndex()
-    {
+    public function testSecuredOpzionitabelleIndex() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Opzionitabelle';
         $client->request('GET', '/' . $nomecontroller);
@@ -31,7 +29,8 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
 //                'Utente', $client->getResponse()->getContent()
 //        );
         $provaopzionitabelle = 'testopzionitabelle';
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('opzionitabelle_item');
+        $csrfToken = $crawler->filter('input[name="opzionitabelle[_token]"]')->attr('value');
+
         $camporuolo = 'opzionitabelle[nometabella]';
         $form = $crawler->filter('form[id=formdatiOpzionitabelle]')->form(array("$camporuolo" => $provaopzionitabelle));
         // submit that form
@@ -50,7 +49,7 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
         $crawler = $client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('opzionitabelle_item');
+        $csrfToken = $crawler->filter('input[name="opzionitabelle[_token]"]')->attr('value');
         $camporuolo = 'opzionitabelle[nometabella]';
         $form = $crawler->filter('form[id=formdatiOpzionitabelle]')->form(array("$camporuolo" => 'Provaopzionitabella2'));
 
@@ -64,7 +63,7 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Opzionitabelle');
+        $csrfDeleteToken = $crawler->filter('input[name="opzionitabelle[_token]"]')->attr('value');
         $crawler = $client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         //$client = static::createClient();

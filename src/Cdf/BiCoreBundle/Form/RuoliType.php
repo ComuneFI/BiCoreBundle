@@ -34,6 +34,10 @@ class RuoliType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Ruoli::class,
             'parametriform' => array(),
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // a unique key to help generate the secret token
+            'csrf_token_id' => "Ruoli",
         ]);
     }
 }

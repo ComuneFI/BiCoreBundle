@@ -10,6 +10,7 @@ use Cdf\BiCoreBundle\Entity\Permessi;
 
 class PermessiType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
@@ -17,7 +18,7 @@ class PermessiType extends AbstractType
             'attr' => array(
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-        ), );
+            ),);
 
         $builder
                 ->add('modulo')
@@ -33,6 +34,9 @@ class PermessiType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Permessi::class,
             'parametriform' => array(),
-        ]);
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // a unique key to help generate the secret token
+            'csrf_token_id' => "Permessi"]);
     }
 }

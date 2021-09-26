@@ -50,7 +50,7 @@ class ClienteType extends AbstractType
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token
-            'csrf_token_id' => Cliente::class,
+            'csrf_token_id' => "Cliente"
         ));
     }
 }

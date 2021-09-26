@@ -26,7 +26,7 @@ trait FiCoreCrudInlineControllerTrait
                 throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
             }
         }
-        $isValidToken = $this->isCsrfTokenValid($id, $token);
+        $isValidToken = $this->isCsrfTokenValid($this->getController(), $token) || $this->isCsrfTokenValid($id, $token);
 
         if (!$isValidToken) {
             throw $this->createNotFoundException('Token non valido');
