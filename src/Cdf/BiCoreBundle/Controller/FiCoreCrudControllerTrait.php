@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreCrudControllerTrait
 {
+
     use FiCoreCrudInlineControllerTrait;
 
     /**
@@ -34,11 +35,11 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, ['attr' => [
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
             ],
-            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
+            'action' => $this->generateUrl($controller . '_new'), 'parametriform' => $parametriform,
         ]);
 
         $form->handleRequest($request);
@@ -96,7 +97,7 @@ trait FiCoreCrudControllerTrait
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -105,16 +106,16 @@ trait FiCoreCrudControllerTrait
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' del record con id '.$id.'.');
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             ['attr' => [
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                     ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                    'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
                 ]
         );
 
@@ -148,23 +149,23 @@ trait FiCoreCrudControllerTrait
 
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
 
         $editForm = $this->createForm(
             $formType,
             $entity,
             ['attr' => [
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                     ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                    'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
                 ]
         );
 
@@ -188,7 +189,7 @@ trait FiCoreCrudControllerTrait
             if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', ['id' => $id]));
+                return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
             }
         }
 
@@ -200,7 +201,7 @@ trait FiCoreCrudControllerTrait
                             'nomecontroller' => ParametriTabella::setParameter($controller),
                             'tabellatemplate' => $tabellatemplate,
                             'elencomodifiche' => $elencomodifiche,
-            ]
+                        ]
         ), 400);
     }
 
@@ -218,7 +219,7 @@ trait FiCoreCrudControllerTrait
         $isValidToken = $this->isCsrfTokenValid($this->getController(), $token);
 
         if (!$isValidToken) {
-            throw $this->createNotFoundException('Token non valido');
+            throw $this->createNotFoundException('Token non valido:' . $this->getController() . " " . $token);
         }
 
         try {
