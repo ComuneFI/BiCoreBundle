@@ -69,8 +69,8 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         //Edit
         $crawler = $client->request('GET', '/Operatori/' . $operatoriinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $csrfToken = $crawler->filter('input[name="operatori[_token]"]')->attr('value');
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('operatori_item');
         $username = 'operatori[username]';
         $form = $crawler->filter('form[id=formdatiOperatori]')->form(array("$username" => 'Provaoperatori2'));
 

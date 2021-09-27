@@ -5,10 +5,9 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
-{
-    public function testSecuredColonnetabelleIndex()
-    {
+class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
+
+    public function testSecuredColonnetabelleIndex() {
         $nomecontroller = 'Colonnetabelle';
         $client = $this->logInAdmin();
         $client->request('GET', '/' . $nomecontroller);
@@ -66,10 +65,12 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Colonnetabelle');
+        $csrfDeleteToken = $crawler->filter('input[name="colonnetabelle[_token]"]')->attr('value');
+
         $crawler = $client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         //$client = static::createClient();
         $client->restart();
     }
+
 }

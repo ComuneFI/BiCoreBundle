@@ -4,15 +4,16 @@ namespace App\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Cliente;
 
-class ControllerTest extends BiWebtestcaseAuthorizedClient
-{
-    public function testSecuredClienteIndex()
-    {
+class ControllerTest extends BiWebtestcaseAuthorizedClient {
+
+    public function testSecuredClienteIndex() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $client->request('GET', '/' . $nomecontroller);
         $crawler = $client->followRedirect();
+
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $client->request('GET', '/' . $nomecontroller . '/1000/edit');
@@ -26,7 +27,6 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-
 
         $ec = count($this->em->getRepository('App:' . $nomecontroller)->findAll());
         $response = $client->getResponse();
@@ -61,7 +61,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         //New
         $crawler = $client->request('GET', '/Cliente/new');
         //Incomplete submit
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('cliente_item');
+        $csrfToken = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $camponominativo = 'cliente[nominativo]';
         $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => ''));
 
@@ -78,7 +78,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Submit
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('cliente_item');
+        $csrfToken = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $camponominativo = 'cliente[nominativo]';
         $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => ''));
 
@@ -90,7 +90,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Submit
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('cliente_item');
+        $csrfToken = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $camponominativo = 'cliente[nominativo]';
         $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => 'Andrea Manzi 2'));
 
@@ -104,13 +104,14 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Cliente');
+        //$csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Cliente');
         $camponominativo = 'cliente[nominativo]';
         $form = $crawler->filter('form[id=formdati' . $nomecontroller . ']')->form(array("$camponominativo" => 'Andrea Manzi'));
 
         // submit that form
         $crawler = $client->submit($form);
         $crawler = $client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
+        $csrfToken = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
                 'Andrea Manzi', $client->getResponse()->getContent()
@@ -155,13 +156,16 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
     }
-    public function testSecuredClienteAggiorna()
-    {
+
+    public function testSecuredClienteAggiorna() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
-
+        $crawler = $client->request('GET', '/Cliente/new');
+        //dump($crawler);
         //aggiorna ajax
-        $csrfTokenAggiorna = $client->getContainer()->get('security.csrf.token_manager')->getToken('1');
+        //$csrfTokenAggiorna = $client->getContainer()->get('security.csrf.token_manager')->getToken('1');
+        $csrfTokenAggiorna = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
+
         $parametriagiorna = array('values' => array(array('fieldname' => 'Cliente.nominativo', 'fieldtype' => 'string', 'fieldvalue' => 'Andrea Manzo')));
         $client->request('POST', '/Cliente/1/' . $csrfTokenAggiorna . '/aggiorna', $parametriagiorna);
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -177,13 +181,18 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $client->request('POST', '/Cliente/1/TokenNonValido/aggiorna', $parametriagiorna);
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
-    public function testSecuredClienteInsertInline()
-    {
+
+    public function testSecuredClienteInsertInline() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
+        $crawler = $client->request('GET', '/Cliente/new');
+        //dump($crawler);
+        //aggiorna ajax
+        //$csrfTokenAggiorna = $client->getContainer()->get('security.csrf.token_manager')->getToken('1');
+        $csrfTokenInserisci = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $nominativo = 'Manzi Andrea';
         //aggiorna ajax
-        $csrfTokenInserisci = $client->getContainer()->get('security.csrf.token_manager')->getToken('0');
+        //$csrfTokenInserisci = $client->getContainer()->get('security.csrf.token_manager')->getToken('0');
         $parametriinsert = array('values' => array(
                 array('fieldname' => 'Cliente.nominativo', 'fieldtype' => 'string', 'fieldvalue' => $nominativo),
                 array('fieldname' => 'Cliente.datanascita', 'fieldtype' => 'date', 'fieldvalue' => '07/01/1990'),
@@ -215,29 +224,35 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $entitybis = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
         $this->assertSame(0, count($entitybis));
     }
-    public function testSecuredOrdineIndex()
-    {
+
+    public function testSecuredOrdineIndex() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller);
         $crawler = $client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
-    public function testSecuredOrdineUpdate()
-    {
+
+    public function testSecuredOrdineUpdate() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller . '/100/update');
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
-    public function testSecuredOrdineDelete()
-    {
+
+    public function testSecuredOrdineDelete() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken($nomecontroller);
+        $crawler = $client->request('GET', '/' . $nomecontroller . '/new');
+        //dump($crawler);
+        //aggiorna ajax
+        //$csrfTokenAggiorna = $client->getContainer()->get('security.csrf.token_manager')->getToken('1');
+        $csrfDeleteToken = $crawler->filter('input[name="ordine[_token]"]')->attr('value');
+
         $url = $client->getContainer()->get('router')->generate($nomecontroller . '_delete', array('id' => 1, 'token' => $csrfDeleteToken));
         $client->request('GET', $url);
         //dump($client->getResponse());
         $this->assertSame(501, $client->getResponse()->getStatusCode());
     }
+
 }

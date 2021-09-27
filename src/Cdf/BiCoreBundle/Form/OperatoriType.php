@@ -13,6 +13,7 @@ use Cdf\BiCoreBundle\Entity\Operatori;
 
 class OperatoriType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $submitparms = array(
@@ -20,7 +21,7 @@ class OperatoriType extends AbstractType
             'attr' => array(
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-        ), );
+            ),);
 
         $builder
                 ->add('operatore')
@@ -58,6 +59,9 @@ class OperatoriType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Operatori::class,
             'parametriform' => array(),
-        ]);
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            // a unique key to help generate the secret token
+            'csrf_token_id' => "Operatori"]);
     }
 }

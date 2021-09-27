@@ -2,6 +2,9 @@
     "composer/xdebug-handler": {
         "version": "2.0.1"
     },
+    "comunedifirenze/user-bundle": {
+        "version": "1.2.2.5"
+    },
     "dbrekelmans/bdi": {
         "version": "0.3"
     },
@@ -237,6 +240,9 @@
     "psr/container": {
         "version": "1.1.1"
     },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
+    },
     "psr/http-client": {
         "version": "1.0.1"
     },
@@ -353,7 +359,7 @@
         "version": "v4.4.25"
     },
     "symfony/deprecation-contracts": {
-        "version": "v2.4.0"
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.25"
@@ -498,6 +504,9 @@
             "version": "1.0",
             "ref": "93d9baa582d0a755cc9ef81bc38a921d5fa16973"
         }
+    },
+    "symfony/password-hasher": {
+        "version": "v5.3.4"
     },
     "symfony/phpunit-bridge": {
         "version": "5.3",
@@ -702,6 +711,9 @@
     },
     "twig/twig": {
         "version": "v3.3.2"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.10.0"

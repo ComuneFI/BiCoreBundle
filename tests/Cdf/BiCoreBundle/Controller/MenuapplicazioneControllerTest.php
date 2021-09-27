@@ -5,11 +5,9 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient
-{
+class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
 
-    public function testSecuredMenuapplicazioneIndex()
-    {
+    public function testSecuredMenuapplicazioneIndex() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Menuapplicazione';
         $client->request('GET', '/' . $nomecontroller);
@@ -64,7 +62,8 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Menuapplicazione');
+        $csrfDeleteToken = $crawler->filter('input[name="menuapplicazione[_token]"]')->attr('value');
+        //echo $csrfDeleteToken;
         $crawler = $client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         //$client = static::createClient();

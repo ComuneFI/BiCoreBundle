@@ -1,57 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="./tests/config/bootstrap.php">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory>./src</directory>
-    </include>
-    <exclude>
-      <directory>./tests</directory>
-      <directory>./src/*Bundle/Resources</directory>
-      <directory>./src/*/*Bundle/Resources</directory>
-      <directory>./src/*/Bundle/*Bundle/Resources</directory>
-    </exclude>
-  </coverage>
-  <testsuites>
-    <testsuite name="Pannelloamministrazione">
-      <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
-      <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
-      <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Functional</directory>
-    </testsuite>
-    <testsuite name="App">
-      <directory suffix=".php">./tests/App/Controller</directory>
-      <directory suffix=".php">./tests/App/Functional</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Collector</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Command</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Controller</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Entity</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Utils</directory>
-      <directory suffix=".php">./tests/Cdf/BiCoreBundle/Listener</directory>
-    </testsuite>
-  </testsuites>
-  <php>
-    <ini name="max_execution_time" value="0"/>
-    <server name="KERNEL_CLASS" value="App\Kernel"/>
-    <server name="APP_ENV" value="test"/>
-    <server name="SHELL_VERBOSITY" value="-1"/>
-    <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
-    <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=0"/>
-    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=9999"/> -->
-    <server name="PANTHER_WEB_SERVER_PORT" value="9090"/>
-    <!-- ###+ symfony/mailer ### -->
-    <!-- MAILER_DSN=smtp://localhost -->
-    <!-- ###- symfony/mailer ### -->
-  </php>
-  <!-- PHP <7.3-->
-  <!-- <listeners>-->
-  <!--<listener class="Symfony\Component\Panther\ServerListener" /> -->
-  <!-- <listener class="Symfony\Component\Panther\ServerListener"/> -->
-  <!-- <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" /> -->
-  <!-- <listener class="Symfony\Bridge\PhpUnit\CoverageListener" /> -->
-  <!-- </listeners>-->
-  <!-- PHP 7.3+-->
-  <extensions>
-    <extension class="Symfony\Component\Panther\ServerExtension"/>
-  </extensions>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory>./src</directory>
+        </include>
+        <exclude>
+            <directory>./tests</directory>
+            <directory>./src/*Bundle/Resources</directory>
+            <directory>./src/*/*Bundle/Resources</directory>
+            <directory>./src/*/Bundle/*Bundle/Resources</directory>
+        </exclude>
+    </coverage>
+    <testsuites>
+        <testsuite name="Pannelloamministrazione">
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Command</directory>
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Controller</directory>
+            <directory suffix=".php">./tests/Cdf/PannelloAmministrazioneBundle/Functional</directory>
+        </testsuite>
+        <testsuite name="App">
+            <directory suffix=".php">./tests/App/Controller</directory>
+            <directory suffix=".php">./tests/App/Functional</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Collector</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Command</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Controller</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Entity</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Utils</directory>
+            <directory suffix=".php">./tests/Cdf/BiCoreBundle/Listener</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="KERNEL_CLASS" value="App\Kernel"/>
+        <server name="APP_ENV" value="test" force="true"/>
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=9999&amp;max[self]=340"/>
+        <!-- <server name="PANTHER_WEB_SERVER_PORT" value="9090"/> -->
+        <!-- <server name="PANTHER_WEB_SERVER_ROUTER" value="/{FULLPATH}/tests/router.php"/> -->
+        <!-- <server name="PANTHER_WEB_SERVER_DIR" value="/{FULLPATH}/tests/public"/> -->
+        <server name="PANTHER_NO_HEADLESS" value="0"/>
+        <server name="PANTHER_NO_SANDBOX" value="1"/>
+    
+        <!-- ###+ symfony/mailer ### -->
+        <!-- MAILER_DSN=smtp://localhost -->
+        <!-- ###- symfony/mailer ### -->
+    </php>
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension"/>
+    </extensions>
 </phpunit>

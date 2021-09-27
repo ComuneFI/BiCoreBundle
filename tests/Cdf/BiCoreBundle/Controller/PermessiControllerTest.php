@@ -5,11 +5,9 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class PermessiControllerTest extends BiWebtestcaseAuthorizedClient
-{
+class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
 
-    public function testSecuredPermessiIndex()
-    {
+    public function testSecuredPermessiIndex() {
         $client = $this->logInAdmin();
         $nomecontroller = 'Permessi';
         $client->request('GET', '/' . $nomecontroller);
@@ -77,10 +75,12 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Permessi');
+        $csrfDeleteToken = $crawler->filter('input[name="permessi[_token]"]')->attr('value');
+
         $crawler = $client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/' . $csrfDeleteToken . '/delete');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         //$client = static::createClient();
         $client->restart();
     }
+
 }

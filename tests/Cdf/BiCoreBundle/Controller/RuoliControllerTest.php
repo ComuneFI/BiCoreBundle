@@ -30,7 +30,6 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
 //                'Utente', $client->getResponse()->getContent()
 //        );
         $provaruolo = 'Provaruolo';
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('ruoli_item');
         $camporuolo = 'ruoli[ruolo]';
         $form = $crawler->filter('form[id=formdatiRuoli]')->form(array("$camporuolo" => $provaruolo));
         // submit that form
@@ -49,7 +48,6 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         $crawler = $client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('ruoli_item');
         $camporuolo = 'ruoli[ruolo]';
         $form = $crawler->filter('form[id=formdatiRuoli]')->form(array("$camporuolo" => 'Provaruolo2'));
 
@@ -63,8 +61,9 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Delete
-        $csrfDeleteToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('Ruoli');
+        $csrfDeleteToken = $crawler->filter('input[name="ruoli[_token]"]')->attr('value');
         $crawler = $client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/' . $csrfDeleteToken . '/delete');
+        //dump($client->getResponse());
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         //$client = static::createClient();
         $client->restart();
