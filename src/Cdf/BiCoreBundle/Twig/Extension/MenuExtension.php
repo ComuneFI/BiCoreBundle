@@ -67,17 +67,17 @@ class MenuExtension extends AbstractExtension
         
         $this->generaManualePdfMenu($risposta);
         
-        if ('ssocdf' === $this->user->getToken()->getFirewallName()) {
+        if ('ssocdf' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
 
-        if ('ssolineacomune' === $this->user->getToken()->getFirewallName()) {
+        if ('ssolineacomune' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_Lineacomuneauth_signout');
         }
 
-        if ('main' === $this->user->getToken()->getFirewallName()) {
+        if ('main' === $this->user->getToken()->getProviderKey()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fos_user_security_logout');
         }
