@@ -72,7 +72,6 @@
     },
     "require-dev": {
         "dbrekelmans/bdi": "^0.3.0",
-        "php-coveralls/php-coveralls": "^2.0",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "^0.12.51",
         "phpunit/phpunit": "^9.5",
