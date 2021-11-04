@@ -33,7 +33,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;
-        $driver = $em->getConnection()->getDriver()->getName();
+        $driver = $driver = $em->getConnection()->getDatabasePlatform()->getName();
 
         if ('pdo_sqlite' != $driver) {
             $command = $this->getApplication()->find('doctrine:database:create');
