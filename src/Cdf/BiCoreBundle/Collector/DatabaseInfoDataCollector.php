@@ -11,6 +11,7 @@ use \Throwable;
 class DatabaseInfoDataCollector extends DataCollector
 {
     /* @var $em \Doctrine\ORM\EntityManager */
+
     private $em;
 
     public function __construct(EntityManagerInterface $em)
@@ -20,13 +21,14 @@ class DatabaseInfoDataCollector extends DataCollector
 
     public function collect(Request $request, Response $response, Throwable $exception = null)
     {
+        $driverinfo = $this->em->getConnection()->getParams();
         $this->data = array(
-            'database_driver' => $this->em->getConnection()->getDriver()->getName(),
-            'database_host' => $this->em->getConnection()->getHost(),
-            'database_port' => $this->em->getConnection()->getPort(),
-            'database_name' => $this->em->getConnection()->getDatabase(),
-            'database_user' => $this->em->getConnection()->getUsername(),
-            'database_password' => $this->em->getConnection()->getPassword(),
+            'database_driver' => $driverinfo["driver"],
+            'database_host' => $driverinfo["host"],
+            'database_port' => $driverinfo["port"],
+            'database_name' => array_key_exists("dbname", $driverinfo) ? $driverinfo["dbname"] : $driverinfo["path"],
+            'database_user' => $driverinfo["user"],
+            'database_password' => $driverinfo["password"],
         );
     }
 
