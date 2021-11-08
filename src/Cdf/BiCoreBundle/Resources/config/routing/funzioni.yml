@@ -1,4 +1,4 @@
 funzioni:
     path:  /traduzionefiltro
-    defaults: { _controller: "BiCoreBundle:Funzioni:traduzionefiltro" }
+    defaults: { _controller: "BiCoreBundle:Funzioni::traduzionefiltro" }
 

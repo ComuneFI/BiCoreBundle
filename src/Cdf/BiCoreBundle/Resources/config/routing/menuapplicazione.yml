@@ -1,53 +1,53 @@
 Menuapplicazione_container:
     path:  /
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::index" }
 
 Menuapplicazione_lista:
     path:  /lista
-    defaults: { _controller: 'cdf.bicorebundle.controller.menuapplicazione:lista' }
+    defaults: { _controller: 'cdf.bicorebundle.controller.menuapplicazione::lista' }
     options:
         expose: true
 
 Menuapplicazione:
     path:  /
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:index" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::index" }
 
 Menuapplicazione_new:
     path:  /new
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:new" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::new" }
 
 Menuapplicazione_create:
     path:  /create
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:create" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::create" }
     requirements: { methods: post }
 
 Menuapplicazione_edit:
     path:  /{id}/edit
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:edit" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::edit" }
 
 Menuapplicazione_update:
     path:  /{id}/update
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:update" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::update" }
     requirements: { methods: post|put }
 
 Menuapplicazione_aggiorna:
     path:  /{id}/{token}/aggiorna
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:aggiorna" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Menuapplicazione_delete:
     path:  /{id}/{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::delete" }
     requirements: { methods: post|delete }
 
 Menuapplicazione_deletemultiple:
     path:  /delete
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::delete" }
     requirements: { methods: post|delete }
 
 Menuapplicazione_tabella:
     path:  /tabella
-    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione:tabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.menuapplicazione::tabella" }
     requirements: { methods: post }

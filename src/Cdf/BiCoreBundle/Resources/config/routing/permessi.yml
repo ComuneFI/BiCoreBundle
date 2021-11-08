@@ -1,53 +1,53 @@
 Permessi:
     path:  /
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:index" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::index" }
 
 Permessi_lista:
     path:  /lista
-    defaults: { _controller: 'cdf.bicorebundle.controller.permessi:lista' }
+    defaults: { _controller: 'cdf.bicorebundle.controller.permessi::lista' }
     options:
         expose: true
 
 Permessi_show:
     path:  /{id}/show
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:show" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::show" }
 
 Permessi_new:
     path:  /new
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:new" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::new" }
 
 Permessi_create:
     path:  /create
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:create" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::create" }
     requirements: { methods: post }
 
 Permessi_edit:
     path:  /{id}/edit
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:edit" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::edit" }
 
 Permessi_update:
     path:  /{id}/update
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:update" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::update" }
     requirements: { methods: post|put }
 
 Permessi_aggiorna:
     path:  /{id}/{token}/aggiorna
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:aggiorna" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Permessi_delete:
     path:  /{id}/{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::delete" }
     requirements: { methods: post|delete }
 
 Permessi_deletemultiple:
     path:  /{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::delete" }
     requirements: { methods: post|delete }
 
 Permessi_tabella:
     path:  /tabella
-    defaults: { _controller: "cdf.bicorebundle.controller.permessi:tabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.permessi::tabella" }
     requirements: { methods: post }
