@@ -16,11 +16,14 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
 
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
-        $dbhostconnection = $em->getConnection()->getHost();
-        $dbportconnection = $em->getConnection()->getPort();
-        $dbdatabaseconnection = $em->getConnection()->getDatabase();
-        $dbpwdconnection = $em->getConnection()->getPassword();
-        $dbuserconnection = $em->getConnection()->getUsername();
+        
+        $driverinfo = $em->getConnection()->getParams();
+       
+        $dbhostconnection = $driverinfo["host"];
+        $dbportconnection = $driverinfo["port"];
+        $dbdatabaseconnection = array_key_exists("dbname", $driverinfo) ? $driverinfo["dbname"] : $driverinfo["path"];
+        $dbpwdconnection = $driverinfo["password"];
+        $dbuserconnection = $driverinfo["user"];
 
         $crawler = $client->request('GET', '/login');
 

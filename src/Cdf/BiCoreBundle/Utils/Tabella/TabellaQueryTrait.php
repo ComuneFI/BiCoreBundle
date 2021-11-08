@@ -300,11 +300,11 @@ trait TabellaQueryTrait
 
             /* Imposta il limite ai record da estrarre */
             if ($this->getRigheperpagina()) {
-                $qb = $qb->setMaxResults($this->getRigheperpagina());
+                $qb = $qb->setMaxResults((int)$this->getRigheperpagina());
             }
             /* E imposta il primo record da visualizzare (per la paginazione) */
             if ($offsetrecords) {
-                $qb = $qb->setFirstResult($offsetrecords);
+                $qb = $qb->setFirstResult((int)$offsetrecords);
             }
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
             $recordsets = $qb->getQuery()->getResult();
