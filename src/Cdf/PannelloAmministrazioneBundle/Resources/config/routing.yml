@@ -1,52 +1,52 @@
 fi_pannello_amministrazione_homepage:
     path:  /adminpanel
-    defaults: { _controller: "pannelloamministrazione.controller:index" }
+    defaults: { _controller: "pannelloamministrazione.controller::index" }
 
 fi_pannello_amministrazione_clearcache:
     path:  /adminpanel/clearcache
-    defaults: { _controller: pannelloamministrazione.controller:clearCache }
+    defaults: { _controller: pannelloamministrazione.controller::clearCache }
     options:
         expose: true
 
 fi_pannello_amministrazione_getVcs:
     path:  /adminpanel/getVcs
-    defaults: { _controller: pannelloamministrazione.controller:getVcs }
+    defaults: { _controller: pannelloamministrazione.controller::getVcs }
     options:
         expose: true
 
 fi_pannello_amministrazione_generateentity:
     path:  /adminpanel/generateEntity
-    defaults: { _controller: pannelloamministrazione.controller:generateEntity }
+    defaults: { _controller: pannelloamministrazione.controller::generateEntity }
     options:
         expose: true
 
 fi_pannello_amministrazione_aggiornaschemadatabase:
     path:  /adminpanel/aggiornaschemadatabase
-    defaults: { _controller: pannelloamministrazione.controller:aggiornaSchemaDatabase }
+    defaults: { _controller: pannelloamministrazione.controller::aggiornaSchemaDatabase }
     options:
         expose: true
 
 fi_pannello_amministrazione_generateformcrud:
     path:  /adminpanel/generateFormCrud
-    defaults: { _controller: pannelloamministrazione.controller:generateFormCrud }
+    defaults: { _controller: pannelloamministrazione.controller::generateFormCrud }
     options:
         expose: true
 
 fi_pannello_amministrazione_symfonycommand:
     path:  /adminpanel/symfonyCommand
-    defaults: { _controller: pannelloamministrazione.controller:symfonyCommand }
+    defaults: { _controller: pannelloamministrazione.controller::symfonyCommand }
     options:
         expose: true
 
 fi_pannello_amministrazione_unixcommand:
     path:  /adminpanel/unixCommand
-    defaults: { _controller: pannelloamministrazione.controller:unixCommand }
+    defaults: { _controller: pannelloamministrazione.controller::unixCommand }
     options:
         expose: true
 
 fi_pannello_amministrazione_phpunittest:
     path:  /adminpanel/phpunittest
-    defaults: { _controller: pannelloamministrazione.controller:phpunittest }
+    defaults: { _controller: pannelloamministrazione.controller::phpunittest }
     options:
         expose: true
 

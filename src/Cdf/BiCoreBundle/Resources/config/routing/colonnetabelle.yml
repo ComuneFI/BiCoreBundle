@@ -1,26 +1,26 @@
 Colonnetabelle:
     path:  /
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:index" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::index" }
 
 Colonnetabelle_lista:
     path:  /lista
-    defaults: { _controller: 'cdf.bicorebundle.controller.colonnetabelle:lista' }
+    defaults: { _controller: 'cdf.bicorebundle.controller.colonnetabelle::lista' }
     options:
         expose: true
 
 Colonnetabelle_configura:
     path:  /configura/{nometabella}
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:configura" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::configura" }
     requirements: { methods: post|put|get }
 
 Colonnetabelle_stampatabella:
     path:  /stampatabella/{nometabella}
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:stampatabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::stampatabella" }
     requirements: { methods: post|put|get }
     
 Colonnetabelle_esportaexceltabella:
     path:  /esportaexcel/{nometabella}
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:esportaexcel" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::esportaexcel" }
     requirements: { methods: post|put|get }
     
 #Colonnetabelle_importaexceltabella:
@@ -30,55 +30,55 @@ Colonnetabelle_esportaexceltabella:
 
 Colonnetabelle_grigliapopup:
     path:  /{chiamante}/grigliapopup
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:grigliapopup" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::grigliapopup" }
     requirements: { methods: post|put|get }
 
 Colonnetabelle_show:
     path:  /{id}/show
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:show" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::show" }
 
 Colonnetabelle_new:
     path:  /new
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:new" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::new" }
 
 Colonnetabelle_create:
     path:  /create
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:create" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::create" }
     requirements: { methods: post }
 
 Colonnetabelle_edit:
     path:  /{id}/edit
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:edit" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::edit" }
 
 Colonnetabelle_aggiorna:
     path:  /{id}/aggiorna
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:aggiorna" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
 
 Colonnetabelle_update:
     path:  /{id}/update
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:update" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::update" }
     requirements: { methods: post|put }
 
 Colonnetabelle_delete:
     path:  /{id}/{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::delete" }
     requirements: { methods: post|delete }
     
 Colonnetabelle_deletemultiple:
     path:  /{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::delete" }
     requirements: { methods: post|delete }
 
 Colonnetabelle_Tabella:
     path:  /tabella
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:tabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::tabella" }
     requirements: { methods: post }
     
 Colonnetabelle_listacampitabella:
     path:  /listacampitabella
-    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle:listacampitabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.colonnetabelle::listacampitabella" }
     requirements: { methods: get }
     
