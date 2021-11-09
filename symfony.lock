@@ -115,6 +115,9 @@
             "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
         }
     },
+    "friendsofsymfony/user-bundle": {
+        "version": "3.x-dev"
+    },
     "guzzlehttp/guzzle": {
         "version": "7.3.0"
     },
@@ -614,6 +617,9 @@
     },
     "symfony/string": {
         "version": "v5.3.10"
+    },
+    "symfony/templating": {
+        "version": "v5.3.7"
     },
     "symfony/test-pack": {
         "version": "v1.0.8"
