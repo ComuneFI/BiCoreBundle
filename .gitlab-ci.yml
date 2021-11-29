@@ -2,8 +2,8 @@ services:
   - postgres:12.2-alpine
 
 stages:
-    - build
-    - cleanup_build
+    - build_php7
+    - build_php8
     
 variables:
   # symfony 4
@@ -51,7 +51,7 @@ build_php7.4:
 #    only:
 #      refs:
 #        - develop
-    stage: build
+    stage: build_php7
     script:
       - ant
       - wget https://scrutinizer-ci.com/ocular.phar -t 3
@@ -68,7 +68,7 @@ build_php8.0:
 #    only:
 #      refs:
 #        - develop
-    stage: build
+    stage: build_php8
     script:
       - ant
       - php vendor/bin/ocular code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
@@ -78,9 +78,4 @@ build_php8.0:
       paths:
         - build/logs/clover.xml
       expire_in: 1 week      
-    
-cleanup_build_job:
-  stage: cleanup_build
-  script:
-    - cat ./tests/var/logs/test.log
-  when: on_failure
+
