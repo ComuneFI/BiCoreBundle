@@ -115,6 +115,9 @@
             "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
         }
     },
+    "friendsofsymfony/user-bundle": {
+        "version": "3.x-dev"
+    },
     "guzzlehttp/guzzle": {
         "version": "7.3.0"
     },
@@ -526,6 +529,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.23.1"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.23.0"
     },
@@ -555,6 +561,9 @@
     },
     "symfony/property-access": {
         "version": "v4.4.25"
+    },
+    "symfony/property-info": {
+        "version": "v5.3.8"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.25"
@@ -605,6 +614,12 @@
     },
     "symfony/stopwatch": {
         "version": "v4.4.25"
+    },
+    "symfony/string": {
+        "version": "v5.3.10"
+    },
+    "symfony/templating": {
+        "version": "v5.3.7"
     },
     "symfony/test-pack": {
         "version": "v1.0.8"

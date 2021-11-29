@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * App\Entity\Operatori.
@@ -14,8 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity()
  * @ORM\Table(name="Operatori", indexes={@ORM\Index(name="fk_operatori_ruoli2_idx", columns={"ruoli_id"})})
  */
-class Operatori extends BaseUser implements EquatableInterface
+class Operatori extends BaseUser implements EquatableInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -72,7 +74,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function setId($id)
+    public function setId($id) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->id = $id;
 
@@ -84,7 +86,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return int
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -96,7 +98,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function setOperatore($operatore)
+    public function setOperatore($operatore) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->operatore = $operatore;
 
@@ -108,7 +110,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return string
      */
-    public function getOperatore()
+    public function getOperatore() : ?string
     {
         return $this->operatore;
     }
@@ -120,7 +122,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function setRuoliId($ruoli_id)
+    public function setRuoliId($ruoli_id) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->ruoli_id = $ruoli_id;
 
@@ -132,7 +134,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return int
      */
-    public function getRuoliId()
+    public function getRuoliId() : int
     {
         return $this->ruoli_id;
     }
@@ -144,7 +146,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function addColonnetabelle(Colonnetabelle $colonnetabelle)
+    public function addColonnetabelle(Colonnetabelle $colonnetabelle) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->colonnetabelles[] = $colonnetabelle;
 
@@ -158,7 +160,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function removeColonnetabelle(Colonnetabelle $colonnetabelle)
+    public function removeColonnetabelle(Colonnetabelle $colonnetabelle) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->colonnetabelles->removeElement($colonnetabelle);
 
@@ -170,7 +172,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getColonnetabelles()
+    public function getColonnetabelles() : \Doctrine\Common\Collections\Collection
     {
         return $this->colonnetabelles;
     }
@@ -182,7 +184,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function addPermessi(Permessi $permessi)
+    public function addPermessi(Permessi $permessi) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->permessis[] = $permessi;
 
@@ -196,7 +198,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function removePermessi(Permessi $permessi)
+    public function removePermessi(Permessi $permessi) :\Cdf\BiCoreBundle\Entity\Permessi
     {
         $this->permessis->removeElement($permessi);
 
@@ -208,7 +210,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPermessis()
+    public function getPermessis(): \Doctrine\Common\Collections\Collection
     {
         return $this->permessis;
     }
@@ -220,7 +222,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function addStoricomodifiche(Storicomodifiche $storicomodifiche)
+    public function addStoricomodifiche(Storicomodifiche $storicomodifiche) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->storicomodifiches[] = $storicomodifiche;
 
@@ -234,7 +236,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function removeStoricomodifiche(Storicomodifiche $storicomodifiche)
+    public function removeStoricomodifiche(Storicomodifiche $storicomodifiche) : \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->storicomodifiches->removeElement($storicomodifiche);
 
@@ -246,7 +248,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getStoricomodifiches()
+    public function getStoricomodifiches() : \Doctrine\Common\Collections\Collection
     {
         return $this->storicomodifiches;
     }
@@ -258,7 +260,7 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function setRuoli(Ruoli $ruoli = null)
+    public function setRuoli(Ruoli $ruoli = null): \Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->ruoli = $ruoli;
 
@@ -270,17 +272,17 @@ class Operatori extends BaseUser implements EquatableInterface
      *
      * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function getRuoli()
+    public function getRuoli() : ?\Cdf\BiCoreBundle\Entity\Ruoli
     {
         return $this->ruoli;
     }
 
-    public function __sleep()
+    public function __sleep() : array
     {
         return array('id', 'operatore', 'ruoli_id');
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user) : bool
     {
         if ($this->password !== $user->getPassword()) {
             return false;
@@ -295,5 +297,21 @@ class Operatori extends BaseUser implements EquatableInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return string the identifier for this user
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+    
+    /**
+     * @return string the hashed password for this user
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 }

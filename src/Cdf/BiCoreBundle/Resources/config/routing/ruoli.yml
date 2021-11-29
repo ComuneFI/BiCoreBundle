@@ -1,38 +1,38 @@
 Ruoli:
     path:  /
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:index" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::index" }
 
 Ruoli_lista:
     path:  /lista
-    defaults: { _controller: 'cdf.bicorebundle.controller.ruoli:lista' }
+    defaults: { _controller: 'cdf.bicorebundle.controller.ruoli::lista' }
     options:
         expose: true
 
 Ruoli_show:
     path:  /{id}/show
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:show" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::show" }
 
 Ruoli_new:
     path:  /new
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:new" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::new" }
 
 Ruoli_create:
     path:  /create
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:create" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::create" }
     requirements: { methods: post }
 
 Ruoli_edit:
     path:  /{id}/edit
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:edit" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::edit" }
 
 Ruoli_update:
     path:  /{id}/update
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:update" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::update" }
     requirements: { methods: post|put }
 
 Ruoli_aggiorna:
     path:  /{id}/{token}/aggiorna
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:aggiorna" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::aggiorna" }
     requirements: { methods: post|put }
     options:
         expose: true
@@ -40,15 +40,15 @@ Ruoli_aggiorna:
 
 Ruoli_delete:
     path:  /{id}/{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::delete" }
     requirements: { methods: post|delete }
     
 Ruoli_deletemultiple:
     path:  /{token}/delete
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:delete" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::delete" }
     requirements: { methods: post|delete }
 
 Ruoli_tabella:
     path:  /tabella
-    defaults: { _controller: "cdf.bicorebundle.controller.ruoli:tabella" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ruoli::tabella" }
     requirements: { methods: post }

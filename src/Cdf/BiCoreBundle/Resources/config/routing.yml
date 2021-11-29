@@ -4,7 +4,7 @@ BiCoreBundle_Funzioni:
 
 BiCoreBundle_exportxls:
     path:  /{controller}/exportxls
-    defaults: { _controller: "cdf.bicorebundle.controller.ficontroller:exportXls" }
+    defaults: { _controller: "cdf.bicorebundle.controller.ficontroller::exportXls" }
         
 BiCoreBundle_Ruoli:
     resource: "@BiCoreBundle/Resources/config/routing/ruoli.yml"

@@ -15,7 +15,7 @@ class DatabaseInfoDataCollectorTest extends WebTestCase
         $client->enableProfiler();
 
         /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $client->getKernel()->getContainer()->get('doctrine')->getManager();
+        $em = $client->getKernel()->getContainer()->get('test.service_container')->get('doctrine')->getManager();
         
         $driverinfo = $em->getConnection()->getParams();
        
