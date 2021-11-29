@@ -28,7 +28,7 @@ class TabellaClienteConditionsTest extends KernelTestCase
 
         self::bootKernel();
         $this->doctrine = static::$kernel->getContainer()->get('doctrine');
-        $this->templating = static::$kernel->getContainer()->get('twig')->getLoader();
+        $this->templating = static::$kernel->getContainer()->get('test.service_container')->get('twig')->getLoader();
 
         //Parametri Tabella
         $this->bundle = 'App';
