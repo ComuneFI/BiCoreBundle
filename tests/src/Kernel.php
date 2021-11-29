@@ -30,7 +30,7 @@ class Kernel extends BaseKernel
         return parent::getProjectDir().'/tests';
     }
 
-    public function registerBundles()
+    public function registerBundles() : iterable
     {
         $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
