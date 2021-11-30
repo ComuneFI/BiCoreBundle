@@ -32,7 +32,7 @@ class ChecksrcCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $prjpath = $this->apppaths;
         $vendorBin = $prjpath->getVendorBinPath().'/';

@@ -30,7 +30,7 @@ class LoadDefaultDataCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;

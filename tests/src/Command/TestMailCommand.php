@@ -25,7 +25,7 @@ class TestMailCommand extends Command
         // you *must* call the parent constructor
         parent::__construct();
     }
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
 
         $message = new Swift_Message("Test");

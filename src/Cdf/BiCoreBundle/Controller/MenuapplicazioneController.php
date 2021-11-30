@@ -33,8 +33,7 @@ class MenuapplicazioneController extends FiController
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQueryBuilder()
+        $query = $this->em->createQueryBuilder()
                 ->select('o')
                 ->from('BiCoreBundle:Menuapplicazione', 'o')
                 ->getQuery()

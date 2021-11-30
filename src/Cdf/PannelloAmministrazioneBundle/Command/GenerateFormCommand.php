@@ -276,7 +276,7 @@ class GenerateFormCommand extends Command
     /**
      * Execute command in order to create the new form class
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         set_time_limit(0);
 

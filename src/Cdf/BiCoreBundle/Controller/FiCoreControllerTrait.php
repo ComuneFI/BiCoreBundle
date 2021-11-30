@@ -56,7 +56,7 @@ trait FiCoreControllerTrait
 
         $filtri = [];
         $prefiltri = [];
-        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $colonneordinamento = [$tablenamefromentity.'.id' => 'DESC'];
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
@@ -119,7 +119,7 @@ trait FiCoreControllerTrait
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
-        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->em);
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
@@ -176,7 +176,7 @@ trait FiCoreControllerTrait
         }
 
         $entityclassnotation = $this->getEntityClassNotation();
-        $em = $this->get('doctrine')->getManager();
+        $em = $this->em;
         $righe = $em->getRepository($entityclassnotation)->findAll();
 
         $lista = [];
@@ -228,7 +228,7 @@ trait FiCoreControllerTrait
 
     protected function getEntityClassNotation()
     {
-        $em = $this->get('doctrine')->getManager();
+        $em = $this->em;
         $entityutils = new EntityUtils($em);
 
         return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
@@ -236,7 +236,7 @@ trait FiCoreControllerTrait
 
     protected function getEntityClassName()
     {
-        $em = $this->get('doctrine')->getManager();
+        $em = $this->em;
         $entityfinder = new Finder($em);
 
         return $entityfinder->getClassNameFromEntityName($this->controller);

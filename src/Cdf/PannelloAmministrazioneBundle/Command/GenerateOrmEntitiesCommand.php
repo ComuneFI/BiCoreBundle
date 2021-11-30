@@ -37,7 +37,7 @@ class GenerateOrmEntitiesCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         set_time_limit(0);
 

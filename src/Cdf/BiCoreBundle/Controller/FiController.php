@@ -3,10 +3,11 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
-use function count;
-use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
+use Doctrine\ORM\EntityManagerInterface;
+use function count;
+use ReflectionClass;
 
 class FiController extends AbstractController
 {
@@ -14,12 +15,13 @@ class FiController extends AbstractController
     use FiCoreCrudControllerTrait;
     use FiCoreTabellaControllerTrait;
 
-    protected $bundle;
-    protected $template;
-    protected $controller;
-    protected $permessi;
+    protected string $bundle;
+    protected Environment $template;
+    protected string $controller;
+    protected PermessiManager $permessi;
+    protected EntityManagerInterface $em;
 
-    public function __construct(PermessiManager $permessi, Environment $template)
+    public function __construct(PermessiManager $permessi, Environment $template, EntityManagerInterface $em)
     {
         $matches = [];
         $controllo = new ReflectionClass(get_class($this));
@@ -33,6 +35,7 @@ class FiController extends AbstractController
         $this->controller = $matches[count($matches) - 1];
         $this->permessi = $permessi;
         $this->template = $template;
+        $this->em = $em;
     }
 
     protected function getBundle()

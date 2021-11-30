@@ -9,22 +9,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
+use Doctrine\ORM\EntityManagerInterface;
+use FOS\UserBundle\Util\UserManipulator;
 
 /**
  * Operatori controller.
  */
 class OperatoriController extends FiController
 {
-    private $logger;
-    private $usermanipulator;
+    protected LoggerInterface $logger;
+    protected UserManipulator $usermanipulator;
 
-    public function __construct(PermessiManager $permessi, Environment $template, LoggerInterface $logger, $usermanipulator)
+    public function __construct(PermessiManager $perm, Environment $template, EntityManagerInterface $em, LoggerInterface $log, UserManipulator $um)
     {
-        $this->logger = $logger;
-        $this->permessi = $permessi;
-        $this->usermanipulator = $usermanipulator;
-        $this->template = $template;
-        parent::__construct($permessi, $template);
+        $this->logger = $log;
+        $this->usermanipulator = $um;
+        parent::__construct($perm, $template, $em);
     }
 
     /**
@@ -69,7 +69,7 @@ class OperatoriController extends FiController
                 $entity->setEnabled(true);
                 $logger->info('Inserimento nuovo utente '.$username);
 
-                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager = $this->em;
                 $entityManager->persist($entity);
                 $entityManager->flush();
 

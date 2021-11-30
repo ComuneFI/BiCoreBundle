@@ -36,7 +36,7 @@ class BiCoreBundleInstallCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $admin = $input->getArgument('admin');
         $adminpass = $input->getArgument('adminpass');
