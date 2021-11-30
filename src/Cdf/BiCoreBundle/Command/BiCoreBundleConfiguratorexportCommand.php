@@ -41,7 +41,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $fs = new Filesystem();
         $this->output = $output;

@@ -29,7 +29,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
                 ->setHelp('Creazione di un nuovo database di bi');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;

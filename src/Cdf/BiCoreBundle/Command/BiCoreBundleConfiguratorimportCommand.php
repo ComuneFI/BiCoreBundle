@@ -52,7 +52,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');

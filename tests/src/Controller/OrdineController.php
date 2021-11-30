@@ -6,6 +6,7 @@ use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Asset\Packages;
 
 /**
  * Ordine controller.
@@ -15,7 +16,7 @@ class OrdineController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -138,7 +139,7 @@ class OrdineController extends FiController
                   ) */
         );
 
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->em);
 
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),

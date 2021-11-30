@@ -20,7 +20,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $force = $input->getOption('force');
 

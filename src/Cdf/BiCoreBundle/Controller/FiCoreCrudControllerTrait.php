@@ -55,7 +55,7 @@ trait FiCoreCrudControllerTrait
             if ($form->isValid()) {
                 $entity = $form->getData();
 
-                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager = $this->em;
                 $entityManager->persist($entity);
                 $entityManager->flush();
 
@@ -84,7 +84,7 @@ trait FiCoreCrudControllerTrait
      */
     public function edit(Request $request, $id)
     {
-        /* @var $em EntityManager */
+        /* @var $this->em EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
 
@@ -101,9 +101,7 @@ trait FiCoreCrudControllerTrait
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($entityclass)->find($id);
+        $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
@@ -137,7 +135,7 @@ trait FiCoreCrudControllerTrait
      */
     public function update(Request $request, $id)
     {
-        /* @var $em EntityManager */
+        /* @var $ EntityManager */
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
@@ -151,9 +149,7 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
         $formType = $formclass . 'Type';
 
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($entityclass)->find($id);
+        $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
@@ -172,13 +168,13 @@ trait FiCoreCrudControllerTrait
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {
-            $originalData = $em->getUnitOfWork()->getOriginalEntityData($entity);
+            $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
 
-            $em->persist($entity);
-            $em->flush();
+            $this->em->persist($entity);
+            $this->em->flush();
 
-            $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $em->getRepository('BiCoreBundle:Storicomodifiche');
+            $newData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
+            $repoStorico = $this->em->getRepository('BiCoreBundle:Storicomodifiche');
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
@@ -210,7 +206,7 @@ trait FiCoreCrudControllerTrait
      */
     public function delete(Request $request, $token)
     {
-        /* @var $em EntityManager */
+        /* @var $this->em EntityManager */
         if (!$this->getPermessi()->canDelete($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per eliminare questo contenuto');
         }
@@ -223,8 +219,7 @@ trait FiCoreCrudControllerTrait
         }
 
         try {
-            $em = $this->getDoctrine()->getManager();
-            $qb = $em->createQueryBuilder();
+            $qb = $this->em->createQueryBuilder();
             $ids = explode(',', $request->get('id'));
             $qb->delete($entityclass, 'u')
                     ->andWhere('u.id IN (:ids)')
@@ -249,8 +244,7 @@ trait FiCoreCrudControllerTrait
 
     public function elencoModifiche($controller, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $this->em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,

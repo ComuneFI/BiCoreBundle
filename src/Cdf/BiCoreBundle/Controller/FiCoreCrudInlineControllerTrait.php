@@ -54,11 +54,9 @@ trait FiCoreCrudInlineControllerTrait
     {
         $this->checkAggiornaRight(0, $token);
 
-        /* @var $em EntityManager */
+        /* @var $this->em EntityManager */
         $controller = $this->getController();
         $entityclass = $this->getEntityClassName();
-
-        $em = $this->getDoctrine()->getManager();
 
         //Insert
         $entity = new $entityclass();
@@ -72,9 +70,9 @@ trait FiCoreCrudInlineControllerTrait
                 $field = ucfirst($fieldpieces[1]);
                 $fieldvalue = $this->getValueAggiorna($value);
                 if ('join' == $value['fieldtype']) {
-                    $entityfinder = new Finder($em);
+                    $entityfinder = new Finder($this->em);
                     $joinclass = $entityfinder->getClassNameFromEntityName($field);
-                    $fieldvalue = $em->getRepository($joinclass)->find($fieldvalue);
+                    $fieldvalue = $this->em->getRepository($joinclass)->find($fieldvalue);
                 }
 
                 if ($accessor->isWritable($entity, $field)) {
@@ -86,9 +84,9 @@ trait FiCoreCrudInlineControllerTrait
                 continue;
             }
         }
-        $em->persist($entity);
-        $em->flush();
-        $em->clear();
+        $this->em->persist($entity);
+        $this->em->flush();
+        $this->em->clear();
 
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
@@ -97,15 +95,14 @@ trait FiCoreCrudInlineControllerTrait
     {
         $this->checkAggiornaRight($id, $token);
 
-        /* @var $em EntityManager */
+        /* @var $this->em EntityManager */
         $controller = $this->getController();
         $entityclass = $this->getEntityClassName();
 
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder = $this->em->createQueryBuilder();
 
         //Update
-        $entity = $em->getRepository($entityclass)->find($id);
+        $entity = $this->em->getRepository($entityclass)->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
         }
@@ -125,7 +122,7 @@ trait FiCoreCrudInlineControllerTrait
                 if ('join' == $value['fieldtype']) {
                     $field = lcfirst($field.'_id');
                 }
-                $entityutils = new EntityUtils($em);
+                $entityutils = new EntityUtils($this->em);
                 $property = $entityutils->getEntityProperties($field, $entity);
                 $nomefunzioneget = $property['get'];
                 if ($nomefunzioneget != $value['fieldvalue']) {

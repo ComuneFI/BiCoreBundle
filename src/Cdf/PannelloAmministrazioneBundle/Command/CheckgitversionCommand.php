@@ -34,7 +34,7 @@ class CheckgitversionCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         if (self::isWindows()) {
             $output->writeln('<info>Non previsto in ambiente windows</info>');

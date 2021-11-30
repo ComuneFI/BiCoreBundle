@@ -6,6 +6,7 @@ use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Asset\Packages;
 
 /*
   use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
@@ -23,7 +24,7 @@ class MagazzinoController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -48,7 +49,7 @@ class MagazzinoController extends FiController
 
         $filtri = array();
         $prefiltri = array();
-        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $colonneordinamento = array($tablenamefromentity.'.id' => 'DESC');
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),

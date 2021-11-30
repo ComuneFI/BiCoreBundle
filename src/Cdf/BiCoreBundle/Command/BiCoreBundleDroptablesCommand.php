@@ -29,7 +29,7 @@ class BiCoreBundleDroptablesCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;

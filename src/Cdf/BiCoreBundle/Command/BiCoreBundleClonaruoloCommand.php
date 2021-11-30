@@ -32,7 +32,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $ruoloesistente = $input->getArgument('ruoloesistente');
         $nuovoruolo = $input->getArgument('nuovoruolo');

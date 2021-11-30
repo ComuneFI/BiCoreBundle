@@ -7,7 +7,7 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use \Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 /**
  * Cliente controller.
  */
@@ -211,12 +211,9 @@ class ClienteController extends FiController {
         );
     }
 
-    public function preparazioneaggiornamentomultiplo(Request $request) {
+    public function preparazioneaggiornamentomultiplo(Request $request, EntityUtils $entityUtils) {
         $ritorno = array();
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->get('doctrine')->getManager();
-        $eu = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($em);
-        $entitycolumns = $eu->getEntityColumns("App:Cliente");
+        $entitycolumns = $entityUtils->getEntityColumns("App:Cliente");
         $parametri = array();
         $parametri["campi"][] = array("id" => "Cliente.attivo", "value" => "Attivo", "datatype" => $entitycolumns["attivo"]["type"]);
         $parametri["campi"][] = array("id" => "Cliente.punti", "value" => "Punti", "datatype" => $entitycolumns["punti"]["type"]);
@@ -232,7 +229,7 @@ class ClienteController extends FiController {
 
 
         try {
-            $qb = $em->createQueryBuilder();
+            $qb = $this->em->createQueryBuilder();
             $q = $qb->update('App:Cliente', 'Cliente')
                     ->set($camposelezionato, ':valore')
                     ->where("Cliente.id in (:ids)")
