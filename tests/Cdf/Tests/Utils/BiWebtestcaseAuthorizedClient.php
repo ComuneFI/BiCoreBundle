@@ -83,4 +83,12 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $client;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected function tearDown(): void {
+        parent::tearDown();
+        $this->em->close();
+    }
+
 }

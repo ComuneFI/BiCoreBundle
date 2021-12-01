@@ -25,7 +25,7 @@ class OrdineController extends FiController
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
         $template = $bundle.'/'.$controller.'/'.$this->getThisFunctionName().'.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($template)) {
+        if (!$this->template->getLoader()->exists($template)) {
             $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
