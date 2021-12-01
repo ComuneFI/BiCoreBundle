@@ -57,7 +57,7 @@ class DatabaseInfoDataCollector extends DataCollector
         return $this->data['database_host'];
     }
 
-    public function getDatabasePort(): string
+    public function getDatabasePort(): ?string
     {
         return $this->data['database_port'];
     }
