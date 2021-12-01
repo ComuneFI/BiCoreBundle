@@ -15,7 +15,7 @@ class ObjectToTabellaExtension extends AbstractExtension
         $this->tableprefix = $tableprefix;
     }
 
-    public function getFunctions()
+    public function getFunctions() : array
     {
         return array(
             new TwigFunction('object2view', array($this, 'object2View', 'is_safe' => array('html'))),

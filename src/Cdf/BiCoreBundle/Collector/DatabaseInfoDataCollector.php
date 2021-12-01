@@ -32,7 +32,7 @@ class DatabaseInfoDataCollector extends DataCollector
         );
     }
 
-    public function getDatabaseDriver()
+    public function getDatabaseDriver(): string
     {
         $driverName = 'Driver non gestito da questo pannello';
 
@@ -52,37 +52,37 @@ class DatabaseInfoDataCollector extends DataCollector
         return $driverName;
     }
 
-    public function getDatabaseHost()
+    public function getDatabaseHost(): string
     {
         return $this->data['database_host'];
     }
 
-    public function getDatabasePort()
+    public function getDatabasePort(): string
     {
         return $this->data['database_port'];
     }
 
-    public function getDatabaseName()
+    public function getDatabaseName(): string
     {
         return $this->data['database_name'];
     }
 
-    public function getDatabaseUser()
+    public function getDatabaseUser(): string
     {
         return $this->data['database_user'];
     }
 
-    public function getDatabasePassword()
+    public function getDatabasePassword(): string
     {
         return $this->data['database_password'];
     }
 
-    public function reset()
+    public function reset(): bool
     {
         return true;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'databaseInfo';
     }

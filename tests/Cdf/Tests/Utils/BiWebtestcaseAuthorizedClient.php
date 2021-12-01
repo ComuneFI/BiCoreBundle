@@ -7,6 +7,20 @@ use Symfony\Component\BrowserKit\Cookie;
 
 abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
 
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    protected function setUp(): void {
+        static::$kernel = static::createKernel();
+        static::$kernel->boot();
+        $this->em = static::$kernel->getContainer()
+                ->get('doctrine')
+                ->getManager()
+        ;
+    }
+
     protected function getParametriTabella($nomecontroller, $crawler) {
         $parametri = array();
         $attributi = array(
@@ -22,71 +36,59 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $parametri;
     }
 
+    protected function getUserFromUsername(string $username) {
+
+        $users = $this->em->createQueryBuilder()
+                ->select('r')
+                ->from('BiCoreBundle:Operatori', 'r')
+                ->where('r.username = :username')
+                ->setParameter('username', $username)
+                ->getQuery()
+                ->getResult();
+        return $users[0];
+    }
+
     protected function logInAdmin() {
         $client = static::createClient();
         $container = $client->getContainer();
-        $session = $container->get('session');
-
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fos_user.security.login_manager');
-        $firewallName = $container->getParameter('fos_user.firewall_name');
 
         $username4test = $container->getParameter('bi_core.admin4test');
-        $user = $userManager->findUserBy(array('username' => $username4test));
-        $loginManager->loginUser($firewallName, $user);
-        //$client->loginUser($user, $firewallName);
+        $user = $this->getUserFromUsername($username4test);
+
+        $client->loginUser($user);
 
         /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-        $container->get('session')->save();
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
         return $client;
     }
 
     protected function logInUsernoreoles() {
         $client = static::createClient();
         $container = $client->getContainer();
-        $session = $container->get('session');
-
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fos_user.security.login_manager');
-        $firewallName = $container->getParameter('fos_user.firewall_name');
 
         $username4test = $container->getParameter('bi_core.usernoroles4test');
-        $user = $userManager->findUserBy(array('username' => $username4test));
-        $loginManager->loginUser($firewallName, $user);
+        $user = $this->getUserFromUsername($username4test);
 
-        /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-        $container->get('session')->save();
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($user);
         return $client;
     }
 
     protected function logInUserreadroles() {
         $client = static::createClient();
         $container = $client->getContainer();
-        $session = $container->get('session');
-
-        /* @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-        $userManager = $container->get('fos_user.user_manager');
-        /* @var $loginManager \FOS\UserBundle\Security\LoginManager */
-        $loginManager = $container->get('fos_user.security.login_manager');
-        $firewallName = $container->getParameter('fos_user.firewall_name');
 
         $username4test = $container->getParameter('bi_core.userreadroles4test');
-        $user = $userManager->findUserBy(array('username' => $username4test));
-        $loginManager->loginUser($firewallName, $user);
+        $user = $this->getUserFromUsername($username4test);
 
-        /* save the login token into the session and put it in a cookie */
-        $container->get('session')->set('_security_' . $firewallName, serialize($container->get('security.token_storage')->getToken()));
-        $container->get('session')->save();
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($user);
         return $client;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function tearDown(): void {
+        parent::tearDown();
+        $this->em->close();
     }
 
 }

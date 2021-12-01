@@ -14,7 +14,7 @@ class AssetExtension extends AbstractExtension
         $this->projectpath = $projectpath;
     }
 
-    public function getFunctions()
+    public function getFunctions() : array
     {
         return [new TwigFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
     }

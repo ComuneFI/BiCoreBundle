@@ -148,10 +148,10 @@ trait FiCoreTabellaControllerTrait
     {
         $template = $controller . '/Tabella/tabellacontainer.html.twig';
         $path = $controller . '/';
-        if (!$this->get('twig')->getLoader()->exists($template)) {
+        if (!$this->template->getLoader()->exists($template)) {
             $template = '@BiCore/' . $controller . '/Tabella/tabellacontainer.html.twig';
             $path = '@BiCore/' . $controller . '/';
-            if (!$this->get('twig')->getLoader()->exists($template)) {
+            if (!$this->template->getLoader()->exists($template)) {
                 $path = '@BiCore/Standard/';
                 $template = $path . 'Tabella/tabellacontainer.html.twig';
             }

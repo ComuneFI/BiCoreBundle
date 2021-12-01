@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('bi_core');
         $rootnode = $treeBuilder->getRootNode();
@@ -35,7 +35,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('userreadrolespwd4test')->defaultValue('userreadroles')->end()
                 ->scalarNode('api_inflector_exceptions')->defaultValue('')->end()
                 ->booleanNode('solosso')->defaultFalse()->end()
-                
                 ->end();
 
         return $treeBuilder;

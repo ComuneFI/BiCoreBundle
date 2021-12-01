@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use \Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
+use Symfony\Component\Asset\Packages;
+        
 /**
  * Cliente controller.
  */
@@ -16,7 +18,7 @@ class ClienteController extends FiController {
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, \Symfony\Component\Asset\Packages $assetsmanager) {
+    public function index(Request $request, Packages $assetsmanager) {
         /* $dateimm = new \DateTimeImmutable($datestrchk);
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
@@ -115,7 +117,7 @@ class ClienteController extends FiController {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
         $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($template)) {
+        if (!$this->template->getLoader()->exists($template)) {
             $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
         }
 

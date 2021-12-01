@@ -110,7 +110,7 @@ trait FiCoreControllerTrait
         $parametriform = $this->getParametroIndexDettaglio($parametripassati, 'parametriform', []);
 
         $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($template)) {
+        if (!$this->template->getLoader()->exists($template)) {
             $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
         }
 
@@ -190,9 +190,9 @@ trait FiCoreControllerTrait
     protected function getTabellaTemplate($controller)
     {
         $tabellatemplate = $controller.'/Tabella/tabellaform.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
+        if (!$this->template->getLoader()->exists($tabellatemplate)) {
             $tabellatemplate = '@BiCore/'.$controller.'/Tabella/tabellaform.html.twig';
-            if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
+            if (!$this->template->getLoader()->exists($tabellatemplate)) {
                 $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
         }
@@ -203,9 +203,9 @@ trait FiCoreControllerTrait
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
         $crudtemplate = $bundle.'/'.$controller.'/Crud/'.$operation.'.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
+        if (!$this->template->getLoader()->exists($crudtemplate)) {
             $crudtemplate = $controller.'/Crud/'.$operation.'.html.twig';
-            if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
+            if (!$this->template->getLoader()->exists($crudtemplate)) {
                 $crudtemplate = '@BiCore/Standard/Crud/'.$operation.'.html.twig';
             }
         }

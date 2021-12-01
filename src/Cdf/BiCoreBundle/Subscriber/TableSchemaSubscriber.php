@@ -7,6 +7,7 @@ use Doctrine\ORM\Id\SequenceGenerator;
 
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
+
     private $schemaprefix;
 
     public function __construct($schemaprefix)
@@ -14,7 +15,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
         $this->schemaprefix = $schemaprefix;
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return array('loadClassMetadata');
     }
@@ -25,19 +26,19 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
         if (!$this->schemaprefix || ($classMetadata->isInheritanceTypeSingleTable() && !$classMetadata->isRootEntity())) {
             return;
         }
-        $classMetadata->setPrimaryTable(array('name' => $this->schemaprefix.'.'.$classMetadata->getTableName()));
+        $classMetadata->setPrimaryTable(array('name' => $this->schemaprefix . '.' . $classMetadata->getTableName()));
         foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
             if (\Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY == $mapping['type'] &&
                     isset($classMetadata->associationMappings[$fieldName]['joinTable']['name'])
             ) {
                 $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
-                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->schemaprefix.'.'.$mappedTableName;
+                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->schemaprefix . '.' . $mappedTableName;
             }
         }
 
         if ($classMetadata->isIdGeneratorSequence()) {
             $newDefinition = $classMetadata->sequenceGeneratorDefinition;
-            $newDefinition['sequenceName'] = $this->schemaprefix.'.'.$newDefinition['sequenceName'];
+            $newDefinition['sequenceName'] = $this->schemaprefix . '.' . $newDefinition['sequenceName'];
 
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
             $em = $args->getEntityManager();
