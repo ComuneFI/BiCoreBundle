@@ -19,7 +19,7 @@ class UtilitaExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions() : array
     {
         return array(
             new TwigFunction('json_decode', array($this, 'jsonDecode', 'is_safe' => array('html'))),
@@ -27,7 +27,7 @@ class UtilitaExtension extends AbstractExtension
         );
     }
 
-    public function getFilters()
+    public function getFilters() : array
     {
         return array(
             new TwigFilter('getparametrotabella', array($this, 'getParametroTabella')),
