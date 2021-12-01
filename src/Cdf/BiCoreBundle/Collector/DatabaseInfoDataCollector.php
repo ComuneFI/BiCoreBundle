@@ -52,7 +52,7 @@ class DatabaseInfoDataCollector extends DataCollector
         return $driverName;
     }
 
-    public function getDatabaseHost(): string
+    public function getDatabaseHost(): ?string
     {
         return $this->data['database_host'];
     }
@@ -67,12 +67,12 @@ class DatabaseInfoDataCollector extends DataCollector
         return $this->data['database_name'];
     }
 
-    public function getDatabaseUser(): string
+    public function getDatabaseUser(): ?string
     {
         return $this->data['database_user'];
     }
 
-    public function getDatabasePassword(): string
+    public function getDatabasePassword(): ?string
     {
         return $this->data['database_password'];
     }
