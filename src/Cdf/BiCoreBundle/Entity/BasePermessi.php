@@ -63,7 +63,7 @@ class BasePermessi
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setId($id)
     {
@@ -87,7 +87,7 @@ class BasePermessi
      *
      * @param string $modulo
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setModulo($modulo)
     {
@@ -111,7 +111,7 @@ class BasePermessi
      *
      * @param string $crud
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setCrud($crud)
     {
@@ -135,7 +135,7 @@ class BasePermessi
      *
      * @param int $ruoli_id
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setRuoliId($ruoli_id)
     {
@@ -159,7 +159,7 @@ class BasePermessi
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setOperatoriId($operatori_id)
     {
@@ -183,7 +183,7 @@ class BasePermessi
      *
      * @param \Cdf\BiCoreBundle\Ruoli $ruoli
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setRuoli(Ruoli $ruoli = null)
     {
@@ -207,7 +207,7 @@ class BasePermessi
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Permessi
+     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
     public function setOperatori(Operatori $operatori = null)
     {

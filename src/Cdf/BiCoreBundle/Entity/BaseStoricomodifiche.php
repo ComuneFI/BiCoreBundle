@@ -67,7 +67,7 @@ class BaseStoricomodifiche
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setId($id)
     {
@@ -91,7 +91,7 @@ class BaseStoricomodifiche
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setNometabella($nometabella)
     {
@@ -115,7 +115,7 @@ class BaseStoricomodifiche
      *
      * @param string $nomecampo
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setNomecampo($nomecampo)
     {
@@ -139,7 +139,7 @@ class BaseStoricomodifiche
      *
      * @param int $idtabella
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setIdtabella($idtabella)
     {
@@ -163,7 +163,7 @@ class BaseStoricomodifiche
      *
      * @param \DateTime $giorno
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setGiorno($giorno)
     {
@@ -187,7 +187,7 @@ class BaseStoricomodifiche
      *
      * @param string $valoreprecedente
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setValoreprecedente($valoreprecedente)
     {
@@ -211,7 +211,7 @@ class BaseStoricomodifiche
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setOperatoriId($operatori_id)
     {
@@ -235,7 +235,7 @@ class BaseStoricomodifiche
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Storicomodifiche
+     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
     public function setOperatori(Operatori $operatori = null)
     {

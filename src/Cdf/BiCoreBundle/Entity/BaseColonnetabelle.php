@@ -83,7 +83,7 @@ class BaseColonnetabelle
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setId($id)
     {
@@ -107,7 +107,7 @@ class BaseColonnetabelle
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setNometabella($nometabella)
     {
@@ -131,7 +131,7 @@ class BaseColonnetabelle
      *
      * @param string $nomecampo
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setNomecampo($nomecampo)
     {
@@ -155,7 +155,7 @@ class BaseColonnetabelle
      *
      * @param bool $mostraindex
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setMostraindex($mostraindex)
     {
@@ -179,7 +179,7 @@ class BaseColonnetabelle
      *
      * @param int $ordineindex
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setOrdineindex($ordineindex)
     {
@@ -203,7 +203,7 @@ class BaseColonnetabelle
      *
      * @param int $larghezzaindex
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setLarghezzaindex($larghezzaindex)
     {
@@ -227,7 +227,7 @@ class BaseColonnetabelle
      *
      * @param string $etichettaindex
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setEtichettaindex($etichettaindex)
     {
@@ -251,7 +251,7 @@ class BaseColonnetabelle
      *
      * @param bool $registrastorico
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setRegistrastorico($registrastorico)
     {
@@ -275,7 +275,7 @@ class BaseColonnetabelle
      *
      * @param bool $editabile
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setEditabile($editabile)
     {
@@ -299,7 +299,7 @@ class BaseColonnetabelle
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setOperatoriId($operatori_id)
     {
@@ -323,7 +323,7 @@ class BaseColonnetabelle
      *
      * @param \Cdf\BiCoreBundle\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Colonnetabelle
+     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
     public function setOperatori(Operatori $operatori = null)
     {
