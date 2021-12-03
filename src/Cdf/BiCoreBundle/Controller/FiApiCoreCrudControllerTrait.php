@@ -3,7 +3,6 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

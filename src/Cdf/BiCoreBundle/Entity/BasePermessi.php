@@ -181,7 +181,7 @@ class BasePermessi
     /**
      * Set Ruoli entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Ruoli $ruoli
+     * @param \Cdf\BiCoreBundle\Entity\Ruoli $ruoli
      *
      * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
@@ -195,7 +195,7 @@ class BasePermessi
     /**
      * Get Ruoli entity (many to one).
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function getRuoli()
     {
@@ -205,7 +205,7 @@ class BasePermessi
     /**
      * Set Operatori entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
      * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
@@ -219,7 +219,7 @@ class BasePermessi
     /**
      * Get Operatori entity (many to one).
      *
-     * @return \Cdf\BiCoreBundle\Operatori
+     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function getOperatori()
     {

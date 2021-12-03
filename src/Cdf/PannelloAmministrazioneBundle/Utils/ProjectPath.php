@@ -6,13 +6,6 @@ use Exception;
 
 class ProjectPath
 {
-    /**
-     * La funzione ritorna un array con i path dell'applicazione.
-     *
-     * @param $container Container dell'applicazione
-     *
-     * @return array Ritorna l'array contenente i path
-     */
     private $rootdir;
     private $projectdir;
     private $cacheDir;

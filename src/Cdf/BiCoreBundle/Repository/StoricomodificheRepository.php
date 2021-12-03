@@ -5,6 +5,7 @@ namespace Cdf\BiCoreBundle\Repository;
 use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 
 class StoricomodificheRepository extends EntityRepository
 {
@@ -62,7 +63,7 @@ class StoricomodificheRepository extends EntityRepository
         $risposta = false;
 
         $em = $this->getEntityManager();
-        $entity = $em->getRepository('BiCoreBundle:Colonnetabelle')->findOneBy(
+        $entity = $em->getRepository(Colonnetabelle::class)->findOneBy(
             array(
                     'nometabella' => $nometabella,
                     'nomecampo' => $indiceDato,

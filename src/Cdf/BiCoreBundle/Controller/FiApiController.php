@@ -7,12 +7,14 @@ use function count;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Inflector\Inflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
+ * @SuppressWarnings(PHPMD.TooManyFields)
  * @codeCoverageIgnore
  */
 class FiApiController extends AbstractController
@@ -38,8 +40,9 @@ class FiApiController extends AbstractController
     protected $enumOptions;
     protected $inflectorExceptions;
     protected $params;
+    protected EntityManagerInterface $em;
 
-    public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params)
+    public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params, EntityManagerInterface $em)
     {
         $matches = [];
         $controllo = new ReflectionClass(get_class($this));
@@ -55,6 +58,7 @@ class FiApiController extends AbstractController
         $this->controller = $matches[count($matches) - 1];
         $this->permessi = $permessi;
         $this->template = $template;
+        $this->em = $em;
 
         $this->model = $this->controller; //they matches
         $this->collection = $this->pluralize($this->model);
@@ -69,7 +73,6 @@ class FiApiController extends AbstractController
         //it generates options one time for all
         $this->loadInflectorExceptions();
         $this->generateEnumAndOptions();
-        //dump($this->options);
     }
 
     protected function loadInflectorExceptions()

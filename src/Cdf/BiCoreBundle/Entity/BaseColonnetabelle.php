@@ -321,7 +321,7 @@ class BaseColonnetabelle
     /**
      * Set Operatori entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
      * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
@@ -335,7 +335,7 @@ class BaseColonnetabelle
     /**
      * Get Operatori entity (many to one).
      *
-     * @return \Cdf\BiCoreBundle\Operatori
+     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function getOperatori()
     {

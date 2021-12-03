@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 trait FiCoreCrudControllerTrait
 {
@@ -174,7 +175,8 @@ trait FiCoreCrudControllerTrait
             $this->em->flush();
 
             $newData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $this->em->getRepository('BiCoreBundle:Storicomodifiche');
+            /** @var \Cdf\BiCoreBundle\Repository\StoricomodificheRepository $repoStorico */
+            $repoStorico = $this->em->getRepository(Storicomodifiche::class);
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
@@ -244,7 +246,7 @@ trait FiCoreCrudControllerTrait
 
     public function elencoModifiche($controller, $id)
     {
-        $risultato = $this->em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $this->em->getRepository(Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,

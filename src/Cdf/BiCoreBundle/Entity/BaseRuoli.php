@@ -214,7 +214,7 @@ class BaseRuoli
     /**
      * Add Operatori entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
      * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
@@ -228,7 +228,7 @@ class BaseRuoli
     /**
      * Remove Operatori entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
      * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
@@ -252,7 +252,7 @@ class BaseRuoli
     /**
      * Add Permessi entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Permessi $permessi
+     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
      * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
@@ -266,7 +266,7 @@ class BaseRuoli
     /**
      * Remove Permessi entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Permessi $permessi
+     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
      * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */

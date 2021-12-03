@@ -198,7 +198,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
      *
      * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
-    public function removePermessi(Permessi $permessi) :\Cdf\BiCoreBundle\Entity\Permessi
+    public function removePermessi(Permessi $permessi) :\Cdf\BiCoreBundle\Entity\Operatori
     {
         $this->permessis->removeElement($permessi);
 
