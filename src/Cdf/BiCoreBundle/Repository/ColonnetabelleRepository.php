@@ -3,16 +3,24 @@
 namespace Cdf\BiCoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Cdf\BiCoreBundle\Entity\Colonnetabelle;
+use Cdf\BiCoreBundle\Entity\Operatori;
 
 class ColonnetabelleRepository extends EntityRepository
 {
-    public function findOpzioniColonnetabella($tabella, $user = null)
+    /**
+     *
+     * @param string $tabella
+     * @param Operatori $user
+     * @return array<Colonnetabelle>
+     */
+    public function findOpzioniColonnetabella(string $tabella, Operatori $user = null) : array
     {
         $em = $this->getEntityManager();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
         $qb->select(array('t'));
-        $qb->from('BiCoreBundle:Colonnetabelle', 't');
+        $qb->from(Colonnetabelle::class, 't');
         $qb->where('t.nometabella = :tabella');
         $qb->andWhere('t.nomecampo is not null');
         $qb->orderBy('t.ordineindex', 'asc');

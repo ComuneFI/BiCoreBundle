@@ -15,9 +15,11 @@ use Symfony\Component\DependencyInjection\Loader;
 class BiCoreExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * @param mixed[] $configs
+     *
+     * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container) : void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
