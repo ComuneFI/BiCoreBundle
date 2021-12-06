@@ -42,6 +42,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
             $em = $args->getEntityManager();
+            /** @phpstan-ignore-next-line */
             if (isset($classMetadata->idGenerator)) {
                 $sequenceGenerator = new SequenceGenerator(
                     $em->getConfiguration()->getQuoteStrategy()->getSequenceName(
@@ -49,7 +50,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
                         $classMetadata,
                         $em->getConnection()->getDatabasePlatform()
                     ),
-                    $newDefinition['allocationSize']
+                    (int)$newDefinition['allocationSize']
                 );
                 $classMetadata->setIdGenerator($sequenceGenerator);
             }

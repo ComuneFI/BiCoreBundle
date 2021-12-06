@@ -231,12 +231,12 @@ trait FiCoreCrudControllerTrait
             $query->execute();
         } catch (ForeignKeyConstraintViolationException $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode('501');
+            $response->setStatusCode(501);
 
             return $response;
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode('200');
+            $response->setStatusCode(200);
 
             return $response;
         }

@@ -9,30 +9,29 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class HiddenIntegerType extends HiddenType implements DataTransformerInterface
 {
+
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer($this);
     }
+
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function transform($data)
     {
-        return (int)$data;
+        return (int) $data;
     }
+
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function reverseTransform($data)
     {
-        try {
-            return (int)$data;
-        } catch (\Exception $e) {
-            throw new TransformationFailedException($e->getMessage());
-        }
+        return (int) $data;
     }
 
     public function getName()

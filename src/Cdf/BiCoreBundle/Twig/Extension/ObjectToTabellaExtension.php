@@ -18,9 +18,9 @@ class ObjectToTabellaExtension extends AbstractExtension
     public function getFunctions() : array
     {
         return array(
-            new TwigFunction('object2view', array($this, 'object2View', 'is_safe' => array('html'))),
-            new TwigFunction('field2object', array($this, 'field2Object', 'is_safe' => array('html'))),
-            new TwigFunction('joinfieldid', array($this, 'joinFieldId', 'is_safe' => array('html'))),
+            new TwigFunction('object2view', [$this, 'object2View']),
+            new TwigFunction('field2object', [$this, 'field2Object']),
+            new TwigFunction('joinfieldid', [$this, 'joinFieldId']),
         );
     }
 

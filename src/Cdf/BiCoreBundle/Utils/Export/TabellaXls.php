@@ -46,7 +46,7 @@ class TabellaXls
         $todaydate = date('d-m-y');
 
         $filename = 'Exportazione';
-        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid(rand(), true)));
+        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid((string)rand(), true)));
         $filename = $filename . '.xls';
         $filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
 

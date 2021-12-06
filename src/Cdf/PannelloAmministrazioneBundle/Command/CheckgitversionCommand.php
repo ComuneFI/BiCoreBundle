@@ -80,7 +80,7 @@ class CheckgitversionCommand extends Command
             $cmd = 'cd '.$path;
             $remotetagscmd = "git ls-remote -t | awk '{print $2}' | cut -d '/' -f 3 | cut -d '^' -f 1 | sort --version-sort | tail -1";
             $remotetag = $cmd.';'.$remotetagscmd;
-            $process = new Process($remotetag);
+            $process = Process::fromShellCommandline($remotetag);
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
@@ -93,7 +93,7 @@ class CheckgitversionCommand extends Command
         } else {
             //Local
             $cmd = 'cd '.$path;
-            $process = new Process($cmd.';git branch | '."grep ' * '");
+            $process = Process::fromShellCommandline($cmd.';git branch | '."grep ' * '");
             $process->setTimeout(60 * 100);
             $process->run();
             if ($process->isSuccessful()) {
