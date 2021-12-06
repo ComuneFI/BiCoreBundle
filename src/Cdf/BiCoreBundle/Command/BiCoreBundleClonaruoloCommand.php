@@ -11,10 +11,11 @@ use Exception;
 
 class BiCoreBundleClonaruoloCommand extends Command
 {
-    protected static $defaultName = 'bicorebundle:clonaruolo';
-    private $em;
 
-    protected function configure()
+    protected static $defaultName = 'bicorebundle:clonaruolo';
+    private EntityManagerInterface $em;
+
+    protected function configure(): void
     {
         $this
                 ->setDescription('Clona i permessi di un ruolo esistente su un nuovo ruolo')
@@ -32,7 +33,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ruoloesistente = $input->getArgument('ruoloesistente');
         $nuovoruolo = $input->getArgument('nuovoruolo');
@@ -53,7 +54,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         ;
         $ruoloesistenteobj = $query->getResult();
         if (!$ruoloesistenteobj) {
-            throw new Exception('Non esiste il ruolo '.$ruoloesistente);
+            throw new Exception('Non esiste il ruolo ' . $ruoloesistente);
         } else {
             $newruoloesistente = $ruoloesistenteobj[0];
         }
@@ -67,10 +68,10 @@ class BiCoreBundleClonaruoloCommand extends Command
         ;
         $nuovruoloobj = $query->getResult();
         if ($nuovruoloobj) {
-            throw new Exception('Esiste già il ruolo '.$nuovoruolo);
+            throw new Exception('Esiste già il ruolo ' . $nuovoruolo);
         }
 
-        $output->writeln('<info>Inizio clonazione del ruolo '.$ruoloesistente.' in '.$nuovoruolo.'</info>');
+        $output->writeln('<info>Inizio clonazione del ruolo ' . $ruoloesistente . ' in ' . $nuovoruolo . '</info>');
         $newnuovoruolo = clone $newruoloesistente;
         $newnuovoruolo->setRuolo($nuovoruolo);
         $this->em->persist($newnuovoruolo);

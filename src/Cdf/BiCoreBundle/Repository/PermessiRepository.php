@@ -9,7 +9,7 @@ use Cdf\BiCoreBundle\Entity\Permessi;
 class PermessiRepository extends EntityRepository
 {
 
-    public function findPermessoModuloOperatore(string $modulo, Operatori $operatore): ?Permessi
+    public function findPermessoModuloOperatore(string $modulo, ?Operatori $operatore): ?Permessi
     {
         $em = $this->getEntityManager();
         if (!$operatore->getRuoli()) {
