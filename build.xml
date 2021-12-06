@@ -150,10 +150,10 @@
 
     <target name="phpstan-ci" description="PHPStan finds bugs in your code without writing tests">
         <exec executable="vendor/bin/phpstan" failonerror="true">
-            <arg value="analyze"/>
-            <arg value="src"/>
-            <arg value="--level=2"/>
-            <arg value="--memory-limit=-1"/>            
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+            <arg value="--configuration=${basedir}/phpstan.neon"/>
+            <arg value="--memory-limit=-1"/>
         </exec>
     </target>
     

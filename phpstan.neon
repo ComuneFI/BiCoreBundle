@@ -1,0 +1,7 @@
+parameters:
+	level: 3
+	paths:
+		- src
+	excludePaths:
+		- src/Cdf/BiCoreBundle/Entity/*
+		- src/Cdf/BiCoreBundle/Form/*
