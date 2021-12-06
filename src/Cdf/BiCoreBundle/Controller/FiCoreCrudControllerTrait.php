@@ -113,6 +113,7 @@ trait FiCoreCrudControllerTrait
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
+        /** @var class-string $entityclass */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
@@ -166,6 +167,7 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
         $formType = $formclass . 'Type';
 
+        /** @var class-string $entityclass */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {

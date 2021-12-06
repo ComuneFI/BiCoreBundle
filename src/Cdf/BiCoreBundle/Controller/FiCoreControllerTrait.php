@@ -157,6 +157,13 @@ trait FiCoreControllerTrait
         );
     }
 
+    /**
+     *
+     * @param array<string>|string $parametripassati
+     * @param string $keyparametro
+     * @param mixed $defaultvalue
+     * @return mixed
+     */
     protected function getParametroIndexDettaglio($parametripassati, string $keyparametro, $defaultvalue)
     {
         if (isset($parametripassati[$keyparametro])) {
@@ -179,6 +186,7 @@ trait FiCoreControllerTrait
 
         $entityclassnotation = $this->getEntityClassNotation();
         $em = $this->em;
+        /** @var class-string $entityclassnotation */
         $righe = $em->getRepository($entityclassnotation)->findAll();
 
         $lista = [];

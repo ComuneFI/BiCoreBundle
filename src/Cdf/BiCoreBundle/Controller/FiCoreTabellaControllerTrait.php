@@ -5,16 +5,17 @@ namespace Cdf\BiCoreBundle\Controller;
 use Cdf\BiCoreBundle\Utils\Export\TabellaXls;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Cdf\BiCoreBundle\Utils\Tabella\Tabella;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreTabellaControllerTrait
 {
 
-    private $tabellaxls;
+    private TabellaXls $tabellaxls;
 
-    public function tabella(Request $request)
+    public function tabella(Request $request): Response
     {
         if (!$this->permessi->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
