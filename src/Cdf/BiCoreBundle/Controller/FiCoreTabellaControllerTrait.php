@@ -13,8 +13,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 trait FiCoreTabellaControllerTrait
 {
 
-    private TabellaXls $tabellaxls;
-
     public function tabella(Request $request): Response
     {
         if (!$this->permessi->canRead($this->getController())) {
@@ -51,10 +49,6 @@ trait FiCoreTabellaControllerTrait
             ['parametri' => $parametri]
         );
     }
-    public function setTabellaxls(TabellaXls $tabellaxls)
-    {
-        $this->tabellaxls = $tabellaxls;
-    }
     
     /**
      * @codeCoverageIgnore
@@ -68,13 +62,13 @@ trait FiCoreTabellaControllerTrait
         }
         return $isapi;
     }
-    public function exportXls(Request $request)
+    public function exportXls(Request $request, TabellaXls $tabellaxls)
     {
         try {
             $parametripassati = array_merge($request->get('parametri'), ['user' => $this->getUser()]);
             $parametripassati['estraituttirecords'] = ParametriTabella::setParameter('1');
 
-            $filexls = $this->tabellaxls->esportaexcel($this->getParametriTabellaXls($parametripassati));
+            $filexls = $tabellaxls->esportaexcel($this->getParametriTabellaXls($parametripassati));
             if (file_exists($filexls)) {
                 $response = [
                     'status' => '200',
