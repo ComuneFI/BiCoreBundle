@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @codeCoverageIgnore
+ * @codeCoverageIgnore
  */
 trait FiApiCoreControllerTrait
 {

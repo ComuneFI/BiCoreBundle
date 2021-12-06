@@ -4,12 +4,14 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient {
+class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient
+{
     /*
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() {
+    public function test20AdminpanelGenerateBundle()
+    {
         //url da testare
         $container = static::createClient()->getContainer();
         $apppath = $container->get('pannelloamministrazione.projectpath');
@@ -93,7 +95,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->crudoperation($client);
     }
 
-    private function crudoperation($client) {
+    private function crudoperation($client)
+    {
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
@@ -182,12 +185,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /**
      * {@inheritdoc}
      */
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         static::createPantherClient()->quit();
         parent::tearDown();
         \Cdf\BiCoreBundle\Tests\Utils\BiTest::cleanFilesystem();
         \Cdf\BiCoreBundle\Tests\Utils\BiTest::removecache();
         \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
     }
-
 }

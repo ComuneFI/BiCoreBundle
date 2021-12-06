@@ -162,5 +162,4 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->setParameter('ora', null);
         $qb->getQuery()->execute();
     }
-
 }

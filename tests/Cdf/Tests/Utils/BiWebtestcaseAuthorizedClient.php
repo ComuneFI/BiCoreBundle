@@ -5,14 +5,16 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
-abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
+abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
+{
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
         $this->em = static::$kernel->getContainer()
@@ -21,7 +23,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         ;
     }
 
-    protected function getParametriTabella($nomecontroller, $crawler) {
+    protected function getParametriTabella($nomecontroller, $crawler)
+    {
         $parametri = array();
         $attributi = array(
             'baseurl', 'bundle', 'colonneordinamento', 'em', 'entityclass', 'entityname',
@@ -36,7 +39,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $parametri;
     }
 
-    protected function getUserFromUsername(string $username) {
+    protected function getUserFromUsername(string $username)
+    {
 
         $users = $this->em->createQueryBuilder()
                 ->select('r')
@@ -48,7 +52,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $users[0];
     }
 
-    protected function logInAdmin() {
+    protected function logInAdmin()
+    {
         $client = static::createClient();
         $container = $client->getContainer();
 
@@ -61,7 +66,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $client;
     }
 
-    protected function logInUsernoreoles() {
+    protected function logInUsernoreoles()
+    {
         $client = static::createClient();
         $container = $client->getContainer();
 
@@ -72,7 +78,8 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
         return $client;
     }
 
-    protected function logInUserreadroles() {
+    protected function logInUserreadroles()
+    {
         $client = static::createClient();
         $container = $client->getContainer();
 
@@ -86,9 +93,9 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase {
     /**
      * {@inheritDoc}
      */
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         parent::tearDown();
         $this->em->close();
     }
-
 }

@@ -30,7 +30,7 @@ class OperatoriController extends FiController
     /**
      * Displays a form to create a new table entity.
      */
-    public function new(Request $request)
+    public function new(Request $request):Response
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();

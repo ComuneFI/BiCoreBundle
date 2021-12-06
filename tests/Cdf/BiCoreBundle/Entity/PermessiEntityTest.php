@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Cdf\BiCoreBundle\Entity\Permessi;
 use Cdf\BiCoreBundle\Entity\Operatori;
 
-class PermessiEntityTest extends KernelTestCase {
+class PermessiEntityTest extends KernelTestCase
+{
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -16,7 +17,8 @@ class PermessiEntityTest extends KernelTestCase {
     /**
      * {@inheritdoc}
      */
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
                 ->get('doctrine')
@@ -24,7 +26,8 @@ class PermessiEntityTest extends KernelTestCase {
         ;
     }
 
-    public function testSearchByPermssi() {
+    public function testSearchByPermssi()
+    {
         $object = $this->em
                 ->getRepository(Permessi::class)
                 ->findByCrud('cru')
@@ -33,7 +36,8 @@ class PermessiEntityTest extends KernelTestCase {
         $this->assertCount(1, $object);
     }
 
-    public function testSearchByModuloPermssi() {
+    public function testSearchByModuloPermssi()
+    {
         $user4test = $this->em
                 ->getRepository(Operatori::class)
                 ->findOneByUsername('userreadroles')
@@ -49,11 +53,11 @@ class PermessiEntityTest extends KernelTestCase {
     /**
      * {@inheritdoc}
      */
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         parent::tearDown();
 
         $this->em->close();
         $this->em = null; // avoid memory leaks
     }
-
 }

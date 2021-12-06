@@ -7,16 +7,18 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreControllerTrait
 {
+
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager): Response
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -58,7 +60,7 @@ trait FiCoreControllerTrait
         $prefiltri = [];
         $entityutils = new EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $colonneordinamento = [$tablenamefromentity.'.id' => 'DESC'];
+        $colonneordinamento = [$tablenamefromentity . '.id' => 'DESC'];
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
@@ -68,10 +70,10 @@ trait FiCoreControllerTrait
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'titolotabella' => ParametriTabella::setParameter('Elenco ' . $controller),
             'multiselezione' => ParametriTabella::setParameter('0'),
             'editinline' => ParametriTabella::setParameter('0'),
             'paginacorrente' => ParametriTabella::setParameter('1'),
@@ -91,7 +93,7 @@ trait FiCoreControllerTrait
     /**
      * Lists all tables entities.
      */
-    public function indexDettaglio(Request $request, Packages $assetsmanager)
+    public function indexDettaglio(Request $request, Packages $assetsmanager): Response
     {
         if (!$this->getPermessi()->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
@@ -103,15 +105,15 @@ trait FiCoreControllerTrait
 
         $filtri = $this->getParametroIndexDettaglio($parametripassati, 'filtri', []);
         $prefiltri = $this->getParametroIndexDettaglio($parametripassati, 'prefiltri', []);
-        $titolotabella = $this->getParametroIndexDettaglio($parametripassati, 'titolotabella', 'Elenco '.$controller);
+        $titolotabella = $this->getParametroIndexDettaglio($parametripassati, 'titolotabella', 'Elenco ' . $controller);
         $modellocolonne = $this->getParametroIndexDettaglio($parametripassati, 'modellocolonne', []);
         $colonneordinamento = $this->getParametroIndexDettaglio($parametripassati, 'colonneordinamento', []);
         $multiselezione = $this->getParametroIndexDettaglio($parametripassati, 'multiselezione', 0);
         $parametriform = $this->getParametroIndexDettaglio($parametripassati, 'parametriform', []);
 
-        $template = $bundle.':'.$controller.':'.$this->getThisFunctionName().'.html.twig';
+        $template = $bundle . ':' . $controller . ':' . $this->getThisFunctionName() . '.html.twig';
         if (!$this->template->getLoader()->exists($template)) {
-            $template = $controller.'/Crud/'.$this->getThisFunctionName().'.html.twig';
+            $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
         }
 
         $entityclassnotation = $this->getEntityClassNotation();
@@ -132,7 +134,7 @@ trait FiCoreControllerTrait
             'parametriform' => ParametriTabella::setParameter(json_encode($parametriform)),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('')),
             'idpassato' => ParametriTabella::setParameter(0),
             'titolotabella' => ParametriTabella::setParameter($titolotabella),
@@ -155,7 +157,7 @@ trait FiCoreControllerTrait
         );
     }
 
-    protected function getParametroIndexDettaglio($parametripassati, $keyparametro, $defaultvalue)
+    protected function getParametroIndexDettaglio($parametripassati, string $keyparametro, $defaultvalue)
     {
         if (isset($parametripassati[$keyparametro])) {
             $parametro = $parametripassati[$keyparametro];
@@ -169,7 +171,7 @@ trait FiCoreControllerTrait
     /**
      * Lists all tables entities.
      */
-    public function lista(Request $request)
+    public function lista(Request $request) :JsonResponse
     {
         if (!$this->getPermessi()->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
@@ -187,11 +189,11 @@ trait FiCoreControllerTrait
         return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
     }
 
-    protected function getTabellaTemplate($controller)
+    protected function getTabellaTemplate(string $controller) :string
     {
-        $tabellatemplate = $controller.'/Tabella/tabellaform.html.twig';
+        $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
         if (!$this->template->getLoader()->exists($tabellatemplate)) {
-            $tabellatemplate = '@BiCore/'.$controller.'/Tabella/tabellaform.html.twig';
+            $tabellatemplate = '@BiCore/' . $controller . '/Tabella/tabellaform.html.twig';
             if (!$this->template->getLoader()->exists($tabellatemplate)) {
                 $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
@@ -200,13 +202,13 @@ trait FiCoreControllerTrait
         return $tabellatemplate;
     }
 
-    protected function getCrudTemplate($bundle, $controller, $operation)
+    protected function getCrudTemplate(string $bundle, string $controller, string $operation):string
     {
-        $crudtemplate = $bundle.'/'.$controller.'/Crud/'.$operation.'.html.twig';
+        $crudtemplate = $bundle . '/' . $controller . '/Crud/' . $operation . '.html.twig';
         if (!$this->template->getLoader()->exists($crudtemplate)) {
-            $crudtemplate = $controller.'/Crud/'.$operation.'.html.twig';
+            $crudtemplate = $controller . '/Crud/' . $operation . '.html.twig';
             if (!$this->template->getLoader()->exists($crudtemplate)) {
-                $crudtemplate = '@BiCore/Standard/Crud/'.$operation.'.html.twig';
+                $crudtemplate = '@BiCore/Standard/Crud/' . $operation . '.html.twig';
             }
         }
 
@@ -216,7 +218,7 @@ trait FiCoreControllerTrait
     /**
      * Returns the calling function through a backtrace.
      */
-    protected function getThisFunctionName()
+    protected function getThisFunctionName() :string
     {
         // a funciton x has called a function y which called this
         // see stackoverflow.com/questions/190421
@@ -226,18 +228,15 @@ trait FiCoreControllerTrait
         return $caller['function'];
     }
 
-    protected function getEntityClassNotation()
+    protected function getEntityClassNotation():string
     {
-        $em = $this->em;
-        $entityutils = new EntityUtils($em);
-
+        $entityutils = new EntityUtils($this->em);
         return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
     }
 
-    protected function getEntityClassName()
+    protected function getEntityClassName() :string
     {
-        $em = $this->em;
-        $entityfinder = new Finder($em);
+        $entityfinder = new Finder($this->em);
 
         return $entityfinder->getClassNameFromEntityName($this->controller);
     }

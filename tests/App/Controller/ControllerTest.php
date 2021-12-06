@@ -6,9 +6,11 @@ use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Cliente;
 
-class ControllerTest extends BiWebtestcaseAuthorizedClient {
+class ControllerTest extends BiWebtestcaseAuthorizedClient
+{
 
-    public function testSecuredClienteIndex() {
+    public function testSecuredClienteIndex()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $client->request('GET', '/' . $nomecontroller);
@@ -49,10 +51,12 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 14 (Righe estratte: 210)', $client->getResponse()->getContent()
+            'Pagina 1 di 14 (Righe estratte: 210)',
+            $client->getResponse()->getContent()
         );
         //Sub tables
-        $client->request('POST', '/Ordine/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Ordine.Cliente.id","operatore":"=","valore":1}],"titolotabella":"Ordini+del+cliente+Andrea+Manzi","modellocolonne":[{"nomecampo":"Ordine.Cliente","escluso":true}],"colonneordinamento":{"Ordine.data":"DESC","Ordine.quantita":"DESC"},"multiselezione":true}')));
+        $parametridapassare = json_encode('{"prefiltri":[{"nomecampo":"Ordine.Cliente.id","operatore":"=","valore":1}],"titolotabella":"Ordini+del+cliente+Andrea+Manzi","modellocolonne":[{"nomecampo":"Ordine.Cliente","escluso":true}],"colonneordinamento":{"Ordine.data":"DESC","Ordine.quantita":"DESC"},"multiselezione":true}');
+        $client->request('POST', '/Ordine/indexDettaglio', array('parametripassati' => $parametridapassare));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $client->request('POST', '/Magazzino/indexDettaglio', array('parametripassati' => json_encode('{"prefiltri":[{"nomecampo":"Magazzino.Ordine.Cliente.id","operatore":"=","valore":1}],"modellocolonne":[{"nomecampo":"Magazzino.giornodellasettimana","escluso":false,"decodifiche":["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"]}],"titolotabella":"Roba+in+magazzino+del+cliente+Andrea+Manzi"}')));
@@ -100,7 +104,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $crawler = $client->request('GET', '/' . $nomecontroller . '/' . $nominativonserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Andrea Manzi 2', $client->getResponse()->getContent()
+            'Andrea Manzi 2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -114,7 +119,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $csrfToken = $crawler->filter('input[name="cliente[_token]"]')->attr('value');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Andrea Manzi', $client->getResponse()->getContent()
+            'Andrea Manzi',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -135,7 +141,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
         $this->assertStringContainsString(
-                'Cliente.errore field table option not found', $client->getResponse()->getContent()
+            'Cliente.errore field table option not found',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
 
@@ -144,7 +151,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
         $this->assertStringContainsString(
-                'field or association Cliente.nominativa', $client->getResponse()->getContent()
+            'field or association Cliente.nominativa',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
 
@@ -152,12 +160,14 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/' . $nomecontroller . '/tabella', array('parametri' => $parametripererrore));
 
         $this->assertStringContainsString(
-                'table or association Cliento not found', $client->getResponse()->getContent()
+            'table or association Cliento not found',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(500, $client->getResponse()->getStatusCode());
     }
 
-    public function testSecuredClienteAggiorna() {
+    public function testSecuredClienteAggiorna()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $crawler = $client->request('GET', '/Cliente/new');
@@ -182,7 +192,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
 
-    public function testSecuredClienteInsertInline() {
+    public function testSecuredClienteInsertInline()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $crawler = $client->request('GET', '/Cliente/new');
@@ -225,7 +236,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $this->assertSame(0, count($entitybis));
     }
 
-    public function testSecuredOrdineIndex() {
+    public function testSecuredOrdineIndex()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller);
@@ -233,14 +245,16 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
-    public function testSecuredOrdineUpdate() {
+    public function testSecuredOrdineUpdate()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $client->request('GET', '/' . $nomecontroller . '/100/update');
         $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
 
-    public function testSecuredOrdineDelete() {
+    public function testSecuredOrdineDelete()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Ordine';
         $crawler = $client->request('GET', '/' . $nomecontroller . '/new');
@@ -254,5 +268,4 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient {
         //dump($client->getResponse());
         $this->assertSame(501, $client->getResponse()->getStatusCode());
     }
-
 }

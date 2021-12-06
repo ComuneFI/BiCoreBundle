@@ -94,5 +94,4 @@ class PannelloAmministrazioneControllerTest extends BiWebtestcaseAuthorizedClien
         \Cdf\BiCoreBundle\Tests\Utils\BiTest::cleanFilesystem();
         //dump($client->getResponse());
     }
-
 }
