@@ -17,8 +17,13 @@ trait FiCoreCrudControllerTrait
 
     /**
      * Displays a form to create a new table entity.
+     *
+     * @param Request $request
+     * @return Response
+     * @throws AccessDeniedException
+     *
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         /* @var $em EntityManager */
         $bundle = $this->getBundle();
@@ -82,8 +87,14 @@ trait FiCoreCrudControllerTrait
 
     /**
      * Displays a form to edit an existing table entity.
+     *
+     * @param Request $request
+     * @param string|int $id
+     * @return Response
+     * @throws AccessDeniedException
+     *
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): Response
     {
         /* @var $this->em EntityManager */
         $bundle = $this->getBundle();
@@ -132,9 +143,14 @@ trait FiCoreCrudControllerTrait
     }
 
     /**
-     * Edits an existing table entity.
+     * Update an existing table entity.
+     *
+     * @param Request $request
+     * @param string|int $id
+     * @return Response
+     * @throws AccessDeniedException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         /* @var $ EntityManager */
         $bundle = $this->getBundle();
@@ -206,7 +222,7 @@ trait FiCoreCrudControllerTrait
     /**
      * Deletes a table entity.
      */
-    public function delete(Request $request, $token)
+    public function delete(Request $request, string $token): Response
     {
         /* @var $this->em EntityManager */
         if (!$this->getPermessi()->canDelete($this->getController())) {
@@ -244,7 +260,13 @@ trait FiCoreCrudControllerTrait
         return new Response('Operazione eseguita con successo');
     }
 
-    public function elencoModifiche($controller, $id)
+    /**
+     *
+     * @param string $controller
+     * @param string|int $id
+     * @return array<Storicomodifiche>
+     */
+    public function elencoModifiche(string $controller, $id): array
     {
         $risultato = $this->em->getRepository(Storicomodifiche::class)->findBy(
             [
