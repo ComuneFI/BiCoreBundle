@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 trait FiCoreCrudControllerTrait
 {
@@ -16,8 +17,13 @@ trait FiCoreCrudControllerTrait
 
     /**
      * Displays a form to create a new table entity.
+     *
+     * @param Request $request
+     * @return Response
+     * @throws AccessDeniedException
+     *
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         /* @var $em EntityManager */
         $bundle = $this->getBundle();
@@ -81,8 +87,14 @@ trait FiCoreCrudControllerTrait
 
     /**
      * Displays a form to edit an existing table entity.
+     *
+     * @param Request $request
+     * @param string|int $id
+     * @return Response
+     * @throws AccessDeniedException
+     *
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): Response
     {
         /* @var $this->em EntityManager */
         $bundle = $this->getBundle();
@@ -101,6 +113,7 @@ trait FiCoreCrudControllerTrait
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
+        /** @var class-string $entityclass */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
@@ -131,9 +144,14 @@ trait FiCoreCrudControllerTrait
     }
 
     /**
-     * Edits an existing table entity.
+     * Update an existing table entity.
+     *
+     * @param Request $request
+     * @param string|int $id
+     * @return Response
+     * @throws AccessDeniedException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): Response
     {
         /* @var $ EntityManager */
         $bundle = $this->getBundle();
@@ -149,6 +167,7 @@ trait FiCoreCrudControllerTrait
         $formclass = str_replace('Entity', 'Form', $entityclass);
         $formType = $formclass . 'Type';
 
+        /** @var class-string $entityclass */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
@@ -174,7 +193,8 @@ trait FiCoreCrudControllerTrait
             $this->em->flush();
 
             $newData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $this->em->getRepository('BiCoreBundle:Storicomodifiche');
+            /** @var \Cdf\BiCoreBundle\Repository\StoricomodificheRepository $repoStorico */
+            $repoStorico = $this->em->getRepository(Storicomodifiche::class);
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
@@ -204,7 +224,7 @@ trait FiCoreCrudControllerTrait
     /**
      * Deletes a table entity.
      */
-    public function delete(Request $request, $token)
+    public function delete(Request $request, string $token): Response
     {
         /* @var $this->em EntityManager */
         if (!$this->getPermessi()->canDelete($this->getController())) {
@@ -229,12 +249,12 @@ trait FiCoreCrudControllerTrait
             $query->execute();
         } catch (ForeignKeyConstraintViolationException $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode('501');
+            $response->setStatusCode(501);
 
             return $response;
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode('200');
+            $response->setStatusCode(200);
 
             return $response;
         }
@@ -242,9 +262,15 @@ trait FiCoreCrudControllerTrait
         return new Response('Operazione eseguita con successo');
     }
 
-    public function elencoModifiche($controller, $id)
+    /**
+     *
+     * @param string $controller
+     * @param string|int $id
+     * @return array<Storicomodifiche>
+     */
+    public function elencoModifiche(string $controller, $id): array
     {
-        $risultato = $this->em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $this->em->getRepository(Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,

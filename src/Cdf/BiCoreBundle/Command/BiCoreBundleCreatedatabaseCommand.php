@@ -12,7 +12,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:createdatabase';
 
-    private $em;
+    private EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -22,7 +22,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure():void
     {
         $this
                 ->setDescription('Creazione database bi')

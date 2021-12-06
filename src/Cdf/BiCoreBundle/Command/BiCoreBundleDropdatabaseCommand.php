@@ -12,7 +12,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:dropdatabase';
 
-    protected function configure()
+    protected function configure():void
     {
         $this
                 ->setDescription('Cancellazione database bicorebundle')

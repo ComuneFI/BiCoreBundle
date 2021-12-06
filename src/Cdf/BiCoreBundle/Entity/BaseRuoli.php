@@ -72,7 +72,7 @@ class BaseRuoli
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setId($id)
     {
@@ -96,7 +96,7 @@ class BaseRuoli
      *
      * @param string $ruolo
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setRuolo($ruolo)
     {
@@ -120,7 +120,7 @@ class BaseRuoli
      *
      * @param string $paginainiziale
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setPaginainiziale($paginainiziale)
     {
@@ -144,7 +144,7 @@ class BaseRuoli
      *
      * @param bool $superadmin
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setSuperadmin($superadmin)
     {
@@ -168,7 +168,7 @@ class BaseRuoli
      *
      * @param bool $admin
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setAdmin($admin)
     {
@@ -192,7 +192,7 @@ class BaseRuoli
      *
      * @param bool $user
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function setUser($user)
     {
@@ -214,9 +214,9 @@ class BaseRuoli
     /**
      * Add Operatori entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function addOperatori(Operatori $operatori)
     {
@@ -228,9 +228,9 @@ class BaseRuoli
     /**
      * Remove Operatori entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Operatori $operatori
+     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function removeOperatori(Operatori $operatori)
     {
@@ -252,9 +252,9 @@ class BaseRuoli
     /**
      * Add Permessi entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Permessi $permessi
+     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function addPermessi(Permessi $permessi)
     {
@@ -266,9 +266,9 @@ class BaseRuoli
     /**
      * Remove Permessi entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Permessi $permessi
+     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Ruoli
+     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
     public function removePermessi(Permessi $permessi)
     {

@@ -9,25 +9,30 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-class Kernel extends BaseKernel {
+class Kernel extends BaseKernel
+{
 
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function getCacheDir(): string {
+    public function getCacheDir(): string
+    {
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
-    public function getLogDir(): string {
+    public function getLogDir(): string
+    {
         return $this->getProjectDir() . '/var/logs';
     }
 
-    public function getProjectDir(): string {
+    public function getProjectDir(): string
+    {
         return parent::getProjectDir() . '/tests';
     }
 
-    public function registerBundles(): iterable {
+    public function registerBundles(): iterable
+    {
         $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
@@ -36,7 +41,8 @@ class Kernel extends BaseKernel {
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader) {
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    {
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         // Feel free to remove the "container.autowiring.strict_mode" parameter
         // if you are using symfony/dependency-injection 4.0+ as it's the default behavior
@@ -50,11 +56,11 @@ class Kernel extends BaseKernel {
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes): void {
+    protected function configureRoutes(RoutingConfigurator $routes): void
+    {
         $confDir = $this->getProjectDir() . '/config';
         $routes->import($confDir . '/{routes}/' . $this->environment . "/*" . self::CONFIG_EXTS);
         $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS);
         $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS);
     }
-
 }

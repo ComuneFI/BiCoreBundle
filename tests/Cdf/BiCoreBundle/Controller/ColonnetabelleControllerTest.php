@@ -5,9 +5,11 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
+class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
+{
 
-    public function testSecuredColonnetabelleIndex() {
+    public function testSecuredColonnetabelleIndex()
+    {
         $nomecontroller = 'Colonnetabelle';
         $client = $this->logInAdmin();
         $client->request('GET', '/' . $nomecontroller);
@@ -19,8 +21,8 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/Colonnetabelle/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 6)',
-                $client->getResponse()->getContent()
+            'Pagina 1 di 1 (Righe estratte: 6)',
+            $client->getResponse()->getContent()
         );
 
         //New
@@ -36,8 +38,8 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                'Provacolonnatabella',
-                $client->getResponse()->getContent()
+            'Provacolonnatabella',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -59,8 +61,8 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         $crawler = $client->request('GET', '/Colonnetabelle/' . $colonnatabellainserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provacolonnatabella2',
-                $client->getResponse()->getContent()
+            'Provacolonnatabella2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -72,5 +74,4 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         //$client = static::createClient();
         $client->restart();
     }
-
 }

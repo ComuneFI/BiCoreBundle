@@ -3,13 +3,13 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
+use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 /**
  * @codeCoverageIgnore
@@ -319,7 +319,7 @@ trait FiApiCoreCrudControllerTrait
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode('501');
+            $response->setStatusCode(501);
 
             return $response;
         }
@@ -330,7 +330,7 @@ trait FiApiCoreCrudControllerTrait
     public function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $em->getRepository(Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,

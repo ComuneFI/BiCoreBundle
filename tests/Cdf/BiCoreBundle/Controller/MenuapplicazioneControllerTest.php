@@ -5,9 +5,11 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
+class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient
+{
 
-    public function testSecuredMenuapplicazioneIndex() {
+    public function testSecuredMenuapplicazioneIndex()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Menuapplicazione';
         $client->request('GET', '/' . $nomecontroller);
@@ -19,7 +21,8 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/Menuapplicazione/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 2 (Righe estratte: 16)', $client->getResponse()->getContent()
+            'Pagina 1 di 2 (Righe estratte: 16)',
+            $client->getResponse()->getContent()
         );
 
         //New
@@ -35,7 +38,8 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                $provamenuapplicazione, $client->getResponse()->getContent()
+            $provamenuapplicazione,
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -57,7 +61,8 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
         $crawler = $client->request('GET', '/Menuapplicazione/' . $menuapplicazioneinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provamenuapplicazione2', $client->getResponse()->getContent()
+            'Provamenuapplicazione2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -69,5 +74,4 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient {
         //$client = static::createClient();
         $client->restart();
     }
-
 }

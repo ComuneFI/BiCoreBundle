@@ -2,6 +2,7 @@
 
 namespace Cdf\PannelloAmministrazioneBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -12,17 +13,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder() : TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('Pannello_amministrazione');
-        $rootnode = $treeBuilder->getRootNode();
-
-        $rootnode->children()
-                ->end();
-
+        $treeBuilder->getRootNode();
         return $treeBuilder;
     }
 }

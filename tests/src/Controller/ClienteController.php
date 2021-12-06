@@ -5,20 +5,23 @@ namespace App\Controller;
 use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use \Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Symfony\Component\Asset\Packages;
-        
+
 /**
  * Cliente controller.
  */
-class ClienteController extends FiController {
+class ClienteController extends FiController
+{
 
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager) {
+    public function index(Request $request, Packages $assetsmanager): Response
+    {
         /* $dateimm = new \DateTimeImmutable($datestrchk);
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
@@ -134,7 +137,7 @@ class ClienteController extends FiController {
 
         //Decode enum options Api
         //$this->mergeColumnsAndEnumOptions($modellocolonne);
-        
+
         $colonneordinamento = array($controller . '.id' => 'ASC');
 
         $filtri = array(
@@ -206,14 +209,15 @@ class ClienteController extends FiController {
         );
 
         return $this->render(
-                        $template,
-                        array(
+            $template,
+            array(
                             'parametritabella' => $parametritabella,
                         )
         );
     }
 
-    public function preparazioneaggiornamentomultiplo(Request $request, EntityUtils $entityUtils) {
+    public function preparazioneaggiornamentomultiplo(Request $request, EntityUtils $entityUtils): Response
+    {
         $ritorno = array();
         $entitycolumns = $entityUtils->getEntityColumns("App:Cliente");
         $parametri = array();
@@ -224,11 +228,11 @@ class ClienteController extends FiController {
         return $this->render("Cliente/preparazioneaggiornamentomultiplo.html.twig", $parametri);
     }
 
-    public function aggiornamentomultiplo(Request $request) {
+    public function aggiornamentomultiplo(Request $request): JsonResponse
+    {
         $camposelezionato = $request->get("camposelezionato");
         $valoreselezionato = $request->get("valoreselezionato");
         $idsselezionati = $request->get("idsselezionati");
-
 
         try {
             $qb = $this->em->createQueryBuilder();
@@ -247,5 +251,4 @@ class ClienteController extends FiController {
 
         return new JsonResponse($ritorno);
     }
-
 }

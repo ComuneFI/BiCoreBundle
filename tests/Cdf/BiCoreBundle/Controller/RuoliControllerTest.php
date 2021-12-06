@@ -20,7 +20,8 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         $client->request('POST', '/Ruoli/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 3)', $client->getResponse()->getContent()
+            'Pagina 1 di 1 (Righe estratte: 3)',
+            $client->getResponse()->getContent()
         );
 
         //New
@@ -35,7 +36,8 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                'Provaruolo', $client->getResponse()->getContent()
+            'Provaruolo',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -56,7 +58,8 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         $crawler = $client->request('GET', '/Ruoli/' . $ruoloinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provaruolo2', $client->getResponse()->getContent()
+            'Provaruolo2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -68,5 +71,4 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         //$client = static::createClient();
         $client->restart();
     }
-
 }

@@ -52,5 +52,4 @@ class ClonaruoloCommandTest extends WebTestCase
         $em->remove($ruolonew);
         $em->flush();
     }
-
 }

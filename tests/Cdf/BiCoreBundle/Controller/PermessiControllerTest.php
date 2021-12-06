@@ -5,9 +5,11 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
+class PermessiControllerTest extends BiWebtestcaseAuthorizedClient
+{
 
-    public function testSecuredPermessiIndex() {
+    public function testSecuredPermessiIndex()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Permessi';
         $client->request('GET', '/' . $nomecontroller);
@@ -19,8 +21,8 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/Permessi/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 14)',
-                $client->getResponse()->getContent()
+            'Pagina 1 di 1 (Righe estratte: 14)',
+            $client->getResponse()->getContent()
         );
 
         //Export xls
@@ -46,8 +48,8 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                $provaopermessi,
-                $client->getResponse()->getContent()
+            $provaopermessi,
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -69,8 +71,8 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
         $crawler = $client->request('GET', '/Permessi/' . $permessiinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provapermessi2',
-                $client->getResponse()->getContent()
+            'Provapermessi2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -82,5 +84,4 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient {
         //$client = static::createClient();
         $client->restart();
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseReadrolesAuthorizedClient;
+
 class TestTablesReadonlyAuthorizedControllerTest extends BiWebtestcaseReadrolesAuthorizedClient
 {
     /*

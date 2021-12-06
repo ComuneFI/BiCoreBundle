@@ -82,7 +82,7 @@ class BaseMenuapplicazione
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setId($id)
     {
@@ -106,7 +106,7 @@ class BaseMenuapplicazione
      *
      * @param string $nome
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setNome($nome)
     {
@@ -130,7 +130,7 @@ class BaseMenuapplicazione
      *
      * @param string $percorso
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setPercorso($percorso)
     {
@@ -154,7 +154,7 @@ class BaseMenuapplicazione
      *
      * @param int $padre
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setPadre($padre)
     {
@@ -178,7 +178,7 @@ class BaseMenuapplicazione
      *
      * @param int $ordine
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setOrdine($ordine)
     {
@@ -202,7 +202,7 @@ class BaseMenuapplicazione
      *
      * @param bool $attivo
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setAttivo($attivo)
     {
@@ -226,7 +226,7 @@ class BaseMenuapplicazione
      *
      * @param string $target
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setTarget($target)
     {
@@ -250,7 +250,7 @@ class BaseMenuapplicazione
      *
      * @param string $tag
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setTag($tag)
     {
@@ -274,7 +274,7 @@ class BaseMenuapplicazione
      *
      * @param bool $notifiche
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setNotifiche($notifiche)
     {
@@ -298,7 +298,7 @@ class BaseMenuapplicazione
      *
      * @param bool $autorizzazionerichiesta
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setAutorizzazionerichiesta($autorizzazionerichiesta)
     {
@@ -322,7 +322,7 @@ class BaseMenuapplicazione
      *
      * @param string $percorsonotifiche
      *
-     * @return \Cdf\BiCoreBundle\Menuapplicazione
+     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
      */
     public function setPercorsonotifiche($percorsonotifiche)
     {

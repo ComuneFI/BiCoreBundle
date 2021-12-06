@@ -22,8 +22,8 @@ class UtilitaExtension extends AbstractExtension
     public function getFunctions() : array
     {
         return array(
-            new TwigFunction('json_decode', array($this, 'jsonDecode', 'is_safe' => array('html'))),
-            new TwigFunction('parameter', array($this, 'getParameter', 'is_safe' => array('html'))),
+            new TwigFunction('json_decode', [$this, 'jsonDecode']),
+            new TwigFunction('parameter', [$this, 'getParameter']),
         );
     }
 

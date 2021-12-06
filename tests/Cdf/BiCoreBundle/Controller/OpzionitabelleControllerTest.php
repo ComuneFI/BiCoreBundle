@@ -5,9 +5,11 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Cdf\BiCoreBundle\Tests\Utils\BiWebtestcaseAuthorizedClient;
 
-class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
+class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
+{
 
-    public function testSecuredOpzionitabelleIndex() {
+    public function testSecuredOpzionitabelleIndex()
+    {
         $client = $this->logInAdmin();
         $nomecontroller = 'Opzionitabelle';
         $client->request('GET', '/' . $nomecontroller);
@@ -19,7 +21,8 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         $client->request('POST', '/Opzionitabelle/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 3)', $client->getResponse()->getContent()
+            'Pagina 1 di 1 (Righe estratte: 3)',
+            $client->getResponse()->getContent()
         );
 
         //New
@@ -36,7 +39,8 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                $provaopzionitabelle, $client->getResponse()->getContent()
+            $provaopzionitabelle,
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -58,7 +62,8 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         $crawler = $client->request('GET', '/Opzionitabelle/' . $opzionitabelleinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provaopzionitabella2', $client->getResponse()->getContent()
+            'Provaopzionitabella2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -69,5 +74,4 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient {
         //$client = static::createClient();
         $client->restart();
     }
-
 }

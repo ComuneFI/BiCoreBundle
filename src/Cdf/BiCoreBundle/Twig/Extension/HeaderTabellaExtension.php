@@ -7,13 +7,14 @@ use Twig\TwigFunction;
 
 class HeaderTabellaExtension extends AbstractExtension
 {
+
     /**
      * {@inheritdoc}
      */
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return array(
-            new TwigFunction('sort_class', array($this, 'sortClass', 'is_safe' => array('html'))),
+            new TwigFunction('sort_class', [$this, 'sortClass']),
         );
     }
 

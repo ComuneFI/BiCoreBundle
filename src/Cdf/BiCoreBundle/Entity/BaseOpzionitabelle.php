@@ -51,7 +51,7 @@ class BaseOpzionitabelle
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Opzionitabelle
+     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
     public function setId($id)
     {
@@ -75,7 +75,7 @@ class BaseOpzionitabelle
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Opzionitabelle
+     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
     public function setNometabella($nometabella)
     {
@@ -99,7 +99,7 @@ class BaseOpzionitabelle
      *
      * @param string $descrizione
      *
-     * @return \Cdf\BiCoreBundle\Opzionitabelle
+     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
     public function setDescrizione($descrizione)
     {
@@ -123,7 +123,7 @@ class BaseOpzionitabelle
      *
      * @param string $parametro
      *
-     * @return \Cdf\BiCoreBundle\Opzionitabelle
+     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
     public function setParametro($parametro)
     {
@@ -147,7 +147,7 @@ class BaseOpzionitabelle
      *
      * @param string $valore
      *
-     * @return \Cdf\BiCoreBundle\Opzionitabelle
+     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
     public function setValore($valore)
     {

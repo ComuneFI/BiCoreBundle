@@ -21,7 +21,8 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         $client->request('POST', '/Operatori/tabella', array('parametri' => $parametri));
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Pagina 1 di 1 (Righe estratte: 3)', $client->getResponse()->getContent()
+            'Pagina 1 di 1 (Righe estratte: 3)',
+            $client->getResponse()->getContent()
         );
 
         //Export xls
@@ -47,7 +48,7 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         $password2 = 'operatori[password][second]';
         $email = 'operatori[email]';
         $form = $crawler->filter('form[id=formdatiOperatori]')->form(
-                array(
+            array(
                     $username => $provaooperatori,
                     $password1 => $provaooperatori,
                     $password2 => $provaooperatori,
@@ -57,7 +58,8 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         // submit that form
         $crawler = $client->submit($form);
         $this->assertStringContainsString(
-                $provaooperatori, $client->getResponse()->getContent()
+            $provaooperatori,
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->em = self::bootKernel()->getContainer()
@@ -79,7 +81,8 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         $crawler = $client->request('GET', '/Operatori/' . $operatoriinserito->getId() . '/edit');
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertStringContainsString(
-                'Provaoperatori2', $client->getResponse()->getContent()
+            'Provaoperatori2',
+            $client->getResponse()->getContent()
         );
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 

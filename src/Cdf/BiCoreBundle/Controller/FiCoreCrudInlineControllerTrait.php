@@ -15,7 +15,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait FiCoreCrudInlineControllerTrait
 {
-    private function checkAggiornaRight($id, $token)
+
+    /**
+     *
+     * @param string|int $id
+     * @param string $token
+     * @throws AccessDeniedException
+     */
+    private function checkAggiornaRight($id, $token): void
     {
         if (0 === $id) {
             if (!$this->getPermessi()->canCreate($this->getController())) {
@@ -35,8 +42,10 @@ trait FiCoreCrudInlineControllerTrait
 
     /**
      * Inline existing table entity.
+     * @param string|int $id
+     * @param string $token
      */
-    public function aggiorna(Request $request, $id, $token)
+    public function aggiorna(Request $request, $id, $token): JsonResponse
     {
         $this->checkAggiornaRight($id, $token);
         $values = $request->get('values');
@@ -46,11 +55,17 @@ trait FiCoreCrudInlineControllerTrait
         } else {
             $risultato = $this->updateinline($id, $values, $token);
         }
-
         return $risultato;
     }
 
-    protected function insertinline($values, $token)
+    /**
+     *
+     * @param mixed[] $values fileds
+     * @param string $token CSRF token
+     * @return JsonResponse
+     * @throws Exception
+     */
+    protected function insertinline($values, $token): JsonResponse
     {
         $this->checkAggiornaRight(0, $token);
 
@@ -72,13 +87,14 @@ trait FiCoreCrudInlineControllerTrait
                 if ('join' == $value['fieldtype']) {
                     $entityfinder = new Finder($this->em);
                     $joinclass = $entityfinder->getClassNameFromEntityName($field);
+                    /** @var class-string $joinclass */
                     $fieldvalue = $this->em->getRepository($joinclass)->find($fieldvalue);
                 }
 
                 if ($accessor->isWritable($entity, $field)) {
                     $accessor->setValue($entity, $field, $fieldvalue);
                 } else {
-                    throw new Exception($field.' non modificabile');
+                    throw new Exception($field . ' non modificabile');
                 }
             } else {
                 continue;
@@ -91,7 +107,14 @@ trait FiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
-    protected function updateinline($id, $values, $token)
+    /**
+     *
+     * @param string|int $id
+     * @param mixed[] $values fileds
+     * @param string $token
+     * @return JsonResponse
+     */
+    protected function updateinline($id, $values, $token): JsonResponse
     {
         $this->checkAggiornaRight($id, $token);
 
@@ -102,9 +125,10 @@ trait FiCoreCrudInlineControllerTrait
         $queryBuilder = $this->em->createQueryBuilder();
 
         //Update
+        /** @var class-string $entityclass */
         $entity = $this->em->getRepository($entityclass)->find($id);
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
         $queryBuilder
                 ->update($entityclass, 'u')
@@ -120,7 +144,7 @@ trait FiCoreCrudInlineControllerTrait
             if ($table == $controller && 2 == count($fieldpieces)) {
                 $field = $fieldpieces[1];
                 if ('join' == $value['fieldtype']) {
-                    $field = lcfirst($field.'_id');
+                    $field = lcfirst($field . '_id');
                 }
                 $entityutils = new EntityUtils($this->em);
                 $property = $entityutils->getEntityProperties($field, $entity);
@@ -128,7 +152,7 @@ trait FiCoreCrudInlineControllerTrait
                 if ($nomefunzioneget != $value['fieldvalue']) {
                     $querydaeseguire = true;
                     $fieldvalue = $this->getValueAggiorna($value);
-                    $queryBuilder->set('u.'.$field, ':'.$field);
+                    $queryBuilder->set('u.' . $field, ':' . $field);
                     $queryBuilder->setParameter($field, $fieldvalue);
                 }
             } else {
@@ -142,6 +166,12 @@ trait FiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
+    /**
+     *
+     * @param string[] $field
+     * @return mixed
+     * @throws Exception
+     */
     private function getValueAggiorna($field)
     {
         $fieldvalue = $field['fieldvalue'];

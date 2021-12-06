@@ -12,12 +12,12 @@ use FOS\UserBundle\Util\UserManipulator;
 
 class BiCoreBundleInstallCommand extends Command
 {
+
     protected static $defaultName = 'bicorebundle:install';
+    protected string $fixtureFile;
+    private UserManipulator $usermanipulator;
 
-    protected $fixtureFile;
-    private $usermanipulator;
-
-    protected function configure()
+    protected function configure(): void
     {
         $this
                 ->setDescription('Installazione ambiente bi')
@@ -36,12 +36,12 @@ class BiCoreBundleInstallCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $admin = $input->getArgument('admin');
         $adminpass = $input->getArgument('adminpass');
         $adminemail = $input->getArgument('adminemail');
-        $this->fixtureFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fixtures.yml';
+        $this->fixtureFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
 
         if (!$admin) {
             echo "Inserire il nome utente dell'amministratore";
@@ -84,12 +84,9 @@ class BiCoreBundleInstallCommand extends Command
     }
 
     /**
-     * This will suppress UnusedLocalVariable
-     * warnings in this method.
-     *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    private function generateDefaultData($admin, $adminemail)
+    private function generateDefaultData(string $admin, string $adminemail): void
     {
         //$todaydt = new \DateTime();
         //$today = $todaydt->format("Y-m-d") . "T00:00:00+01:00";

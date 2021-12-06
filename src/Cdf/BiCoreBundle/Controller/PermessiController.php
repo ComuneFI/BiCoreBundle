@@ -6,6 +6,7 @@ use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -16,7 +17,7 @@ class PermessiController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager):Response
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Cdf\BiCoreBundle\Controller\FiController;
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Asset\Packages;
 
@@ -21,10 +22,11 @@ use Symfony\Component\Asset\Packages;
  */
 class MagazzinoController extends FiController
 {
+
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager): Response
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -51,7 +53,7 @@ class MagazzinoController extends FiController
         $prefiltri = array();
         $entityutils = new \Cdf\BiCoreBundle\Utils\Entity\EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
-        $colonneordinamento = array($tablenamefromentity.'.id' => 'DESC');
+        $colonneordinamento = array($tablenamefromentity . '.id' => 'DESC');
         $parametritabella = array('em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
@@ -61,10 +63,10 @@ class MagazzinoController extends FiController
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'titolotabella' => ParametriTabella::setParameter('Elenco ' . $controller),
             'multiselezione' => ParametriTabella::setParameter('0'),
             'editinline' => ParametriTabella::setParameter('0'),
             'paginacorrente' => ParametriTabella::setParameter('1'),

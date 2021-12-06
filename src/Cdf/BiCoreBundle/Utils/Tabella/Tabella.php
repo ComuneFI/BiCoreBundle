@@ -8,7 +8,7 @@ use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Security;
-use \Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @property EntityManager                        $em
@@ -51,7 +51,7 @@ class Tabella
     protected $apiCollection;
     protected $apiBook;
 
-    public function __construct(Registry $doctrine, array $parametri)
+    public function __construct(ManagerRegistry $doctrine, array $parametri)
     {
         $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {

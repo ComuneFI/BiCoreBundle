@@ -4,9 +4,11 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 
 use Symfony\Component\BrowserKit\Cookie;
 
-abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthorizedClient {
+abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthorizedClient
+{
 
-    protected function logInUser() {
+    protected function logInUser()
+    {
 
         $client = static::createClient();
         $container = $client->getContainer();
@@ -19,5 +21,4 @@ abstract class BiWebtestcaseNorolesAuthorizedClient extends BiWebtestcaseAuthori
         /* save the login token into the session and put it in a cookie */
         return $client;
     }
-
 }

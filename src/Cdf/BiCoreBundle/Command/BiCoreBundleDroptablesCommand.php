@@ -10,10 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class BiCoreBundleDroptablesCommand extends Command
 {
-    protected static $defaultName = 'bicorebundle:droptables';
-    private $em;
 
-    protected function configure()
+    protected static $defaultName = 'bicorebundle:droptables';
+    private EntityManagerInterface $em;
+
+    protected function configure(): void
     {
         $this
                 ->setDescription('Eliminazione di tutte le tabelle bicorebundle')
@@ -29,7 +30,7 @@ class BiCoreBundleDroptablesCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;

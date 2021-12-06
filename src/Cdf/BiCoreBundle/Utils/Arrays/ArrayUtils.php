@@ -8,9 +8,9 @@ class ArrayUtils
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice.
      *
-     * @param $elem mixed Elemento da cercare nell'array
-     * @param $array Array nel quale cercare
-     * @param $key string Nome della chiave nella quale cercare $elem
+     * @param mixed $elem Elemento da cercare nell'array
+     * @param array $array Array nel quale cercare
+     * @param string $key Nome della chiave nella quale cercare $elem
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si è trovato il valore
      */
@@ -38,9 +38,9 @@ class ArrayUtils
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice.
      *
-     * @param $elem mixed Elemento da cercare nell'array
-     * @param $array Array nel quale cercare
-     * @param $key mixed Nome della chiave nella quale cercare $elem
+     * @param mixed $elem Elemento da cercare nell'array
+     * @param array $array Array nel quale cercare
+     * @param mixed $key Nome della chiave nella quale cercare $elem
      *
      * @return mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
      */
@@ -70,8 +70,8 @@ class ArrayUtils
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice.
      *
-     * @param $array Array nel quale cercare
-     * @param $search array Chiave-valore da cercare
+     * @param array $array Array nel quale cercare
+     * @param array $search Chiave-valore da cercare
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si trova il valore
      */
@@ -111,9 +111,9 @@ class ArrayUtils
     /**
      * La funzione ordina un array multidimensionale $array.
      *
-     * @param $array Array da ordinare
-     * @param $key string Nome della chiave dell'array per cui ordinare
-     * @param $type int Tipo di ordinamento SORT_ASC, SORT_DESC
+     * param array $array Array da ordinare
+     * param string $key Nome della chiave dell'array per cui ordinare
+     * param int $type Tipo di ordinamento SORT_ASC, SORT_DESC
      *
      * @return array Ritorna l'array ordinato
      *
@@ -159,9 +159,9 @@ class ArrayUtils
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
-     * @param $array Array da ordinare passato per riferimento
-     * @param $subkey string Nome della chiave dell'array associato alla chiave per cui ordinare
-     * @param $sort_ascending boolean Tipo di ordinamento true ASC, false DESC
+     * @param array $array Array da ordinare passato per riferimento
+     * @param string $subkey Nome della chiave dell'array associato alla chiave per cui ordinare
+     * @param bool $sort_ascending Tipo di ordinamento true ASC, false DESC
      *
      * @example sortMultiAssociativeArray($rubrica, "ordine", true);<code>
      *          array["nominativo" => ["nomecampo" => "nominativo","ordine" => 30],<br/><br/>

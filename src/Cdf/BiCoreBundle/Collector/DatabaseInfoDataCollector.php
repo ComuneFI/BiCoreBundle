@@ -10,16 +10,14 @@ use \Throwable;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
-    /* @var $em \Doctrine\ORM\EntityManager */
-
-    private $em;
+    private EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
-    public function collect(Request $request, Response $response, Throwable $exception = null)
+    public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
         $driverinfo = $this->em->getConnection()->getParams();
         $this->data = array(

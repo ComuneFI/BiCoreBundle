@@ -7,20 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MaintenanceListener
 {
-    private $lockFilePath;
+    private string $lockFilePath;
 
-    public function __construct($lockFilePath)
+    public function __construct(string $lockFilePath)
     {
         $this->lockFilePath = $lockFilePath;
     }
 
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event) : void
     {
-        $lockfile = $this->lockFilePath;
-        if (!file_exists($lockfile)) {
+        if (!file_exists($this->lockFilePath)) {
             return;
         }
-        $contentfilelock = file_get_contents($lockfile);
+        $contentfilelock = file_get_contents($this->lockFilePath);
         if ($contentfilelock) {
             $message = $contentfilelock;
         } else {
