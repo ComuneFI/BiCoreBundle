@@ -12,17 +12,17 @@ use Symfony\Component\Finder\Finder;
 class BiCoreBundlePubblicamanualeCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:pubblicamanuale';
-    private $projectdir;
-    private $fs;
+    private string $projectdir;
+    private Filesystem $fs;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
                 ->setDescription('Copia il manuale dalla cartella Doc alla cartella Web')
                 ->setHelp('Estende la pubblicazione degli assets al manuale');
     }
 
-    public function __construct($projectdir, Filesystem $fs)
+    public function __construct(string $projectdir, Filesystem $fs)
     {
         $this->projectdir = $projectdir;
         $this->fs = $fs;
