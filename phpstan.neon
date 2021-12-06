@@ -5,6 +5,5 @@ parameters:
 	excludePaths:
 		- src/Cdf/BiCoreBundle/Entity/*
 		- src/Cdf/BiCoreBundle/Form/*
-		- src/Cdf/BiCoreBundle/Command/BiCoreBundleConfiguratorimportCommand.php
-		- src/Cdf/BiCoreBundle/Command/BiCoreBundleConfiguratorexportCommand.php
-		- src/Cdf/BiCoreBundle/Controller/FiApiController.php
+		- src/Cdf/BiCoreBundle/Command/BiCoreBundleConfigurator*
+		- src/Cdf/BiCoreBundle/Controller/FiApi*

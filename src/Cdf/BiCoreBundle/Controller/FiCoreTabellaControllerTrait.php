@@ -9,11 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Doctrine\Persistence\ManagerRegistry;
 
 trait FiCoreTabellaControllerTrait
 {
 
-    public function tabella(Request $request): Response
+    public function tabella(Request $request, ManagerRegistry $doctrine): Response
     {
         if (!$this->permessi->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
@@ -39,7 +40,7 @@ trait FiCoreTabellaControllerTrait
                 ]
         );
 
-        $parametri = array_merge($parametripassati, $this->getParametriTabella($parametripassati));
+        $parametri = array_merge($parametripassati, $this->getParametriTabella($doctrine, $parametripassati));
         $parametri['form'] = $form->createView();
         $templateobj = $this->getTabellaTemplateInformations($controller);
         $parametri['templatelocation'] = $templateobj['path'];
@@ -49,10 +50,14 @@ trait FiCoreTabellaControllerTrait
             ['parametri' => $parametri]
         );
     }
-    
+
     /**
+     *
      * @codeCoverageIgnore
      * It returns true if the request belongs to an API service, false otherwise
+     *
+     * @param array<string> $parametripassati
+     * @return bool
      */
     private function isApi(&$parametripassati): bool
     {
@@ -62,13 +67,14 @@ trait FiCoreTabellaControllerTrait
         }
         return $isapi;
     }
-    public function exportXls(Request $request, TabellaXls $tabellaxls)
+
+    public function exportXls(Request $request, TabellaXls $tabellaxls, ManagerRegistry $doctrine): JsonResponse
     {
         try {
             $parametripassati = array_merge($request->get('parametri'), ['user' => $this->getUser()]);
             $parametripassati['estraituttirecords'] = ParametriTabella::setParameter('1');
 
-            $filexls = $tabellaxls->esportaexcel($this->getParametriTabellaXls($parametripassati));
+            $filexls = $tabellaxls->esportaexcel($this->getParametriTabellaXls($doctrine, $parametripassati));
             if (file_exists($filexls)) {
                 $response = [
                     'status' => '200',
@@ -94,9 +100,14 @@ trait FiCoreTabellaControllerTrait
 
         return new JsonResponse($response);
     }
-    protected function getParametriTabella(array $parametripassati)
+
+    /**
+     *
+     * @param array<string> $parametripassati
+     * @return array<string>
+     */
+    protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati)
     {
-        $doctrine = $this->get('doctrine');
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
@@ -109,11 +120,16 @@ trait FiCoreTabellaControllerTrait
 
         return $parametritabella;
     }
+
     /**
      * Append records to the given parameters of table.
      * It deals the difference between an API service or a ORM service.
+     *
+     * @param bool $isApi
+     * @param mixed $configurazionetabella
+     * @return mixed
      */
-    private function getRecordsTabella($isApi, &$configurazionetabella)
+    private function getRecordsTabella(bool $isApi, &$configurazionetabella)
     {
         $results = [];
         if ($isApi) {
@@ -123,9 +139,14 @@ trait FiCoreTabellaControllerTrait
         }
         return $results;
     }
-    protected function getParametriTabellaXls(array $parametripassati)
+
+    /**
+     *
+     * @param array<string> $parametripassati
+     * @return array<string>
+     */
+    protected function getParametriTabellaXls(ManagerRegistry $doctrine, array $parametripassati) : array
     {
-        $doctrine = $this->get('doctrine');
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
@@ -139,7 +160,13 @@ trait FiCoreTabellaControllerTrait
 
         return $parametritabella;
     }
-    protected function getTabellaTemplateInformations($controller)
+    
+    /**
+     *
+     * @param string $controller
+     * @return array<string>
+     */
+    protected function getTabellaTemplateInformations(string $controller) : array
     {
         $template = $controller . '/Tabella/tabellacontainer.html.twig';
         $path = $controller . '/';
