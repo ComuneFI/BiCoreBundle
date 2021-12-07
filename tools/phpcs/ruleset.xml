@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="FifreeBiCoreBundle ruleset">
+<ruleset name="BiCoreBundle ruleset">
     <description>
         By default it is less stringent about long lines than other coding standards
     </description>
@@ -12,9 +12,6 @@
     <rule ref="PSR2"/>
 
     <rule ref="Generic.NamingConventions.UpperCaseConstantName.ConstantNotUpperCase">
-        <exclude-pattern>**/Assertion.php</exclude-pattern>
-        <exclude-pattern>**/LogoutRequest.php</exclude-pattern>
-        <exclude-pattern>**/EncryptedAssertion.php</exclude-pattern>
     </rule>
 
     <!-- Lines can be a little bit longer before they break the build -->

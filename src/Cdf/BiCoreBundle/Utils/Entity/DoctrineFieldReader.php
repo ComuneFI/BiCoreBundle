@@ -9,14 +9,23 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 class DoctrineFieldReader
 {
-    private $tableprefix;
 
-    public function __construct($tableprefix)
+    private string $tableprefix;
+
+    public function __construct(string $tableprefix)
     {
         $this->tableprefix = $tableprefix;
     }
 
-    public function getField2Object($fieldname, $object, $decodifiche = null)
+    /**
+     *
+     * @param string $fieldname
+     * @param mixed $object
+     * @param array<mixed> $decodifiche
+     * @return mixed|null
+     * @throws Exception
+     */
+    public function getField2Object(string $fieldname, $object, $decodifiche = null)
     {
         $property = '';
         $field = '';
@@ -33,7 +42,7 @@ class DoctrineFieldReader
             }
         }
         if (!$propertyfound) {
-            throw new Exception('Proprietà '.$field.' non trovata per '.$fieldname);
+            throw new Exception('Proprietà ' . $field . ' non trovata per ' . $fieldname);
         }
         if ($decodifiche) {
             if (key_exists($object, $decodifiche)) {
@@ -44,7 +53,15 @@ class DoctrineFieldReader
         return $object;
     }
 
-    public function object2View($object, $type = null, $decodifiche = null)
+    /**
+     *
+     * @param mixed $object
+     * @param string $type
+     * @param array<mixed> $decodifiche
+     * @return mixed|null
+     * @throws Exception
+     */
+    public function object2View($object, ?string $type = null, $decodifiche = null)
     {
         $risposta = null;
 
@@ -87,7 +104,13 @@ class DoctrineFieldReader
         return $risposta;
     }
 
-    private function getObjectType($type, $object)
+    /**
+     *
+     * @param string|null $type
+     * @param mixed $object
+     * @return string
+     */
+    private function getObjectType(?string $type, $object)
     {
         if (null === $type) {
             $tipo = is_object($object) ?
@@ -100,25 +123,33 @@ class DoctrineFieldReader
         return $tipo;
     }
 
-    private function getObjectProperty($field, $object)
+    /**
+     *
+     * @param string $field
+     * @param mixed $object
+     * @return string|null
+     */
+    private function getObjectProperty(string $field, $object)
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
 
-        $property = 'get'.$inflector->camelize(ucfirst($field));
+        $property = 'get' . $inflector->camelize(ucfirst($field));
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = 'get'.ucfirst($field);
+        $property = 'get' . ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = 'is'.ucfirst($field);
+        $property = 'is' . ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
-        $property = 'has'.ucfirst($field);
+        $property = 'has' . ucfirst($field);
         if (method_exists($object, $property)) {
             return $property;
         }
+
+        return null;
     }
 }

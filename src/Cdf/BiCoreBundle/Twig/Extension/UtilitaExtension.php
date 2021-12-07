@@ -6,20 +6,21 @@ use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class UtilitaExtension extends AbstractExtension
 {
-    private $container;
+    private ParameterBagInterface $parameterBag;
 
-    public function __construct($container)
+    public function __construct(ParameterBagInterface $parameterBag)
     {
-        $this->container = $container;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('json_decode', [$this, 'jsonDecode']),
@@ -27,7 +28,7 @@ class UtilitaExtension extends AbstractExtension
         );
     }
 
-    public function getFilters() : array
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('getparametrotabella', array($this, 'getParametroTabella')),
@@ -35,26 +36,41 @@ class UtilitaExtension extends AbstractExtension
         );
     }
 
-    public function jsonDecode($string)
+    /**
+     *
+     * @param string $string
+     * @return mixed
+     */
+    public function jsonDecode(string $string)
     {
         return json_decode($string);
     }
 
-    public function getParameter($parameter)
+    /**
+     *
+     * @param string $parameter
+     * @return mixed
+     */
+    public function getParameter(string $parameter)
     {
-        return $this->container->getParameter($parameter);
+        return $this->parameterBag->get($parameter);
     }
 
-    public function getParametroTabella($parametro)
+    /**
+     *
+     * @param string $parametro
+     * @return string|false
+     */
+    public function getParametroTabella(string $parametro)
     {
         return ParametriTabella::getParameter($parametro);
     }
 
-    public function getLarghezzacolonna($larghezza)
+    public function getLarghezzacolonna(?string $larghezza): string
     {
         $class = 'biw-5';
         if ($larghezza) {
-            $class = 'biw-'.$larghezza;
+            $class = 'biw-' . $larghezza;
         }
 
         return $class;

@@ -35,7 +35,7 @@ services:
 
     cdf.bicorebundle.twig.extension.utilita:
         class: Cdf\BiCoreBundle\Twig\Extension\UtilitaExtension
-        arguments: ["@service_container"]
+        #arguments: ["@service_container"]
         tags:
           - { name: twig.extension }
 

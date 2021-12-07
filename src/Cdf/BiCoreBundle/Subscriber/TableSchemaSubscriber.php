@@ -8,9 +8,9 @@ use Doctrine\ORM\Id\SequenceGenerator;
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
 
-    private $schemaprefix;
+    private string $schemaprefix;
 
-    public function __construct($schemaprefix)
+    public function __construct(string $schemaprefix)
     {
         $this->schemaprefix = $schemaprefix;
     }
@@ -20,7 +20,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
         return array('loadClassMetadata');
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $args)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
     {
         $classMetadata = $args->getClassMetadata();
         if (!$this->schemaprefix || ($classMetadata->isInheritanceTypeSingleTable() && !$classMetadata->isRootEntity())) {

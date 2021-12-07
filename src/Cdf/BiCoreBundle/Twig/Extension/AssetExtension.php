@@ -7,22 +7,22 @@ use Twig\TwigFunction;
 
 class AssetExtension extends AbstractExtension
 {
-    private $projectpath;
+    private string $projectpath;
 
-    public function __construct($projectpath)
+    public function __construct(string $projectpath)
     {
         $this->projectpath = $projectpath;
     }
 
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return [new TwigFunction('asset_exists', [$this, 'assetExists'], ['is_safe' => ['html']])];
     }
 
-    public function assetExists($path)
+    public function assetExists(string $path): bool
     {
-        $publicRoot = realpath($this->projectpath.'/public/').DIRECTORY_SEPARATOR;
-        $toCheck = $publicRoot.$path;
+        $publicRoot = realpath($this->projectpath . '/public/') . DIRECTORY_SEPARATOR;
+        $toCheck = $publicRoot . $path;
 
         // check if the file exists
         if (!is_file($toCheck)) {

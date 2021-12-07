@@ -19,12 +19,12 @@ class BiCoreExtension extends Extension
      *
      * @throws \Exception
      */
-    public function load(array $configs, ContainerBuilder $container) : void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $container->setParameter('bi_core.lockfile', $config['lockfile']);
         $container->setParameter('bi_core.appname', $config['appname']);

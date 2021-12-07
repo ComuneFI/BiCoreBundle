@@ -30,7 +30,7 @@ class OperatoriController extends FiController
     /**
      * Displays a form to create a new table entity.
      */
-    public function new(Request $request):Response
+    public function new(Request $request): Response
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $bundle = $this->getBundle();
@@ -45,11 +45,11 @@ class OperatoriController extends FiController
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
         $entity = new $entityclass();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
         $form = $this->createForm($formType, $entity, ['attr' => [
-                'id' => 'formdati'.$controller,
+                'id' => 'formdati' . $controller,
             ],
-            'action' => $this->generateUrl($controller.'_new'),
+            'action' => $this->generateUrl($controller . '_new'),
         ]);
 
         $form->handleRequest($request);
@@ -67,7 +67,7 @@ class OperatoriController extends FiController
                 $password = $entity->getPassword();
                 $entity->setOperatore($username);
                 $entity->setEnabled(true);
-                $logger->info('Inserimento nuovo utente '.$username);
+                $logger->info('Inserimento nuovo utente ' . $username);
 
                 $entityManager = $this->em;
                 $entityManager->persist($entity);
@@ -75,7 +75,7 @@ class OperatoriController extends FiController
 
                 $content = $this->usermanipulator->changePassword($username, $password);
 
-                $logger->info('Esito inserimento nuovo utente '.$username.' : '.$content);
+                $logger->info('Esito inserimento nuovo utente ' . $username . ' : ' . $content);
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),

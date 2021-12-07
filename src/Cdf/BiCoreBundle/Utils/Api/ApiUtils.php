@@ -26,7 +26,7 @@ class ApiUtils
     private $suffixApiController = 'Api';
     private $prefixControllerModelItem = "DaosRow";
     private $prefixModelItem = "DaosRow";
-    
+
     private $delete;
     private $get;
     private $update;
@@ -100,7 +100,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
      * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
      */
-    public function getApiControllerClass($project, $entityName): String
+    public function getApiControllerClass($project, $entityName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceApi . "\\$entityName" . $this->suffixApiController;
         return $className;
@@ -111,7 +111,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
      */
-    public function getModelControllerClass($project, $modelName): String
+    public function getModelControllerClass($project, $modelName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixControllerModelItem . $modelName;
         return $className;
@@ -122,7 +122,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
      */
-    public function getModelClass($project, $modelName): String
+    public function getModelClass($project, $modelName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixModelItem . $modelName;
         return $className;
@@ -133,7 +133,7 @@ class ApiUtils
      * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. App\\Form\\Claim)
      */
-    public function getFormClass($modelName): String
+    public function getFormClass($modelName): string
     {
         $className = $this->namespaceForm . "\\" . $modelName;
         return $className;
@@ -150,7 +150,7 @@ class ApiUtils
     /**
      * Return the method string to retrieve all elements / or filtering on them
      */
-    public function getAll(): String
+    public function getAll(): string
     {
         return $this->apiCollection . $this->getAll;
     }
@@ -158,7 +158,7 @@ class ApiUtils
     /**
      * Return the method string to retrieve all elements descriptions (it's possible to filter them as for getAll)
      */
-    public function getAllToString(): String
+    public function getAllToString(): string
     {
         return $this->apiCollection . $this->getAllToString;
     }
@@ -166,7 +166,7 @@ class ApiUtils
     /**
      * Return the method string to retrieve 1 element
      */
-    public function getItem(): String
+    public function getItem(): string
     {
         return $this->apiCollection . $this->get;
     }
@@ -174,7 +174,7 @@ class ApiUtils
     /**
      * Return the method string to update 1 element
      */
-    public function getUpdateItem(): String
+    public function getUpdateItem(): string
     {
         return $this->apiCollection . $this->update;
     }
@@ -182,7 +182,7 @@ class ApiUtils
     /**
      * Return the method string to count all elemements inside a collection
      */
-    public function getCount(): String
+    public function getCount(): string
     {
         return $this->apiCollection . $this->getCount;
     }
@@ -190,7 +190,7 @@ class ApiUtils
     /**
      * Return the method string to create an element
      */
-    public function getCreate(): String
+    public function getCreate(): string
     {
         return $this->apiCollection . $this->create;
     }
@@ -198,7 +198,7 @@ class ApiUtils
     /**
      * Return the method string to delete an element
      */
-    public function getDelete(): String
+    public function getDelete(): string
     {
         return $this->apiCollection . $this->delete;
     }
@@ -216,7 +216,7 @@ class ApiUtils
         $regex = $this->regexPathModels();
         //what to look for
         $models = array();
-        $finder = new Finder;
+        $finder = new Finder();
         $iter = new ClassIterator($finder->files()->in($path));
 
         $matches = array();

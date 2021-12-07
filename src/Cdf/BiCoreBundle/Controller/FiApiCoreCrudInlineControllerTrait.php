@@ -4,7 +4,9 @@ namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
+
 use function count;
+
 use DateTime;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,7 +82,7 @@ trait FiApiCoreCrudInlineControllerTrait
                 if ($accessor->isWritable($entity, $field)) {
                     $accessor->setValue($entity, $field, $fieldvalue);
                 } else {
-                    throw new Exception($field.' non modificabile');
+                    throw new Exception($field . ' non modificabile');
                 }
             } else {
                 continue;
@@ -106,7 +108,7 @@ trait FiApiCoreCrudInlineControllerTrait
         //Update
         $entity = $this->em->getRepository($entityclass)->find($id);
         if (!$entity) {
-            throw $this->createNotFoundException('Impossibile trovare l\'entità '.$controller.' per il record con id '.$id);
+            throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
         $queryBuilder
                 ->update($entityclass, 'u')
@@ -122,7 +124,7 @@ trait FiApiCoreCrudInlineControllerTrait
             if ($table == $controller && 2 == count($fieldpieces)) {
                 $field = $fieldpieces[1];
                 if ('join' == $value['fieldtype']) {
-                    $field = lcfirst($field.'_id');
+                    $field = lcfirst($field . '_id');
                 }
                 $entityutils = new EntityUtils($this->em);
                 $property = $entityutils->getEntityProperties($field, $entity);
@@ -130,7 +132,7 @@ trait FiApiCoreCrudInlineControllerTrait
                 if ($nomefunzioneget != $value['fieldvalue']) {
                     $querydaeseguire = true;
                     $fieldvalue = $this->getValueAggiorna($value);
-                    $queryBuilder->set('u.'.$field, ':'.$field);
+                    $queryBuilder->set('u.' . $field, ':' . $field);
                     $queryBuilder->setParameter($field, $fieldvalue);
                 }
             } else {

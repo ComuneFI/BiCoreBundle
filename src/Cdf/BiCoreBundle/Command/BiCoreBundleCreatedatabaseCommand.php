@@ -22,14 +22,14 @@ class BiCoreBundleCreatedatabaseCommand extends Command
         parent::__construct();
     }
 
-    protected function configure():void
+    protected function configure(): void
     {
         $this
                 ->setDescription('Creazione database bi')
                 ->setHelp('Creazione di un nuovo database di bi');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;

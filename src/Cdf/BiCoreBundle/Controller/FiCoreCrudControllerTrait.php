@@ -12,7 +12,6 @@ use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 trait FiCoreCrudControllerTrait
 {
-
     use FiCoreCrudInlineControllerTrait;
 
     /**

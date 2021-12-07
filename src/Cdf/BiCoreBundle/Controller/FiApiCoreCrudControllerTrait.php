@@ -41,12 +41,12 @@ trait FiApiCoreCrudControllerTrait
 
         //$formclass = str_replace('Entity', 'Form', $entityclass);
         $formclass = $this->getFormName();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $attrArray = ['attr' => [
-            'id' => 'formdati'.$controller,
+            'id' => 'formdati' . $controller,
                     ],
-            'action' => $this->generateUrl($controller.'_new'), 'parametriform' => $parametriform,
+            'action' => $this->generateUrl($controller . '_new'), 'parametriform' => $parametriform,
             'extra-options' => []
                 ];
 
@@ -82,7 +82,7 @@ trait FiApiCoreCrudControllerTrait
 
                 /*$response = */
                 $apiObject->$createMethod($entity);
-                
+
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
                     200
@@ -118,7 +118,7 @@ trait FiApiCoreCrudControllerTrait
         $tabellatemplate = $this->getTabellaTemplate($controller);
 
         $formclass = $this->getFormName();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
@@ -135,9 +135,9 @@ trait FiApiCoreCrudControllerTrait
 
 
         $attrArray = ['attr' => [
-                        'id' => 'formdati'.$controller,
+                        'id' => 'formdati' . $controller,
                                 ],
-                    'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+                    'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
                     'extra-options' => []
                             ];
         foreach ($this->options as $key => $option) {
@@ -219,7 +219,7 @@ trait FiApiCoreCrudControllerTrait
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
         $formclass = $this->getFormName();
-        $formType = $formclass.'Type';
+        $formType = $formclass . 'Type';
 
         $apiClass = $this->apiController;
         $apiObject = new $apiClass();
@@ -233,9 +233,9 @@ trait FiApiCoreCrudControllerTrait
         $entity = $modelutils->setApiValues($entityorig);
 
         $attrArray = ['attr' => [
-            'id' => 'formdati'.$controller,
+            'id' => 'formdati' . $controller,
                     ],
-        'action' => $this->generateUrl($controller.'_update', ['id' => $entity->getId()]),
+        'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
         'extra-options' => []
                 ];
 
@@ -258,7 +258,7 @@ trait FiApiCoreCrudControllerTrait
             $entityItem = $editForm->getData();
 
             //$entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
-            
+
 
             $apiClass = $this->apiController;
             $apiObject = new $apiClass();
@@ -272,7 +272,7 @@ trait FiApiCoreCrudControllerTrait
             if (0 === $continua) {
                 return new Response('OK');
             } else {
-                return $this->redirect($this->generateUrl($controller.'_edit', ['id' => $id]));
+                return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
             }
         }
 

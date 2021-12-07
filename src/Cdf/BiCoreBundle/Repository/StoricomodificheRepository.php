@@ -19,7 +19,7 @@ class StoricomodificheRepository extends EntityRepository
      * @param Operatori $user
      * @return void
      */
-    public function saveHistory(string $nometabella, array $changes, int $id, Operatori $user) : void
+    public function saveHistory(string $nometabella, array $changes, int $id, Operatori $user): void
     {
         $em = $this->getEntityManager();
 
@@ -49,7 +49,7 @@ class StoricomodificheRepository extends EntityRepository
             if ($change instanceof DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
-                $risposta = $change->__toString().' ('.$change->getId().')';
+                $risposta = $change->__toString() . ' (' . $change->getId() . ')';
             }
         } else {
             $risposta = $change;
@@ -66,7 +66,7 @@ class StoricomodificheRepository extends EntityRepository
      *
      * return @bool
      */
-    private function isHistoricized(string $nometabella, string $indiceDato) : bool
+    private function isHistoricized(string $nometabella, string $indiceDato): bool
     {
         $risposta = false;
 
@@ -95,7 +95,7 @@ class StoricomodificheRepository extends EntityRepository
      * @param array<mixed> $changes
      * @return void
      */
-    private function isDataChanged(string $nometabella, $datooriginale, $singoloDato, string $indiceDato, array &$changes) : void
+    private function isDataChanged(string $nometabella, $datooriginale, $singoloDato, string $indiceDato, array &$changes): void
     {
         if (($datooriginale !== $singoloDato) && $this->isHistoricized($nometabella, $indiceDato)) {
             $changes[$indiceDato] = $datooriginale;
@@ -110,7 +110,7 @@ class StoricomodificheRepository extends EntityRepository
      * @param array<mixed> $newData
      * @return array<mixed>
      */
-    public function isRecordChanged(string $nometabella, array $originalData, array $newData) : array
+    public function isRecordChanged(string $nometabella, array $originalData, array $newData): array
     {
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {

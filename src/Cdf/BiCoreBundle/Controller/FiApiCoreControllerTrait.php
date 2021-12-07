@@ -36,7 +36,7 @@ trait FiApiCoreControllerTrait
         //$entityclassnotation = $this->getEntityClassNotation();
         //$entityclass = $this->getEntityClassName();
 
-        $entityclassnotation = 'App:'.$this->model;
+        $entityclassnotation = 'App:' . $this->model;
         // Variable containing API controller
 
         $modellocolonne = [
@@ -72,7 +72,7 @@ trait FiApiCoreControllerTrait
         //$entityutils = new EntityUtils($this->get('doctrine')->getManager());
         //$tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $tablenamefromentity = $controller;
-        $colonneordinamento = [$tablenamefromentity.'.id' => 'DESC'];
+        $colonneordinamento = [$tablenamefromentity . '.id' => 'DESC'];
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
             'nomecontroller' => ParametriTabella::setParameter($controller),
@@ -82,10 +82,10 @@ trait FiApiCoreControllerTrait
             'formclass' => ParametriTabella::setParameter($this->formClass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'titolotabella' => ParametriTabella::setParameter('Elenco ' . $controller),
             'multiselezione' => ParametriTabella::setParameter('0'),
             'editinline' => ParametriTabella::setParameter('0'),
             'paginacorrente' => ParametriTabella::setParameter('1'),
@@ -206,9 +206,9 @@ trait FiApiCoreControllerTrait
 
     protected function getTabellaTemplate($controller)
     {
-        $tabellatemplate = $controller.'/Tabella/tabellaform.html.twig';
+        $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
         if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
-            $tabellatemplate = '@BiCore/'.$controller.'/Tabella/tabellaform.html.twig';
+            $tabellatemplate = '@BiCore/' . $controller . '/Tabella/tabellaform.html.twig';
             if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
                 $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
@@ -219,11 +219,11 @@ trait FiApiCoreControllerTrait
 
     protected function getCrudTemplate($bundle, $controller, $operation)
     {
-        $crudtemplate = $bundle.'/'.$controller.'/Crud/'.$operation.'.html.twig';
+        $crudtemplate = $bundle . '/' . $controller . '/Crud/' . $operation . '.html.twig';
         if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
-            $crudtemplate = $controller.'/Crud/'.$operation.'.html.twig';
+            $crudtemplate = $controller . '/Crud/' . $operation . '.html.twig';
             if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
-                $crudtemplate = '@BiCore/Standard/Crud/'.$operation.'.html.twig';
+                $crudtemplate = '@BiCore/Standard/Crud/' . $operation . '.html.twig';
             }
         }
 
@@ -246,7 +246,7 @@ trait FiApiCoreControllerTrait
     /**
      * Return the model class name needed to instantiate it
      */
-    protected function getModelClassName(): String
+    protected function getModelClassName(): string
     {
         return $this->modelClass;
     }
@@ -254,7 +254,7 @@ trait FiApiCoreControllerTrait
     /**
      * Return the controller item class name needed to instantiate it
      */
-    protected function getControllerItemName(): String
+    protected function getControllerItemName(): string
     {
         return $this->controllerItem;
     }
@@ -262,7 +262,7 @@ trait FiApiCoreControllerTrait
     /**
      * Return the form class name needed to reference the proper form
      */
-    protected function getFormName(): String
+    protected function getFormName(): string
     {
         return $this->formClass;
     }
