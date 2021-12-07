@@ -7,7 +7,8 @@ class ParametriTabella
     /**
      *
      * @param string $parametro
-     * @return string|false
+     * @return string
+     * @throws \Exception
      */
     public static function getParameter(string $parametro)
     {
