@@ -10,22 +10,23 @@ namespace Cdf\BiCoreBundle\Service\Permessi;
 
 use Cdf\BiCoreBundle\Entity\Permessi;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PermessiManager
 {
-    private $em;
+
+    private EntityManagerInterface $em;
     private $user;
-    
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $user)
+
+    public function __construct(EntityManagerInterface $em, $user)
     {
         $this->em = $em;
         $this->user = $user->getToken()->getUser();
     }
 
-    public function canRead($modulo)
+    public function canRead(string $modulo): bool
     {
-        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+
+        $permessi = $this->getPermessi($modulo);
         $canread = false;
         if ($permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'R')) {
@@ -40,9 +41,9 @@ class PermessiManager
         return $canread;
     }
 
-    public function canCreate($modulo)
+    public function canCreate(string $modulo): bool
     {
-        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $permessi = $this->getPermessi($modulo);
         $cancreate = false;
         if ($permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'C')) {
@@ -57,9 +58,9 @@ class PermessiManager
         return $cancreate;
     }
 
-    public function canUpdate($modulo)
+    public function canUpdate(string $modulo): bool
     {
-        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $permessi = $this->getPermessi($modulo);
         $canupdate = false;
         if ($permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'U')) {
@@ -74,9 +75,9 @@ class PermessiManager
         return $canupdate;
     }
 
-    public function canDelete($modulo)
+    public function canDelete(string $modulo): bool
     {
-        $permessi = $this->em->getRepository(Permessi::class)->findPermessoModuloOperatore($modulo, $this->user);
+        $permessi = $this->getPermessi($modulo);
         $candelete = false;
         if ($permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'D')) {
@@ -91,7 +92,19 @@ class PermessiManager
         return $candelete;
     }
 
-    public function toJson($modulo)
+    private function getPermessi(string $modulo): ?Permessi
+    {
+        /** @var \Cdf\BiCoreBundle\Repository\PermessiRepository $repository */
+        $repository = $this->em->getRepository(Permessi::class);
+        return $repository->findPermessoModuloOperatore($modulo, $this->user);
+    }
+
+    /**
+     *
+     * @param string $modulo
+     * @return array<string, bool>
+     */
+    public function toJson(string $modulo): array
     {
         return array(
             'read' => $this->canRead($modulo),

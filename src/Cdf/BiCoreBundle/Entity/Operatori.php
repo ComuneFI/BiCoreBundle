@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
- * App\Entity\Operatori.
+ * Cdf\BiCoreBundle\Entity\Operatori.
  *
  * @ORM\Entity()
  * @ORM\Table(name="Operatori", indexes={@ORM\Index(name="fk_operatori_ruoli2_idx", columns={"ruoli_id"})})
