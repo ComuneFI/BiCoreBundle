@@ -17,8 +17,13 @@ class HeaderTabellaExtension extends AbstractExtension
             new TwigFunction('sort_class', [$this, 'sortClass']),
         );
     }
-
-    public function sortClass($colonneordinamento, $modellocampo)
+    /**
+     *
+     * @param string $colonneordinamento
+     * @param array<mixed> $modellocampo
+     * @return string
+     */
+    public function sortClass(string $colonneordinamento, array $modellocampo): string
     {
         if (true === $modellocampo['association'] || true === $modellocampo['campoextra']) {
             $sorttype = '';

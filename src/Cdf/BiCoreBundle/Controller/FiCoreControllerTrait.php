@@ -178,7 +178,7 @@ trait FiCoreControllerTrait
     /**
      * Lists all tables entities.
      */
-    public function lista(Request $request) :JsonResponse
+    public function lista(Request $request): JsonResponse
     {
         if (!$this->getPermessi()->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
@@ -197,7 +197,7 @@ trait FiCoreControllerTrait
         return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
     }
 
-    protected function getTabellaTemplate(string $controller) :string
+    protected function getTabellaTemplate(string $controller): string
     {
         $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
         if (!$this->template->getLoader()->exists($tabellatemplate)) {
@@ -210,7 +210,7 @@ trait FiCoreControllerTrait
         return $tabellatemplate;
     }
 
-    protected function getCrudTemplate(string $bundle, string $controller, string $operation):string
+    protected function getCrudTemplate(string $bundle, string $controller, string $operation): string
     {
         $crudtemplate = $bundle . '/' . $controller . '/Crud/' . $operation . '.html.twig';
         if (!$this->template->getLoader()->exists($crudtemplate)) {
@@ -226,7 +226,7 @@ trait FiCoreControllerTrait
     /**
      * Returns the calling function through a backtrace.
      */
-    protected function getThisFunctionName() :string
+    protected function getThisFunctionName(): string
     {
         // a funciton x has called a function y which called this
         // see stackoverflow.com/questions/190421
@@ -236,13 +236,13 @@ trait FiCoreControllerTrait
         return $caller['function'];
     }
 
-    protected function getEntityClassNotation():string
+    protected function getEntityClassNotation(): string
     {
         $entityutils = new EntityUtils($this->em);
         return $entityutils->getClassNameToShortcutNotations($this->getEntityClassName());
     }
 
-    protected function getEntityClassName() :string
+    protected function getEntityClassName(): string
     {
         $entityfinder = new Finder($this->em);
 

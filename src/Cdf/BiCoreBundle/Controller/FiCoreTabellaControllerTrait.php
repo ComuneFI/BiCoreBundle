@@ -145,7 +145,7 @@ trait FiCoreTabellaControllerTrait
      * @param array<string> $parametripassati
      * @return array<string>
      */
-    protected function getParametriTabellaXls(ManagerRegistry $doctrine, array $parametripassati) : array
+    protected function getParametriTabellaXls(ManagerRegistry $doctrine, array $parametripassati): array
     {
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [
@@ -160,13 +160,13 @@ trait FiCoreTabellaControllerTrait
 
         return $parametritabella;
     }
-    
+
     /**
      *
      * @param string $controller
      * @return array<string>
      */
-    protected function getTabellaTemplateInformations(string $controller) : array
+    protected function getTabellaTemplateInformations(string $controller): array
     {
         $template = $controller . '/Tabella/tabellacontainer.html.twig';
         $path = $controller . '/';

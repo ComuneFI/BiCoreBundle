@@ -3,7 +3,9 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
+
 use function count;
+
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
@@ -19,7 +21,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class FiApiController extends AbstractController
 {
-
     use FiApiCoreControllerTrait;
     use FiApiCoreCrudControllerTrait;
     use FiCoreTabellaControllerTrait;

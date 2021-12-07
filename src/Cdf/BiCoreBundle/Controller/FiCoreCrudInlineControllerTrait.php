@@ -4,7 +4,9 @@ namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\Finder;
+
 use function count;
+
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Exception;

@@ -17,7 +17,7 @@ class PermessiController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager):Response
+    public function index(Request $request, Packages $assetsmanager): Response
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -74,10 +74,10 @@ class PermessiController extends FiController
             'formclass' => ParametriTabella::setParameter($formclass),
             'modellocolonne' => ParametriTabella::setParameter(json_encode($modellocolonne)),
             'permessi' => ParametriTabella::setParameter(json_encode($this->getPermessi()->toJson($controller))),
-            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('').$controller.'/'.'tabella'),
+            'urltabella' => ParametriTabella::setParameter($assetsmanager->getUrl('') . $controller . '/' . 'tabella'),
             'baseurl' => ParametriTabella::setParameter($assetsmanager->getUrl('')),
             'idpassato' => ParametriTabella::setParameter($idpassato),
-            'titolotabella' => ParametriTabella::setParameter('Elenco '.$controller),
+            'titolotabella' => ParametriTabella::setParameter('Elenco ' . $controller),
             'multiselezione' => ParametriTabella::setParameter('1'),
             'editinline' => ParametriTabella::setParameter('0'),
             'paginacorrente' => ParametriTabella::setParameter('1'),

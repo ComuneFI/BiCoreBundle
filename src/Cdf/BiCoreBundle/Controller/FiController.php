@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
 use ReflectionClass;
+
 use function count;
 
 class FiController extends AbstractController
 {
-
     use FiCoreControllerTrait;
     use FiCoreCrudControllerTrait;
     use FiCoreTabellaControllerTrait;

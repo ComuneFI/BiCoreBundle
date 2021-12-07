@@ -15,12 +15,12 @@ use function count;
 class MenuExtension extends AbstractExtension
 {
 
-    protected $em;
-    protected $urlgenerator;
-    protected $user;
-    protected $rootpath;
+    protected EntityManagerInterface $em;
+    protected UrlGeneratorInterface $urlgenerator;
+    protected TokenStorageInterface $user;
+    protected string $rootpath;
 
-    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, $rootpath)
+    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, string $rootpath)
     {
         $this->em = $em;
         $this->urlgenerator = $urlgenerator;
@@ -28,7 +28,7 @@ class MenuExtension extends AbstractExtension
         $this->rootpath = $rootpath;
     }
 
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('generamenu', [$this, 'generamenu'], [
@@ -38,8 +38,9 @@ class MenuExtension extends AbstractExtension
         ];
     }
 
-    public function generamenu(TwigEnvironment $environment)
+    public function generamenu(TwigEnvironment $environment): string
     {
+        /** @phpstan-ignore-next-line */
         $router = $this->urlgenerator->match('/')['_route'];
         $rispostahome = array();
         $rispostahome[] = array('percorso' => $this->getUrlObject('', $router, ''),
@@ -62,21 +63,24 @@ class MenuExtension extends AbstractExtension
 
         $username = '';
         $urlLogout = '';
-        
+
         $this->generaManualeMkdocMenu($risposta);
-        
+
         $this->generaManualePdfMenu($risposta);
-        
+
+        /** @phpstan-ignore-next-line */
         if ('ssocdf' === $this->user->getToken()->getFirewallName()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
 
+        /** @phpstan-ignore-next-line */
         if ('ssolineacomune' === $this->user->getToken()->getFirewallName()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fi_Lineacomuneauth_signout');
         }
 
+        /** @phpstan-ignore-next-line */
         if ('main' === $this->user->getToken()->getFirewallName()) {
             $username = $this->user->getToken()->getUser()->getUsername();
             $urlLogout = $this->urlgenerator->generate('fos_user_security_logout');
@@ -87,11 +91,15 @@ class MenuExtension extends AbstractExtension
                 array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => '_self'),
             ),
         );
-
         return $environment->render('@BiCore/Menu/menu.html.twig', array('risposta' => $risposta));
     }
 
-    protected function generaManualePdfMenu(&$risposta)
+    /**
+     *
+     * @param string[][] $risposta
+     * @return void
+     */
+    protected function generaManualePdfMenu(array &$risposta): void
     {
         $pathmanuale = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'manuale.pdf';
         if (file_exists($pathmanuale)) {
@@ -101,6 +109,11 @@ class MenuExtension extends AbstractExtension
         }
     }
 
+    /**
+     *
+     * @param string[][] $risposta
+     * @return void
+     */
     protected function generaManualeMkdocMenu(&$risposta)
     {
         $mkdocsfile = 'manuale' . DIRECTORY_SEPARATOR . 'index.html';
@@ -112,6 +125,11 @@ class MenuExtension extends AbstractExtension
         }
     }
 
+    /**
+     *
+     * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $menu
+     * @return array<mixed>
+     */
     protected function getMenu($menu)
     {
         $risposta = array();
@@ -157,6 +175,11 @@ class MenuExtension extends AbstractExtension
         return $risposta;
     }
 
+    /**
+     *
+     * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $submenu
+     * @return array<mixed>
+     */
     protected function getSubMenu($submenu)
     {
         $sottomenutabelle = array();
@@ -184,7 +207,14 @@ class MenuExtension extends AbstractExtension
         return $sottomenutabelle;
     }
 
-    protected function getUrlObject($nome, $percorso, $target)
+    /**
+     *
+     * @param string $nome
+     * @param string $percorso
+     * @param string $target
+     * @return array<mixed>
+     */
+    protected function getUrlObject(string $nome, ?string $percorso, ?string $target)
     {
         if ($this->routeExists($percorso)) {
             $percorso = $this->urlgenerator->generate($percorso);
@@ -198,13 +228,14 @@ class MenuExtension extends AbstractExtension
         return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
     }
 
-    protected function routeExists($name)
+    protected function routeExists(?string $name): bool
     {
         if ($name === null) {
             return false;
         }
         $router = $this->urlgenerator;
 
+        /** @phpstan-ignore-next-line */
         if ((null === $router->getRouteCollection()->get($name)) ? false : true) {
             return true;
         } else {
@@ -212,7 +243,7 @@ class MenuExtension extends AbstractExtension
         }
     }
 
-    protected function urlExists($name)
+    protected function urlExists(string $name): bool
     {
         if ($this->checkUrl($name, false)) {
             return true;
@@ -225,14 +256,12 @@ class MenuExtension extends AbstractExtension
         }
     }
 
-    protected function checkUrl($name, $proxy)
+    protected function checkUrl(string $name, bool $useProxy): bool
     {
         $ch = curl_init($name);
 
         curl_setopt($ch, CURLOPT_URL, $name);
-        if ($proxy) {
-            curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        } else {
+        if (!$useProxy) {
             curl_setopt($ch, CURLOPT_PROXY, null);
         }
         curl_setopt($ch, CURLOPT_NOBODY, true);

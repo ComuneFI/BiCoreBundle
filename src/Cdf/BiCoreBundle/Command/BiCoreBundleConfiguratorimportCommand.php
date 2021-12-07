@@ -17,8 +17,8 @@ use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportUpdateTrait;
 
 class BiCoreBundleConfiguratorimportCommand extends Command
 {
-    use ConfiguratorimportInsertTrait,
-        ConfiguratorimportUpdateTrait;
+    use ConfiguratorimportInsertTrait;
+    use ConfiguratorimportUpdateTrait;
 
     protected static $defaultName = 'bicorebundle:configuratorimport';
 
@@ -52,7 +52,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->forceupdate = $input->getOption('forceupdate');
@@ -61,7 +61,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
         $this->checkSchemaStatus();
 
-        $fixturefile = sys_get_temp_dir().DIRECTORY_SEPARATOR.'fixtures.yml';
+        $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
         $ret = $this->import($fixturefile);
 
         return $ret;
@@ -72,7 +72,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         $fs = new Filesystem();
         if ($fs->exists($fixturefile)) {
             $fixtures = Yaml::parse(file_get_contents($fixturefile));
-            $msg = '<info>Trovate '.count($fixtures).' entities nel file '.$fixturefile.'</info>';
+            $msg = '<info>Trovate ' . count($fixtures) . ' entities nel file ' . $fixturefile . '</info>';
             $this->output->writeln($msg);
 
             if ($this->truncatetables) {
@@ -90,7 +90,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
             return 0;
         } else {
-            $msgerr = '<error>Non trovato file '.$fixturefile.'</error>';
+            $msgerr = '<error>Non trovato file ' . $fixturefile . '</error>';
             $this->output->writeln($msgerr);
 
             return 1;
@@ -111,7 +111,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     private function truncateTable($entityclass)
     {
         $tablename = $this->entityutility->getTableFromEntity($entityclass);
-        $msg = '<info>TRUNCATE della tabella '.$tablename.' ('.$entityclass.')</info>';
+        $msg = '<info>TRUNCATE della tabella ' . $tablename . ' (' . $entityclass . ')</info>';
         $this->output->writeln($msg);
         $this->dbutility->truncatetable($entityclass, true);
     }
@@ -134,7 +134,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
     private function executeImport($entityclass, $fixture)
     {
-        $msg = '<info>Trovati '.count($fixture)." record per l'entity ".$entityclass.'</info>';
+        $msg = '<info>Trovati ' . count($fixture) . " record per l'entity " . $entityclass . '</info>';
         $this->output->writeln($msg);
         foreach ($fixture as $record) {
             $objrecord = $this->em->getRepository($entityclass)->find($record['id']);
@@ -156,9 +156,9 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         if ($this->forceupdate) {
             return $this->executeUpdate($entityclass, $record, $objrecord);
         } else {
-            $msgerr = '<error>'.$entityclass.' con id '.$record['id']
-                    ." non modificata, specificare l'opzione --forceupdate "
-                    .'per sovrascrivere record presenti</error>';
+            $msgerr = '<error>' . $entityclass . ' con id ' . $record['id']
+                    . " non modificata, specificare l'opzione --forceupdate "
+                    . 'per sovrascrivere record presenti</error>';
             $this->output->writeln($msgerr);
         }
     }

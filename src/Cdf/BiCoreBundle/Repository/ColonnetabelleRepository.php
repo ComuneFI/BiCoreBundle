@@ -14,7 +14,7 @@ class ColonnetabelleRepository extends EntityRepository
      * @param Operatori $user
      * @return array<Colonnetabelle>
      */
-    public function findOpzioniColonnetabella(string $tabella, Operatori $user = null) : array
+    public function findOpzioniColonnetabella(string $tabella, Operatori $user = null): array
     {
         $em = $this->getEntityManager();
         /* @var $qb \Doctrine\ORM\QueryBuilder */

@@ -3,20 +3,23 @@
 namespace Cdf\BiCoreBundle\Repository;
 
 use Cdf\BiCoreBundle\Entity\Storicomodifiche;
-use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
+use Cdf\BiCoreBundle\Entity\Operatori;
+use DateTime;
 
 class StoricomodificheRepository extends EntityRepository
 {
     /**
      * save field modification in history table.
      *
-     * @string $nometabella
-     * @string $controller
-     * @array $changes
+     * @param string $nometabella
+     * @param array<mixed> $changes
+     * @param int $id
+     * @param Operatori $user
+     * @return void
      */
-    public function saveHistory($nometabella, $changes, $id, $user)
+    public function saveHistory(string $nometabella, array $changes, int $id, Operatori $user): void
     {
         $em = $this->getEntityManager();
 
@@ -35,13 +38,18 @@ class StoricomodificheRepository extends EntityRepository
         $em->clear();
     }
 
+    /**
+     *
+     * @param mixed $change
+     * @return mixed
+     */
     private function getValoreprecedenteImpostare($change)
     {
         if (is_object($change)) {
             if ($change instanceof DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
-                $risposta = $change->__toString().' ('.$change->getId().')';
+                $risposta = $change->__toString() . ' (' . $change->getId() . ')';
             }
         } else {
             $risposta = $change;
@@ -56,9 +64,9 @@ class StoricomodificheRepository extends EntityRepository
      * @string $entitclass
      * @string $indicedato fieldname
      *
-     * return @boolean
+     * return @bool
      */
-    private function isHistoricized($nometabella, $indiceDato)
+    private function isHistoricized(string $nometabella, string $indiceDato): bool
     {
         $risposta = false;
 
@@ -80,12 +88,14 @@ class StoricomodificheRepository extends EntityRepository
     /**
      * check if single data is  changed.
      *
-     * @array $originalData
-     * @array $newData
-     *
-     * return @string
+     * @param string $nometabella
+     * @param mixed $datooriginale
+     * @param mixed $singoloDato
+     * @param string $indiceDato
+     * @param array<mixed> $changes
+     * @return void
      */
-    private function isDataChanged($nometabella, $datooriginale, $singoloDato, $indiceDato, &$changes)
+    private function isDataChanged(string $nometabella, $datooriginale, $singoloDato, string $indiceDato, array &$changes): void
     {
         if (($datooriginale !== $singoloDato) && $this->isHistoricized($nometabella, $indiceDato)) {
             $changes[$indiceDato] = $datooriginale;
@@ -95,12 +105,12 @@ class StoricomodificheRepository extends EntityRepository
     /**
      * check if something changes.
      *
-     * @array $originalData
-     * @array $newData
-     *
-     * return @array
+     * @param string $nometabella
+     * @param array<mixed> $originalData
+     * @param array<mixed> $newData
+     * @return array<mixed>
      */
-    public function isRecordChanged($nometabella, $originalData, $newData)
+    public function isRecordChanged(string $nometabella, array $originalData, array $newData): array
     {
         $changes = array();
         foreach ($newData as $indiceDato => $singoloDato) {

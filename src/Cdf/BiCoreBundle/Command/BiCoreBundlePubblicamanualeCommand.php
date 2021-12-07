@@ -31,20 +31,20 @@ class BiCoreBundlePubblicamanualeCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projectDir = $this->projectdir;
         $manuale = 'manuale.pdf';
-        $originDir = $projectDir.DIRECTORY_SEPARATOR.'doc'.DIRECTORY_SEPARATOR.'manuale';
-        $manualepath = $originDir.DIRECTORY_SEPARATOR.$manuale;
+        $originDir = $projectDir . DIRECTORY_SEPARATOR . 'doc' . DIRECTORY_SEPARATOR . 'manuale';
+        $manualepath = $originDir . DIRECTORY_SEPARATOR . $manuale;
         if ($this->fs->exists($manualepath)) {
-            $targetDir = $projectDir.DIRECTORY_SEPARATOR.'public';
+            $targetDir = $projectDir . DIRECTORY_SEPARATOR . 'public';
 
             $this->fs->mkdir($targetDir, 0777);
             //    // We use a custom iterator to ignore VCS files
             $this->fs->mirror($originDir, $targetDir, Finder::create()->name($manuale)->in($originDir));
         } else {
-            throw new Exception('Attenzione, non è presente il file '.$manualepath);
+            throw new Exception('Attenzione, non è presente il file ' . $manualepath);
         }
         $output->writeln('Done!');
         return 0;

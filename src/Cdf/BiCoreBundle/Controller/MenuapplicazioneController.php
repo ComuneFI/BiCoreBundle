@@ -18,7 +18,7 @@ class MenuapplicazioneController extends FiController
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager) : Response
+    public function index(Request $request, Packages $assetsmanager): Response
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();

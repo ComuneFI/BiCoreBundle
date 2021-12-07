@@ -14,7 +14,7 @@ class MaintenanceListener
         $this->lockFilePath = $lockFilePath;
     }
 
-    public function onKernelResponse(ResponseEvent $event) : void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!file_exists($this->lockFilePath)) {
             return;

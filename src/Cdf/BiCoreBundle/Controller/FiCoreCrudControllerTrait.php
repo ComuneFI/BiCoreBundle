@@ -12,7 +12,6 @@ use Cdf\BiCoreBundle\Entity\Storicomodifiche;
 
 trait FiCoreCrudControllerTrait
 {
-
     use FiCoreCrudInlineControllerTrait;
 
     /**
@@ -198,7 +197,9 @@ trait FiCoreCrudControllerTrait
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
-                $repoStorico->saveHistory($controller, $changes, $id, $this->getUser());
+                /** @var \Cdf\BiCoreBundle\Entity\Operatori $currentUser */
+                $currentUser = $this->getUser();
+                $repoStorico->saveHistory($controller, $changes, $id, $currentUser);
             }
 
             $continua = (int) $request->get('continua');
