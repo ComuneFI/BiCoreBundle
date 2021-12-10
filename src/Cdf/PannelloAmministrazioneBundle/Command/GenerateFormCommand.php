@@ -4,9 +4,11 @@ namespace Cdf\PannelloAmministrazioneBundle\Command;
 
 use Cdf\BiCoreBundle\Entity\Colonnetabelle;
 use Cdf\BiCoreBundle\Entity\Permessi;
+use Cdf\BiCoreBundle\Entity\Ruoli;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
+use Exception;
 use function count;
 
 /**
@@ -26,14 +29,14 @@ class GenerateFormCommand extends Command
 
     //Task / Process customized for Form Creation
     protected static $defaultName = 'pannelloamministrazione:generateformcrud';
-    protected $apppaths;
-    protected $em;
-    protected $pammutils;
-    private $generatemplate;
-    private $projectname;
-    private $isApi;
-    private $kernel;
-    private $typesMapping;
+    protected ProjectPath $apppaths;
+    protected EntityManagerInterface $em;
+    protected Utility $pammutils;
+    private bool $generatemplate;
+    private string $projectname;
+    private bool $isApi;
+    private KernelInterface $kernel;
+    private array $typesMapping;
 
     protected function configure()
     {
@@ -46,7 +49,7 @@ class GenerateFormCommand extends Command
                 ->addOption('isApi', 'a', InputOption::VALUE_OPTIONAL);
     }
 
-    public function __construct($kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em)
+    public function __construct(KernelInterface $kernel, ProjectPath $projectpath, Utility $pammutils, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
         $this->apppaths = $projectpath;
@@ -61,7 +64,7 @@ class GenerateFormCommand extends Command
     /**
      * Load mapping between types and loading methods
      */
-    private function loadTypesMapping()
+    private function loadTypesMapping(): void
     {
         $this->typesMapping = array();
         $this->typesMapping['datetime'] = 'addDateTimeType';
@@ -150,7 +153,7 @@ class GenerateFormCommand extends Command
             $position++;
         }
         array_splice($lines, $position, 0, '        $submitparms = array('
-        . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
+                . "'label' => 'Salva','attr' => array(\"class\" => \"btn-outline-primary bisubmit\", \"aria-label\" => \"Salva\"));");
     }
 
     /**
@@ -174,17 +177,17 @@ class GenerateFormCommand extends Command
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $choiceName = substr($attributeName, 0, strpos($attributeName, '_id'));
-        
+
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
         $upperName = StringUtils::toCamelCase($parametri);
-        
+
         //$upperName = ucfirst($choiceName);
-        array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
+        array_splice($lines, ++$position, 0, '            ->add(\'' . $choiceName . '\',ChoiceType::class,
             array(
-                    \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
+                    \'choices\' => isset($arraychoices[\'' . $choiceName . '\'])?$arraychoices[\'' . $choiceName . '\']:[], 
                     \'mapped\' => false,
-                    \'data\' => ($options["data"]->get'.$upperName.'Id() > 0) ? $options["data"]->get'.$upperName.'Id() : null ,
+                    \'data\' => ($options["data"]->get' . $upperName . 'Id() > 0) ? $options["data"]->get' . $upperName . 'Id() : null ,
                     \'placeholder\' => \'---\'
                     )
                 )
@@ -198,17 +201,17 @@ class GenerateFormCommand extends Command
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $choiceName = substr($attributeName, 0, strpos($attributeName, '_enum'));
-        
+
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
         $upperName = StringUtils::toCamelCase($parametri);
 
         //$upperName = ucfirst($choiceName);
-        array_splice($lines, ++$position, 0, '            ->add(\''.$choiceName.'\',ChoiceType::class,
+        array_splice($lines, ++$position, 0, '            ->add(\'' . $choiceName . '\',ChoiceType::class,
             array(
-                    \'choices\' => isset($arraychoices[\''.$choiceName.'\'])?$arraychoices[\''.$choiceName.'\']:[], 
+                    \'choices\' => isset($arraychoices[\'' . $choiceName . '\'])?$arraychoices[\'' . $choiceName . '\']:[], 
                     \'mapped\' => false,
-                    \'data\' => ($options["data"]->get'.$upperName.'Enum() >= 0) ? $options["data"]->get'.$upperName.'Enum() : null ,
+                    \'data\' => ($options["data"]->get' . $upperName . 'Enum() >= 0) ? $options["data"]->get' . $upperName . 'Enum() : null ,
                     \'placeholder\' => \'---\'
                     )
                 )
@@ -222,7 +225,7 @@ class GenerateFormCommand extends Command
      */
     private function addCheckbox(array &$lines, $position, $attributeName)
     {
-        array_splice($lines, ++$position, 0, '            ->add(\''.$attributeName.'\',CheckboxType::class,
+        array_splice($lines, ++$position, 0, '            ->add(\'' . $attributeName . '\',CheckboxType::class,
             array(
                     \'false_values\' => [0, false, null], 
                     \'required\' => false
@@ -270,25 +273,23 @@ class GenerateFormCommand extends Command
         if ($commented) {
             $comment = '//';
         }
-        array_splice($lines, ++$position, 0, $comment."            ->add('" . $attributeName . "',TextType::class)");
+        array_splice($lines, ++$position, 0, $comment . "            ->add('" . $attributeName . "',TextType::class)");
     }
 
     /**
      * Execute command in order to create the new form class
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         set_time_limit(0);
 
         //TODO: refactor variables
         $bundlename = 'App';
-        $this->projectname = $input->getOption('projectname');
         $entityform = $input->getArgument('entityform');
-        $apiUtil = new ApiUtils();
-        $modelClass = $apiUtil->getModelClass($this->projectname, $entityform);
-
         $this->generatemplate = $input->getOption('generatemplate');
-        $this->isApi = $input->getOption('isApi');
+        $this->isApi = (bool) $input->getOption('isApi');
+        $attributes = [];
+        $modelClass = "";
 
         //to be changed form generation in order to cover API/REST type
         $command = $this->apppaths->getConsoleExecute() . ' --env=dev' . ' make:form ' . $entityform . 'Type';
@@ -308,13 +309,20 @@ class GenerateFormCommand extends Command
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
 
-
             $pos1 = $this->findPosition($lines, 'use Symfony\Component\Form\AbstractType');
 
             //Some objects to be used
             $this->insertUseOfTypes($lines, $pos1);
             if ($this->isApi) {
+                $this->projectname = $input->getOption('projectname');
+                if ($this->projectname === null) {
+                    throw new Exception("projectname non specificato");
+                }
+                $apiUtil = new ApiUtils();
+                $modelClass = $apiUtil->getModelClass($this->projectname, $entityform);
                 array_splice($lines, $pos1, 0, 'use ' . $modelClass . ';');
+                $modelUtil = new ModelUtils();
+                $attributes = $modelUtil->getAttributes($modelClass);
             }
 
             $pos2 = $this->findPosition($lines, '{', true);
@@ -333,8 +341,6 @@ class GenerateFormCommand extends Command
                 //comment the line ->add()
                 $lines[$pos3] = '//' . $lines[$pos3];
                 //in this position should be added form attributes
-                $modelUtil = new ModelUtils();
-                $attributes = $modelUtil->getAttributes($modelClass);
                 foreach (array_reverse($attributes) as $attributeName => $attribute) {
                     $function = $this->getFunctionForSourceCode($attribute, $attributeName);
                     if (isset($function)) {
@@ -440,7 +446,7 @@ class GenerateFormCommand extends Command
     private function generateFormsDefaultTableValues($entityform)
     {
         //Si inserisce il record di default nella tabella permessi
-        $ruoloAmm = $this->em->getRepository('BiCoreBundle:Ruoli')->findOneBy(array('superadmin' => true)); //SuperAdmin
+        $ruoloAmm = $this->em->getRepository(Ruoli::class)->findOneBy(array('superadmin' => true)); //SuperAdmin
 
         $newPermesso = new Permessi();
         $newPermesso->setCrud('crud');

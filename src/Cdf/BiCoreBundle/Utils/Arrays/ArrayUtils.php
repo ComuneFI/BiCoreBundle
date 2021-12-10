@@ -9,7 +9,7 @@ class ArrayUtils
      * e restituisce l'indice.
      *
      * @param mixed $elem Elemento da cercare nell'array
-     * @param array $array Array nel quale cercare
+     * @param array<mixed> $array Array nel quale cercare
      * @param string $key Nome della chiave nella quale cercare $elem
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si è trovato il valore
@@ -39,7 +39,7 @@ class ArrayUtils
      * e restituisce l'indice.
      *
      * @param mixed $elem Elemento da cercare nell'array
-     * @param array $array Array nel quale cercare
+     * @param array<mixed> $array Array nel quale cercare
      * @param mixed $key Nome della chiave nella quale cercare $elem
      *
      * @return mixed False se non trovato l'elemento, altrimenti il vettore con tutti gli indici
@@ -70,12 +70,12 @@ class ArrayUtils
      * La funzione cerca un valore $elem nell'array multidimensionale $array all'interno di ogni elemento con chiave $key di ogni riga di array
      * e restituisce l'indice.
      *
-     * @param array $array Array nel quale cercare
-     * @param array $search Chiave-valore da cercare
+     * @param array<mixed> $array Array nel quale cercare
+     * @param array<mixed> $search Chiave-valore da cercare
      *
      * @return mixed False se non trovato l'elemento, altrimenti l'indice in cui si trova il valore
      */
-    public static function multiInMultiarray($array, $search, $debug = false, $tutti = false)
+    public static function multiInMultiarray($array, $search, bool $debug = false, bool $tutti = false)
     {
         $primo = true;
         $vettorerisultati = array();
@@ -111,11 +111,11 @@ class ArrayUtils
     /**
      * La funzione ordina un array multidimensionale $array.
      *
-     * param array $array Array da ordinare
+     * param array<mixed> $array Array da ordinare
      * param string $key Nome della chiave dell'array per cui ordinare
      * param int $type Tipo di ordinamento SORT_ASC, SORT_DESC
      *
-     * @return array Ritorna l'array ordinato
+     * @return array<mixed> Ritorna l'array ordinato
      *
      * @example arrayOrderby($rubrica,"cognome",SORT_ASC);
      *          <br/>$rubrica = array();<br/>
@@ -145,6 +145,12 @@ class ArrayUtils
         return array_pop($args);
     }
 
+    /**
+     *
+     * @param mixed $needle
+     * @param array<mixed> $haystack
+     * @return mixed
+     */
     public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
@@ -159,7 +165,7 @@ class ArrayUtils
     /**
      * La funzione ordina un array multidimensionale  che ha per indice chiavi associative.
      *
-     * @param array $array Array da ordinare passato per riferimento
+     * @param array<mixed> $array Array da ordinare passato per riferimento
      * @param string $subkey Nome della chiave dell'array associato alla chiave per cui ordinare
      * @param bool $sort_ascending Tipo di ordinamento true ASC, false DESC
      *
@@ -174,7 +180,7 @@ class ArrayUtils
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true)
+    public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true) : void
     {
         $temp_array = array();
         //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
@@ -205,7 +211,13 @@ class ArrayUtils
         }
     }
 
-    private static function isSortArray($array, $subkey)
+    /**
+     *
+     * @param array<mixed> $array
+     * @param string $subkey
+     * @return bool
+     */
+    private static function isSortArray($array, $subkey) : bool
     {
         $check = null;
         $diff = false;
@@ -223,7 +235,13 @@ class ArrayUtils
         return !$diff;
     }
 
-    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending)
+    /**
+     *
+     * @param array<mixed> $temp_array
+     * @param bool $sort_ascending
+     * @return array<mixed>
+     */
+    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending) : array
     {
         if ($sort_ascending) {
             $array = array_reverse($temp_array);

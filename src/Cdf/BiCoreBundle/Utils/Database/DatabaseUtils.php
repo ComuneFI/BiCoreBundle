@@ -5,6 +5,7 @@ namespace Cdf\BiCoreBundle\Utils\Database;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -13,15 +14,21 @@ use function count;
 class DatabaseUtils
 {
     /* @var $em EntityManager */
-    private $em;
-    private $kernel;
+    private EntityManagerInterface $em;
+    private KernelInterface $kernel;
 
-    public function __construct($kernel, EntityManagerInterface $em)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $em)
     {
         $this->kernel = $kernel;
         $this->em = $em;
     }
 
+    /**
+     *
+     * @param mixed $entity
+     * @param string $field
+     * @return string
+     */
     public function getFieldType($entity, $field)
     {
         $metadata = $this->em->getClassMetadata(get_class($entity));
@@ -32,6 +39,14 @@ class DatabaseUtils
         return $fieldType;
     }
 
+    /**
+     *
+     * @param mixed $entity
+     * @param string $fieldname
+     * @param mixed $oldvalue
+     * @param mixed $newvalue
+     * @return bool
+     */
     public function isRecordChanged($entity, $fieldname, $oldvalue, $newvalue)
     {
         $fieldtype = $this->getFieldType(new $entity(), $fieldname);
@@ -48,6 +63,12 @@ class DatabaseUtils
         return $oldvalue !== $newvalue;
     }
 
+    /**
+     *
+     * @param mixed $oldvalue
+     * @param mixed $newvalue
+     * @return boolean
+     */
     public function isDateChanged($oldvalue, $newvalue)
     {
         $datenewvalue = new DateTime();
@@ -65,6 +86,12 @@ class DatabaseUtils
         return $changed;
     }
 
+    /**
+     *
+     * @param mixed $oldvalue
+     * @param mixed $newvalue
+     * @return boolean
+     */
     public function isArrayChanged($oldvalue, $newvalue)
     {
         $twoboth = !$oldvalue && !$newvalue;
@@ -80,6 +107,12 @@ class DatabaseUtils
         return count($numdiff) > 0;
     }
 
+    /**
+     *
+     * @param string $entityclass
+     * @param bool $cascade
+     * @return mixed
+     */
     public function truncateTable($entityclass, $cascade = false)
     {
         $cmd = $this->em->getClassMetadata($entityclass);
@@ -113,7 +146,7 @@ class DatabaseUtils
         return $retval;
     }
 
-    public function isSchemaChanged()
+    public function isSchemaChanged() : bool
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
