@@ -1,4 +1,7 @@
 {
+    "composer/pcre": {
+        "version": "1.0.0"
+    },
     "composer/xdebug-handler": {
         "version": "2.0.1"
     },
@@ -440,9 +443,6 @@
         "version": "v4.4.25"
     },
     "symfony/http-kernel": {
-        "version": "v4.4.25"
-    },
-    "symfony/inflector": {
         "version": "v4.4.25"
     },
     "symfony/intl": {
