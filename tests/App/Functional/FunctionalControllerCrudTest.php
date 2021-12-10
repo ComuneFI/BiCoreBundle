@@ -73,5 +73,6 @@ class FunctionalControllerCrudTest extends BiTestAuthorizedClient
         $this->assertEquals($qta2ex, $ordinerow2->getQuantita());
 
         $this->logout();
+        $client->quit();
     }
 }

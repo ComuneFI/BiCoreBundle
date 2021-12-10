@@ -5,26 +5,26 @@ namespace Cdf\BiCoreBundle\Tests\Utils;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Symfony\Component\Panther\PantherTestCase;
+use \Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BiTestAuthorizedClient extends PantherTestCase
 {
     const TIMEOUT = 4;
 
     /* @var $em \Doctrine\ORM\EntityManager */
-
     protected $em;
+    protected static $client;
 
     protected function setUp(): void
     {
-        //$client = static::createPantherClient();
-        //$this->em = $container->get('doctrine')->getManager();
+        self::$client = static::createPantherClient();
         $this->autologin();
     }
 
     protected function getRoute($name, $variables = [], $absolutepath = false)
     {
         if ($absolutepath) {
-            $absolutepath = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
+            $absolutepath = UrlGeneratorInterface::ABSOLUTE_URL;
         }
 
         $container = static::createClient()->getContainer();
@@ -35,33 +35,32 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function getCurrentPage()
     {
-        return static::createPantherClient();
+        return self::$client;
     }
 
     public function getSession()
     {
-        return static::createPantherClient();
+        return self::$client;
     }
 
     public function getCurrentPageContent()
     {
-        return static::createPantherClient()->getPageSource();
+        return self::$client->getPageSource();
     }
 
     public function visit($url)
     {
-        static::createPantherClient()->request('GET', $url);
+        self::$client->request('GET', $url);
     }
 
     public function autologin()
     {
-        $client = static::createPantherClient();
         $container = static::createClient()->getContainer();
         $username4test = $container->getParameter('bi_core.admin4test');
         $password4test = $container->getParameter('bi_core.adminpwd4test');
 
-        $client->request('GET', '/');
-        $client->waitFor('#Login');
+        self::$client->request('GET', '/');
+        self::$client->waitFor('#Login');
         $this->login($username4test, $password4test);
     }
 
@@ -74,7 +73,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     public function evaluateScript($script)
     {
-        return static::createPantherClient()->executeScript($script, []);
+        return self::$client->executeScript($script, []);
     }
 
     public function executeScript($script)
@@ -102,7 +101,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -113,7 +112,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
 
     private function getElementByWebDriver($webdriverby)
     {
-        $elements = static::createPantherClient()->findElements($webdriverby);
+        $elements = self::$client->findElements($webdriverby);
         if (0 === count($elements)) {
             return null;
         } else {
@@ -151,7 +150,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         if ($element) {
             return $element;
         }
-
+        $this->screenShot();
         return null;
     }
 
@@ -185,7 +184,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         if ($element) {
             return WebDriverBy::tagName($selector);
         }
-
+        $this->screenShot();
         return null;
     }
 
@@ -209,7 +208,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -242,7 +241,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -271,7 +270,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -293,7 +292,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -318,7 +317,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -345,7 +344,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -367,8 +366,8 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        echo $page->getHtml();
-        //$this->screenShot();
+        //echo $page->getHtml();
+        $this->screenShot();
         throw($e);
     }
 
@@ -391,7 +390,8 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                 sleep(1);
             }
         }
-
+        
+        $this->screenShot();
         return false;
     }
 
@@ -419,7 +419,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        //$this->screenShot();
+        $this->screenShot();
         throw($e);
     }
 
@@ -430,7 +430,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
         while ($i < $timeout) {
             try {
 //                $this->ajaxWait();
-                $element = static::createPantherClient()->findElement($selector);
+                $element = self::$client->findElement($selector);
                 if (!$element) {
                     ++$i;
                     sleep(1);
@@ -446,8 +446,8 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        echo $page->getHtml();
-        //$this->screenShot();
+        //echo $page->getHtml();
+        $this->screenShot();
         throw($e);
     }
 
@@ -463,7 +463,7 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
                     sleep(1);
                     continue;
                 }
-                static::createPantherClient()->getMouse()->contextClickTo($selector);
+                self::$client->getMouse()->contextClickTo($selector);
 
 //                $this->ajaxWait();
 
@@ -474,29 +474,13 @@ abstract class BiTestAuthorizedClient extends PantherTestCase
             }
         }
 
-        //$this->screenShot();
-
+        $this->screenShot();
         return null;
     }
 
     public function screenShot()
     {
-        /* $driver = $this->minkSession->getDriver();
-          if (!($driver instanceof Selenium2Driver)) {
-          if ($driver instanceof \Behat\Mink\Driver\ZombieDriver) {
-          return;
-          } else {
-          $this->minkSession->getDriver()->getScreenshot();
-          return;
-          }
-          } else {
-          $screenShot = base64_decode($driver->getWebDriverSession()->screenshot());
-          }
-
-          $timeStamp = (new \DateTime())->getTimestamp();
-          file_put_contents('/tmp/' . $timeStamp . '.png', $screenShot);
-          file_put_contents('/tmp/' . $timeStamp . '.html', $this->getCurrentPageContent());
-         */
+        self::$client->takeScreenshot('tests/var/error.png');
     }
 
     /**

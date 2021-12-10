@@ -22,5 +22,6 @@ class FunctionalControllerOrdineIndexTest extends BiTestAuthorizedClient
         });
         $this->assertSame($ordiniregistrati, count($ordini));
         $this->logout();
+        $client->quit();
     }
 }

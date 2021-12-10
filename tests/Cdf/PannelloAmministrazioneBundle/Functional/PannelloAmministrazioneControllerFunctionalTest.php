@@ -3,111 +3,121 @@
 namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
+use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
+use Cdf\BiCoreBundle\Tests\Utils\BiTest;
 
-class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient
-{
+class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient {
+
+    protected static $client;
+
     /*
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle()
-    {
+    public function test20AdminpanelGenerateBundle() {
         //url da testare
+        self::$client = static::createPantherClient();
         $container = static::createClient()->getContainer();
         $apppath = $container->get('pannelloamministrazione.projectpath');
-        $checkentityprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
-        $checktypeprova = $apppath->getSrcPath() .
-                DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
-        $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
-                DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
-        $checkindexprova = $checkviewsprova .
-                DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
-
-        $url = $this->getRoute('fi_pannello_amministrazione_homepage', [], false);
-
-        $client = static::createPantherClient();
-
-        $client->request('GET', $url);
-        $client->waitFor('#adminpanelgenerateentity');
-        $this->executeScript('document.getElementById("entityfile").value = "wbadmintest.mwb"');
-        $this->pressButton('adminpanelgenerateentity');
-
-        $client->waitFor('.biconfirmyes');
-        $this->pressButton('biconfirmyes');
-
-        $client->waitFor('#corebundlemodalinfo');
-        $this->pressButton('biconfirmok');
-
-        $this->logout();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
-
-        $this->visit($url);
-        $this->login('admin', 'admin');
-
-        $this->assertTrue(file_exists($checkentityprova));
-
-        $this->pressButton('adminpanelaggiornadatabase');
-        $client->waitFor('.biconfirmyes');
-
-        $this->pressButton('biconfirmyes');
-
-        $client->waitFor('.biconfirmok');
-        $this->pressButton('biconfirmok');
-
-        $this->logout();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
-
-        $this->visit($url);
-        $this->login('admin', 'admin');
-        $this->executeScript('document.getElementById("entityform").value = "Prova"');
-
-        $this->pressButton('adminpanelgenerateformcrud');
-        sleep(1);
-        $client->waitFor('.biconfirmyes');
-        $this->pressButton('biconfirmyes');
-        sleep(1);
-
-        $client->waitFor('.biconfirmok');
-        $this->pressButton('biconfirmok');
-
-        $this->assertTrue(file_exists($checktypeprova));
-        $this->assertTrue(file_exists($checkviewsprova));
-        $this->assertTrue(file_exists($checkindexprova));
-
-        $this->logout();
-        //\Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::removecache();
-
-        $client->reload();
 
         try {
-            $urlRouting = $this->router->generate('Prova_container');
+            /**
+             * @var ProjectPath $apppath
+             */
+            $checkentityprova = $apppath->getSrcPath() .
+                    DIRECTORY_SEPARATOR . 'Entity' . DIRECTORY_SEPARATOR . 'Prova.php';
+            $checktypeprova = $apppath->getSrcPath() .
+                    DIRECTORY_SEPARATOR . 'Form' . DIRECTORY_SEPARATOR . 'ProvaType.php';
+            $checkviewsprova = $apppath->getSrcPath() . DIRECTORY_SEPARATOR . '..' .
+                    DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'Prova';
+            $checkindexprova = $checkviewsprova .
+                    DIRECTORY_SEPARATOR . 'Crud' . DIRECTORY_SEPARATOR . 'index.html.twig';
+
+            $url = $this->getRoute('fi_pannello_amministrazione_homepage', [], false);
+
+            self::$client->request('GET', $url);
+            self::$client->waitFor('#adminpanelgenerateentity');
+            $this->executeScript('document.getElementById("entityfile").value = "wbadmintest.mwb"');
+            $this->pressButton('adminpanelgenerateentity');
+
+            self::$client->waitFor('.biconfirmyes');
+            $this->pressButton('biconfirmyes');
+
+            self::$client->waitFor('#corebundlemodalinfo');
+            $this->pressButton('biconfirmok');
+
+            $this->logout();
+            BiTest::clearcache();
+
+            $this->visit($url);
+            $this->login('admin', 'admin');
+
+            $this->assertTrue(file_exists($checkentityprova));
+
+            $this->pressButton('adminpanelaggiornadatabase');
+            self::$client->waitFor('.biconfirmyes');
+
+            $this->pressButton('biconfirmyes');
+
+            self::$client->waitFor('.biconfirmok');
+            $this->pressButton('biconfirmok');
+
+            $this->logout();
+            BiTest::clearcache();
+
+            $this->visit($url);
+            $this->login('admin', 'admin');
+            $this->executeScript('document.getElementById("entityform").value = "Prova"');
+
+            $this->pressButton('adminpanelgenerateformcrud');
+            sleep(1);
+            self::$client->waitFor('.biconfirmyes');
+            $this->pressButton('biconfirmyes');
+            sleep(1);
+
+            self::$client->waitFor('.biconfirmok');
+            $this->pressButton('biconfirmok');
+
+            $this->assertTrue(file_exists($checktypeprova));
+            $this->assertTrue(file_exists($checkviewsprova));
+            $this->assertTrue(file_exists($checkindexprova));
+
+            $this->logout();
+            //BiTest::clearcache();
+            BiTest::removecache();
+
+            self::$client->reload();
+
+            try {
+                $urlRouting = $this->router->generate('Prova_container');
+            } catch (\Exception $exc) {
+                $urlRouting = '/Prova';
+            }
+
+            $url = $urlRouting;
+
+            $this->visit($url);
+            $this->login('admin', 'admin');
+
+            $this->crudoperation(self::$client);
         } catch (\Exception $exc) {
-            $urlRouting = '/Prova';
+            self::$client->takeScreenshot($apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png');
+            throw new \Exception($exc);
         }
-
-        $url = $urlRouting;
-
-        $this->visit($url);
-        $this->login('admin', 'admin');
-
-        $this->crudoperation($client);
     }
 
-    private function crudoperation($client)
-    {
+    private function crudoperation() {
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
         $descrizionetest1 = 'Test inserimento descrizione automatico';
         $fieldhtml = 'prova_descrizione';
 
-        $client->waitFor('#' . $fieldhtml);
+        self::$client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest1);
 
-        $client->waitFor('#prova_submit');
+        self::$client->waitFor('#prova_submit');
         $this->clickElement('prova_submit');
         sleep(1);
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
@@ -123,7 +133,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $rowid = $provaobj1->getId();
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
         $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-primary';
-        $client->waitFor($contextmenuedit);
+        self::$client->waitFor($contextmenuedit);
         $this->clickElement($contextmenuedit);
 
         $this->assertEquals($provaobj1->getDescrizione(), $descrizionetest1);
@@ -132,7 +142,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $descrizionetest2 = 'Test inserimento descrizione automatico 2';
 
         sleep(1);
-        $client->waitFor('#' . $fieldhtml);
+        self::$client->waitFor('#' . $fieldhtml);
 
         $this->fillField($fieldhtml, $descrizionetest2);
 
@@ -153,14 +163,14 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $this->clickElement('.bibottonimodificatabellaProva[data-biid="' . $rowid . '"]');
 
         $contextmenuedit = 'a.h-100.d-flex.align-items-center.btn.btn-xs.btn-danger';
-        $client->waitFor($contextmenuedit);
+        self::$client->waitFor($contextmenuedit);
         $this->clickElement($contextmenuedit);
 
         //$this->rightClickElement('.context-menu-crud[data-bitableid="' . $rowid . '"]');
         //$client->waitFor('.context-menu-item.context-menu-icon.context-menu-icon-delete');
         //sleep(2);
         //$this->clickElement('.context-menu-item.context-menu-icon.context-menu-icon-delete');
-        $client->waitFor('.biconfirmyes');
+        self::$client->waitFor('.biconfirmyes');
         $this->pressButton('biconfirmyes');
         sleep(1);
 
@@ -185,12 +195,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /**
      * {@inheritdoc}
      */
-    public function tearDown(): void
-    {
-        static::createPantherClient()->quit();
+    public function tearDown(): void {
+        self::$client->quit();
         parent::tearDown();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::cleanFilesystem();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::removecache();
-        \Cdf\BiCoreBundle\Tests\Utils\BiTest::clearcache();
+        BiTest::cleanFilesystem();
+        BiTest::removecache();
+        BiTest::clearcache();
     }
+
 }

@@ -83,5 +83,6 @@ class FunctionalControllerClienteIndexTest extends BiTestAuthorizedClient
         $this->clickElement($selectorconfirm);
         sleep(1);
         $this->logout();
+        $client->quit();
     }
 }
