@@ -10,7 +10,7 @@ use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Environment;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Inflector\Inflector;
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -25,22 +25,25 @@ class FiApiController extends AbstractController
     use FiApiCoreCrudControllerTrait;
     use FiCoreTabellaControllerTrait;
 
-    protected $bundle;
-    protected $template;
-    protected $controller;
-    protected $permessi;
+    protected string $bundle;
+    protected Environment $template;
+    protected string $controller;
+    protected PermessiManager $permessi;
     //API rest attributes
-    protected $project;
-    protected $model;
-    protected $collection;
-    protected $modelClass;
-    protected $formClass;
-    protected $controllerItem;
-    protected $apiController;
-    protected $options;
-    protected $enumOptions;
-    protected $inflectorExceptions;
-    protected $params;
+    protected string $project;
+    protected string $model;
+    protected string $collection;
+    protected string $modelClass;
+    protected string $formClass;
+    protected string $controllerItem;
+    protected string $apiController;
+    /** @var array<mixed> */
+    protected array $options;
+    /** @var array<mixed> */
+    protected array $enumOptions;
+    /** @var array<mixed> */
+    protected array $inflectorExceptions;
+    protected ParameterBagInterface $params;
     protected EntityManagerInterface $em;
 
     public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params, EntityManagerInterface $em)
@@ -76,7 +79,7 @@ class FiApiController extends AbstractController
         $this->generateEnumAndOptions();
     }
 
-    protected function loadInflectorExceptions()
+    protected function loadInflectorExceptions() : void
     {
         $vars = $this->params->get("bi_core.api_inflector_exceptions");
         if (($vars)) {
@@ -87,19 +90,23 @@ class FiApiController extends AbstractController
 
     /**
      * Copy this method into your controller in case of exceptions
+     *
+     * @param string $singleForm
+     * @return array<mixed>|string
      */
-    protected function pluralizeForm($singleForm)
+    protected function pluralizeForm(string $singleForm)
     {
         if (isset($this->inflectorExceptions[$singleForm])) {
             return $this->inflectorExceptions[$singleForm];
         }
-        return Inflector::pluralize($singleForm);
+        $inflector = new EnglishInflector();
+        return $inflector->pluralize($singleForm);
     }
 
     /**
      * Pluralize a single form giving as response the correct plurale form matching with existent objects
      */
-    protected function pluralize($singleForm)
+    protected function pluralize(string $singleForm) : string
     {
         $outcome = '';
         $results = $this->pluralizeForm($singleForm);
@@ -123,7 +130,7 @@ class FiApiController extends AbstractController
     /**
      * Generate option choices for edit form
      */
-    protected function generateEnumAndOptions()
+    protected function generateEnumAndOptions() : void
     {
         $itemController = new $this->controllerItem();
         $fieldMappings = $itemController::swaggerTypes();
@@ -179,7 +186,14 @@ class FiApiController extends AbstractController
      * and append attribute "decofiche" to them.
      * THIS HAVE TO BE INVOKED BY SPECIFIC ENTITY CONTROLLER.
      */
-    protected function mergeColumnsAndEnumOptions(array &$modellocolonne)
+    /**
+     * It returns an array with 'controller' with the apiController
+     * and 'book' the apiBook
+     * and 'entity' the given fieldName less the suffix
+
+     * @param array<mixed> $modellocolonne
+     */
+    protected function mergeColumnsAndEnumOptions(array &$modellocolonne) : void
     {
         foreach ($this->enumOptions as $enumOption) {
             if (isset($modellocolonne[$enumOption['nomecampo']])) {
@@ -192,6 +206,10 @@ class FiApiController extends AbstractController
      * It returns an array with 'controller' with the apiController
      * and 'book' the apiBook
      * and 'entity' the given fieldName less the suffix
+
+     * @param string $fieldName
+     * @param string $suffixString
+     * @return array<mixed>
      */
     protected function getApiTools($fieldName, $suffixString): array
     {
@@ -216,27 +234,27 @@ class FiApiController extends AbstractController
         return $results;
     }
 
-    protected function getBundle()
+    protected function getBundle() : string
     {
         return $this->bundle;
     }
 
-    protected function getController()
+    protected function getController() : string
     {
         return $this->controller;
     }
 
-    protected function getPermessi()
+    protected function getPermessi() : PermessiManager
     {
         return $this->permessi;
     }
 
-    protected function getTemplate()
+    protected function getTemplate() : Environment
     {
         return $this->template;
     }
 
-    public function getProject()
+    public function getProject() : string
     {
         $annotations = array();
         $r = new ReflectionClass(get_class($this));
