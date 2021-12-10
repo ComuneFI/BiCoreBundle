@@ -28,6 +28,8 @@
         <delete file="version.properties"/>
         <delete file="composer.phar"/>
         <delete file=".phpunit.result.cache"/>
+        <delete file="tests/var/error.png"/>
+        
     </target>
 
     <target name="finish" description="Cleanup">
@@ -36,6 +38,7 @@
         <delete file="cache.properties"/>
         <delete file="composer.phar"/>
         <delete file=".phpunit.result.cache"/>
+        <delete file="tests/var/error.png"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">

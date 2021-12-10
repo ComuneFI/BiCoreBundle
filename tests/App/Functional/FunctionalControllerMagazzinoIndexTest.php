@@ -31,5 +31,6 @@ class FunctionalControllerMagazzinoIndexTest extends BiTestAuthorizedClient
         $this->assertEquals(11, $numrowstabella);
 
         $this->logout();
+        $client->quit();
     }
 }

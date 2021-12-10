@@ -22,5 +22,6 @@ class FunctionalControllerProdottofornitoreIndexTest extends BiTestAuthorizedCli
         });
         $this->assertSame($prodottifornitoreregistrati, count($prodottifornitore));
         $this->logout();
+        $client->quit();
     }
 }
