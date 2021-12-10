@@ -13,31 +13,31 @@ use hanneskod\classtools\Iterator\ClassIterator;
 class ApiUtils
 {
 
-    private $getAll;
-    private $getCount;
-    private $create;
-    private $apiCollection;
+    private string $getAll;
+    private string $getCount;
+    private string $create;
+    private string $apiCollection;
     //namespaces
-    private $namespacePrefix = 'Swagger';
-    private $namespaceApi = 'Api';
-    private $namespaceModel = "Model";
-    private $namespaceForm = "App\\Form";
+    private string $namespacePrefix = 'Swagger';
+    private string $namespaceApi = 'Api';
+    private string $namespaceModel = "Model";
+    private string $namespaceForm = "App\\Form";
     //suffix and prefix
-    private $suffixApiController = 'Api';
-    private $prefixControllerModelItem = "DaosRow";
-    private $prefixModelItem = "DaosRow";
+    private string $suffixApiController = 'Api';
+    private string $prefixControllerModelItem = "DaosRow";
+    private string $prefixModelItem = "DaosRow";
 
-    private $delete;
-    private $get;
-    private $update;
-    private $getAllToString;
+    private string $delete;
+    private string $get;
+    private string $update;
+    private string $getAllToString;
 
     //TODO: evaluate to move this variable into configs
-    private $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
+    private string $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
 
-    private $rootDir;
+    private string $rootDir;
 
-    public function __construct($apiCollection = null)
+    public function __construct(string $apiCollection = null)
     {
         if (isset($apiCollection)) {
             $this->apiCollection = lcfirst($apiCollection);
@@ -53,7 +53,7 @@ class ApiUtils
         $this->initVariables();
     }
 
-    private function initVariables()
+    private function initVariables() : void
     {
         $this->namespacePrefix = 'Swagger';
         $this->namespaceApi = 'Api';
@@ -66,7 +66,7 @@ class ApiUtils
         $this->regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
     }
 
-    public function setRootDir($rootDir)
+    public function setRootDir(string $rootDir) : void
     {
         $this->rootDir = $rootDir;
     }
@@ -74,7 +74,7 @@ class ApiUtils
     /**
      * Return path where core bundle will look for api models
      */
-    public function bundlesPath()
+    public function bundlesPath() : string
     {
         return $this->rootDir . '/fi';
     }
@@ -82,7 +82,7 @@ class ApiUtils
     /**
      * Return namespace prefix for api external bundles, i.e. Swagger
      */
-    public function namespacePrefix()
+    public function namespacePrefix() : string
     {
         return $this->namespacePrefix;
     }
@@ -90,7 +90,7 @@ class ApiUtils
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public function namespaceModels()
+    public function namespaceModels() : string
     {
         return $this->namespaceModel;
     }
@@ -100,7 +100,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
      * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
      */
-    public function getApiControllerClass($project, $entityName): string
+    public function getApiControllerClass(string $project, string $entityName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceApi . "\\$entityName" . $this->suffixApiController;
         return $className;
@@ -111,7 +111,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
      */
-    public function getModelControllerClass($project, $modelName): string
+    public function getModelControllerClass(string $project, string $modelName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixControllerModelItem . $modelName;
         return $className;
@@ -122,7 +122,7 @@ class ApiUtils
      * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
      */
-    public function getModelClass($project, $modelName): string
+    public function getModelClass(string $project, string $modelName): string
     {
         $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixModelItem . $modelName;
         return $className;
@@ -133,7 +133,7 @@ class ApiUtils
      * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. App\\Form\\Claim)
      */
-    public function getFormClass($modelName): string
+    public function getFormClass(string $modelName): string
     {
         $className = $this->namespaceForm . "\\" . $modelName;
         return $className;
@@ -142,7 +142,7 @@ class ApiUtils
     /**
      * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
      */
-    public function regexPathModels()
+    public function regexPathModels() : string
     {
         return $this->regexPathModels;
     }
@@ -206,6 +206,8 @@ class ApiUtils
     /**
      * It looks for Models existent into included external bundles.
      * It uses ApiUtils in order to know where to search and what look for.
+     *
+     * @return array<mixed>
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
