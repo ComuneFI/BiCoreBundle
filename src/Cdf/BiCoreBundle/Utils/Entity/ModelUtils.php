@@ -160,7 +160,7 @@ class ModelUtils
      * @param mixed $oldvalue
      * @return mixed
      */
-    private function getValueOfData(string $fieldType, string $formatType, $oldvalue)
+    private function getValueOfData(string $fieldType, ?string $formatType, $oldvalue)
     {
         $value = $oldvalue;
         if ($formatType == null) {
