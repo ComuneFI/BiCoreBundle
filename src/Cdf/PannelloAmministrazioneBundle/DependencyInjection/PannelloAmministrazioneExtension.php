@@ -15,9 +15,12 @@ use Symfony\Component\DependencyInjection\Loader;
 class PannelloAmministrazioneExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     *
+     * @param array<mixed> $configs
+     * @param ContainerBuilder $container
+     * @return void
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container) : void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

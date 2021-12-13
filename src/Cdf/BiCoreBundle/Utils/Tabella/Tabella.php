@@ -56,7 +56,7 @@ class Tabella
     protected $traduzionefiltri;
     protected int $maxordine = 0;
     protected EntityManagerInterface $em;
-    /** @ phpstan-ignore-next-line */
+    /** @phpstan-ignore-next-line */
     protected $user;
     protected string $apiController;
     protected string $apiCollection;

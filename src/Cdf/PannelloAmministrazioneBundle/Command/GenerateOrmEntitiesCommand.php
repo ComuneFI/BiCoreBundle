@@ -14,11 +14,11 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 class GenerateOrmEntitiesCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:generateormentities';
-    protected $apppaths;
-    protected $genhelper;
-    protected $pammutils;
+    protected ProjectPath $apppaths;
+    protected GeneratorHelper $genhelper;
+    protected Utility $pammutils;
 
-    protected function configure()
+    protected function configure() : void
     {
         $this
                 ->setDescription('Genera le entities partendo da un modello workbeanch mwb')

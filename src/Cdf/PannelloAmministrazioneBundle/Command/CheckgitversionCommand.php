@@ -17,9 +17,9 @@ class CheckgitversionCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checkgitversion';
     
-    private $projectpath;
+    private ProjectPath $projectpath;
     
-    protected function configure()
+    protected function configure() : void
     {
         $this
                 ->setDescription('Controllo versioni bundles')
@@ -69,7 +69,7 @@ class CheckgitversionCommand extends Command
         return 0;
     }
 
-    private function getGitVersion($path, $remote = false)
+    private function getGitVersion(string $path, bool $remote = false) : string
     {
         if (self::isWindows()) {
             return '';
@@ -107,7 +107,12 @@ class CheckgitversionCommand extends Command
         }
     }
 
-    private function getLocalVersionString($versions)
+    /**
+     *
+     * @param array<string> $versions
+     * @return string
+     */
+    private function getLocalVersionString(array $versions) : string
     {
         foreach ($versions as $line) {
             if (false !== strpos($line, '* ')) {
@@ -120,7 +125,7 @@ class CheckgitversionCommand extends Command
         return '?';
     }
 
-    private function getLocalVersionStringDetail($versions)
+    private function getLocalVersionStringDetail(string $versions) :string
     {
         if ('master' == $versions) {
             return $versions;
@@ -134,7 +139,7 @@ class CheckgitversionCommand extends Command
         return '?';
     }
 
-    private function getRemoteVersionString($versions)
+    private function getRemoteVersionString(string $versions) :string
     {
         $matches = [];
         if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
@@ -144,7 +149,7 @@ class CheckgitversionCommand extends Command
         return '?';
     }
 
-    public static function isWindows()
+    public static function isWindows() : bool
     {
         if (PHP_OS == 'WINNT') {
             return true;
