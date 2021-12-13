@@ -103,8 +103,8 @@ trait FiCoreTabellaControllerTrait
 
     /**
      *
-     * @param array<string> $parametripassati
-     * @return array<string>
+     * @param array<mixed> $parametripassati
+     * @return array<mixed>
      */
     protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati)
     {
@@ -142,8 +142,8 @@ trait FiCoreTabellaControllerTrait
 
     /**
      *
-     * @param array<string> $parametripassati
-     * @return array<string>
+     * @param array<mixed> $parametripassati
+     * @return array<mixed>
      */
     protected function getParametriTabellaXls(ManagerRegistry $doctrine, array $parametripassati): array
     {

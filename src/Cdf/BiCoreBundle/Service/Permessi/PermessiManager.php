@@ -15,8 +15,10 @@ class PermessiManager
 {
 
     private EntityManagerInterface $em;
+    /** @ phpstan-ignore-next-line */
     private $user;
 
+    /** @ phpstan-ignore-next-line */
     public function __construct(EntityManagerInterface $em, $user)
     {
         $this->em = $em;

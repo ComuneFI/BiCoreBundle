@@ -9,6 +9,11 @@ use DateTime;
  */
 abstract class FieldTypeUtils
 {
+    /**
+     *
+     * @param array<mixed>|null $value
+     * @return array<mixed>
+     */
     public static function getArrayValue($value)
     {
         if (is_null($value)) {
@@ -20,6 +25,11 @@ abstract class FieldTypeUtils
         return $newval;
     }
 
+    /**
+     *
+     * @param bool|null $value
+     * @return bool|null
+     */
     public static function getBooleanValue($value)
     {
         if (is_null($value)) {
@@ -35,6 +45,11 @@ abstract class FieldTypeUtils
         return $newval;
     }
 
+    /**
+     *
+     * @param int $value
+     * @return \DateTime
+     */
     public static function getDateTimeValueFromTimestamp($value)
     {
         $date = new DateTime();
@@ -43,6 +58,11 @@ abstract class FieldTypeUtils
         return $date;
     }
 
+    /**
+     *
+     * @param mixed $value
+     * @return \DateTime|null
+     */
     public static function extractDateTime($value)
     {
         $date = null;
@@ -71,7 +91,7 @@ abstract class FieldTypeUtils
     /**
      * Try to read the .env Key value provided as $key, otherwise return the default value
      */
-    public static function getEnvVar(String $key, String $defaultValue)
+    public static function getEnvVar(string $key, string $defaultValue) : string
     {
         return (getenv($key)===false)?$defaultValue:getenv($key);
     }

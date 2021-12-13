@@ -9,6 +9,10 @@ use function count;
 
 trait TabellaQueryTrait
 {
+    /**
+     *
+     * @return mixed
+     */
     protected function biQueryBuilder()
     {
         $nometabellaalias = $this->generaAlias($this->tablename);
@@ -23,7 +27,15 @@ trait TabellaQueryTrait
         return $qb;
     }
 
-    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array())
+    /**
+     *
+     * @param mixed $qb
+     * @param array<mixed> $campi
+     * @param string $nometabella
+     * @param string $alias
+     * @param array<mixed> $ancestors
+     */
+    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array()) : void
     {
         foreach ($campi as $campo) {
             if (false !== strpos(strtolower($campo), 'relatedby')) {
@@ -63,7 +75,11 @@ trait TabellaQueryTrait
         }
     }
 
-    protected function buildWhere(&$qb)
+    /**
+     *
+     * @param mixed $qb
+     */
+    protected function buildWhere(&$qb) : void
     {
 
         $filtro = '';
@@ -115,7 +131,11 @@ trait TabellaQueryTrait
         }
     }
 
-    protected function orderByBuilder(&$qb)
+    /**
+     *
+     * @param mixed $qb
+     */
+    protected function orderByBuilder(&$qb) : void
     {
         foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
             $tablename = substr($nomecampo, 0, strripos($nomecampo, '.'));
@@ -129,7 +149,7 @@ trait TabellaQueryTrait
     /**
      * Attempt to translate the user given value into a boolean valid field
      */
-    private function translateBoolValue($fieldvalue)
+    private function translateBoolValue(string $fieldvalue) : string
     {
         switch (strtoupper($fieldvalue)) {
             case 'SI':
@@ -154,7 +174,7 @@ trait TabellaQueryTrait
     /**
      * It appends the new filter string part to the given filter string ($filterString)
      */
-    private function appendFilterString(String &$filterString, $swaggerType, $swaggerKind, $fieldvalue)
+    private function appendFilterString(string &$filterString, string $swaggerType, string$swaggerKind, string $fieldvalue) : void
     {
         if ($swaggerKind == 'bool') {
             $filterString .= $this->translateBoolValue($fieldvalue);
@@ -180,7 +200,7 @@ trait TabellaQueryTrait
     /**
      * It composes filtering string to be used with api rest services
      */
-    protected function filterByApiBuilder(): ?String
+    protected function filterByApiBuilder(): ?string
     {
         $filterString = null;
         $filtro = '';
@@ -248,7 +268,7 @@ trait TabellaQueryTrait
     /**
      * Return the operator to be used
      */
-    private function getApiOperator($operator)
+    private function getApiOperator(string $operator) :string
     {
         switch (strtoupper($operator)) {
             case Comparison::CONTAINS:
@@ -271,7 +291,7 @@ trait TabellaQueryTrait
     /**
      * Build the ordering string compliant with API REST services
      */
-    protected function orderByApiBuilder(): ?String
+    protected function orderByApiBuilder(): ?string
     {
         $attributeMap = $this->entityname::attributeMap();
         $orderingString = null;
@@ -286,6 +306,10 @@ trait TabellaQueryTrait
         return $orderingString;
     }
 
+    /**
+     *
+     * @return array<mixed>
+     */
     public function getRecordstabella()
     {
         //Look for all tables
@@ -327,6 +351,8 @@ trait TabellaQueryTrait
 
     /**
      * Read the API in order to obtains the pages features
+     *
+     * @return array<mixed>
      */
     public function getApiRecordstabella()
     {
