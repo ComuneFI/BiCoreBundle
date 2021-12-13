@@ -78,7 +78,7 @@ class ModelUtils
     /**
      * Try to insert in automatic way the conversion to a BiCore known type
      */
-    private function getTypeOfData(string $fieldType, string $formatType): string
+    private function getTypeOfData(string $fieldType, ?string $formatType): string
     {
         $type = $formatType;
         if ($fieldType == 'bool') {
