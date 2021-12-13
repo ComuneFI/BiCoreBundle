@@ -10,17 +10,18 @@ trait TabellaOpzioniTrait
 {
     use TabellaOpzioniFromCoreTrait, TabellaOpzioniFromModelloColonneTrait;
 
-    protected function getAllOpzioniTabella()
+    /**
+     *
+     * @return array<mixed>
+     */
+    protected function getAllOpzioniTabella() : array
     {
         $opzionibuilder = array();
         foreach ($this->colonnedatabase as $colonnadatabase) {
             // Inserire dati da definizione entity
             $this->setOpzioniTabellaDefault($colonnadatabase, $opzionibuilder, null, false);
         }
-        //TODO: verify if is an issue or it's wanted that colonnadatabase is the last item of iterated columns
-        if (isset($colonnadatabase)) {
-            $this->setOpzioniTabellaFromCore($colonnadatabase, $opzionibuilder);
-        }
+        $this->setOpzioniTabellaFromCore($opzionibuilder);
         $this->setOpzioniTabellaFromModellocolonne($opzionibuilder);
         $this->setOrdinaColonneTabella($opzionibuilder);
         $this->setLarghezzaColonneTabella($opzionibuilder);
@@ -28,7 +29,14 @@ trait TabellaOpzioniTrait
         return $opzionibuilder;
     }
 
-    private function getOpzionitabellaCampiExtra($campo, $modellocolonna, &$opzionibuilder)
+    /**
+     *
+     * @param string $campo
+     * @param array<mixed> $modellocolonna
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     */
+    private function getOpzionitabellaCampiExtra(string $campo, array $modellocolonna, array &$opzionibuilder) : void
     {
         if ((isset($modellocolonna['campoextra']) && true == $modellocolonna['campoextra'])) {
             $opzionibuilder[$campo] = array(
@@ -49,7 +57,16 @@ trait TabellaOpzioniTrait
         }
     }
 
-    protected function setOpzioniTabellaDefault($infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = array())
+    /**
+     *
+     * @param array<mixed> $infoentity
+     * @param array<mixed> $opzionibuilder
+     * @param string|null $jointable
+     * @param bool $ricursione
+     * @param array<mixed> $ancestors
+     * @return void
+     */
+    protected function setOpzioniTabellaDefault($infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = []) : void
     {
         $nometabella = ((isset($jointable)) ? $jointable : $this->tablename);
         if (!in_array($nometabella, $ancestors)) {
@@ -64,7 +81,16 @@ trait TabellaOpzioniTrait
         }
     }
 
-    private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @param array<mixed> $colonnadatabase
+     * @param string $nometabella
+     * @param string $nomecolonna
+     * @param bool $ricursione
+     * @return void
+     */
+    private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione) : void
     {
         $opzionibuilder[$nomecolonna] = array(
             'tipocampo' => isset($colonnadatabase['association']) ? 'join' : $colonnadatabase['type'],
@@ -84,7 +110,12 @@ trait TabellaOpzioniTrait
         );
     }
 
-    private function getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @return int
+     */
+    private function getLarghezzaColonneTabellaTotalePercentuale(array $opzionibuilder) : int
     {
         $larghezzatotalepercentuale = 1;
         foreach ($opzionibuilder as $opzione) {
@@ -96,7 +127,7 @@ trait TabellaOpzioniTrait
         return $larghezzatotalepercentuale;
     }
 
-    private function getLarghezzaColonneTabellaPercentualeFinale()
+    private function getLarghezzaColonneTabellaPercentualeFinale() : int
     {
         // il 5% si lascia per la ruzzolina in fondo alla riga, il 3% si lascia per il checkbox in testa alla riga,
         // quindi per le colonne dati resta il 92%
@@ -108,7 +139,12 @@ trait TabellaOpzioniTrait
         return $percentualefinale;
     }
 
-    private function setLarghezzaColonneTabella(&$opzionibuilder)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     */
+    private function setLarghezzaColonneTabella(array &$opzionibuilder) : void
     {
         $larghezzatotalepercentuale = $this->getLarghezzaColonneTabellaTotalePercentuale($opzionibuilder);
         $percentualefinale = $this->getLarghezzaColonneTabellaPercentualeFinale();
@@ -123,7 +159,13 @@ trait TabellaOpzioniTrait
         }
     }
 
-    private function elaboraJoin(&$opzionibuilder, $colonnadatabase, $ancestors)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @param array<mixed> $colonnadatabase
+     * @param array<mixed> $ancestors
+     */
+    private function elaboraJoin(array &$opzionibuilder, array $colonnadatabase, array $ancestors) : void
     {
         $entitycollegata = $colonnadatabase['associationtable']['targetEntity'];
         $utils = new EntityUtils($this->em);
@@ -157,7 +199,12 @@ trait TabellaOpzioniTrait
         }
     }
 
-    protected function setOrdinaColonneTabella(&$opzionibuilder)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     */
+    protected function setOrdinaColonneTabella(array &$opzionibuilder) : void
     {
         foreach ($opzionibuilder as $key => $opzione) {
             if (null === $opzione['ordine']) {
@@ -170,7 +217,7 @@ trait TabellaOpzioniTrait
         ArrayUtils::sortMultiAssociativeArray($opzionibuilder, 'ordine', true);
     }
 
-    private function bonificaNomeCampo($nomecampo)
+    private function bonificaNomeCampo(string $nomecampo) : string
     {
         $parti = explode('.', $nomecampo);
         $campo = '';

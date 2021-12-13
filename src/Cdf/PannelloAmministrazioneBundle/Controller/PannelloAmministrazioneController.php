@@ -11,22 +11,31 @@ use Symfony\Component\Process\Process;
 use Fi\OsBundle\DependencyInjection\OsFunctions;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
+use Symfony\Component\Lock\LockInterface;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Doctrine\ORM\EntityManagerInterface as EM;
+
+/**
+ * Suppress all warnings from these two rules.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 
 class PannelloAmministrazioneController extends AbstractController
 {
-    private $apppaths;
-    private $pacommands;
-    private $pautils;
-    protected $locksystem;
-    protected $factory;
-    private $appname;
-    private $lockfile;
+    private ProjectPath $apppaths;
+    private Pacmd $pacommands;
+    private Pautils $pautils;
+    protected LockInterface $locksystem;
+    protected LockFactory $factory;
+    private string $appname;
+    private string $lockfile;
+    private EM $em;
 
-    public function __construct($appname, $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils)
+    public function __construct(string $appname, string $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils, EM $em)
     {
         $store = new FlockStore(sys_get_temp_dir());
         $factory = new LockFactory($store);
@@ -37,14 +46,19 @@ class PannelloAmministrazioneController extends AbstractController
         $this->apppaths = $projectpath;
         $this->pacommands = $pacommands;
         $this->pautils = $pautils;
+        $this->em = $em;
     }
 
-    private function findEntities()
+    /**
+     *
+     * @return array<mixed>
+     */
+    private function findEntities() : array
     {
         $entitiesprogetto = array();
         $prefix = 'App\\Entity\\';
         $prefixBase = 'Base';
-        $entities = $this->get('doctrine')->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $entities = $this->em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
         // compute additional API models since external bundles
         $additionalEntities = $this->findAPIModels();
         foreach ($entities as $entity) {
@@ -62,6 +76,8 @@ class PannelloAmministrazioneController extends AbstractController
     /**
      * It looks for Models existent into included external bundles.
      * It uses ApiUtils in order to know where to search and what look for.
+     *
+     * @return array<mixed>
      */
     private function findAPIModels(): array
     {
@@ -70,7 +86,7 @@ class PannelloAmministrazioneController extends AbstractController
         return $apiUtil->apiModels();
     }
 
-    public function index()
+    public function index() : Response
     {
         $finder = new Finder();
         $fs = new Filesystem();
@@ -148,17 +164,17 @@ class PannelloAmministrazioneController extends AbstractController
         return $this->render('@PannelloAmministrazione/PannelloAmministrazione/index.html.twig', $twigparms);
     }
 
-    private function fixSlash($path)
+    private function fixSlash(string $path) : string
     {
         return str_replace('\\', '\\\\', $path);
     }
 
-    private function getLockMessage()
+    private function getLockMessage() : string
     {
         return "<h2 style='color: orange;'>E' già in esecuzione un comando, riprova tra qualche secondo!</h2>";
     }
 
-    public function aggiornaSchemaDatabase()
+    public function aggiornaSchemaDatabase(): Response
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -186,7 +202,7 @@ class PannelloAmministrazioneController extends AbstractController
     /**
      * Generate form item, controllers and twigs for the given entity/model
      */
-    public function generateFormCrud(Request $request)
+    public function generateFormCrud(Request $request) : Response
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -227,7 +243,7 @@ class PannelloAmministrazioneController extends AbstractController
 
     /* ENTITIES */
 
-    public function generateEntity(Request $request)
+    public function generateEntity(Request $request) : Response
     {
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
@@ -256,7 +272,7 @@ class PannelloAmministrazioneController extends AbstractController
     /**
      * @codeCoverageIgnore
      */
-    public function getVcs()
+    public function getVcs() : Response
     {
         set_time_limit(0);
         $this->apppaths = $this->apppaths;
@@ -280,7 +296,7 @@ class PannelloAmministrazioneController extends AbstractController
      *
      * @//SuppressWarnings(PHPMD)
      */
-    public function clearCache(Request $request)
+    public function clearCache(Request $request) : Response
     {
         set_time_limit(0);
         if (!$this->locksystem->acquire()) {
@@ -307,7 +323,7 @@ class PannelloAmministrazioneController extends AbstractController
 
     /* CLEAR CACHE */
 
-    public function symfonyCommand(Request $request)
+    public function symfonyCommand(Request $request) : Response
     {
         set_time_limit(0);
 
@@ -340,7 +356,7 @@ class PannelloAmministrazioneController extends AbstractController
      *
      * @SuppressWarnings(PHPMD)
      */
-    public function unixCommand(Request $request)
+    public function unixCommand(Request $request): Response
     {
         set_time_limit(0);
         $pammutils = $this->pautils;
@@ -377,7 +393,7 @@ class PannelloAmministrazioneController extends AbstractController
     /**
      * @codeCoverageIgnore
      */
-    public function phpunittest(Request $request)
+    public function phpunittest(Request $request) : Response
     {
         set_time_limit(0);
         $this->apppaths = $this->apppaths;

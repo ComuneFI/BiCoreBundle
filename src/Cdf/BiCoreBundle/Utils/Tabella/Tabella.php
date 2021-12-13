@@ -6,15 +6,9 @@ use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\Persistence\ManagerRegistry;
-
-/**
- * @property EntityManager                        $em
- * @property PermessiManager $permessi
- * @property Security          $user
- */
 
 /**
  * @SuppressWarnings(PHPMD.TooManyFields)
@@ -25,38 +19,62 @@ class Tabella
         TabellaOpzioniTrait,
         TabellaDecoderTrait;
 
-    protected $parametri;
-    protected $colonnedatabase;
+    /** @var array<mixed> */
+    protected array $parametri;
+    /** @var array<mixed> */
+    protected array $colonnedatabase ;
+    /** @var array<mixed> */
     protected $opzionitabellacore;
+    /** @var array<mixed> */
     protected $configurazionecolonnetabella;
-    protected $entityname;
-    protected $tablename;
-    protected $modellocolonne;
-    protected $paginacorrente;
-    protected $righeperpagina;
-    protected $estraituttirecords;
-    protected $prefiltri;
-    protected $filtri;
+    protected string $entityname;
+    protected string $tablename;
+    
+    /** @var array<mixed> */
+    protected array $modellocolonne;
+    protected int $paginacorrente;
+    protected int $righeperpagina;
+    protected bool $estraituttirecords;
+    
+    /** @var array<mixed> */
+    protected array $prefiltri;
+    /** @var array<mixed> */
+    protected array $filtri;
+    
+    /** @var string|null */
     protected $wheremanuale;
+    /** @var array<mixed> */
     protected $colonneordinamento;
+    /** @var mixed */
     protected $permessi;
+    /** @var array<mixed> */
     protected $records;
-    protected $paginetotali;
-    protected $righetotali;
+    protected int $paginetotali;
+    protected int $righetotali;
+    
+    /** @var string|null */
     protected $traduzionefiltri;
-    protected $maxordine = 0;
-    protected $em;
+    protected int $maxordine = 0;
+    protected EntityManagerInterface $em;
+    /** @phpstan-ignore-next-line */
     protected $user;
-    protected $apiController;
-    protected $apiCollection;
-    protected $apiBook;
+    protected string $apiController;
+    protected string $apiCollection;
+    protected ApiUtils $apiBook;
 
+    /**
+     *
+     * @param ManagerRegistry $doctrine
+     * @param array<mixed> $parametri
+     */
     public function __construct(ManagerRegistry $doctrine, array $parametri)
     {
         $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {
+            /** @phpstan-ignore-next-line */
             $this->em = $doctrine->getManager(ParametriTabella::getParameter($this->parametri['em']));
         } else {
+            /** @phpstan-ignore-next-line */
             $this->em = $doctrine->getManager();
         }
 
@@ -65,9 +83,9 @@ class Tabella
         $this->entityname = str_replace('FiBiCoreBundle', 'BiCoreBundle', $this->entityname);
         $this->permessi = json_decode($this->getTabellaParameter('permessi'));
         $this->modellocolonne = json_decode($this->getTabellaParameter('modellocolonne', '{}'), true);
-        $this->paginacorrente = $this->getTabellaParameter('paginacorrente');
-        $this->paginetotali = $this->getTabellaParameter('paginetotali');
-        $this->righeperpagina = $this->getTabellaParameter('righeperpagina', 15);
+        $this->paginacorrente = (int) $this->getTabellaParameter('paginacorrente');
+        $this->paginetotali = (int) $this->getTabellaParameter('paginetotali');
+        $this->righeperpagina = (int) $this->getTabellaParameter('righeperpagina', 15);
 
         $this->estraituttirecords = '1' === $this->getTabellaParameter('estraituttirecords', 0) ? true : false;
         $this->colonneordinamento = json_decode($this->getTabellaParameter('colonneordinamento', '{}'), true);
@@ -77,6 +95,7 @@ class Tabella
         $this->user = $this->parametri['user'];
 
         if (!isset($this->parametri['isapi'])) {
+            /** @phpstan-ignore-next-line */
             $utils = new EntityUtils($this->em);
             $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
         } else {
@@ -92,7 +111,13 @@ class Tabella
         $this->configurazionecolonnetabella = $this->getAllOpzioniTabella();
     }
 
-    private function getTabellaParameter($name, $default = null)
+    /**
+     *
+     * @param string $name
+     * @param mixed|null $default
+     * @return mixed|null
+     */
+    private function getTabellaParameter(string $name, $default = null)
     {
         $risposta = null;
         if (isset($this->parametri[$name])) {
@@ -104,7 +129,7 @@ class Tabella
         return $risposta;
     }
 
-    public function calcolaPagineTotali($limit)
+    public function calcolaPagineTotali(int $limit) : float
     {
         if (0 == $this->righetotali) {
             return 1;
@@ -113,44 +138,52 @@ class Tabella
         return ceil($this->righetotali / (0 == $limit ? 1 : $limit));
     }
 
-    public function getPaginacorrente()
+    public function getPaginacorrente() : int
     {
         return $this->paginacorrente;
     }
 
-    public function getPaginetotali()
+    public function getPaginetotali() : int
     {
         return $this->paginetotali;
     }
 
-    public function getRigheperpagina()
+    public function getRigheperpagina() : int
     {
         return $this->righeperpagina;
     }
 
-    public function getRighetotali()
+    public function getRighetotali() : int
     {
         return $this->righetotali;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getTraduzionefiltri()
     {
         return $this->traduzionefiltri;
     }
 
-    public function getConfigurazionecolonnetabella()
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function getConfigurazionecolonnetabella() : array
     {
         return $this->configurazionecolonnetabella;
     }
 
-    protected function setMaxOrdine($ordinecorrente)
+    protected function setMaxOrdine(int $ordinecorrente) : void
     {
         if ($ordinecorrente > $this->maxordine) {
             $this->maxordine = $ordinecorrente;
         }
     }
 
-    protected function getMaxOrdine()
+    protected function getMaxOrdine() : int
     {
         return $this->maxordine;
     }

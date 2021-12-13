@@ -8,14 +8,15 @@ use function count;
 
 class Finder
 {
-    private $em;
+
+    private EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
-    public function getClassNameFromEntityName($entityname)
+    public function getClassNameFromEntityName(string $entityname): string
     {
         $entities = $this->em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
         $entityclassname = '';
@@ -26,7 +27,7 @@ class Finder
             }
         }
         if (!$entityclassname) {
-            throw new Exception("Non riesco a trovare l'entità '".$entityname."', è stata generata?");
+            throw new Exception("Non riesco a trovare l'entità '" . $entityname . "', è stata generata?");
         }
 
         return $entityclassname;

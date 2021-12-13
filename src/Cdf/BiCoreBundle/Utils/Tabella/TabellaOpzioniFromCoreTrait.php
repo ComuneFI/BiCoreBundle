@@ -7,9 +7,12 @@ use Cdf\BiCoreBundle\Entity\Opzionitabelle;
 
 trait TabellaOpzioniFromCoreTrait
 {
-    protected function getOpzionitabellaFromCore()
+    /** @return array<mixed> */
+    protected function getOpzionitabellaFromCore() : array
     {
+        /** @var \Cdf\BiCoreBundle\Repository\OpzionitabelleRepository $repoopzionitabelle */
         $repoopzionitabelle = $this->em->getRepository(Opzionitabelle::class);
+        /** @var \Cdf\BiCoreBundle\Repository\ColonnetabelleRepository $repocolonnetabelle */
         $repocolonnetabelle = $this->em->getRepository(Colonnetabelle::class);
         $opzionitabella = $repoopzionitabelle->findOpzioniTabella($this->tablename);
         $colonnetabella = $repocolonnetabelle->findOpzioniColonnetabella($this->tablename, $this->user);
@@ -17,7 +20,12 @@ trait TabellaOpzioniFromCoreTrait
         return array('opzionitabella' => $opzionitabella, 'colonnetabella' => $colonnetabella);
     }
 
-    protected function setOpzioniTabellaFromCore($colonnadatabase, &$opzionibuilder)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     */
+    protected function setOpzioniTabellaFromCore(&$opzionibuilder) : void
     {
         $colonnetabellacore = $this->opzionitabellacore['colonnetabella'];
         //$nomecolonna = $this->tablename . "." . $colonnadatabase["fieldName"];
@@ -36,7 +44,15 @@ trait TabellaOpzioniFromCoreTrait
         }
     }
 
-    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, &$opzionibuilder)
+    /**
+     *
+     * @param string $campo
+     * @param string $modellocolonneindex
+     * @param string $entityproperty
+     * @param string $colonnatabellacore
+     * @param array<mixed> $opzionibuilder
+     */
+    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, &$opzionibuilder) : void
     {
         if (null !== ($colonnatabellacore->$entityproperty())) {
             $opzionibuilder[$campo][$modellocolonneindex] = $colonnatabellacore->$entityproperty();

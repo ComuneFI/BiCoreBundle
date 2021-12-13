@@ -17,9 +17,13 @@ class ModelUtils
 
     /**
      * Return the array of types and formats
+     *
+     * @param string $controllerItem
+     * @return array<mixed>
      */
     public function getAttributes($controllerItem): array
     {
+        /** @var mixed $myInstance */
         $myInstance = new $controllerItem();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
@@ -38,9 +42,13 @@ class ModelUtils
 
     /**
      * Return the entity columns for the grid display
+
+     * @param string $entity
+     * @return array<mixed>
      */
-    public function getEntityColumns($entity)
+    public function getEntityColumns(string $entity): array
     {
+        /** @var mixed $myInstance */
         $myInstance = new $entity();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
@@ -67,11 +75,10 @@ class ModelUtils
         return $colonne;
     }
 
-
     /**
      * Try to insert in automatic way the conversion to a BiCore known type
      */
-    private function getTypeOfData($fieldType, $formatType): String
+    private function getTypeOfData(string $fieldType, string $formatType): string
     {
         $type = $formatType;
         if ($fieldType == 'bool') {
@@ -80,7 +87,7 @@ class ModelUtils
             $type = 'string';
         } elseif ($fieldType != $formatType) {
             if ($formatType == 'datetime') {
-                $type = 'string2'.$type;
+                $type = 'string2' . $type;
             }
         }
         return $type;
@@ -90,31 +97,44 @@ class ModelUtils
      * It prepares entity values so that they can be used with types compliant with BiCoreBundle.
      * For example it transforms a date that arrive in string format into a DateTime.
      */
+
+    /**
+     *
+     * @param mixed $entityout
+     * @return mixed
+     */
     public function setApiValues($entityout)
     {
-    
+
         $fieldMappings = $entityout::swaggerTypes();
         $formatMappings = $entityout::swaggerFormats();
         $setters = $entityout::setters();
         $getters = $entityout::getters();
 
         foreach ($fieldMappings as $fieldName => $fieldType) {
-            /*if ( \str_contains( $fieldType ,'Swagger') ) {
-                $setvalue = $setters[$fieldName];
-                $getvalue = $getters[$fieldName];
-            }
-            else {*/
-                $setvalue = $setters[$fieldName];
-                $getvalue = $getters[$fieldName];
-                $newvalue = $this->getValueOfData($fieldType, $formatMappings[$fieldName], $entityout->$getvalue());
-                $entityout->$setvalue($newvalue);
-            /*}*/
+            /* if ( \str_contains( $fieldType ,'Swagger') ) {
+              $setvalue = $setters[$fieldName];
+              $getvalue = $getters[$fieldName];
+              }
+              else { */
+            $setvalue = $setters[$fieldName];
+            $getvalue = $getters[$fieldName];
+            $newvalue = $this->getValueOfData($fieldType, $formatMappings[$fieldName], $entityout->$getvalue());
+            $entityout->$setvalue($newvalue);
+            /* } */
         }
         return $entityout;
     }
 
-    public function getControllerItem($modelEntity, $controllerItemClass)
+    /**
+     *
+     * @param string $modelEntity
+     * @param string $controllerItemClass
+     * @return mixed
+     */
+    public function getControllerItem(string $modelEntity, string $controllerItemClass)
     {
+        /** @var mixed $controllerItem */
         $controllerItem = new $controllerItemClass();
         $setters = $controllerItem::setters();
         $getters = $modelEntity::getters();
@@ -132,7 +152,15 @@ class ModelUtils
     /**
      * Try to insert in automatic way the conversion to a BiCore known value
      */
-    private function getValueOfData($fieldType, $formatType, $oldvalue)
+
+    /**
+     *
+     * @param string $fieldType
+     * @param string $formatType
+     * @param mixed $oldvalue
+     * @return mixed
+     */
+    private function getValueOfData(string $fieldType, string $formatType, $oldvalue)
     {
         $value = $oldvalue;
         if ($formatType == null) {

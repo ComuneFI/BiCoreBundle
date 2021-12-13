@@ -6,61 +6,62 @@ use Exception;
 
 class ProjectPath
 {
-    private $rootdir;
-    private $projectdir;
-    private $cacheDir;
-    private $logsDir;
 
-    public function setRootDir($projectDir)
+    private string $rootdir;
+    private string $projectdir;
+    private string $cacheDir;
+    private string $logsDir;
+
+    public function setRootDir(string $projectDir): void
     {
         $this->projectdir = $projectDir;
         $this->rootdir = $projectDir;
     }
 
-    public function setCacheDir($cacheDir)
+    public function setCacheDir(string $cacheDir): void
     {
         $this->cacheDir = $cacheDir;
     }
 
-    public function setLogsDir($logsDir)
+    public function setLogsDir(string $logsDir): void
     {
         $this->logsDir = $logsDir;
     }
 
-    public function getRootPath()
+    public function getRootPath(): string
     {
         return $this->rootdir;
     }
 
-    public function getProjectPath()
+    public function getProjectPath(): string
     {
         return $this->projectdir;
     }
 
-    public function getBinPath()
+    public function getBinPath(): string
     {
-        $bindir = $this->getProjectPath().'/bin';
+        $bindir = $this->getProjectPath() . '/bin';
         if (!file_exists($bindir)) {
-            $bindir = realpath($this->getProjectPath().'/../bin');
+            $bindir = realpath($this->getProjectPath() . '/../bin');
         }
-        if (!file_exists($bindir)) {
+        if ($bindir === false || !file_exists($bindir)) {
             throw new Exception('Cartella Bin non trovata', -100);
         }
 
         return $bindir;
     }
 
-    public function getVendorBinPath()
+    public function getVendorBinPath(): string
     {
-        $vendorbindir = $this->getVendorPath().DIRECTORY_SEPARATOR.'bin';
+        $vendorbindir = $this->getVendorPath() . DIRECTORY_SEPARATOR . 'bin';
         return $vendorbindir;
     }
 
-    public function getVendorPath()
+    public function getVendorPath(): string
     {
-        $vendorbindir = $this->getProjectPath().DIRECTORY_SEPARATOR.'vendor';
+        $vendorbindir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'vendor';
         if (!file_exists($vendorbindir)) {
-            $vendorbindir = dirname($this->getProjectPath()).DIRECTORY_SEPARATOR.'vendor';
+            $vendorbindir = dirname($this->getProjectPath()) . DIRECTORY_SEPARATOR . 'vendor';
             if (!file_exists($vendorbindir)) {
                 throw new Exception('Cartella vendor non trovata', -100);
             }
@@ -69,42 +70,52 @@ class ProjectPath
         return $vendorbindir;
     }
 
-    public function getSrcPath()
+    public function getSrcPath(): string
     {
-        $srcdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'src';
+        $srcdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'src';
 
         return $srcdir;
     }
 
-    public function getPublicPath()
+    public function getPublicPath(): string
     {
-        $publicdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'public';
+        $publicdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'public';
 
         return $publicdir;
     }
 
-    public function getTemplatePath()
+    public function getTemplatePath(): string
     {
-        $srcdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'templates';
-
-        return realpath($srcdir);
+        $srcdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'templates';
+        $path = realpath($srcdir);
+        if ($path === false) {
+            throw new Exception('Cartella templates non trovata', -150);
+        }
+        return $path;
     }
 
-    public function getVarPath()
+    public function getVarPath(): string
     {
-        $vardir = $this->getProjectPath().DIRECTORY_SEPARATOR.'var';
+        $vardir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'var';
+        $path = realpath($vardir);
+        if ($path === false) {
+            throw new Exception('Cartella var non trovata', -160);
+        }
 
-        return realpath($vardir);
+        return $path;
     }
 
-    public function getDocPath()
+    public function getDocPath(): string
     {
-        $docdir = $this->getProjectPath().DIRECTORY_SEPARATOR.'doc';
-
-        return realpath($docdir);
+        $docdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'doc';
+        $path = realpath($docdir);
+        if ($path === false) {
+            throw new Exception('Cartella doc non trovata', -160);
+        }
+        return $path;
     }
 
-    public function getCachePath()
+    public function getCachePath(): string
     {
         $cachedir = $this->cacheDir;
         if (!file_exists($cachedir)) {
@@ -114,7 +125,7 @@ class ProjectPath
         return $cachedir;
     }
 
-    public function getLogsPath()
+    public function getLogsPath(): string
     {
         $logsdir = $this->logsDir;
         if (!file_exists($logsdir)) {
@@ -124,9 +135,9 @@ class ProjectPath
         return $logsdir;
     }
 
-    public function getConsole()
+    public function getConsole(): string
     {
-        $console = $this->getBinPath().'/console';
+        $console = $this->getBinPath() . '/console';
         // Questo codice per versioni che usano un symfony 2 o 3
         if (!file_exists($console)) {
             throw new Exception('Console non trovata', -100);
@@ -134,7 +145,8 @@ class ProjectPath
 
         return $console;
     }
-    public function getConsoleExecute()
+
+    public function getConsoleExecute(): string
     {
         $console = $this->getConsole();
         if (\Fi\OsBundle\DependencyInjection\OsFunctions::isWindows()) {

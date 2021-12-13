@@ -16,14 +16,12 @@
                     phpunit-ci,
                     finish">
     </target>
-    <!-- php-security-checker,-->
-    <!-- phpcpd-ci -->
-    <!-- upgrade-chromedriver -->
 
     <target name="clean" description="Cleanup build">
         <delete dir="build/artifacts/coverage"/>
         <delete dir="build/artifacts/logs"/>
         <delete dir="drivers"/>
+        <delete dir="vendor"/>
         <delete file="cache.properties"/>
         <delete file="version.properties"/>
         <delete file="composer.phar"/>
@@ -122,15 +120,6 @@
         </exec>
     </target>
 
-    <target name="php-security-checker" description="Check your composer dependencies for insecure components">
-        <exec executable="vendor/bin/security-checker" failonerror="false">
-            <arg value="security:check"/>
-            <arg value="--verbose"/>
-            <arg value="--end-point=https://security.symfony.com/check_lock"/>            
-            <arg value="composer.lock"/>
-        </exec>
-    </target>
-
     <target name="phpmd-ci"
             description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="vendor/bin/phpmd" failonerror="true">
@@ -151,12 +140,6 @@
         </exec>
     </target>
 
-    <target name="phpcpd-ci" description="Find duplicate code using PHPCPD">
-        <exec executable="vendor/bin/phpcpd" failonerror="false">
-            <arg path="src"/>
-        </exec>
-    </target>
-
     <target name="phpstan-ci" description="PHPStan finds bugs in your code without writing tests">
         <exec executable="vendor/bin/phpstan" failonerror="true">
             <arg value="--no-progress"/>
@@ -170,11 +153,6 @@
         <exec executable="vendor/bin/bdi" failonerror="false">
             <arg value="detect"/>
             <arg value="drivers"/>
-        </exec>
-    </target>
-
-    <target name="upgrade-chromedriver" description="Upgrade chromedriver for panther issue #356">
-        <exec executable="tests/build/upgradePantherChromedriver.sh" failonerror="false">
         </exec>
     </target>
 

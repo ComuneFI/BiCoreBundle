@@ -11,15 +11,20 @@ use Symfony\Component\Process\Process;
 class Utility
 {
 
-    private $apppaths;
-    private $kernel;
+    private ProjectPath $apppaths;
+    private Kernel $kernel;
 
-    public function __construct($kernel, ProjectPath $projectpath)
+    public function __construct(Kernel $kernel, ProjectPath $projectpath)
     {
         $this->apppaths = $projectpath;
         $this->kernel = $kernel;
     }
-    public function clearcache($env = '')
+    /**
+     *
+     * @param string $env
+     * @return array<mixed>
+     */
+    public function clearcache($env = '') : array
     {
         if (!$env) {
             $env = $this->kernel->getEnvironment();
@@ -29,7 +34,13 @@ class Utility
 
         return self::runCommand($command);
     }
-    public static function runCommand($command, $workingdir = '.')
+    /**
+     *
+     * @param string $command
+     * @param string $workingdir
+     * @return array<mixed>
+     */
+    public static function runCommand(string $command, string $workingdir = '.')
     {
         /* @var $process \Symfony\Component\Process\Process */
         $process = Process::fromShellCommandline($command);
@@ -53,7 +64,14 @@ class Utility
 
         return $return;
     }
-    public function runSymfonyCommand($command, array $options = array())
+    
+    /**
+     *
+     * @param string $command
+     * @param array<mixed> $options
+     * @return array<mixed>
+     */
+    public function runSymfonyCommand(string $command, array $options = array()) : array
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);

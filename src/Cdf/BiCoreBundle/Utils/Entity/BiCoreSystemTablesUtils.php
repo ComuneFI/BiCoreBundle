@@ -8,10 +8,16 @@ use Doctrine\ORM\EntityManager;
 class BiCoreSystemTablesUtils
 {
     /* @var $em EntityManager */
-    private $em;
+
+    private EntityManager $em;
+
+    /**
+     *
+     * @var array<mixed>
+     */
     private $entities = array();
 
-    public function __construct($em)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
         $this->entities[Ruoli::class] = array('priority' => 10);
@@ -28,7 +34,7 @@ class BiCoreSystemTablesUtils
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    public function countEntitiesRows()
+    public function countEntitiesRows(): void
     {
         $records = $this->entities;
         foreach ($records as $entity => $detail) {
@@ -42,12 +48,20 @@ class BiCoreSystemTablesUtils
         }
     }
 
-    public function getSystemEntities()
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function getSystemEntities(): array
     {
         return $this->entities;
     }
 
-    public function getDefaultDataSystemEntities()
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function getDefaultDataSystemEntities(): array
     {
         return $this->entities;
     }

@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Utils\Export;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
@@ -10,12 +11,18 @@ use Cdf\BiCoreBundle\Utils\Entity\DoctrineFieldReader;
 class TabellaXls
 {
 
-    private $tableprefix;
+    private string $tableprefix;
 
-    public function __construct($tableprefix)
+    public function __construct(string $tableprefix)
     {
         $this->tableprefix = $tableprefix;
     }
+
+    /**
+     *
+     * @param array<mixed> $parametri
+     * @return string
+     */
     public function esportaexcel($parametri = array())
     {
         set_time_limit(960);
@@ -46,7 +53,7 @@ class TabellaXls
         $todaydate = date('d-m-y');
 
         $filename = 'Exportazione';
-        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid((string)rand(), true)));
+        $filename = $filename . '-' . $todaydate . '-' . strtoupper(md5(uniqid((string) rand(), true)));
         $filename = $filename . '.xls';
         $filename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
 
@@ -58,7 +65,13 @@ class TabellaXls
 
         return $filename;
     }
-    private function printHeaderXls($testata, $sheet)
+
+    /**
+     *
+     * @param array<mixed> $testata
+     * @param Worksheet $worksheet
+     */
+    private function printHeaderXls(array $testata, Worksheet $worksheet): void
     {
         $indicecolonnaheader = 1;
         $letteracolonna = 0;
@@ -69,19 +82,26 @@ class TabellaXls
                 $width = (int) $modellocolonna['larghezza'] / 7;
                 $indicecolonnaheadertitle = $modellocolonna['etichetta'];
                 $coltitle = strtoupper($indicecolonnaheadertitle);
-                $sheet->setCellValueByColumnAndRow($indicecolonnaheader, 1, $coltitle);
-                $sheet->getColumnDimension($letteracolonna)->setWidth($width);
+                $worksheet->setCellValueByColumnAndRow($indicecolonnaheader, 1, $coltitle);
+                $worksheet->getColumnDimension($letteracolonna)->setWidth($width);
 
                 ++$indicecolonnaheader;
             }
         }
 
         //Imposta lo stile per l'intestazione un po più decente
-        $this->setHeaderStyle($sheet, $indicecolonnaheader - 1);
+        $this->setHeaderStyle($worksheet, $indicecolonnaheader - 1);
 
-        $sheet->getRowDimension('1')->setRowHeight(20);
+        $worksheet->getRowDimension(1)->setRowHeight(20);
     }
-    private function printBodyXls($header, $rows, $sheet)
+
+    /**
+     *
+     * @param array<mixed> $header
+     * @param array<mixed> $rows
+     * @param Worksheet $worksheet
+     */
+    private function printBodyXls($header, $rows, Worksheet $worksheet): void
     {
         $row = 2;
         foreach ($rows as $riga) {
@@ -100,14 +120,14 @@ class TabellaXls
                     //Fix https://github.com/ComuneFI/BiCoreBundle/issues/9
                     $xlsvalue = $this->getValueCell($valorecolonnatestata['tipocampo'], $valorecampo);
                     if (substr($xlsvalue, 0, 1) == '=') {
-                        $sheet->setCellValueExplicitByColumnAndRow($col, $row, $xlsvalue, DataType::TYPE_STRING2);
+                        $worksheet->setCellValueExplicitByColumnAndRow($col, $row, $xlsvalue, DataType::TYPE_STRING2);
                     } else {
-                        $sheet->setCellValueByColumnAndRow($col, $row, $xlsvalue);
+                        $worksheet->setCellValueByColumnAndRow($col, $row, $xlsvalue);
                     }
                     $col = $col + 1;
                 }
             }
-            $sheet->getRowDimension($row)->setRowHeight(18);
+            $worksheet->getRowDimension($row)->setRowHeight(18);
             ++$row;
         }
 
@@ -115,13 +135,19 @@ class TabellaXls
         //Si impostano i formati cella in base al tipo di dato contenuto
         foreach ($header as $colonnatestata => $valorecolonnatestata) {
             if (false === $valorecolonnatestata['escluso']) {
-                $this->setCellColumnFormat($sheet, $col, $row - 1, $valorecolonnatestata['tipocampo']);
-                $this->setColumnAutowidth($sheet, $col);
+                $this->setCellColumnFormat($worksheet, $col, $row - 1, $valorecolonnatestata['tipocampo']);
+                $this->setColumnAutowidth($worksheet, $col);
                 $col = $col + 1;
             }
         }
     }
-    private function setHeaderStyle($sheet, $indiceultimacolonna)
+
+    /**
+     *
+     * @param int $indiceultimacolonna
+     * @param Worksheet $worksheet
+     */
+    private function setHeaderStyle(Worksheet $worksheet, int $indiceultimacolonna): void
     {
         $letteraultimacolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indiceultimacolonna);
         $styleArray = [
@@ -144,9 +170,16 @@ class TabellaXls
             ],
         ];
 
-        $sheet->getStyle('A1:' . $letteraultimacolonna . '1')->applyFromArray($styleArray);
+        $worksheet->getStyle('A1:' . $letteraultimacolonna . '1')->applyFromArray($styleArray);
     }
-    private function getValueCell($tipocampo, $valorecella)
+
+    /**
+     *
+     * @param string $tipocampo
+     * @param mixed $valorecella
+     * @return mixed|null
+     */
+    private function getValueCell(string $tipocampo, $valorecella)
     {
         $valore = null;
         switch ($tipocampo) {
@@ -173,61 +206,63 @@ class TabellaXls
 
         return $valore;
     }
-    private function setCellColumnFormat($sheet, $indicecolonna, $lastrow, $tipocampo)
+
+    private function setCellColumnFormat(Worksheet $worksheet, int $indicecolonna, int $lastrow, string $tipocampo): void
     {
         $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonna);
         switch ($tipocampo) {
             case 'text':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('@');
                 break;
             case 'string':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('@');
                 break;
             case 'integer':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
                 break;
             case 'float':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'decimal':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'number':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('#,##0.00');
                 break;
             case 'datetime':
                 //\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYYSLASH
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('dd/mm/yyyy hh:mm:ss');
                 break;
             case 'date':
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('dd/mm/yyyy');
                 break;
             default:
-                $sheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
+                $worksheet->getStyle($letteracolonna . '2:' . $letteracolonna . $lastrow)
                         ->getNumberFormat()
                         ->setFormatCode('@');
                 break;
         }
     }
-    private function setColumnAutowidth($sheet, $indicecolonna)
+
+    private function setColumnAutowidth(Worksheet $worksheet, int $indicecolonna) : void
     {
         $letteracolonna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indicecolonna);
-        $sheet->getColumnDimension($letteracolonna)->setAutoSize(true);
+        $worksheet->getColumnDimension($letteracolonna)->setAutoSize(true);
     }
 }

@@ -23,6 +23,7 @@ use function count;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class GenerateFormCommand extends Command
 {
@@ -36,9 +37,11 @@ class GenerateFormCommand extends Command
     private string $projectname;
     private bool $isApi;
     private KernelInterface $kernel;
+
+    /** @var array<mixed> */
     private array $typesMapping;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
                 ->setDescription('Genera le views per il crud')
@@ -80,8 +83,12 @@ class GenerateFormCommand extends Command
 
     /**
      * Browse available functions and return the function to be used for source code portion.
+     *
+     * @param array<mixed> $attribute
+     * @param string $attributeName
+     * @return string
      */
-    private function getFunctionForSourceCode(&$attribute, $attributeName)
+    private function getFunctionForSourceCode(array &$attribute, string $attributeName): ?string
     {
         $function = null;
         if (\str_contains($attributeName, '_id')) {
@@ -104,8 +111,12 @@ class GenerateFormCommand extends Command
 
     /**
      * It insert main types to be used into a Form
+     *
+     * @param array<string> $lines
+     * @param int $position
+     * @return void
      */
-    private function insertUseOfTypes(array &$lines, $position)
+    private function insertUseOfTypes(array &$lines, int $position): void
     {
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateTimeType;');
@@ -122,8 +133,11 @@ class GenerateFormCommand extends Command
 
     /**
      * It insert setExtraOption method to created form
+     *
+     * @param array<string> $lines
+     * @param int $position
      */
-    private function insertSetExtraOptionFunction(array &$lines, $position)
+    private function insertSetExtraOptionFunction(array &$lines, int $position): void
     {
         array_splice($lines, ++$position, 0, '
     
@@ -145,8 +159,11 @@ class GenerateFormCommand extends Command
 
     /**
      * It inserts submitparams options, and arraychoices filling if API form
+     *
+     * @param array<string> $lines
+     * @param int $position
      */
-    private function insertParamsOptions(array &$lines, $position)
+    private function insertParamsOptions(array &$lines, int $position): void
     {
         if ($this->isApi) {
             array_splice($lines, $position, 0, '        $arraychoices = $this->setExtraOption($options);');
@@ -159,9 +176,14 @@ class GenerateFormCommand extends Command
     /**
      * Add portion of code to manage a field as datetime
      *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addDateTimeType(array &$lines, $position, $attributeName)
+    private function addDateTimeType(array &$lines, int $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "', DateTimeType::class, array(");
         array_splice($lines, ++$position, 0, "                  'widget' => 'single_text',");
@@ -171,12 +193,22 @@ class GenerateFormCommand extends Command
     }
 
     /**
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+     *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function addFkType(array &$lines, $position, $attributeName)
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr($attributeName, 0, strpos($attributeName, '_id'));
+        $strpos = strpos($attributeName, '_id');
+        if ($strpos === false) {
+            return;
+        }
+
+        $choiceName = substr($attributeName, 0, $strpos);
 
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -195,12 +227,21 @@ class GenerateFormCommand extends Command
     }
 
     /**
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function addEnumType(array &$lines, $position, $attributeName)
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr($attributeName, 0, strpos($attributeName, '_enum'));
+        $strpos = strpos($attributeName, '_enum');
+        if ($strpos === false) {
+            return;
+        }
+        $choiceName = substr($attributeName, 0, $strpos);
 
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -221,6 +262,11 @@ class GenerateFormCommand extends Command
     /**
      * Add a boolean checkbox
      *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function addCheckbox(array &$lines, $position, $attributeName)
@@ -237,6 +283,11 @@ class GenerateFormCommand extends Command
     /**
      * Add portion of code to manage a field as float/number
      *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function addNumberType(array &$lines, $position, $attributeName)
@@ -247,6 +298,11 @@ class GenerateFormCommand extends Command
     /**
      * Add portion of code to manage a field as integer
      *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function addIntegerType(array &$lines, $position, $attributeName)
@@ -257,15 +313,28 @@ class GenerateFormCommand extends Command
     /**
      * Add portion of code to manage a commmented string
      *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @param bool $commented
+     * @return void
+
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addComment(array &$lines, $position, $attributeName, $commented = false)
+    private function addComment(array &$lines, $position, $attributeName, bool $commented = false)
     {
         $this->addStringType($lines, $position, $attributeName, true);
     }
 
     /**
      * Add portion of code to manage a field as string
+     *
+     * @param array<string> $lines
+     * @param int $position
+     * @param string $attributeName
+     * @param bool $commented
+     * @return void
+
      */
     private function addStringType(array &$lines, $position, $attributeName, $commented = false)
     {
@@ -308,6 +377,9 @@ class GenerateFormCommand extends Command
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
+            if ($lines ===false) {
+                throw new Exception("Impossibile fare il parse del file " . $formFile);
+            }
 
             $pos1 = $this->findPosition($lines, 'use Symfony\Component\Form\AbstractType');
 
@@ -373,7 +445,14 @@ class GenerateFormCommand extends Command
         }
     }
 
-    private function findPosition(array $arr, String $keyword, bool $first = true)
+    /**
+     *
+     * @param array<mixed> $arr
+     * @param string $keyword
+     * @param bool $first
+     * @return int
+     */
+    private function findPosition(array $arr, string $keyword, bool $first = true): int
     {
         $returnIndex = -1;
         foreach ($arr as $index => $string) {
@@ -387,7 +466,7 @@ class GenerateFormCommand extends Command
         return $returnIndex;
     }
 
-    private function generateFormRouting($entityform)
+    private function generateFormRouting(string $entityform): string
     {
         //Routing del form
         $bundlename = 'App';
@@ -415,7 +494,7 @@ class GenerateFormCommand extends Command
         return $retmsg;
     }
 
-    private function copyTableStructureWiew($entityform)
+    private function copyTableStructureWiew(string $entityform): void
     {
         $fs = new Filesystem();
         /* $publicfolder = $this->apppaths->getPublicPath();
@@ -443,7 +522,7 @@ class GenerateFormCommand extends Command
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
     }
 
-    private function generateFormsDefaultTableValues($entityform)
+    private function generateFormsDefaultTableValues(string $entityform): void
     {
         //Si inserisce il record di default nella tabella permessi
         $ruoloAmm = $this->em->getRepository(Ruoli::class)->findOneBy(array('superadmin' => true)); //SuperAdmin
@@ -464,7 +543,7 @@ class GenerateFormCommand extends Command
     /**
      * Return the portion of code for Controller
      */
-    private function getControllerCode($bundlename, $tabella, String $swaggerModel): String
+    private function getControllerCode(string $bundlename, string $tabella, string $swaggerModel): string
     {
         $code = '';
         if ($this->isApi) {
@@ -478,7 +557,7 @@ class GenerateFormCommand extends Command
     /**
      *  It creates a Skeleton for a controller class that extends FiController
      *  */
-    private function getControllerCodeORM($bundlename, $tabella)
+    private function getControllerCodeORM(string $bundlename, string $tabella): string
     {
         $codeTemplate = <<<EOF
 <?php
@@ -510,7 +589,7 @@ EOF;
     /**
      *  It creates a Skeleton for a controller class that extends ApiController
      *  */
-    private function getControllerCodeAPI($bundlename, $tabella, String $modelPath)
+    private function getControllerCodeAPI(string $bundlename, string $tabella, string $modelPath): string
     {
         $projectname = $this->projectname;
         $codeTemplate = <<<EOF
@@ -541,7 +620,7 @@ EOF;
         return $code;
     }
 
-    private function getRoutingCode($bundlename, $tabella)
+    private function getRoutingCode(string $bundlename, string $tabella): string
     {
         $codeTemplate = <<<'EOF'
 [tabella]_container:

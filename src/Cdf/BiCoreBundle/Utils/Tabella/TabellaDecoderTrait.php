@@ -4,20 +4,34 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 
 use Datetime;
 use Doctrine\Common\Collections\Expr\Comparison;
+use Cdf\BiCoreBundle\Utils\Tabella\ParametriQueryTabellaDecoder;
 use Exception;
 
 trait TabellaDecoderTrait
 {
-    private $aliasGenerati;
-    private $decodificaAlias;
+    /** @var array<mixed> */
+    private array $aliasGenerati;
+    /** @var array<mixed> */
+    private array $decodificaAlias;
 
-    protected function getDescrizioneFiltro(&$descrizionefiltri, $filtrocorrente, $criteria)
+    /**
+     *
+     * @param string $descrizionefiltri
+     * @param array<mixed> $filtrocorrente
+     * @param ParametriQueryTabellaDecoder $criteria
+     */
+    protected function getDescrizioneFiltro(string &$descrizionefiltri, array $filtrocorrente, ParametriQueryTabellaDecoder $criteria) : void
     {
         if (false === $filtrocorrente['prefiltro']) {
             $descrizionefiltri = $descrizionefiltri.', '.$criteria->getDescrizioneFiltro();
         }
     }
 
+    /**
+     *
+     * @param mixed $fieldvalue
+     * @return mixed
+     */
     protected function getFieldValue($fieldvalue)
     {
         if (isset($fieldvalue['date'])) {
@@ -27,7 +41,12 @@ trait TabellaDecoderTrait
         }
     }
 
-    protected function getOperator($operator)
+    /**
+     *
+     * @param string $operator
+     * @return string
+     */
+    protected function getOperator(string $operator)
     {
         switch (strtoupper($operator)) {
             case 'LIKE':
@@ -46,7 +65,14 @@ trait TabellaDecoderTrait
         return $operator;
     }
 
-    protected function generaAlias($nometabella, $nomepadre = false, $ancestors = array())
+    /**
+     *
+     * @param string $nometabella
+     * @param mixed $nomepadre
+     * @param array<mixed> $ancestors
+     * @return string
+     */
+    protected function generaAlias(string $nometabella, $nomepadre = false, $ancestors = array()) : string
     {
         $nometabellapulito = preg_replace('/[^a-z0-9\.]/i', '', $nometabella);
         $primalettera = strtolower(substr($nometabellapulito, 0, 1));
@@ -70,7 +96,7 @@ trait TabellaDecoderTrait
         return $risposta;
     }
 
-    protected function findAliasByTablename($tablename)
+    protected function findAliasByTablename(string $tablename): string
     {
         if (!array_key_exists($tablename, $this->decodificaAlias)) {
             $ex = 'BiCore: table or association '.$tablename." not found, did you mean one of these:\n".
@@ -82,7 +108,13 @@ trait TabellaDecoderTrait
         return $this->getAliasGenerato($tablename);
     }
 
-    protected function findFieldnameByAlias($nomecampo)
+    /**
+     *
+     * @param string $nomecampo
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function findFieldnameByAlias(string $nomecampo)
     {
         if (!array_key_exists($nomecampo, $this->configurazionecolonnetabella)) {
             $ex = 'BiCore: field or association '.$nomecampo." not found, did you mean one of these:\n".
@@ -94,7 +126,7 @@ trait TabellaDecoderTrait
         return $this->configurazionecolonnetabella[$nomecampo];
     }
 
-    public function getAliasGenerato($tablename)
+    public function getAliasGenerato(string $tablename) : string
     {
         return $this->decodificaAlias[$tablename]['alias'];
     }

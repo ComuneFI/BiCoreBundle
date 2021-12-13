@@ -9,7 +9,7 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
 {
-    protected function buildQuery()
+    protected function buildQuery() : void
     {
         switch ($this->fieldoperator) {
             case Comparison::EQ:
@@ -39,7 +39,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         }
     }
 
-    protected function setEqCriteria()
+    protected function setEqCriteria(): void
     {
         $expr = new Expr();
 
@@ -59,7 +59,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         }
     }
 
-    protected function setNeqCriteria()
+    protected function setNeqCriteria(): void
     {
         $expr = new Expr();
 
@@ -79,7 +79,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         }
     }
 
-    protected function setNinCriteria()
+    protected function setNinCriteria(): void
     {
         $expr = new Expr();
 
@@ -91,7 +91,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
     }
 
-    protected function setInCriteria()
+    protected function setInCriteria(): void
     {
         $expr = new Expr();
 
@@ -103,7 +103,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
     }
 
-    protected function setContainsCriteria()
+    protected function setContainsCriteria(): void
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {
@@ -114,7 +114,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         $this->parameters = array($this->fieldqueryparameter => '%'.$this->fieldvalue.'%');
     }
 
-    protected function setStartswithCriteria()
+    protected function setStartswithCriteria(): void
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {
@@ -125,7 +125,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue.'%');
     }
 
-    protected function setEndswithCriteria()
+    protected function setEndswithCriteria(): void
     {
         $expr = new Expr();
         if (is_string($this->fieldvalue)) {

@@ -6,7 +6,12 @@ use Exception;
 
 trait TabellaOpzioniFromModelloColonneTrait
 {
-    protected function setOpzioniTabellaFromModellocolonne(&$opzionibuilder)
+    /**
+     *
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     */
+    protected function setOpzioniTabellaFromModellocolonne(array &$opzionibuilder) : void
     {
         foreach ($this->modellocolonne as $modellocolonna) {
             $campo = $this->bonificaNomeCampo($modellocolonna['nomecampo']);
@@ -21,7 +26,15 @@ trait TabellaOpzioniFromModelloColonneTrait
         }
     }
 
-    protected function checkCampoOpzioniTabella($campo, $modellocolonna, &$opzionibuilder)
+    /**
+     *
+     * @param string $campo
+     * @param array<mixed> $modellocolonna
+     * @param array<mixed> $opzionibuilder
+     * @return void
+     * @throws \Exception
+     */
+    protected function checkCampoOpzioniTabella(string $campo, array $modellocolonna, array &$opzionibuilder) : void
     {
         if (!array_key_exists($campo, $opzionibuilder)) {
             if ((isset($modellocolonna['campoextra']) && true == $modellocolonna['campoextra'])) {

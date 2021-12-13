@@ -3,20 +3,21 @@
 namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Proxy\Proxy;
 use function count;
 
 class EntityUtils
 {
-    private $em;
 
-    public function __construct(ObjectManager $em)
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
-    public function getClassNameToShortcutNotations($entity)
+    public function getClassNameToShortcutNotations(string $entity): string
     {
         $cleanClassName = str_replace('\\Entity', '\:', $entity);
         $parts = explode('\\', $cleanClassName);
@@ -24,7 +25,12 @@ class EntityUtils
         return implode('', $parts);
     }
 
-    public function getEntityColumns($entity)
+    /**
+     *
+     * @param string $entity
+     * @return array<mixed>
+     */
+    public function getEntityColumns(string $entity): array
     {
         $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
         $colonne = array();
@@ -47,7 +53,7 @@ class EntityUtils
         return $colonne;
     }
 
-    public function getTableFromEntity($entity)
+    public function getTableFromEntity(string $entity): string
     {
         $metadata = $this->em->getClassMetadata($entity);
         $tablename = $metadata->getTablename();
@@ -55,14 +61,14 @@ class EntityUtils
         return $tablename;
     }
 
-    public function entityHasJoinTables($entityclass)
+    public function entityHasJoinTables(string $entityclass): bool
     {
         $jointables = $this->getEntityJoinTables($entityclass);
 
         return count($jointables) > 0 ? true : false;
     }
 
-    public function getJoinTableField($entityclass, $field)
+    public function getJoinTableField(string $entityclass, string $field): ?string
     {
         $joinfields = $this->getEntityJoinTables($entityclass);
         foreach ($joinfields as $joinfield) {
@@ -78,7 +84,7 @@ class EntityUtils
         return null;
     }
 
-    public function getJoinTableFieldProperty($entityclass, $field)
+    public function getJoinTableFieldProperty(string $entityclass, string $field): ?string
     {
         $joinfields = $this->getEntityJoinTables($entityclass);
         foreach ($joinfields as $joinfield) {
@@ -94,25 +100,36 @@ class EntityUtils
         return null;
     }
 
-    public function getEntityProperties($fieldname, $objrecord)
+    /**
+     *
+     * @param string $fieldname
+     * @param mixed $objrecord
+     * @return array<mixed>
+     */
+    public function getEntityProperties(string $fieldname, $objrecord): array
     {
         $parametri = array('str' => $fieldname, 'primamaiuscola' => true);
         $getfieldname = StringUtils::toCamelCase($parametri);
         if (!method_exists($objrecord, $getfieldname)) {
-            $getfieldname = 'has'.StringUtils::toCamelCase($parametri);
+            $getfieldname = 'has' . StringUtils::toCamelCase($parametri);
             if (!method_exists($objrecord, $getfieldname)) {
-                $getfieldname = 'is'.StringUtils::toCamelCase($parametri);
+                $getfieldname = 'is' . StringUtils::toCamelCase($parametri);
                 if (!method_exists($objrecord, $getfieldname)) {
-                    $getfieldname = 'get'.StringUtils::toCamelCase($parametri);
+                    $getfieldname = 'get' . StringUtils::toCamelCase($parametri);
                 }
             }
         }
-        $setfieldname = 'set'.StringUtils::toCamelCase($parametri);
+        $setfieldname = 'set' . StringUtils::toCamelCase($parametri);
 
         return array('get' => $getfieldname, 'set' => $setfieldname);
     }
 
-    public function entityExists($className)
+    /**
+     *
+     * @param mixed $className
+     * @return bool
+     */
+    public function entityExists($className): bool
     {
         if (is_object($className)) {
             $className = ($className instanceof Proxy) ? get_parent_class($className) : get_class($className);
@@ -121,7 +138,12 @@ class EntityUtils
         return !$this->em->getMetadataFactory()->isTransient($className);
     }
 
-    public function getEntityJoinTables($entityclass)
+    /**
+     *
+     * @param string $entityclass
+     * @return array<mixed>
+     */
+    public function getEntityJoinTables(string $entityclass): array
     {
         $jointables = array();
         $metadata = $this->em->getClassMetadata($entityclass);
@@ -135,7 +157,13 @@ class EntityUtils
         return $jointables;
     }
 
-    private function getJoinFieldName($joinfield, $field)
+    /**
+     *
+     * @param array<mixed> $joinfield
+     * @param string $field
+     * @return string|null
+     */
+    private function getJoinFieldName(array $joinfield, string $field): ?string
     {
         $joinFieldentity = $joinfield['entity'];
         $joinColumns = $joinFieldentity['joinColumns'];
@@ -150,7 +178,13 @@ class EntityUtils
         return null;
     }
 
-    private function getJoinTable($joinfield, $field)
+    /**
+     *
+     * @param array<mixed> $joinfield
+     * @param string $field
+     * @return string
+     */
+    private function getJoinTable(array $joinfield, string $field): ?string
     {
         $joinTableEntity = $joinfield['entity'];
         $joinColumns = $joinTableEntity['joinColumns'];

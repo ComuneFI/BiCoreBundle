@@ -11,30 +11,38 @@ class HiddenIntegerType extends HiddenType implements DataTransformerInterface
 {
 
     /**
-     * {@inheritdoc}
+     *
+     * @param FormBuilderInterface $builder
+     * @param array<mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->addModelTransformer($this);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @param mixed $data
+     * @return int
      */
-    public function transform($data)
+     
+    public function transform($data) : int
     {
         return (int) $data;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @param string $data
+     * @return int
      */
-    public function reverseTransform($data)
+     
+    public function reverseTransform($data) : int
     {
         return (int) $data;
     }
 
-    public function getName()
+    public function getName() : string
     {
         return 'hidden_integer';
     }

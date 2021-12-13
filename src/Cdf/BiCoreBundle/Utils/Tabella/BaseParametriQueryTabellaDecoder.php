@@ -8,15 +8,43 @@ use Doctrine\Common\Collections\Expr\Comparison;
 class BaseParametriQueryTabellaDecoder
 {
 
-    protected $fieldname;
-    protected $fieldoperator;
+    protected string $fieldname;
+    protected string $fieldoperator;
+
+    /**
+     *
+     * @var mixed
+     */
     protected $fieldvalue;
-    protected $fieldqueryparameter;
+    protected string $fieldqueryparameter;
+
+    /**
+     *
+     * @var string|null
+     */
     protected $criteria;
+
+    /**
+     *
+     * @var array<mixed>
+     */
     protected $parameters;
+
+    /**
+     *
+     * @var array<mixed>
+     */
     protected $fieldinfo;
 
-    public function __construct($fieldname, $fieldoperator, $fieldvalue, $fieldqueryparameter, $fieldinfo)
+    /**
+     *
+     * @param string $fieldname
+     * @param string $fieldoperator
+     * @param mixed $fieldvalue
+     * @param string $fieldqueryparameter
+     * @param array<mixed> $fieldinfo
+     */
+    public function __construct(string $fieldname, string $fieldoperator, $fieldvalue, string $fieldqueryparameter, $fieldinfo)
     {
         $this->fieldname = $fieldname;
         $this->fieldoperator = $fieldoperator;
@@ -32,17 +60,25 @@ class BaseParametriQueryTabellaDecoder
         $this->buildQuery();
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getQueryCriteria()
     {
         return $this->criteria;
     }
 
-    public function getQueryParameters()
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function getQueryParameters(): array
     {
         return $this->parameters;
     }
 
-    public function getDescrizioneFiltro()
+    public function getDescrizioneFiltro(): string
     {
         $descrizionevalore = '';
 
@@ -69,21 +105,25 @@ class BaseParametriQueryTabellaDecoder
         return $filtro;
     }
 
-    protected function getDescrizioneFiltroAltro(&$descrizionevalore)
+    protected function getDescrizioneFiltroAltro(string &$descrizionevalore): void
     {
         if ('' == $descrizionevalore) {
             $descrizionevalore = "'" . $this->fieldvalue . "'";
         }
     }
 
-    protected function getDescrizioneFiltroDate(&$descrizionevalore)
+    protected function getDescrizioneFiltroDate(string &$descrizionevalore): bool
     {
         $trovato = false;
         if ('date' == $this->fieldinfo['tipocampo']) {
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y');
             } else {
-                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $dateraw = DateTime::createFromFormat('Y-m-d', $this->fieldvalue);
+                if ($dateraw === false) {
+                    return false;
+                }
+                $descrizionevalore = $dateraw->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -91,7 +131,11 @@ class BaseParametriQueryTabellaDecoder
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y H:i:s');
             } else {
-                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $dateraw = DateTime::createFromFormat('Y-m-d', $this->fieldvalue);
+                if ($dateraw === false) {
+                    return false;
+                }
+                $descrizionevalore = $dateraw->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -99,7 +143,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroString(&$descrizionevalore)
+    protected function getDescrizioneFiltroString(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_string($this->fieldvalue)) {
@@ -110,7 +154,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroDecodifiche(&$descrizionevalore)
+    protected function getDescrizioneFiltroDecodifiche(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (isset($this->fieldinfo['decodifiche'])) {
@@ -134,7 +178,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroIsNull(&$descrizionevalore)
+    protected function getDescrizioneFiltroIsNull(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_null($this->fieldvalue)) {
@@ -145,7 +189,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroBoolean(&$descrizionevalore)
+    protected function getDescrizioneFiltroBoolean(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_bool($this->fieldvalue)) {
@@ -156,7 +200,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroArray(&$descrizionevalore)
+    protected function getDescrizioneFiltroArray(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_array($this->fieldvalue)) {
@@ -174,7 +218,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function operatorToString($operator)
+    protected function operatorToString(string $operator): string
     {
         $decoder = array(
             Comparison::LT => 'minore di',

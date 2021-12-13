@@ -113,12 +113,13 @@ trait FiCoreCrudControllerTrait
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
         /** @var class-string $entityclass */
+        /** @var mixed $entity */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' del record con id ' . $id . '.');
         }
-
+        
         $editForm = $this->createForm(
             $formType,
             $entity,
@@ -146,7 +147,7 @@ trait FiCoreCrudControllerTrait
      * Update an existing table entity.
      *
      * @param Request $request
-     * @param string|int $id
+     * @param int $id
      * @return Response
      * @throws AccessDeniedException
      */
@@ -167,12 +168,13 @@ trait FiCoreCrudControllerTrait
         $formType = $formclass . 'Type';
 
         /** @var class-string $entityclass */
+        /** @var mixed $entity */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
-
+        
         $editForm = $this->createForm(
             $formType,
             $entity,
@@ -182,7 +184,8 @@ trait FiCoreCrudControllerTrait
                     'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
                 ]
         );
-
+        
+        /** @phpstan-ignore-next-line */
         $editForm->submit($request->request->get($editForm->getName()));
 
         if ($editForm->isValid()) {

@@ -15,9 +15,9 @@ class ChecksrcCommand extends Command
 {
     protected static $defaultName = 'pannelloamministrazione:checksrc';
     
-    private $apppaths;
+    private ProjectPath $apppaths;
     
-    protected function configure()
+    protected function configure() : void
     {
         $this
                 ->setDescription('Controlla i sorgenti')
@@ -38,20 +38,6 @@ class ChecksrcCommand extends Command
         $vendorBin = $prjpath->getVendorBinPath().'/';
         $srcPath = $prjpath->getSrcPath();
         $rootPath = $prjpath->getRootPath();
-
-        /* phpcpd */
-        $phpcpdcmd = array($vendorBin.'phpcpd', $srcPath);
-        $phpcpdoutput = $this->runcmd($phpcpdcmd);
-        if (!$phpcpdoutput) {
-            $output->writeln('phpmd: OK');
-        } else {
-            if (strpos($phpcpdoutput, '0.00%')) {
-                $output->writeln('phpmd: OK');
-            } else {
-                $output->writeln($phpcpdoutput);
-            }
-        }
-        /* phpcpd */
 
         /* phpcs */
         $phpcscmd = array($vendorBin.'phpcs', '--standard='.$rootPath.'/../tools/phpcs/ruleset.xml', '--extensions=php', $srcPath);
@@ -77,7 +63,12 @@ class ChecksrcCommand extends Command
         return 0;
     }
 
-    private function runcmd(array $cmd)
+    /**
+     *
+     * @param array<string> $cmd
+     * @return string
+     */
+    private function runcmd(array $cmd) : string
     {
         $process = new Process($cmd);
         $process->setTimeout(60 * 100);

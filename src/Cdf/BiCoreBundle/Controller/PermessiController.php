@@ -63,7 +63,7 @@ class PermessiController extends FiController
             ),
         );*/
         $prefiltri = [];
-        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),
             'tablename' => ParametriTabella::setParameter($tablenamefromentity),
