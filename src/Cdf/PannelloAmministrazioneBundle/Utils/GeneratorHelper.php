@@ -7,18 +7,19 @@ use Exception;
 use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Console\Output\OutputInterface;
 use function count;
 
 class GeneratorHelper
 {
-    private $apppaths;
+    private ProjectPath $apppaths;
 
     public function __construct(ProjectPath $projectpath)
     {
         $this->apppaths = $projectpath;
     }
 
-    public function getDestinationEntityOrmPath()
+    public function getDestinationEntityOrmPath() : string
     {
         $entitypath = realpath($this->apppaths->getSrcPath().'/../src/Entity/');
         if (DIRECTORY_SEPARATOR == '/') {
@@ -28,7 +29,7 @@ class GeneratorHelper
         }
     }
 
-    public function checktables($destinationPath, $wbFile, $output)
+    public function checktables(string $destinationPath, string $wbFile, OutputInterface $output) : int
     {
         $fs = new Filesystem();
 
@@ -78,7 +79,7 @@ class GeneratorHelper
         }
     }
 
-    public function checkprerequisiti($mwbfile, $output)
+    public function checkprerequisiti(string $mwbfile, OutputInterface $output) : int
     {
         $fs = new Filesystem();
 
@@ -129,7 +130,7 @@ class GeneratorHelper
         return 0;
     }
 
-    public function getScriptGenerator()
+    public function getScriptGenerator() : string
     {
         $scriptGenerator = $this->apppaths->getBinPath() . DIRECTORY_SEPARATOR . 'mysql-workbench-schema-export';
         if (!file_exists($scriptGenerator)) {
@@ -141,7 +142,7 @@ class GeneratorHelper
         return $scriptGenerator;
     }
 
-    public function getExportJsonFile()
+    public function getExportJsonFile() : string
     {
         $fs = new Filesystem();
         $cachedir = $this->apppaths->getCachePath();
@@ -153,14 +154,14 @@ class GeneratorHelper
         return $exportJson;
     }
 
-    public function removeExportJsonFile()
+    public function removeExportJsonFile() :bool
     {
         $this->getExportJsonFile();
 
         return true;
     }
 
-    public static function getJsonMwbGenerator()
+    public static function getJsonMwbGenerator() : string
     {
         $jsonTemplate = <<<EOF
 {"export": "doctrine2-annotation",

@@ -5,14 +5,15 @@ namespace Cdf\PannelloAmministrazioneBundle\Utils;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class Commands
 {
     /* @var $apppaths ProjectPath */
 
-    private $apppaths;
+    private ProjectPath $apppaths;
     /* @var $pammutils Utility */
-    private $pammutils;
+    private Utility $pammutils;
 
     public function __construct(ProjectPath $projectpath, Utility $pautils)
     {
@@ -20,8 +21,13 @@ class Commands
         $this->pammutils = $pautils;
     }
 
-    // @codeCoverageIgnoreStart
-    public function getVcs()
+    /**
+     * @codeCoverageIgnoreStart
+     *
+     * @return array<mixed>
+     * @throws \Exception
+     */
+    public function getVcs(): array
     {
         $command = "";
         $fs = new Filesystem();
@@ -40,8 +46,14 @@ class Commands
         return $this->pammutils->runCommand($command, $projectDir);
     }
 
-    // @codeCoverageIgnoreEnd
-    public function generateEntity($wbFile)
+    /**
+     *
+     * @codeCoverageIgnoreEnd
+     *
+     * @return array<mixed>
+     */
+    
+    public function generateEntity(string $wbFile) : array
     {
         $command = 'pannelloamministrazione:generateormentities';
         $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
@@ -60,7 +72,11 @@ class Commands
             'message' => 'Eseguito comando:' . $command . ';' . $result['message'],);
     }
 
-    public function generateFormCrud($entityform, $generatemplate, $isAPI = false)
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function generateFormCrud(string $entityform, bool $generatemplate, bool $isAPI = false)
     {
         // check if some item already exist, and it interrupts the execution if any
         $pannelloamministrazioneentity = $entityform;
@@ -94,7 +110,11 @@ class Commands
         return $retmsg;
     }
 
-    public function checkFormCrud($entityform, string $projectname = "", bool $isAPI = false)
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function checkFormCrud(string $entityform, string $projectname = "", bool $isAPI = false)
     {
         /* @var $fs Filesystem */
         $fs = new Filesystem();
@@ -138,6 +158,10 @@ class Commands
         return array('errcode' => 0, 'message' => 'OK');
     }
 
+    /**
+     *
+     * @return array<mixed>
+     */
     public function clearcache()
     {
         $cmdoutput = '';
@@ -155,7 +179,11 @@ class Commands
         return $result;
     }
 
-    public function aggiornaSchemaDatabase()
+    /**
+     *
+     * @return array<mixed>
+     */
+    public function aggiornaSchemaDatabase(): array
     {
         $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));
 
