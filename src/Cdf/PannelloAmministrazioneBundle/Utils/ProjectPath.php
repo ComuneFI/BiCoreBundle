@@ -44,7 +44,7 @@ class ProjectPath
         if (!file_exists($bindir)) {
             $bindir = realpath($this->getProjectPath() . '/../bin');
         }
-        if (!file_exists($bindir)) {
+        if ($bindir === false || !file_exists($bindir)) {
             throw new Exception('Cartella Bin non trovata', -100);
         }
 
@@ -87,22 +87,32 @@ class ProjectPath
     public function getTemplatePath(): string
     {
         $srcdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'templates';
-
-        return realpath($srcdir);
+        $path = realpath($srcdir);
+        if ($path === false) {
+            throw new Exception('Cartella templates non trovata', -150);
+        }
+        return $path;
     }
 
     public function getVarPath(): string
     {
         $vardir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'var';
+        $path = realpath($vardir);
+        if ($path === false) {
+            throw new Exception('Cartella var non trovata', -160);
+        }
 
-        return realpath($vardir);
+        return $path;
     }
 
     public function getDocPath(): string
     {
         $docdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'doc';
-
-        return realpath($docdir);
+        $path = realpath($docdir);
+        if ($path === false) {
+            throw new Exception('Cartella doc non trovata', -160);
+        }
+        return $path;
     }
 
     public function getCachePath(): string

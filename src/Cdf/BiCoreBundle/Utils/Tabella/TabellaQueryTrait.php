@@ -5,10 +5,12 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
+use Exception;
 use function count;
 
 trait TabellaQueryTrait
 {
+
     /**
      *
      * @return mixed
@@ -35,7 +37,7 @@ trait TabellaQueryTrait
      * @param string $alias
      * @param array<mixed> $ancestors
      */
-    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array()) : void
+    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array()): void
     {
         foreach ($campi as $campo) {
             if (false !== strpos(strtolower($campo), 'relatedby')) {
@@ -45,8 +47,8 @@ trait TabellaQueryTrait
                 $ancestors[] = $nometabella;
             }
 
-            $configurazionecampo = isset($this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)).'.'.$campo]) ?
-                    $this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)).'.'.$campo] : false;
+            $configurazionecampo = isset($this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)) . '.' . $campo]) ?
+                    $this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)) . '.' . $campo] : false;
             if ($configurazionecampo && true === $configurazionecampo['association']) {
                 // crea la relazione con $padre = $nometabella in corso e figlio = $nomecampo con $alias generato
                 if ((isset($configurazionecampo['sourceentityclass'])) && (null !== $configurazionecampo['sourceentityclass'])) {
@@ -64,7 +66,7 @@ trait TabellaQueryTrait
                 $parti = explode('.', $configurazionecampo['nomecampo']);
 
                 $camporelazionejoin = strtolower($parti[count($parti) - 1]);
-                $qb->leftJoin($alias.'.'.$camporelazionejoin, $aliastarget);
+                $qb->leftJoin($alias . '.' . $camporelazionejoin, $aliastarget);
                 $campitarget = array_keys($this->em->getMetadataFactory()->getMetadataFor($entitytarget)->reflFields);
                 $this->recursiveJoin($qb, $campitarget, $nometabellatarget, $aliastarget, $ancestors);
 
@@ -79,7 +81,7 @@ trait TabellaQueryTrait
      *
      * @param mixed $qb
      */
-    protected function buildWhere(&$qb) : void
+    protected function buildWhere(&$qb): void
     {
 
         $filtro = '';
@@ -95,12 +97,16 @@ trait TabellaQueryTrait
         if (count($tuttifiltri)) {
             $descrizionefiltri = '';
             foreach ($tuttifiltri as $num => $filtrocorrente) {
-                $tablename = substr($filtrocorrente['nomecampo'], 0, strripos($filtrocorrente['nomecampo'], '.'));
+                $strpos = strripos($filtrocorrente['nomecampo'], '.');
+                if ($strpos === false) {
+                    throw new Exception("Impossibile trovare il . in " . $filtrocorrente['nomecampo']);
+                }
+                $tablename = substr($filtrocorrente['nomecampo'], 0, $strpos);
                 $alias = $this->findAliasByTablename($tablename);
-                $fieldname = $alias.'.'.(substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1));
+                $fieldname = $alias . '.' . (substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1));
                 $fieldvalue = $this->getFieldValue($filtrocorrente['valore']);
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
-                $fitrocorrenteqp = 'fitrocorrente'.$num;
+                $fitrocorrenteqp = 'fitrocorrente' . $num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
                 $criteria = new ParametriQueryTabellaDecoder(
                     $fieldname,
@@ -117,7 +123,7 @@ trait TabellaQueryTrait
                     $qb->andWhere($querycriteria);
                     $parametribag = array_merge($queryparameter, $parametribag);
                 } else {
-                    $qb->andWhere($fieldname.' '.$fieldoperator.' '.":$fitrocorrenteqp");
+                    $qb->andWhere($fieldname . ' ' . $fieldoperator . ' ' . ":$fitrocorrenteqp");
                     $parametribag = array_merge(array($fitrocorrenteqp => $fieldvalue), $parametribag);
                 }
                 $this->getDescrizioneFiltro($descrizionefiltri, $filtrocorrente, $criteria);
@@ -135,21 +141,24 @@ trait TabellaQueryTrait
      *
      * @param mixed $qb
      */
-    protected function orderByBuilder(&$qb) : void
+    protected function orderByBuilder(&$qb): void
     {
         foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
-            $tablename = substr($nomecampo, 0, strripos($nomecampo, '.'));
+            $strpos = strripos($nomecampo, '.');
+            if ($strpos === false) {
+                throw new Exception("Impossibile trovare il . in " . $nomecampo);
+            }
+            $tablename = substr($nomecampo, 0, $strpos);
             $alias = $this->getAliasGenerato($tablename);
-            $fieldname = $alias.'.'.(substr($nomecampo, strripos($nomecampo, '.') + 1));
+            $fieldname = $alias . '.' . (substr($nomecampo, strripos($nomecampo, '.') + 1));
             $qb->addOrderBy($fieldname, $tipoordinamento);
         }
     }
 
-
     /**
      * Attempt to translate the user given value into a boolean valid field
      */
-    private function translateBoolValue(string $fieldvalue) : string
+    private function translateBoolValue(string $fieldvalue): string
     {
         switch (strtoupper($fieldvalue)) {
             case 'SI':
@@ -174,24 +183,27 @@ trait TabellaQueryTrait
     /**
      * It appends the new filter string part to the given filter string ($filterString)
      */
-    private function appendFilterString(string &$filterString, string $swaggerType, string$swaggerKind, string $fieldvalue) : void
+    private function appendFilterString(string &$filterString, string $swaggerType, string $swaggerKind, string $fieldvalue): void
     {
         if ($swaggerKind == 'bool') {
             $filterString .= $this->translateBoolValue($fieldvalue);
-        } elseif ($swaggerType == null /*|| $swaggerFormats[ $nomeCampo ] == 'datetime'*/) {
+        } elseif ($swaggerType == null /* || $swaggerFormats[ $nomeCampo ] == 'datetime' */) {
             //"%" chars will be applied by insurance back-end API
-            $filterString .= '"'.$fieldvalue.'"';
+            $filterString .= '"' . $fieldvalue . '"';
         } elseif ($swaggerType == 'datetime' || $swaggerType == 'date') {
             $fieldvalue = \str_replace("/", "-", $fieldvalue);
             //does it contain an hour ?
             $hour = strpos($fieldvalue, ":");
             $time = strtotime($fieldvalue);
+            if ($time === false) {
+                throw new Exception("time non valido: " . $time);
+            }
+            
             $backend_format = FieldTypeUtils::getEnvVar("BE_DATETIME_FORMAT", "Y-m-d\TH:i:sP");
             if ($hour === false) {
                 $backend_format = FieldTypeUtils::getEnvVar("BE_DATE_FORMAT", "Y-m-d");
             }
-            $filter = date($backend_format, $time);
-            $filterString .= $filter;
+            $filterString .= date($backend_format, $time);
         } else {
             $filterString .= $fieldvalue;
         }
@@ -221,10 +233,10 @@ trait TabellaQueryTrait
             $descrizionefiltri = '';
             foreach ($tuttifiltri as $num => $filtrocorrente) {
                 $nomeCampo = substr($filtrocorrente['nomecampo'], strripos($filtrocorrente['nomecampo'], '.') + 1);
-                $fieldname = ' '.$nomeCampo;
+                $fieldname = ' ' . $nomeCampo;
                 $filteringValues = $this->getFieldValue($filtrocorrente['valore']);
                 $fieldoperator = $this->getOperator($filtrocorrente['operatore']);
-                $fitrocorrenteqp = 'fitrocorrente'.$num;
+                $fitrocorrenteqp = 'fitrocorrente' . $num;
                 $filtronomecampocorrente = $this->findFieldnameByAlias($filtrocorrente['nomecampo']);
 
                 $criteria = new ParametriQueryTabellaDecoder(
@@ -236,22 +248,22 @@ trait TabellaQueryTrait
                 );
 
                 if (is_array($filteringValues)) {
-                    $fieldstring =  '( ';
+                    $fieldstring = '( ';
                     foreach ($filteringValues as $num => $filterValue) {
-                        $fieldstring .= $attributeMap[ $nomeCampo ];
-                        $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                        $fieldstring .= $attributeMap[$nomeCampo];
+                        $fieldstring .= ' ' . $this->getApiOperator($filtrocorrente['operatore']) . ' ';
                         $fieldvalue = urldecode($filterValue);
-                        $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $swaggerTypes[ $nomeCampo ], $fieldvalue);
-                        if ($num < count($filteringValues)-1) {
+                        $this->appendFilterString($fieldstring, $swaggerFormats[$nomeCampo], $swaggerTypes[$nomeCampo], $fieldvalue);
+                        if ($num < count($filteringValues) - 1) {
                             $fieldstring .= ' OR ';
                         }
                     }
-                    $fieldstring .=  ' )';
+                    $fieldstring .= ' )';
                 } else {
-                    $fieldstring = $attributeMap[ $nomeCampo ];
-                    $fieldstring .= ' '.$this->getApiOperator($filtrocorrente['operatore']).' ';
+                    $fieldstring = $attributeMap[$nomeCampo];
+                    $fieldstring .= ' ' . $this->getApiOperator($filtrocorrente['operatore']) . ' ';
                     $fieldvalue = urldecode($filteringValues);
-                    $this->appendFilterString($fieldstring, $swaggerFormats[ $nomeCampo ], $swaggerTypes[ $nomeCampo ], $filteringValues);
+                    $this->appendFilterString($fieldstring, $swaggerFormats[$nomeCampo], $swaggerTypes[$nomeCampo], $filteringValues);
                 }
 
                 if ($filterString != null) {
@@ -268,18 +280,18 @@ trait TabellaQueryTrait
     /**
      * Return the operator to be used
      */
-    private function getApiOperator(string $operator) :string
+    private function getApiOperator(string $operator): string
     {
         switch (strtoupper($operator)) {
             case Comparison::CONTAINS:
                 $operator = '~';
                 break;
-            /*case 'IN':
-                $operator = Comparison::IN;
-                break;
-            case 'NOT IN':
-                $operator = Comparison::NIN;
-                break;*/
+            /* case 'IN':
+              $operator = Comparison::IN;
+              break;
+              case 'NOT IN':
+              $operator = Comparison::NIN;
+              break; */
             default:
                 $operator = '=';
                 break;
@@ -296,8 +308,8 @@ trait TabellaQueryTrait
         $attributeMap = $this->entityname::attributeMap();
         $orderingString = null;
         foreach ($this->colonneordinamento as $nomecampo => $tipoordinamento) {
-            $fieldname = $attributeMap[ substr($nomecampo, strripos($nomecampo, '.') + 1) ];
-            $fieldname .= ':'.$tipoordinamento;
+            $fieldname = $attributeMap[substr($nomecampo, strripos($nomecampo, '.') + 1)];
+            $fieldname .= ':' . $tipoordinamento;
             if ($orderingString != null) {
                 $orderingString .= ',';
             }
@@ -324,11 +336,11 @@ trait TabellaQueryTrait
 
             /* Imposta il limite ai record da estrarre */
             if ($this->getRigheperpagina()) {
-                $qb = $qb->setMaxResults((int)$this->getRigheperpagina());
+                $qb = $qb->setMaxResults((int) $this->getRigheperpagina());
             }
             /* E imposta il primo record da visualizzare (per la paginazione) */
             if ($offsetrecords) {
-                $qb = $qb->setFirstResult((int)$offsetrecords);
+                $qb = $qb->setFirstResult((int) $offsetrecords);
             }
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
             $recordsets = $qb->getQuery()->getResult();
@@ -361,14 +373,14 @@ trait TabellaQueryTrait
 
         if (false === $this->estraituttirecords) {
             $countMethod = $this->apiBook->getCount();
-            
+
             $count = $apiController->$countMethod();
             $this->righetotali = $count;
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
             $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
 
-            /*$offset = null, $limit = null, $sort = null, $condition = null*/
+            /* $offset = null, $limit = null, $sort = null, $condition = null */
             $paginationMethod = $this->apiBook->getAll();
             //dump($this->filterByApiBuilder());
 
@@ -378,7 +390,7 @@ trait TabellaQueryTrait
                 $this->orderByApiBuilder(),
                 $this->filterByApiBuilder()
             );
-        //dump($recordsets);
+            //dump($recordsets);
         } else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
             $paginationMethod = $this->apiBook->getAll();

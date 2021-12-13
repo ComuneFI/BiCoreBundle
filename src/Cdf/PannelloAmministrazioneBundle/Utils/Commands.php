@@ -52,8 +52,7 @@ class Commands
      *
      * @return array<mixed>
      */
-    
-    public function generateEntity(string $wbFile) : array
+    public function generateEntity(string $wbFile): array
     {
         $command = 'pannelloamministrazione:generateormentities';
         $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
@@ -82,8 +81,16 @@ class Commands
         $pannelloamministrazioneentity = $entityform;
         /* @var $fs Filesystem */
         if ($isAPI) {
-            $entityform = substr($pannelloamministrazioneentity, strpos($pannelloamministrazioneentity, ".") + 1);
-            $projectname = substr($pannelloamministrazioneentity, 0, strpos($pannelloamministrazioneentity, "."));
+            $strposEntity = strpos($pannelloamministrazioneentity, ".");
+            if ($strposEntity === false) {
+                return array(
+                    'errcode' => "-101",
+                    'command' => "Ricerca entity",
+                    'message' => "Impossibile trovare il . in " . $pannelloamministrazioneentity,
+                );
+            }
+            $entityform = substr($pannelloamministrazioneentity, $strposEntity + 1);
+            $projectname = substr($pannelloamministrazioneentity, 0, $strposEntity);
         } else {
             $entityform = $pannelloamministrazioneentity;
             $projectname = "";
@@ -166,15 +173,16 @@ class Commands
     {
         $cmdoutput = '';
         //$envs = array('dev', 'test', 'prod');
-        $envs[] = getenv("APP_ENV");
-        foreach ($envs as $env) {
-            $result = $this->pammutils->clearcache($env);
-            $cmdoutput = $cmdoutput . $result['message'];
-            if (0 !== $result['errcode']) {
-                return $result;
-            }
-            $result['message'] = $cmdoutput;
+        $env = getenv("APP_ENV");
+        if ($env === false) {
+            throw new Exception("APP_ENV non definita");
         }
+        $result = $this->pammutils->clearcache($env);
+        $cmdoutput = $cmdoutput . $result['message'];
+        if (0 !== $result['errcode']) {
+            return $result;
+        }
+        $result['message'] = $cmdoutput;
 
         return $result;
     }

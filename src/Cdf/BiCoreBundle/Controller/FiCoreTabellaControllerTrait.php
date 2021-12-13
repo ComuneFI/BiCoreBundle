@@ -75,21 +75,29 @@ trait FiCoreTabellaControllerTrait
             $parametripassati['estraituttirecords'] = ParametriTabella::setParameter('1');
 
             $filexls = $tabellaxls->esportaexcel($this->getParametriTabellaXls($doctrine, $parametripassati));
-            if (file_exists($filexls)) {
+            $filexlsbuffer = file_get_contents($filexls);
+            if ($filexlsbuffer === false) {
                 $response = [
-                    'status' => '200',
-                    'file' => 'data:application/vnd.ms-excel;base64,' . base64_encode(file_get_contents($filexls)),
+                    'status' => '500',
+                    'file' => 'Impossibile leggere il file excel generato',
                 ];
-                try {
-                    unlink($filexls);
-                } catch (\Exception $e) {
-                    //IGNORE THE ERROR OF UNLINK
-                }
             } else {
-                $response = [
-                    'status' => '501',
-                    'file' => 'Impossibile generare il file excel',
-                ];
+                if (file_exists($filexls)) {
+                    $response = [
+                        'status' => '200',
+                        'file' => 'data:application/vnd.ms-excel;base64,' . base64_encode($filexlsbuffer),
+                    ];
+                    try {
+                        unlink($filexls);
+                    } catch (\Exception $e) {
+                        //IGNORE THE ERROR OF UNLINK
+                    }
+                } else {
+                    $response = [
+                        'status' => '501',
+                        'file' => 'Impossibile generare il file excel',
+                    ];
+                }
             }
         } catch (\Exception $exc) {
             $response = [

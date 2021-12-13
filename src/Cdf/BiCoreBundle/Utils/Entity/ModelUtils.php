@@ -23,6 +23,7 @@ class ModelUtils
      */
     public function getAttributes($controllerItem): array
     {
+        /** @var mixed $myInstance */
         $myInstance = new $controllerItem();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
@@ -47,6 +48,7 @@ class ModelUtils
      */
     public function getEntityColumns(string $entity): array
     {
+        /** @var mixed $myInstance */
         $myInstance = new $entity();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
@@ -132,6 +134,7 @@ class ModelUtils
      */
     public function getControllerItem(string $modelEntity, string $controllerItemClass)
     {
+        /** @var mixed $controllerItem */
         $controllerItem = new $controllerItemClass();
         $setters = $controllerItem::setters();
         $getters = $modelEntity::getters();

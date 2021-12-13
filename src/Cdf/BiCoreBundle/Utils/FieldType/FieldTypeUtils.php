@@ -9,6 +9,7 @@ use DateTime;
  */
 abstract class FieldTypeUtils
 {
+
     /**
      *
      * @param array<mixed>|null $value
@@ -60,17 +61,14 @@ abstract class FieldTypeUtils
 
     /**
      *
-     * @param mixed $value
+     * @param string|array<mixed> $value
      * @return \DateTime|null
      */
     public static function extractDateTime($value)
     {
         $date = null;
-        if (is_string($value) || (is_array($value) && (isset($value['date'])))) {
+        if (is_string($value)) {
             switch (true) {
-                case isset($value['date']):
-                    $date = new Datetime($value['date']);
-                    break;
                 case DateTime::createFromFormat(\DateTime::ISO8601, $value):
                     $date = DateTime::createFromFormat(\DateTime::ISO8601, $value);
                     break;
@@ -78,21 +76,57 @@ abstract class FieldTypeUtils
                     $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
                     break;
                 case DateTime::createFromFormat('Y-m-d', $value):
-                    $date = DateTime::createFromFormat('Y-m-d H:i:s', $value.' 00:00:00');
+                    $date = DateTime::createFromFormat('Y-m-d H:i:s', $value . ' 00:00:00');
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (true) {
+                case (is_array($value) && (isset($value['date']))):
+                    $date = new Datetime($value['date']);
                     break;
                 default:
                     break;
             }
         }
-
+        if ($date === false) {
+            $date = null;
+        }
         return $date;
     }
+
+    /*    public static function extractDateTime($value)
+      {
+      $date = null;
+      if (is_string($value) || (is_array($value) && (isset($value['date'])))) {
+      switch (true) {
+      case isset($value['date']):
+      $date = new Datetime($value['date']);
+      break;
+      case DateTime::createFromFormat(\DateTime::ISO8601, $value):
+      $date = DateTime::createFromFormat(\DateTime::ISO8601, $value);
+      break;
+      case DateTime::createFromFormat('Y-m-d H:i:s', $value):
+      $date = DateTime::createFromFormat('Y-m-d H:i:s', $value);
+      break;
+      case DateTime::createFromFormat('Y-m-d', $value):
+      $date = DateTime::createFromFormat('Y-m-d H:i:s', $value.' 00:00:00');
+      break;
+      default:
+      break;
+      }
+      }
+
+      return $date;
+      }
+     */
 
     /**
      * Try to read the .env Key value provided as $key, otherwise return the default value
      */
-    public static function getEnvVar(string $key, string $defaultValue) : string
+    public static function getEnvVar(string $key, string $defaultValue): string
     {
-        return (getenv($key)===false)?$defaultValue:getenv($key);
+        return (getenv($key) === false) ? $defaultValue : getenv($key);
     }
 }

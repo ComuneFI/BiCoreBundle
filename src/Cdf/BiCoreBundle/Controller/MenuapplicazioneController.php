@@ -61,7 +61,7 @@ class MenuapplicazioneController extends FiController
 
         $filtri = [];
         $prefiltri = [];
-        $entityutils = new EntityUtils($this->get('doctrine')->getManager());
+        $entityutils = new EntityUtils($this->em);
         $tablenamefromentity = $entityutils->getTableFromEntity($entityclass);
         $colonneordinamento = [$tablenamefromentity . '.id' => 'DESC'];
         $parametritabella = ['em' => ParametriTabella::setParameter('default'),

@@ -10,22 +10,26 @@ class BaseParametriQueryTabellaDecoder
 
     protected string $fieldname;
     protected string $fieldoperator;
+
     /**
      *
      * @var mixed
      */
     protected $fieldvalue;
     protected string $fieldqueryparameter;
+
     /**
      *
      * @var string|null
      */
     protected $criteria;
+
     /**
      *
      * @var array<mixed>
      */
     protected $parameters;
+
     /**
      *
      * @var array<mixed>
@@ -101,21 +105,25 @@ class BaseParametriQueryTabellaDecoder
         return $filtro;
     }
 
-    protected function getDescrizioneFiltroAltro(string &$descrizionevalore) : void
+    protected function getDescrizioneFiltroAltro(string &$descrizionevalore): void
     {
         if ('' == $descrizionevalore) {
             $descrizionevalore = "'" . $this->fieldvalue . "'";
         }
     }
 
-    protected function getDescrizioneFiltroDate(string &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroDate(string &$descrizionevalore): bool
     {
         $trovato = false;
         if ('date' == $this->fieldinfo['tipocampo']) {
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y');
             } else {
-                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $dateraw = DateTime::createFromFormat('Y-m-d', $this->fieldvalue);
+                if ($dateraw === false) {
+                    return false;
+                }
+                $descrizionevalore = $dateraw->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -123,7 +131,11 @@ class BaseParametriQueryTabellaDecoder
             if (is_a($this->fieldvalue, "\DateTime")) {
                 $descrizionevalore = $this->fieldvalue->format('d/m/Y H:i:s');
             } else {
-                $descrizionevalore = DateTime::createFromFormat('Y-m-d', $this->fieldvalue)->format('d/m/Y');
+                $dateraw = DateTime::createFromFormat('Y-m-d', $this->fieldvalue);
+                if ($dateraw === false) {
+                    return false;
+                }
+                $descrizionevalore = $dateraw->format('d/m/Y');
             }
             $trovato = true;
         }
@@ -131,7 +143,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroString(string &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroString(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_string($this->fieldvalue)) {
@@ -142,7 +154,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroDecodifiche(string  &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroDecodifiche(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (isset($this->fieldinfo['decodifiche'])) {
@@ -166,7 +178,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroIsNull(string &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroIsNull(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_null($this->fieldvalue)) {
@@ -177,7 +189,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroBoolean(string &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroBoolean(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_bool($this->fieldvalue)) {
@@ -188,7 +200,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function getDescrizioneFiltroArray(string &$descrizionevalore) : bool
+    protected function getDescrizioneFiltroArray(string &$descrizionevalore): bool
     {
         $trovato = false;
         if (is_array($this->fieldvalue)) {
@@ -206,7 +218,7 @@ class BaseParametriQueryTabellaDecoder
         return $trovato;
     }
 
-    protected function operatorToString(string $operator) : string
+    protected function operatorToString(string $operator): string
     {
         $decoder = array(
             Comparison::LT => 'minore di',

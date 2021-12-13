@@ -23,6 +23,7 @@ use function count;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class GenerateFormCommand extends Command
 {
@@ -36,10 +37,11 @@ class GenerateFormCommand extends Command
     private string $projectname;
     private bool $isApi;
     private KernelInterface $kernel;
+
     /** @var array<mixed> */
     private array $typesMapping;
 
-    protected function configure() : void
+    protected function configure(): void
     {
         $this
                 ->setDescription('Genera le views per il crud')
@@ -86,7 +88,7 @@ class GenerateFormCommand extends Command
      * @param string $attributeName
      * @return string
      */
-    private function getFunctionForSourceCode(array &$attribute, string $attributeName) : ?string
+    private function getFunctionForSourceCode(array &$attribute, string $attributeName): ?string
     {
         $function = null;
         if (\str_contains($attributeName, '_id')) {
@@ -114,7 +116,7 @@ class GenerateFormCommand extends Command
      * @param int $position
      * @return void
      */
-    private function insertUseOfTypes(array &$lines, int $position) : void
+    private function insertUseOfTypes(array &$lines, int $position): void
     {
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\SubmitType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateTimeType;');
@@ -135,7 +137,7 @@ class GenerateFormCommand extends Command
      * @param array<string> $lines
      * @param int $position
      */
-    private function insertSetExtraOptionFunction(array &$lines, int $position) : void
+    private function insertSetExtraOptionFunction(array &$lines, int $position): void
     {
         array_splice($lines, ++$position, 0, '
     
@@ -161,7 +163,7 @@ class GenerateFormCommand extends Command
      * @param array<string> $lines
      * @param int $position
      */
-    private function insertParamsOptions(array &$lines, int $position) : void
+    private function insertParamsOptions(array &$lines, int $position): void
     {
         if ($this->isApi) {
             array_splice($lines, $position, 0, '        $arraychoices = $this->setExtraOption($options);');
@@ -181,7 +183,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addDateTimeType(array &$lines, int $position, string $attributeName) : void
+    private function addDateTimeType(array &$lines, int $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "', DateTimeType::class, array(");
         array_splice($lines, ++$position, 0, "                  'widget' => 'single_text',");
@@ -201,7 +203,12 @@ class GenerateFormCommand extends Command
     private function addFkType(array &$lines, $position, $attributeName)
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr($attributeName, 0, strpos($attributeName, '_id'));
+        $strpos = strpos($attributeName, '_id');
+        if ($strpos === false) {
+            return;
+        }
+
+        $choiceName = substr($attributeName, 0, $strpos);
 
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -230,7 +237,11 @@ class GenerateFormCommand extends Command
     private function addEnumType(array &$lines, $position, $attributeName)
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
-        $choiceName = substr($attributeName, 0, strpos($attributeName, '_enum'));
+        $strpos = strpos($attributeName, '_enum');
+        if ($strpos === false) {
+            return;
+        }
+        $choiceName = substr($attributeName, 0, $strpos);
 
         //it fixes cases such as event_type_id
         $parametri = array('str' => $choiceName, 'primamaiuscola' => true);
@@ -366,6 +377,9 @@ class GenerateFormCommand extends Command
             $formFile = $this->apppaths->getSrcPath() . '/Form/' . $entityform . 'Type.php';
 
             $lines = file($formFile, FILE_IGNORE_NEW_LINES);
+            if ($lines ===false) {
+                throw new Exception("Impossibile fare il parse del file " . $formFile);
+            }
 
             $pos1 = $this->findPosition($lines, 'use Symfony\Component\Form\AbstractType');
 
@@ -438,7 +452,7 @@ class GenerateFormCommand extends Command
      * @param bool $first
      * @return int
      */
-    private function findPosition(array $arr, string $keyword, bool $first = true) : int
+    private function findPosition(array $arr, string $keyword, bool $first = true): int
     {
         $returnIndex = -1;
         foreach ($arr as $index => $string) {
@@ -452,7 +466,7 @@ class GenerateFormCommand extends Command
         return $returnIndex;
     }
 
-    private function generateFormRouting(string $entityform) : string
+    private function generateFormRouting(string $entityform): string
     {
         //Routing del form
         $bundlename = 'App';
@@ -480,7 +494,7 @@ class GenerateFormCommand extends Command
         return $retmsg;
     }
 
-    private function copyTableStructureWiew(string $entityform) : void
+    private function copyTableStructureWiew(string $entityform): void
     {
         $fs = new Filesystem();
         /* $publicfolder = $this->apppaths->getPublicPath();
@@ -508,7 +522,7 @@ class GenerateFormCommand extends Command
         //$fs->touch($publicfolder . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR . $entityform . ".css");
     }
 
-    private function generateFormsDefaultTableValues(string $entityform) : void
+    private function generateFormsDefaultTableValues(string $entityform): void
     {
         //Si inserisce il record di default nella tabella permessi
         $ruoloAmm = $this->em->getRepository(Ruoli::class)->findOneBy(array('superadmin' => true)); //SuperAdmin
@@ -543,7 +557,7 @@ class GenerateFormCommand extends Command
     /**
      *  It creates a Skeleton for a controller class that extends FiController
      *  */
-    private function getControllerCodeORM(string $bundlename, string $tabella) : string
+    private function getControllerCodeORM(string $bundlename, string $tabella): string
     {
         $codeTemplate = <<<EOF
 <?php
@@ -575,7 +589,7 @@ EOF;
     /**
      *  It creates a Skeleton for a controller class that extends ApiController
      *  */
-    private function getControllerCodeAPI(string $bundlename, string $tabella, string $modelPath) : string
+    private function getControllerCodeAPI(string $bundlename, string $tabella, string $modelPath): string
     {
         $projectname = $this->projectname;
         $codeTemplate = <<<EOF
@@ -606,7 +620,7 @@ EOF;
         return $code;
     }
 
-    private function getRoutingCode(string $bundlename, string $tabella) : string
+    private function getRoutingCode(string $bundlename, string $tabella): string
     {
         $codeTemplate = <<<'EOF'
 [tabella]_container:

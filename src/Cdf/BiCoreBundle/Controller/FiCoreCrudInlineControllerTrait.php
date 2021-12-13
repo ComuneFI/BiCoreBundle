@@ -20,13 +20,13 @@ trait FiCoreCrudInlineControllerTrait
 
     /**
      *
-     * @param string|int $id
+     * @param string $id
      * @param string $token
      * @throws AccessDeniedException
      */
     private function checkAggiornaRight($id, $token): void
     {
-        if (0 === $id) {
+        if (0 === (int) $id) {
             if (!$this->getPermessi()->canCreate($this->getController())) {
                 throw new AccessDeniedException('Non si hanno i permessi per creare questo contenuto');
             }
@@ -44,7 +44,7 @@ trait FiCoreCrudInlineControllerTrait
 
     /**
      * Inline existing table entity.
-     * @param string|int $id
+     * @param string $id
      * @param string $token
      */
     public function aggiorna(Request $request, $id, $token): JsonResponse
@@ -69,7 +69,7 @@ trait FiCoreCrudInlineControllerTrait
      */
     protected function insertinline($values, $token): JsonResponse
     {
-        $this->checkAggiornaRight(0, $token);
+        $this->checkAggiornaRight("0", $token);
 
         /* @var $this->em EntityManager */
         $controller = $this->getController();
@@ -111,7 +111,7 @@ trait FiCoreCrudInlineControllerTrait
 
     /**
      *
-     * @param string|int $id
+     * @param string $id
      * @param mixed[] $values fileds
      * @param string $token
      * @return JsonResponse

@@ -16,6 +16,7 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Utility as Pautils;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\Commands as Pacmd;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Doctrine\ORM\EntityManagerInterface as EM;
 
 /**
  * Suppress all warnings from these two rules.
@@ -32,8 +33,9 @@ class PannelloAmministrazioneController extends AbstractController
     protected LockFactory $factory;
     private string $appname;
     private string $lockfile;
+    private EM $em;
 
-    public function __construct(string $appname, string $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils)
+    public function __construct(string $appname, string $lockfile, ProjectPath $projectpath, Pacmd $pacommands, Pautils $pautils, EM $em)
     {
         $store = new FlockStore(sys_get_temp_dir());
         $factory = new LockFactory($store);
@@ -44,6 +46,7 @@ class PannelloAmministrazioneController extends AbstractController
         $this->apppaths = $projectpath;
         $this->pacommands = $pacommands;
         $this->pautils = $pautils;
+        $this->em = $em;
     }
 
     /**
@@ -55,7 +58,7 @@ class PannelloAmministrazioneController extends AbstractController
         $entitiesprogetto = array();
         $prefix = 'App\\Entity\\';
         $prefixBase = 'Base';
-        $entities = $this->get('doctrine')->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $entities = $this->em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
         // compute additional API models since external bundles
         $additionalEntities = $this->findAPIModels();
         foreach ($entities as $entity) {

@@ -159,7 +159,7 @@ trait FiCoreControllerTrait
 
     /**
      *
-     * @param array<string>|string $parametripassati
+     * @param mixed $parametripassati
      * @param string $keyparametro
      * @param mixed $defaultvalue
      * @return mixed
@@ -191,6 +191,7 @@ trait FiCoreControllerTrait
 
         $lista = [];
         foreach ($righe as $riga) {
+            /** @phpstan-ignore-next-line */
             $lista[] = ['id' => $riga->getId(), 'descrizione' => $riga->__toString()];
         }
 
