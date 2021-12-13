@@ -15,12 +15,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
      */
 
     public function test20AdminpanelGenerateBundle() {
-        //url da testare
         self::$client = static::createPantherClient();
         $container = static::createClient()->getContainer();
+        //url da testare
         $apppath = $container->get('pannelloamministrazione.projectpath');
-
         try {
+
             /**
              * @var ProjectPath $apppath
              */
@@ -101,7 +101,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
             $this->crudoperation(self::$client);
         } catch (\Exception $exc) {
-            self::$client->takeScreenshot($apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png');
+            $container = static::createClient()->getContainer();
+            //url da testare
+            $apppath = $container->get('pannelloamministrazione.projectpath');
+            $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png';
+            echo $screenshotpath."\n";
+            self::$client->takeScreenshot($screenshotpath);
             throw new \Exception($exc);
         }
     }
