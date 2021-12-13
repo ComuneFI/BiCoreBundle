@@ -9,7 +9,9 @@ trait TabellaOpzioniFromCoreTrait
 {
     protected function getOpzionitabellaFromCore()
     {
+        /** @var \Cdf\BiCoreBundle\Repository\OpzionitabelleRepository $repoopzionitabelle */
         $repoopzionitabelle = $this->em->getRepository(Opzionitabelle::class);
+        /** @var \Cdf\BiCoreBundle\Repository\ColonnetabelleRepository $repocolonnetabelle */
         $repocolonnetabelle = $this->em->getRepository(Colonnetabelle::class);
         $opzionitabella = $repoopzionitabelle->findOpzioniTabella($this->tablename);
         $colonnetabella = $repocolonnetabelle->findOpzioniColonnetabella($this->tablename, $this->user);

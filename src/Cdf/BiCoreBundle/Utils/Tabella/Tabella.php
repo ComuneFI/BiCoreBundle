@@ -6,15 +6,9 @@ use Cdf\BiCoreBundle\Service\Permessi\PermessiManager;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\Persistence\ManagerRegistry;
-
-/**
- * @property EntityManager                        $em
- * @property PermessiManager $permessi
- * @property Security          $user
- */
 
 /**
  * @SuppressWarnings(PHPMD.TooManyFields)
@@ -45,7 +39,7 @@ class Tabella
     protected $righetotali;
     protected $traduzionefiltri;
     protected $maxordine = 0;
-    protected $em;
+    protected EntityManagerInterface $em;
     protected $user;
     protected $apiController;
     protected $apiCollection;
@@ -55,8 +49,10 @@ class Tabella
     {
         $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {
+            /** @phpstan-ignore-next-line */
             $this->em = $doctrine->getManager(ParametriTabella::getParameter($this->parametri['em']));
         } else {
+            /** @phpstan-ignore-next-line */
             $this->em = $doctrine->getManager();
         }
 
@@ -77,6 +73,7 @@ class Tabella
         $this->user = $this->parametri['user'];
 
         if (!isset($this->parametri['isapi'])) {
+            /** @phpstan-ignore-next-line */
             $utils = new EntityUtils($this->em);
             $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
         } else {
