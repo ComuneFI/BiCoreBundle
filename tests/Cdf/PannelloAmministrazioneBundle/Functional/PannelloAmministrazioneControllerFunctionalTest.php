@@ -36,7 +36,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
             $url = $this->getRoute('fi_pannello_amministrazione_homepage', [], false);
 
             self::$client->request('GET', $url);
-            self::$client->waitFor('#adminpanelgenerateentitys');
+            self::$client->waitFor('#adminpanelgenerateentity');
             $this->executeScript('document.getElementById("entityfile").value = "wbadmintest.mwb"');
             $this->pressButton('adminpanelgenerateentity');
 
@@ -105,7 +105,6 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
             //url da testare
             $apppath = $container->get('pannelloamministrazione.projectpath');
             $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png';
-            echo $screenshotpath."\n";
             self::$client->takeScreenshot($screenshotpath);
             throw new \Exception($exc);
         }
