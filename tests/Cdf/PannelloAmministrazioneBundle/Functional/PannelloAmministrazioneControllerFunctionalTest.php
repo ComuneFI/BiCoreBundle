@@ -36,7 +36,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
             $url = $this->getRoute('fi_pannello_amministrazione_homepage', [], false);
 
             self::$client->request('GET', $url);
-            self::$client->waitFor('#adminpanelgenerateentity');
+            self::$client->waitFor('#adminpanelgenerateentitys');
             $this->executeScript('document.getElementById("entityfile").value = "wbadmintest.mwb"');
             $this->pressButton('adminpanelgenerateentity');
 
