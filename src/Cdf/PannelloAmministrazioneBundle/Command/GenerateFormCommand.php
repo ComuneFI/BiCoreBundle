@@ -125,7 +125,7 @@ class GenerateFormCommand extends Command
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\CheckboxType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\DateType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\IntegerType;');
-        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextAreaType;');
+        array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\TextareaType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\MailType;');
         array_splice($lines, ++$position, 0, 'use Symfony\Component\Form\Extension\Core\Type\ChoiceType;');
         array_splice($lines, ++$position, 0, 'use Cdf\BiCoreBundle\Utils\FieldType\HiddenIntegerType;');
