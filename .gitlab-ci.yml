@@ -54,12 +54,12 @@ build_php8.0:
     stage: build_php80
     script:
       - ant
-      - wget https://scrutinizer-ci.com/ocular.phar -t 3
-      - php ocular.phar code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
+      - php vendor/bin/ocular code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
 
     artifacts:
         when: always
         paths:
+          - build/logs/clover.xml
           - tests/var/error*.png
         expire_in: 1 week
 
@@ -76,6 +76,7 @@ build_php8.1:
     artifacts:
         when: always
         paths:
+          - build/logs/clover.xml
           - tests/var/error*.png
         expire_in: 1 week
 
