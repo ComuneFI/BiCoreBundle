@@ -6,7 +6,8 @@ use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\BiCoreBundle\Tests\Utils\BiTest;
 
-class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient {
+class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient
+{
 
     protected static $client;
 
@@ -14,7 +15,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle() {
+    public function test20AdminpanelGenerateBundle()
+    {
         self::$client = static::createPantherClient();
         $container = static::createClient()->getContainer();
         //url da testare
@@ -110,7 +112,8 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         }
     }
 
-    private function crudoperation() {
+    private function crudoperation()
+    {
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
@@ -199,12 +202,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /**
      * {@inheritdoc}
      */
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         self::$client->quit();
         parent::tearDown();
         BiTest::cleanFilesystem();
         BiTest::removecache();
         BiTest::clearcache();
     }
-
 }

@@ -4,13 +4,14 @@ namespace Cdf\BiCoreBundle\Tests\Controller;
 
 use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 
-class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient {
+class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient
+{
 
     protected static $client;
 
-    public function testBiCoreBundleIndex() {
+    public function testBiCoreBundleIndex()
+    {
         try {
-
             self::$client = static::createPantherClient();
             $colonnetabelleregistrati = 6;
             $htmltableid = 'tableColonnetabelle';
@@ -96,9 +97,9 @@ class FunctionalBiCoreBundleControllerTest extends BiTestAuthorizedClient {
         }
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         self::$client->quit();
         parent::tearDown();
     }
-
 }

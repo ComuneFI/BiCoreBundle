@@ -2,11 +2,13 @@
 
 namespace Cdf\BiCoreBundle\Tests\Utils;
 
-abstract class BiTestReadrolesAuthorizedClient extends BiTestAuthorizedClient {
+abstract class BiTestReadrolesAuthorizedClient extends BiTestAuthorizedClient
+{
 
     protected static $client;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         self::$client = static::createPantherClient();
         try {
             $this->container = static::$kernel->getContainer();
@@ -23,5 +25,4 @@ abstract class BiTestReadrolesAuthorizedClient extends BiTestAuthorizedClient {
             throw new \Exception($exc);
         }
     }
-
 }
