@@ -25,6 +25,7 @@
         <delete file="cache.properties"/>
         <delete file="version.properties"/>
         <delete file="composer.phar"/>
+        <delete file="composer.lock"/>
         <delete file=".phpunit.result.cache"/>
         <delete file="tests/var/error.png"/>
         
