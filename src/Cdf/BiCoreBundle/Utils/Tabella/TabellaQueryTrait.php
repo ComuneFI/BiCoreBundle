@@ -183,7 +183,7 @@ trait TabellaQueryTrait
     /**
      * It appends the new filter string part to the given filter string ($filterString)
      */
-    private function appendFilterString(string &$filterString, string $swaggerType, string $swaggerKind, string $fieldvalue): void
+    private function appendFilterString(string &$filterString, ?string $swaggerType, string $swaggerKind, string $fieldvalue): void
     {
         if ($swaggerKind == 'bool') {
             $filterString .= $this->translateBoolValue($fieldvalue);
