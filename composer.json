@@ -124,7 +124,8 @@
     "config": {
         "allow-plugins": {
             "symfony/flex": true,
-            "composer/package-versions-deprecated" : true
+            "symfony/runtime": true,
+            "composer/package-versions-deprecated" : true            
         },
         "preferred-install": {
             "*": "dist"
