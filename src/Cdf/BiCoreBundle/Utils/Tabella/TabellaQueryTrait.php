@@ -368,33 +368,36 @@ trait TabellaQueryTrait
      */
     public function getApiRecordstabella()
     {
-        $newApi = $this->apiController;
-        $apiController = new $newApi();
+        $collection = $this->getCollectionName();
 
         if (false === $this->estraituttirecords) {
-            $countMethod = $this->apiBook->getCount();
+         
+            
+            $count = $this->apiManager->getCount( $collection );
 
-            $count = $apiController->$countMethod();
+            
             $this->righetotali = $count;
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
             $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
 
-            /* $offset = null, $limit = null, $sort = null, $condition = null */
-            $paginationMethod = $this->apiBook->getAll();
-            //dump($this->filterByApiBuilder());
 
-            $recordsets = $apiController->$paginationMethod(
+
+            $recordsets = $this->apiManager->getAll( $collection, 
                 $offsetrecords,
                 $this->getRigheperpagina(),
                 $this->orderByApiBuilder(),
                 $this->filterByApiBuilder()
-            );
+        );
+
+       
+
             //dump($recordsets);
         } else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
-            $paginationMethod = $this->apiBook->getAll();
-            $recordsets = $apiController->$paginationMethod(0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder());
+
+            $recordsets = $this->apiManager->getAll( $collection, 0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder() );
+
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);
         }

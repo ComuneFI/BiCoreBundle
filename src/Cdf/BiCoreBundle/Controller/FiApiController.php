@@ -15,6 +15,10 @@ use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+
+use Cdf\BiCoreBundle\Service\Api\ApiManager;
+use Cdf\BiCoreBundle\Service\Api\Oauth2TokenService;
+
 /**
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @codeCoverageIgnore
@@ -45,6 +49,10 @@ class FiApiController extends AbstractController
     protected array $inflectorExceptions;
     protected ParameterBagInterface $params;
     protected EntityManagerInterface $em;
+    protected ApiManager $apiManager;
+    protected string $apiProjectCollection;
+
+
 
     public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params, EntityManagerInterface $em)
     {
@@ -74,6 +82,31 @@ class FiApiController extends AbstractController
         $this->options = array();
         $this->enumOptions = array();
         $this->inflectorExceptions = array();
+
+        //*** instantiate ApiManager ***
+        $this->apiManager = new ApiManager( 
+            $this->params->get("bi_core.oauth2_enabled"), 
+            new Oauth2TokenService(
+                $this->params->get("bi_core.oauth2_endpoint"),
+                $this->params->get("bi_core.oauth2_clientkey")
+                ) 
+            );
+
+        $this->apiManager->setProjectName( $this->project );
+        $this->apiProjectCollection = strtolower($this->collection);
+
+        $projectRoot = $apiUtil->getProjectRoot( $this->project );
+
+        $projectConfiguration = $projectRoot."Configuration";
+        $projectHeaderSelector = $projectRoot."HeaderSelector";
+
+        $config = $projectConfiguration::getDefaultConfiguration();
+        $headerSelector = new $projectHeaderSelector( $config );
+
+        $this->apiManager->setApiClientConfigs( $headerSelector, $config );
+
+        $this->apiManager->setApiController( $this->apiProjectCollection );
+
         //it generates options one time for all
         $this->loadInflectorExceptions();
         $this->generateEnumAndOptions();
@@ -86,6 +119,11 @@ class FiApiController extends AbstractController
             $values = json_decode($vars, true);
             $this->inflectorExceptions = $values;
         }
+    }
+
+    protected function getCollectionName() : string 
+    {
+        return $this->apiProjectCollection;
     }
 
     /**
