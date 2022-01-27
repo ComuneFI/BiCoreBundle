@@ -75,7 +75,7 @@ trait FiApiCoreCrudControllerTrait
                 $entity = $form->getData();
                 $this->setIdObjectfromSelect($entity, $parameters);
 
-                $this->apiManager->postCreate( $this->getCollectionName(), $entity );
+                $this->apiManager->postCreate($this->getCollectionName(), $entity);
 
 
                 return new Response(
@@ -116,7 +116,7 @@ trait FiApiCoreCrudControllerTrait
         $formType = $formclass . 'Type';
 
 
-        $entityorig = $this->apiManager->getItem( $this->getCollectionName(), $id );
+        $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -213,7 +213,7 @@ trait FiApiCoreCrudControllerTrait
 
 
 
-        $entityorig = $this->apiManager->getItem( $this->getCollectionName(), $id );
+        $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
@@ -245,7 +245,7 @@ trait FiApiCoreCrudControllerTrait
 
 
 
-            $this->apiManager->postUpdate( $this->getCollectionName(), $entityItem, $id );
+            $this->apiManager->postUpdate($this->getCollectionName(), $entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
@@ -289,8 +289,7 @@ trait FiApiCoreCrudControllerTrait
 
 
             foreach ($ids as $id) {
-
-                $response = $this->apiManager->deleteItem( $this->getCollectionName(), $id );
+                $response = $this->apiManager->deleteItem($this->getCollectionName(), $id);
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());

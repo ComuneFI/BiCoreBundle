@@ -110,28 +110,28 @@ class Tabella
 
             $this->apiBook = new ApiUtils($this->apiCollection);
 
-            $this->apiManager = new ApiManager( 
-                $this->getTabellaParameter('oauth2_enabled', "0"), 
+            $this->apiManager = new ApiManager(
+                $this->getTabellaParameter('oauth2_enabled', "0"),
                 new Oauth2TokenService(
                     $this->getTabellaParameter('oauth2_endpoint', ""),
                     $this->getTabellaParameter('oauth2_clientkey', "")//$this->getParameter("bi_core.oauth2_clientkey")
-                    ) 
-                );
+                )
+            );
 
-            $this->apiManager->setProjectName( $this->getTabellaParameter('api_project', "no_project_given") );
+            $this->apiManager->setProjectName($this->getTabellaParameter('api_project', "no_project_given"));
             $this->apiProjectCollection = $this->getTabellaParameter('api_project_collection', "no_project_collection_given");
 
-            $projectRoot = $this->apiBook->getProjectRoot( $this->apiManager->getProjectName() );
+            $projectRoot = $this->apiBook->getProjectRoot($this->apiManager->getProjectName());
 
             $projectConfiguration = $projectRoot."Configuration";
             $projectHeaderSelector = $projectRoot."HeaderSelector";
 
             $config = $projectConfiguration::getDefaultConfiguration();
-            $headerSelector = new $projectHeaderSelector( $config );
+            $headerSelector = new $projectHeaderSelector($config);
 
-            $this->apiManager->setApiClientConfigs( $headerSelector, $config );
+            $this->apiManager->setApiClientConfigs($headerSelector, $config);
 
-            $this->apiManager->setApiController( $this->apiProjectCollection );
+            $this->apiManager->setApiController($this->apiProjectCollection);
 
             //in this moment is not set for API
             $modelUtils = new ModelUtils();
@@ -142,7 +142,8 @@ class Tabella
         $this->configurazionecolonnetabella = $this->getAllOpzioniTabella();
     }
 
-    private function getCollectionName() {
+    private function getCollectionName()
+    {
         return $this->apiProjectCollection;
     }
 

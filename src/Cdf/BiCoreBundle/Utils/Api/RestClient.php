@@ -7,20 +7,22 @@
 
 namespace Cdf\BiCoreBundle\Utils\Api;
 
-
-class RestClient {
+class RestClient
+{
 
 
     //parameters
     private $endpoint;
     private $clientkey;
 
-    public function __construct(string $endpoint, string $clientkey) {
+    public function __construct(string $endpoint, string $clientkey)
+    {
         $this->endpoint = $endpoint;
         $this->clientkey = $clientkey;
     }
 
-    private function tokenize() {
+    private function tokenize()
+    {
 
         $body = array();
         $body['grant_type'] = 'client_credentials';
@@ -47,5 +49,4 @@ class RestClient {
         $data = json_decode($content);
         return $data;
     }
-
 }

@@ -371,9 +371,7 @@ trait TabellaQueryTrait
         $collection = $this->getCollectionName();
 
         if (false === $this->estraituttirecords) {
-         
-            
-            $count = $this->apiManager->getCount( $collection );
+            $count = $this->apiManager->getCount($collection);
 
             
             $this->righetotali = $count;
@@ -383,12 +381,13 @@ trait TabellaQueryTrait
 
 
 
-            $recordsets = $this->apiManager->getAll( $collection, 
+            $recordsets = $this->apiManager->getAll(
+                $collection,
                 $offsetrecords,
                 $this->getRigheperpagina(),
                 $this->orderByApiBuilder(),
                 $this->filterByApiBuilder()
-        );
+            );
 
        
 
@@ -396,7 +395,7 @@ trait TabellaQueryTrait
         } else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
 
-            $recordsets = $this->apiManager->getAll( $collection, 0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder() );
+            $recordsets = $this->apiManager->getAll($collection, 0, null, $this->orderByApiBuilder(), $this->filterByApiBuilder());
 
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);

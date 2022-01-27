@@ -99,7 +99,7 @@ class ApiUtils
      * Return the project Root path string.
      * In case of project Insurance, it will return the string "\\Swagger\\Insurance\\"
      */
-    public function getProjectRoot(string $projectName) : string 
+    public function getProjectRoot(string $projectName) : string
     {
         return "\\".$this->namespacePrefix()."\\".$projectName."\\";
     }

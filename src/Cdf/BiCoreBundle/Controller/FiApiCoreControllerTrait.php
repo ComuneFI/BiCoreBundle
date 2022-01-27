@@ -23,7 +23,7 @@ trait FiApiCoreControllerTrait
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager )
+    public function index(Request $request, Packages $assetsmanager)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -105,7 +105,7 @@ trait FiApiCoreControllerTrait
             'oauth2_clientkey' => ParametriTabella::setParameter($this->params->get("bi_core.oauth2_clientkey")),
             'oauth2_endpoint' => ParametriTabella::setParameter($this->params->get("bi_core.oauth2_endpoint")),
             'api_project' => ParametriTabella::setParameter($this->getProject()),
-            'api_project_collection' => ParametriTabella::setParameter(strtolower($this->collection ))
+            'api_project_collection' => ParametriTabella::setParameter(strtolower($this->collection))
         ];
 
         return $this->render($crudtemplate, ['parametritabella' => $parametritabella]);

@@ -84,28 +84,28 @@ class FiApiController extends AbstractController
         $this->inflectorExceptions = array();
 
         //*** instantiate ApiManager ***
-        $this->apiManager = new ApiManager( 
-            $this->params->get("bi_core.oauth2_enabled"), 
+        $this->apiManager = new ApiManager(
+            $this->params->get("bi_core.oauth2_enabled"),
             new Oauth2TokenService(
                 $this->params->get("bi_core.oauth2_endpoint"),
                 $this->params->get("bi_core.oauth2_clientkey")
-                ) 
-            );
+            )
+        );
 
-        $this->apiManager->setProjectName( $this->project );
+        $this->apiManager->setProjectName($this->project);
         $this->apiProjectCollection = strtolower($this->collection);
 
-        $projectRoot = $apiUtil->getProjectRoot( $this->project );
+        $projectRoot = $apiUtil->getProjectRoot($this->project);
 
         $projectConfiguration = $projectRoot."Configuration";
         $projectHeaderSelector = $projectRoot."HeaderSelector";
 
         $config = $projectConfiguration::getDefaultConfiguration();
-        $headerSelector = new $projectHeaderSelector( $config );
+        $headerSelector = new $projectHeaderSelector($config);
 
-        $this->apiManager->setApiClientConfigs( $headerSelector, $config );
+        $this->apiManager->setApiClientConfigs($headerSelector, $config);
 
-        $this->apiManager->setApiController( $this->apiProjectCollection );
+        $this->apiManager->setApiController($this->apiProjectCollection);
 
         //it generates options one time for all
         $this->loadInflectorExceptions();
@@ -121,7 +121,7 @@ class FiApiController extends AbstractController
         }
     }
 
-    protected function getCollectionName() : string 
+    protected function getCollectionName() : string
     {
         return $this->apiProjectCollection;
     }
