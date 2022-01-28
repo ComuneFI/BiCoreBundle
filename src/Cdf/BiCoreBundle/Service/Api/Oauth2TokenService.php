@@ -14,9 +14,11 @@ use Cdf\BiCoreBundle\Utils\Api\RestClient;
 class Oauth2TokenService
 {
 
-    private $access_token;
-    private $endpoint;
-    private $clientkey;
+    private string $access_token;
+    private string $endpoint;
+    private string $clientkey;
+    private string $expires_in;
+    private string $token_type;
 
 
     /**
@@ -32,7 +34,7 @@ class Oauth2TokenService
     /**
      * Return the ticket if any, otherwise compute it
      */
-    public function getToken()
+    public function getToken(): string
     {
         if ($this->access_token == '') {
             $this->refreshToken();
@@ -40,10 +42,20 @@ class Oauth2TokenService
         return $this->access_token;
     }
 
+    public function getExpiresIn(): string
+    {
+        return $this->expires_in;
+    }
+
+    public function getTokenType(): string
+    {
+        return $this->token_type;
+    }
+
     /**
      * Refresh the service ticket
      */
-    public function refreshToken()
+    public function refreshToken(): void
     {
         $rest = new RestClient($this->endpoint, $this->clientkey);
         $results = $rest->oauth2Principal();

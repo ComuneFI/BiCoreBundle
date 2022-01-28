@@ -7,13 +7,15 @@
 
 namespace Cdf\BiCoreBundle\Utils\Api;
 
+use GuzzleHttp\Client;
+
 class RestClient
 {
 
 
     //parameters
-    private $endpoint;
-    private $clientkey;
+    private string $endpoint;
+    private string $clientkey;
 
     public function __construct(string $endpoint, string $clientkey)
     {
@@ -21,13 +23,13 @@ class RestClient
         $this->clientkey = $clientkey;
     }
 
-    private function tokenize()
+    private function tokenize(): mixed
     {
 
         $body = array();
         $body['grant_type'] = 'client_credentials';
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
         $res = $client->request('POST', $this->endpoint, [
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
@@ -42,7 +44,7 @@ class RestClient
     /**
      * Perform a call to the principal method of token acquisition
      */
-    public function oauth2Principal()
+    public function oauth2Principal(): mixed
     {
         $response = $this->tokenize();
         $content = $response->getBody();

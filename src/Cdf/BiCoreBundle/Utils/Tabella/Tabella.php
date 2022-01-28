@@ -142,7 +142,7 @@ class Tabella
         $this->configurazionecolonnetabella = $this->getAllOpzioniTabella();
     }
 
-    private function getCollectionName()
+    protected function getCollectionName(): string
     {
         return $this->apiProjectCollection;
     }

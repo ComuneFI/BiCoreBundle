@@ -9,12 +9,10 @@
 namespace Cdf\BiCoreBundle\Service\Api;
 
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
+use Cdf\BiCoreBundle\Utils\Api\ApiManagerUtil;
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Cdf\BiCoreBundle\Service\Api\Oauth2TokenService;
-
-//TODO: interventi su APIManager
-//TODO: Utilizzare la gestione del token oauth2 per la parte gestita da bicore
-
+use \Exception;
 
 /**
  * It provides services to use API Rest.
@@ -22,12 +20,14 @@ use Cdf\BiCoreBundle\Service\Api\Oauth2TokenService;
 class ApiManager
 {
 
-    private $project;
-    private $oauth2Service;
-    private $oauth2Enabled;
-    private $map;
-    private $headerSelector;
-    private $config;
+    private string $project;
+    private Oauth2TokenService $oauth2Service;
+    private bool $oauth2Enabled;
+    private mixed $map;
+    private object $headerSelector;
+    private object $config;
+
+    private ApiManagerUtil $apiManUtil;
 
     /**
      * Build an ApiManager instance
@@ -40,43 +40,44 @@ class ApiManager
         if ($oauth2Parameter == 1) {
             $this->oauth2Enabled = true;
         }
+        $this->apiManUtil = new ApiManagerUtil();
     }
 
     //Set the project name of client api
-    public function setProjectName(string $projectName)
+    public function setProjectName(string $projectName): void
     {
         $this->project = $projectName;
     }
 
     //Get the project name of client api
-    public function getProjectName()
+    public function getProjectName(): string
     {
         return $this->project;
     }
 
     //Allow to set a config and an headerselector for the client api
-    public function setApiClientConfigs($headerSelector, $config)
+    public function setApiClientConfigs(object $headerSelector, object $config): void
     {
         $this->headerSelector = $headerSelector;
         $this->config = $config;
     }
 
-    private function isApiClientConfigs()
+    private function isApiClientConfigs(): void
     {
         if (!isset($this->headerSelector) || !isset($this->config)) {
-            throw new \Exception("Header selector not set or Config not set. Set them using setApiClientConfigs() method");
+            throw new Exception("Header selector not set or Config not set. Set them using setApiClientConfigs() method");
         }
     }
 
     //Return true if oauth2 is enabled
-    private function isOauth2()
+    private function isOauth2(): bool
     {
         return $this->oauth2Enabled;
     }
 
 
     //generic setup
-    public function setupCollection($collectionString)
+    public function setupCollection(string $collectionString): void
     {
         $this->setApiController($collectionString);
     }
@@ -86,7 +87,7 @@ class ApiManager
      * Assure that exist an item mapped into ApiManager having the given collection
      * and project as key.
      */
-    public function setApiController(String $collection, String $subcollection = '')
+    public function setApiController(String $collection, String $subcollection = ''): void
     {
         //if not set it throws a new exception
         $this->isApiClientConfigs();
@@ -104,10 +105,9 @@ class ApiManager
         $apiClass = $apiUtils->getApiControllerClass($this->project, $outcome);
 
         $apiController = new $apiClass(null, $this->config, $this->headerSelector);
+        $subArray = [ $subcollection => $subcollectionValue ];
         if (!empty($this->map[$collection]['sub-api'])) {
             $subArray = $this->map[$collection]['sub-api'][$subcollection] = $subcollectionValue;
-        } else {
-            $subArray = [ $subcollection => $subcollectionValue ];
         }
         $this->map($collection, [
             'util' => $apiUtils,
@@ -116,7 +116,7 @@ class ApiManager
             ]);
     }
 
-    private function map($collection, $tools)
+    private function map(string $collection, mixed $tools): void
     {
         if (!isset($this->map[$collection])) {
             $this->map[$collection] = $tools;
@@ -126,7 +126,7 @@ class ApiManager
     /**
      * It checks if error is due to a Broken Pipe
      */
-    private function isBrokenPipe(&$error) : bool
+    private function isBrokenPipe(Exception &$error) : bool
     {
         $outcome = false;
         if (strpos($error->getMessage(), 'broken pipe') !== false) {
@@ -139,7 +139,7 @@ class ApiManager
      * Set the token managed by wso2TokenService into api-service
      * If token is already set, then it doesn't change it
      */
-    private function setToken($api)
+    private function setToken(mixed $api): string
     {
         $token = '';
         if ($this->isOauth2()) {
@@ -155,7 +155,7 @@ class ApiManager
      * Set the token managed by wso2TokenService into api-service
      * If token is already set, it replaces it
      */
-    private function refreshToken($api, $token)
+    private function refreshToken(mixed $api, string $token): void
     {
         if ($this->isOauth2()) {
             $api->getConfig()->setAccessToken($token);
@@ -166,7 +166,7 @@ class ApiManager
     /**
      * Return the proper method to be used
      */
-    private function getMethod(String $collection, String $getMethod, String $subcollection = null): String
+    private function getMethod(String $collection, String $getMethod, String $subcollection = null): string
     {
         $tools = $this->map[$collection];
         $method = $tools['util']->$getMethod();
@@ -176,10 +176,22 @@ class ApiManager
         return $method;
     }
 
+
+    /**
+     * Retry one more time if exception is for broken pipes
+     */
+    private function retry(Exception $apiEx, object $object, string $method, mixed $args): mixed
+    {
+        if ($this->isBrokenPipe($apiEx)) {
+            return $object->$method(...$args);
+        }
+        throw $apiEx;
+    }
+
     /**
      * Return the amount of element existent for the given collection.
      */
-    public function getCount(String $collection, String $subcollection = null)
+    public function getCount(String $collection, String $subcollection = null): mixed
     {
         $getCountmethod = $this->getMethod($collection, 'getCount', $subcollection);
         $tools = $this->map[$collection];
@@ -194,15 +206,7 @@ class ApiManager
                 $amount = $tools['api']->$getCountmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $amount = $tools['api']->$getCountmethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $amount = $this->retry($apiEx, $tools['api'], $getCountmethod, $arguments);
         }
         return $amount;
     }
@@ -210,7 +214,7 @@ class ApiManager
     /**
      * Get items existent for the given collection, filtered as requested.
      */
-    public function getAll(String $collection, $offset = null, $limit = null, $sort = null, $condition = null, String $subcollection = null)
+    public function getAll(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $condition, string $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $getAllmethod = $this->getMethod($collection, 'getAll', $subcollection);
@@ -230,15 +234,7 @@ class ApiManager
                 $results = $tools['api']->$getAllmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $results = $tools['api']->$getAllmethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $results = $this->retry($apiEx, $tools['api'], $getAllmethod, $arguments);
         }
         return $results;
     }
@@ -248,7 +244,7 @@ class ApiManager
      * subcollection contains the name of sub-collection if any
      * subcollectionVar contains the value of sub-collection if any
      */
-    public function getItem(String $collection, $id, String $subcollection = null, $subcollectionVar = null)
+    public function getItem(String $collection, int $id, String $subcollection = null, string $subcollectionVar = null): mixed
     {
         $tools = $this->map[$collection];
         $getAllmethod = $this->getMethod($collection, 'getItem', $subcollection);
@@ -263,15 +259,7 @@ class ApiManager
             $results = $tools['api']->$getAllmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $results = $tools['api']->$getAllmethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $results = $this->retry($apiEx, $tools['api'], $getAllmethod, $arguments);
         }
         return $results;
     }
@@ -279,11 +267,10 @@ class ApiManager
     /**
      * Delete an existent item
      */
-    public function deleteItem(String $collection, $id, String $subcollection = null)
+    public function deleteItem(String $collection, int $id, String $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $deleteMethod = $this->getMethod($collection, 'getDelete', $subcollection);
-        $results = [];
         $arguments = array();
         if ($subcollection != null) {
             array_push($arguments, $subcollection);
@@ -294,15 +281,7 @@ class ApiManager
             $response = $tools['api']->$deleteMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $response = $tools['api']->$deleteMethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $response = $this->retry($apiEx, $tools['api'], $deleteMethod, $arguments);
         }
         return $response;
     }
@@ -311,7 +290,7 @@ class ApiManager
     /**
      * Create the requested object, using the given body item.
      */
-    public function postCreate(String $collection, $body, String $subcollection = null)
+    public function postCreate(String $collection, mixed $body, String $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $createMethod = $this->getMethod($collection, 'getCreate', $subcollection);
@@ -326,15 +305,7 @@ class ApiManager
             $results = $tools['api']->$createMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $results = $tools['api']->$createMethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $results = $this->retry($apiEx, $tools['api'], $createMethod, $arguments);
         }
         return $results;
     }
@@ -343,7 +314,7 @@ class ApiManager
      /**
      * Create the requested object, using the given body item.
      */
-    public function postUpdate(String $collection, $body, $id, String $subcollection = null)
+    public function postUpdate(String $collection, object $body, int $id, String $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $createMethod = $this->getMethod($collection, 'getUpdateItem', $subcollection);
@@ -359,15 +330,7 @@ class ApiManager
             $results = $tools['api']->$createMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            if ($this->isBrokenPipe($apiEx)) {
-                try {
-                    $results = $tools['api']->$createMethod(...$arguments);
-                } catch (\Exception $apiEx) {
-                    throw $apiEx;
-                }
-            } else {
-                throw $apiEx;
-            }
+            $results = $this->retry($apiEx, $tools['api'], $createMethod, $arguments);
         }
         return $results;
     }
@@ -375,75 +338,20 @@ class ApiManager
     /**
      * It prepares entity values so that they can be used with types compliant with BiCoreBundle.
      * For example it transforms a date that arrive in string format into a DateTime.
+     * @deprecated: evaluate to migrate on ApiManagerUtil
      */
-    public function setupApiValues($entityout)
+    public function setupApiValues(mixed $entityout): mixed
     {
-        $fieldMappings = $entityout::swaggerTypes();
-        $formatMappings = $entityout::swaggerFormats();
-        $setters = $entityout::setters();
-        $getters = $entityout::getters();
-
-        foreach ($fieldMappings as $fieldName => $fieldType) {
-                $setvalue = $setters[$fieldName];
-                $getvalue = $getters[$fieldName];
-                $newvalue = $this->getValueOfData($fieldType, $formatMappings[$fieldName], $entityout->$getvalue());
-                $entityout->$setvalue($newvalue);
-        }
-        return $entityout;
-    }
-
-    /**
-     * Try to insert in automatic way the conversion to a BiCore known value
-     */
-    private function getValueOfData($fieldType, $formatType, $oldvalue)
-    {
-        $value = $oldvalue;
-
-        switch ($fieldType) {
-            case null:
-                break;
-            case 'int':
-                $value = (int)$value;
-                break;
-            case 'double':
-                $value = (double)$value;
-                break;
-            case 'bool':
-                $value = (bool)$value;
-                break;
-            case 'string':
-                if ($formatType == 'datetime') {
-                    if (!empty($oldvalue)) {
-                        $oldvalue = str_replace('/', '-', $oldvalue);
-                        $time = strtotime($oldvalue);
-                        $value = new \DateTime();
-                        $value->setTimestamp($time);
-                    } else {
-                        $value = null;
-                    }
-                }
-                break;
-        }
-     
-        return $value;
+        return $this->apiManUtil->setupApiValues($entityout);
     }
 
     /**
      * Map first object transformed into the second where possible,
      * attempting to map each field of first into field of the second.
+     * @deprecated: evaluate to migrate on ApiManagerUtil
      */
-    public function mapData($modelEntity, $controllerItem)
+    public function mapData(object $modelEntity, object $controllerItem): mixed
     {
-        $setters = $controllerItem::setters();
-        $getters = $modelEntity::getters();
-
-        foreach ($setters as $setterKey => $setterMethod) {
-            if (isset($getters[$setterKey])) {
-                $getMethod = $getters[$setterKey];
-                $controllerItem->$setterMethod($modelEntity->$getMethod());
-            }
-        }
-
-        return $controllerItem;
+        return $this->apiManUtil->mapData($modelEntity, $controllerItem);
     }
 }
