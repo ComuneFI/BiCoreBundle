@@ -10,6 +10,7 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * @codeCoverageIgnore
@@ -99,7 +100,12 @@ trait FiApiCoreControllerTrait
             'traduzionefiltri' => ParametriTabella::setParameter(''),
             'isApi' => ParametriTabella::setParameter('1'),
             'apicontroller' => ParametriTabella::setParameter($this->apiController),
-            'apicollection' => ParametriTabella::setParameter($this->collection)
+            'apicollection' => ParametriTabella::setParameter($this->collection),
+            'oauth2_enabled' => ParametriTabella::setParameter($this->params->get("bi_core.oauth2_enabled")),
+            'oauth2_clientkey' => ParametriTabella::setParameter($this->params->get("bi_core.oauth2_clientkey")),
+            'oauth2_endpoint' => ParametriTabella::setParameter($this->params->get("bi_core.oauth2_endpoint")),
+            'api_project' => ParametriTabella::setParameter($this->getProject()),
+            'api_project_collection' => ParametriTabella::setParameter(strtolower($this->collection))
         ];
 
         return $this->render($crudtemplate, ['parametritabella' => $parametritabella]);

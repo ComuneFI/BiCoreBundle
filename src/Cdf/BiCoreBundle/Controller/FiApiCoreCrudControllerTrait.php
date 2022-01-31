@@ -75,13 +75,8 @@ trait FiApiCoreCrudControllerTrait
                 $entity = $form->getData();
                 $this->setIdObjectfromSelect($entity, $parameters);
 
-                $apiClass = $this->apiController;
-                $apiObject = new $apiClass();
-                $apiBook = new ApiUtils($this->collection);
-                $createMethod = $apiBook->getCreate();
+                $this->apiManager->postCreate($this->getCollectionName(), $entity);
 
-                /*$response = */
-                $apiObject->$createMethod($entity);
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
@@ -120,13 +115,8 @@ trait FiApiCoreCrudControllerTrait
         $formclass = $this->getFormName();
         $formType = $formclass . 'Type';
 
-        $apiClass = $this->apiController;
-        $apiObject = new $apiClass();
-        $apiBook = new ApiUtils($this->collection);
-        $getMethod = $apiBook->getItem();
 
-        //TODO: response belongs to last operation
-        $entityorig = $apiObject->$getMethod($id);
+        $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
@@ -221,13 +211,9 @@ trait FiApiCoreCrudControllerTrait
         $formclass = $this->getFormName();
         $formType = $formclass . 'Type';
 
-        $apiClass = $this->apiController;
-        $apiObject = new $apiClass();
-        $apiBook = new ApiUtils($this->collection);
-        $getMethod = $apiBook->getItem();
 
-        //TODO: response belongs to last operation
-        $entityorig = $apiObject->$getMethod($id);
+
+        $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
@@ -257,16 +243,9 @@ trait FiApiCoreCrudControllerTrait
         if ($editForm->isValid()) {
             $entityItem = $editForm->getData();
 
-            //$entityItem = $modelutils->getControllerItem($modelEntity , $this->getControllerItemName());
 
 
-            $apiClass = $this->apiController;
-            $apiObject = new $apiClass();
-            $apiBook = new ApiUtils($this->collection);
-            $updateMethod = $apiBook->getUpdateItem();
-
-            /*$responseMessage = */
-            $apiObject->$updateMethod($entityItem, $id);
+            $this->apiManager->postUpdate($this->getCollectionName(), $entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
@@ -308,14 +287,9 @@ trait FiApiCoreCrudControllerTrait
         try {
             $ids = explode(',', $request->get('id'));
 
-            $apiClass = $this->apiController;
-            $apiObject = new $apiClass();
-            $apiBook = new ApiUtils($this->collection);
-            $deleteMethod = $apiBook->getDelete();
 
             foreach ($ids as $id) {
-              //TODO: response belongs to last operation
-                $response = $apiObject->$deleteMethod($id);
+                $response = $this->apiManager->deleteItem($this->getCollectionName(), $id);
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());

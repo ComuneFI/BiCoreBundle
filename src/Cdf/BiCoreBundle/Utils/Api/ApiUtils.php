@@ -96,6 +96,15 @@ class ApiUtils
     }
 
     /**
+     * Return the project Root path string.
+     * In case of project Insurance, it will return the string "\\Swagger\\Insurance\\"
+     */
+    public function getProjectRoot(string $projectName) : string
+    {
+        return "\\".$this->namespacePrefix()."\\".$projectName."\\";
+    }
+
+    /**
      * Return the name of Api Controller.
      * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
      * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)

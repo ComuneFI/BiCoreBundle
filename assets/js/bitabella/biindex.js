@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var nomecontroller = Tabella.getMainTabella();
     let tab = new Tabella(nomecontroller);
     tab.caricatabella();
-    //dumpParametriTabella(nomecontroller);
+    //tab.__dumpParametriTabella();
 });
 
 //Gestione filtri
