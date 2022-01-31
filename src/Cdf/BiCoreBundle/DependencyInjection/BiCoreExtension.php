@@ -44,5 +44,9 @@ class BiCoreExtension extends Extension
         $container->setParameter('bi_core.userreadrolespwd4test', $config['userreadrolespwd4test']);
 
         $container->setParameter('bi_core.api_inflector_exceptions', $config['api_inflector_exceptions']);
+
+        $container->setParameter('bi_core.oauth2_enabled', $config['oauth2_enabled']);
+        $container->setParameter('bi_core.oauth2_clientkey', $config['oauth2_clientkey']);
+        $container->setParameter('bi_core.oauth2_endpoint', $config['oauth2_endpoint']);
     }
 }

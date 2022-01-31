@@ -69,6 +69,24 @@ services:
         arguments: [ '@doctrine.orm.entity_manager', '@security.token_storage' ]
         public: false
 
+    #Oauth2TokenService service
+    cdf.bicorebundle.api.oauth2.token:
+        alias: Cdf\BiCoreBundle\Service\Api\Oauth2TokenService
+        public: true
+
+    Cdf\BiCoreBundle\Service\Api\Oauth2TokenService:
+        arguments: [ '%bi_core.oauth2_endpoint%','%bi_core.oauth2_clientkey%' ]
+        public: false
+
+    #ApiManager service
+    cdf.bicorebundle.api.manager:
+        alias: Cdf\BiCoreBundle\Service\Api\ApiManager
+        public: true
+
+    Cdf\BiCoreBundle\Service\Api\ApiManager:
+        arguments: [ '%bi_core.oauth2_enabled%','@cdf.bicorebundle.api.oauth2.token' ]
+        public: false
+
     #Utility entities
     cdf.bicorebundle.utility.entity:
         alias: Cdf\BiCoreBundle\Utils\Entity\EntityUtils
