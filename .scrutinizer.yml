@@ -22,6 +22,15 @@ checks:
         code_rating: true
     
 build:
+    nodes:
+        analysis:
+            dependencies:
+                override: 
+                    - composer install --no-interaction --no-scripts
+            tests:
+                override:
+                    - php-scrutinizer-run
+            #        - phpcs-run
     environment:
         php:
             version: 8.0
@@ -29,11 +38,7 @@ build:
                 'memory_limit': '4G'
             pecl_extensions:
               - zip
-        node: "v14.15.4"
-    nodes:
-        analysis:
-          tests:
-            override: [php-scrutinizer-run]
+        #node: "v16.13.0"
         
 filter:
     excluded_paths:
