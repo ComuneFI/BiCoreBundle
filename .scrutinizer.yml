@@ -24,7 +24,7 @@ checks:
 build:
     nodes:
         analysis:
-            project_setup:
+            dependencies:
                 override: true
             #tests:
             #    override: [php-scrutinizer-run]
