@@ -82,6 +82,15 @@ yarn-error.log
 /.php-version
 /version.properties
 
+#yarn 
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 /drivers
 
 ###> phpunit/phpunit ###
