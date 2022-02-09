@@ -29,7 +29,7 @@ build:
                 'memory_limit': '4G'
             pecl_extensions:
               - zip
-        node: "v14.15.4"
+        node: "v16.14.0"
     nodes:
         analysis:
           tests:
