@@ -29,11 +29,11 @@ build:
                 'memory_limit': '4G'
             pecl_extensions:
               - zip
-        #node: "v16.13.0"
-    nodes:
-        analysis:
-          tests:
-            override: [php-scrutinizer-run]
+    #    node: "v16.13.0"
+    #nodes:
+    #    analysis:
+    #      tests:
+    #        override: [php-scrutinizer-run]
         
 filter:
     excluded_paths:
