@@ -22,7 +22,16 @@ checks:
         code_rating: true
     
 build:
-    nodes: false
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            #tests:
+            #    override: [php-scrutinizer-run]
+            #tests:
+            #    override:
+            #        - php-scrutinizer-run
+            #        - phpcs-run
     environment:
         php:
             version: 8.0
@@ -30,11 +39,7 @@ build:
                 'memory_limit': '4G'
             pecl_extensions:
               - zip
-    #    node: "v16.13.0"
-    #nodes:
-    #    analysis:
-    #      tests:
-    #        override: [php-scrutinizer-run]
+        #node: "v16.13.0"
         
 filter:
     excluded_paths:
