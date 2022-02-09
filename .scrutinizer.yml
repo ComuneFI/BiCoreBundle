@@ -25,7 +25,8 @@ build:
     nodes:
         analysis:
             dependencies:
-                - composer install --no-interaction
+                override:
+                    - composer install --no-interaction
             #tests:
             #    override: [php-scrutinizer-run]
             #tests:
