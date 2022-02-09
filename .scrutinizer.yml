@@ -22,29 +22,24 @@ checks:
         code_rating: true
     
 build:
+    nodes:
+        analysis:
+            dependencies:
+                override: 
+                    - composer install --no-interaction --no-scripts
+            tests:
+                override:
+                    - php-scrutinizer-run
+            #        - phpcs-run
     environment:
-      #variables:
-      #  locale: 'it'
-      php:
+        php:
             version: 8.0
             ini:
                 'memory_limit': '4G'
             pecl_extensions:
               - zip
-        #node: "v16.14.0"
-    nodes:
-        dependencies:
-            override: 
-                - composer install --no-interaction --no-scripts
-        analysis:
-          tests:
-            override: [php-scrutinizer-run]
-            #tests:
-            #    override: [php-scrutinizer-run]
-            #tests:
-            #    override:
-            #        - php-scrutinizer-run
-            #        - phpcs-run
+        #node: "v16.13.0"
+        
 filter:
     excluded_paths:
         - 'vendor/*'
