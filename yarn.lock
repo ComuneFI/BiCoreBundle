@@ -1248,7 +1248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-free@npm:^5.15.0":
+"@fortawesome/fontawesome-free@npm:^5.15.4":
   version: 5.15.4
   resolution: "@fortawesome/fontawesome-free@npm:5.15.4"
   checksum: 32281c3df4075290d9a96dfc22f72fadb3da7055d4117e48d34046b8c98032a55fa260ae351b0af5d6f6fb57a2f5d79a4abe52af456da35195f7cb7dda27b4a2
@@ -1323,7 +1323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/webpack-encore@npm:^1.0.0":
+"@symfony/webpack-encore@npm:^1.8.1":
   version: 1.8.1
   resolution: "@symfony/webpack-encore@npm:1.8.1"
   dependencies:
@@ -2221,7 +2221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootbox@npm:^5.3.4":
+"bootbox@npm:^5.5.2":
   version: 5.5.2
   resolution: "bootbox@npm:5.5.2"
   dependencies:
@@ -2232,7 +2232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-confirmation2@npm:^4.1.0":
+"bootstrap-confirmation2@npm:^4.2.1":
   version: 4.2.1
   resolution: "bootstrap-confirmation2@npm:4.2.1"
   peerDependencies:
@@ -2243,31 +2243,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-italia@npm:^1.3.8":
-  version: 1.4.3
-  resolution: "bootstrap-italia@npm:1.4.3"
+"bootstrap-italia@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "bootstrap-italia@npm:1.5.2"
   dependencies:
-    bootstrap: ^4.5.0
-    bootstrap-select: 1.13.17
-    jquery: ^3.5.1
+    ansi-regex: ^6.0.1
+    bootstrap: ^4.6.1
+    bootstrap-select: ^1.13.18
+    glob-parent: ^6.0.2
+    jquery: ^3.6.0
+    nth-check: ^2.0.1
     owl.carousel: 2.3.4
     popper.js: 1.16.1
     svgxuse: 1.2.6
-  checksum: 1c35f0f2131b0bc2bd4e7fd698829868f8bc4b5000689f1bad82b39d517bf5c512d1995e56f222aba87ccd68378d9a6748e54a4487bd71265c84fb19c022610a
+  checksum: bc38aa4a2436bd738b2b9c5029a62a1f61ce7f4f2a92f5b6b39b82850db4d95b49a310b627ed62620fc9fabd673d9e85496cf28219b2e077242a00dde18a8459
   languageName: node
   linkType: hard
 
-"bootstrap-select@npm:1.13.17":
-  version: 1.13.17
-  resolution: "bootstrap-select@npm:1.13.17"
+"bootstrap-select@npm:^1.13.18":
+  version: 1.13.18
+  resolution: "bootstrap-select@npm:1.13.18"
   peerDependencies:
     bootstrap: ">=3.0.0"
     jquery: 1.9.1 - 3
-  checksum: 1033c0dd93c3c70ed395461e4c8a59f4ce585e62b3dc1415f51cbba6ad3811c0e92181b6bc433d58fd660f6f60a0bcd9730593ac5d25816e42a2d8460f9ceb47
+  checksum: b81e977c3b8837ce7125f0050e15343aa2a59a70b8df3e40c843c35f3bb07000a1977a04f19e56d44d06093106427293433f84c1da6f83e96257f62642137530
   languageName: node
   linkType: hard
 
-"bootstrap@npm:^4.4.0, bootstrap@npm:^4.5.0":
+"bootstrap@npm:^4.4.0, bootstrap@npm:^4.6.1":
   version: 4.6.1
   resolution: "bootstrap@npm:4.6.1"
   peerDependencies:
@@ -2694,10 +2697,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.0.0":
-  version: 3.20.3
-  resolution: "core-js@npm:3.20.3"
-  checksum: 2106cdfb1330abf9e27d577666fc0421feafe8c39bb5af90a63af16e9706c767a7e3a82edc21ce3ed6b9d806f3200d1cf6cc3d0597a8c0af12dbec287c781d65
+"core-js@npm:^3.21.1":
+  version: 3.21.1
+  resolution: "core-js@npm:3.21.1"
+  checksum: d68eddd831340ad5b24ac29c72fda022a43b17f194c4278b6b875a843283d316502cb4abd07f28631d6ebc4387f66aa06e2b1b3c8fd7e08096a751b5c63f6889
   languageName: node
   linkType: hard
 
@@ -3494,7 +3497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-loader@npm:^6.0.0":
+"file-loader@npm:^6.2.0":
   version: 6.2.0
   resolution: "file-loader@npm:6.2.0"
   dependencies:
@@ -3688,6 +3691,15 @@ __metadata:
   dependencies:
     is-glob: ^4.0.1
   checksum: f4f2bfe2425296e8a47e36864e4f42be38a996db40420fe434565e4480e3322f18eb37589617a98640c5dc8fdec1a387007ee18dbb1f3f5553409c34d17f425e
+  languageName: node
+  linkType: hard
+
+"glob-parent@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "glob-parent@npm:6.0.2"
+  dependencies:
+    is-glob: ^4.0.3
+  checksum: c13ee97978bef4f55106b71e66428eb1512e71a7466ba49025fc2aec59a5bfb0954d5abd58fc5ee6c9b076eef4e1f6d3375c2e964b88466ca390da4419a786a8
   languageName: node
   linkType: hard
 
@@ -4132,7 +4144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-glob@npm:^4.0.1, is-glob@npm:~4.0.1":
+"is-glob@npm:^4.0.1, is-glob@npm:^4.0.3, is-glob@npm:~4.0.1":
   version: 4.0.3
   resolution: "is-glob@npm:4.0.3"
   dependencies:
@@ -4272,7 +4284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-contextmenu@npm:^2.9.0":
+"jquery-contextmenu@npm:^2.9.2":
   version: 2.9.2
   resolution: "jquery-contextmenu@npm:2.9.2"
   dependencies:
@@ -4283,7 +4295,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery@npm:>=1.8.3, jquery@npm:^3.5.0, jquery@npm:^3.5.1":
+"jquery@npm:>=1.8.3, jquery@npm:^3.5.0, jquery@npm:^3.5.1, jquery@npm:^3.6.0":
   version: 3.6.0
   resolution: "jquery@npm:3.6.0"
   checksum: 8fd5fef4aa48fd374ec716dd1c1df1af407814a228e15c1260ca140de3a697c2a77c30c54ff1d238b6a3ab4ddc445ddeef9adce6c6d28e4869d85eb9d3951c0e
@@ -5990,18 +6002,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-free": ^5.15.0
-    "@symfony/webpack-encore": ^1.0.0
-    bootbox: ^5.3.4
-    bootstrap-confirmation2: ^4.1.0
-    bootstrap-italia: ^1.3.8
-    core-js: ^3.0.0
-    file-loader: ^6.0.0
-    jquery-contextmenu: ^2.9.0
+    "@fortawesome/fontawesome-free": ^5.15.4
+    "@symfony/webpack-encore": ^1.8.1
+    bootbox: ^5.5.2
+    bootstrap-confirmation2: ^4.2.1
+    bootstrap-italia: ^1.5.2
+    core-js: ^3.21.1
+    file-loader: ^6.2.0
+    jquery-contextmenu: ^2.9.2
     moment: ^2.29.1
     popover: ^2.4.1
-    sweetalert2: ^11.0.0
-    webpack-notifier: ^1.6.0
+    sweetalert2: ^11.4.3
+    webpack-notifier: ^1.15.0
   languageName: unknown
   linkType: soft
 
@@ -6569,10 +6581,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sweetalert2@npm:^11.0.0":
-  version: 11.3.6
-  resolution: "sweetalert2@npm:11.3.6"
-  checksum: 7c15ced47f3999a71ece56c9a90ff924166cad38e6ce934af2c5658f0d03860af1f9277b04932ee5746d0087cdd0b34d835f09aff1e6db2a580a73ec9841b800
+"sweetalert2@npm:^11.4.3":
+  version: 11.4.3
+  resolution: "sweetalert2@npm:11.4.3"
+  checksum: f20189443c89c23f6e72874d176d3efbc190f3bce0570144b944f13cc0b26e38b6aafa382c7dd93ac470b8179e54bbd05c59c7e49fea406168c2547a189df3b5
   languageName: node
   linkType: hard
 
@@ -6946,7 +6958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-notifier@npm:^1.6.0":
+"webpack-notifier@npm:^1.15.0":
   version: 1.15.0
   resolution: "webpack-notifier@npm:1.15.0"
   dependencies:

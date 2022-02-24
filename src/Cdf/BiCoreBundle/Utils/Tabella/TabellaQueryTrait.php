@@ -198,7 +198,7 @@ trait TabellaQueryTrait
             if ($time === false) {
                 throw new Exception("time non valido: " . $time);
             }
-            
+
             $backend_format = FieldTypeUtils::getEnvVar("BE_DATETIME_FORMAT", "Y-m-d\TH:i:sP");
             if ($hour === false) {
                 $backend_format = FieldTypeUtils::getEnvVar("BE_DATE_FORMAT", "Y-m-d");
@@ -373,13 +373,10 @@ trait TabellaQueryTrait
         if (false === $this->estraituttirecords) {
             $count = $this->apiManager->getCount($collection);
 
-            
             $this->righetotali = $count;
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
             $offsetrecords = ($this->getRigheperpagina() * ($this->getPaginacorrente() - 1));
-
-
 
             $recordsets = $this->apiManager->getAll(
                 $collection,
@@ -388,10 +385,6 @@ trait TabellaQueryTrait
                 $this->orderByApiBuilder(),
                 $this->filterByApiBuilder()
             );
-
-       
-
-            //dump($recordsets);
         } else {
             /* Dall'oggetto querybuilder si ottiene la query da eseguire */
 
@@ -402,7 +395,7 @@ trait TabellaQueryTrait
         }
         $this->records = array();
         $rigatabellahtml = array();
-        foreach ($recordsets as $record) {
+        foreach ((array) $recordsets as $record) {
             $this->records[$record->getId()] = $record;
             unset($rigatabellahtml);
         }
