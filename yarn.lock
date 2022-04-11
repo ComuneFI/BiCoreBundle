@@ -1248,10 +1248,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-free@npm:^5.15.4":
-  version: 5.15.4
-  resolution: "@fortawesome/fontawesome-free@npm:5.15.4"
-  checksum: 32281c3df4075290d9a96dfc22f72fadb3da7055d4117e48d34046b8c98032a55fa260ae351b0af5d6f6fb57a2f5d79a4abe52af456da35195f7cb7dda27b4a2
+"@fortawesome/fontawesome-free@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@fortawesome/fontawesome-free@npm:6.1.1"
+  checksum: adb3c71e0d9e60488401a193cfd1925ad100935ae41c88d3969937b59c182289ecc6f8c0835f0a3fb9cc215348a047a39536e918247381774baf7dcebef94b64
   languageName: node
   linkType: hard
 
@@ -1323,9 +1323,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/webpack-encore@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "@symfony/webpack-encore@npm:1.8.1"
+"@splidejs/splide@npm:^3.6.12":
+  version: 3.6.12
+  resolution: "@splidejs/splide@npm:3.6.12"
+  checksum: 2257a63a3adea8693492875b8e742eddf777ff2dfca3bc4e0197f74773aa75d0dd6888197219b755b64c3b511239dc29ace0a0bb1465704b3e8e6bc35760b8f2
+  languageName: node
+  linkType: hard
+
+"@symfony/webpack-encore@npm:^1.8.2":
+  version: 1.8.2
+  resolution: "@symfony/webpack-encore@npm:1.8.2"
   dependencies:
     "@babel/core": ^7.7.0
     "@babel/plugin-syntax-dynamic-import": ^7.0.0
@@ -1354,7 +1361,7 @@ __metadata:
     yargs-parser: ^20.2.4
   bin:
     encore: bin/encore.js
-  checksum: 0bbcc49618428331794ac39e279c85e06fc3831b4d544417221a7957c95ba72af945b88d4b63c754fc54a7acba2f246bdcc04e98c2e5ed3e56fb72ef7390cabb
+  checksum: 7dcd1dc7a36990a9db11f142eaaf179d136a294841979d44e402d65f6a471e89487451c71f053853af77ec38d17df4b5dc1f637011cdb32d2ec8b167b0d7fe1f
   languageName: node
   linkType: hard
 
@@ -1828,6 +1835,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"accessible-autocomplete@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "accessible-autocomplete@npm:2.0.4"
+  dependencies:
+    preact: ^8.3.1
+  checksum: e1eeff2785476bb37be022a1a149e68f3bacd4e29a264b442ddd2d6c94fe900ecaf109a87098791e55774fe7ec9d93e6d55039390c9e82207d3ebb18576f182a
+  languageName: node
+  linkType: hard
+
 "acorn-import-assertions@npm:^1.7.6":
   version: 1.8.0
   resolution: "acorn-import-assertions@npm:1.8.0"
@@ -2243,20 +2259,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-italia@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "bootstrap-italia@npm:1.5.2"
+"bootstrap-italia@npm:^1.6.2":
+  version: 1.6.2
+  resolution: "bootstrap-italia@npm:1.6.2"
   dependencies:
-    ansi-regex: ^6.0.1
+    "@splidejs/splide": ^3.6.12
+    accessible-autocomplete: ^2.0.4
     bootstrap: ^4.6.1
     bootstrap-select: ^1.13.18
-    glob-parent: ^6.0.2
     jquery: ^3.6.0
-    nth-check: ^2.0.1
+    just-validate: ^3.5.0
+    just-validate-plugin-date: ^1.1.1
     owl.carousel: 2.3.4
     popper.js: 1.16.1
     svgxuse: 1.2.6
-  checksum: bc38aa4a2436bd738b2b9c5029a62a1f61ce7f4f2a92f5b6b39b82850db4d95b49a310b627ed62620fc9fabd673d9e85496cf28219b2e077242a00dde18a8459
+  checksum: 72d477e30705c18801214e756e408280495db28611ef4a27780f1fb176a0e518c0added1430bb1e13e8cc5cd44c0e94343c0e8ef19ae58d716c8bb946b0751e9
   languageName: node
   linkType: hard
 
@@ -2903,6 +2920,13 @@ __metadata:
     es5-ext: ^0.10.50
     type: ^1.0.1
   checksum: 49ca0639c7b822db670de93d4fbce44b4aa072cd848c76292c9978a8cd0fff1028763020ff4b0f147bd77bfe29b4c7f82e0f71ade76b2a06100543cdfd948d19
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:2.28.0":
+  version: 2.28.0
+  resolution: "date-fns@npm:2.28.0"
+  checksum: a0516b2e4f99b8bffc6cc5193349f185f195398385bdcaf07f17c2c4a24473c99d933eb0018be4142a86a6d46cb0b06be6440ad874f15e795acbedd6fd727a1f
   languageName: node
   linkType: hard
 
@@ -3694,15 +3718,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-parent@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "glob-parent@npm:6.0.2"
-  dependencies:
-    is-glob: ^4.0.3
-  checksum: c13ee97978bef4f55106b71e66428eb1512e71a7466ba49025fc2aec59a5bfb0954d5abd58fc5ee6c9b076eef4e1f6d3375c2e964b88466ca390da4419a786a8
-  languageName: node
-  linkType: hard
-
 "glob-to-regexp@npm:^0.4.1":
   version: 0.4.1
   resolution: "glob-to-regexp@npm:0.4.1"
@@ -4144,7 +4159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-glob@npm:^4.0.1, is-glob@npm:^4.0.3, is-glob@npm:~4.0.1":
+"is-glob@npm:^4.0.1, is-glob@npm:~4.0.1":
   version: 4.0.3
   resolution: "is-glob@npm:4.0.3"
   dependencies:
@@ -4367,6 +4382,22 @@ __metadata:
   bin:
     json5: lib/cli.js
   checksum: e88fc5274bb58fc99547baa777886b069d2dd96d9cfc4490b305fd16d711dabd5979e35a4f90873cefbeb552e216b041a304fe56702bedba76e19bc7845f208d
+  languageName: node
+  linkType: hard
+
+"just-validate-plugin-date@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "just-validate-plugin-date@npm:1.1.1"
+  dependencies:
+    date-fns: 2.28.0
+  checksum: 74cd7b3ccb7f6535ed64e0fac5a584138f9ea484eaa3b63da4fa4619ff3d56196558f855e25151c89af936dd010f4000d6344455f6663c6513c6d761b53cc331
+  languageName: node
+  linkType: hard
+
+"just-validate@npm:^3.5.0":
+  version: 3.5.1
+  resolution: "just-validate@npm:3.5.1"
+  checksum: 6859542c2ad30549556a4ccf9e64c097dbe6defa13bfab5d15939ece72b16661de5ec491b7866ea6b843138b50c13e2c2df02aa035be9ce2f9af38eaa629800c
   languageName: node
   linkType: hard
 
@@ -4732,10 +4763,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.1":
-  version: 2.29.1
-  resolution: "moment@npm:2.29.1"
-  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
+"moment@npm:^2.29.2":
+  version: 2.29.2
+  resolution: "moment@npm:2.29.2"
+  checksum: ee850b5776485e2af0775ceb3cfebaa7d7638f0a750fe0678fcae24c310749f96c1938808384bd422a55e5703834a71fcb09c8a1d36d9cf847f6ed0205d7a3e5
   languageName: node
   linkType: hard
 
@@ -5626,6 +5657,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:^8.3.1":
+  version: 8.5.3
+  resolution: "preact@npm:8.5.3"
+  checksum: 1a2d90816abdc62673842190b819b7ce2f552b4b412cc0d2118395d8167e79f4e988229993079700277a0cae6b7fd895b3bfe5a43091bbc1f4df43903b04d1e7
+  languageName: node
+  linkType: hard
+
 "pretty-error@npm:^3.0.3":
   version: 3.0.4
   resolution: "pretty-error@npm:3.0.4"
@@ -6002,17 +6040,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-free": ^5.15.4
-    "@symfony/webpack-encore": ^1.8.1
+    "@fortawesome/fontawesome-free": ^6.1.1
+    "@symfony/webpack-encore": ^1.8.2
     bootbox: ^5.5.2
     bootstrap-confirmation2: ^4.2.1
-    bootstrap-italia: ^1.5.2
+    bootstrap-italia: ^1.6.2
     core-js: ^3.21.1
     file-loader: ^6.2.0
     jquery-contextmenu: ^2.9.2
-    moment: ^2.29.1
+    moment: ^2.29.2
     popover: ^2.4.1
-    sweetalert2: ^11.4.3
+    sweetalert2: ^11.4.8
     webpack-notifier: ^1.15.0
   languageName: unknown
   linkType: soft
@@ -6581,10 +6619,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sweetalert2@npm:^11.4.3":
-  version: 11.4.3
-  resolution: "sweetalert2@npm:11.4.3"
-  checksum: f20189443c89c23f6e72874d176d3efbc190f3bce0570144b944f13cc0b26e38b6aafa382c7dd93ac470b8179e54bbd05c59c7e49fea406168c2547a189df3b5
+"sweetalert2@npm:^11.4.8":
+  version: 11.4.8
+  resolution: "sweetalert2@npm:11.4.8"
+  checksum: 6dcb2eac662a9748a8695ef0614cadfaa4b462e120effc66c0e739320d31818bfd64708a71af4ebfff516bd00a54aeaf0945f5e7564abf714ec9c9cf88c8a174
   languageName: node
   linkType: hard
 
