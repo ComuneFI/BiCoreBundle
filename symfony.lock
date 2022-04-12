@@ -1,4 +1,7 @@
 {
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.4"
+    },
     "composer/pcre": {
         "version": "1.0.0"
     },
@@ -133,9 +136,6 @@
     "jms/metadata": {
         "version": "1.7.0"
     },
-    "jms/parser-lib": {
-        "version": "1.0.0"
-    },
     "jms/serializer": {
         "version": "1.10.0"
     },
@@ -175,9 +175,6 @@
     "php-webdriver/webdriver": {
         "version": "1.12.0"
     },
-    "phpcollection/phpcollection": {
-        "version": "0.5.0"
-    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -198,6 +195,9 @@
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "1.4.3"
     },
     "phpstan/phpstan": {
         "version": "1.2.0"

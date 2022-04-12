@@ -20,13 +20,19 @@ class DatabaseInfoDataCollector extends DataCollector
     public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
         $driverinfo = $this->em->getConnection()->getParams();
+        $dbname = "";
+        if (isset($driverinfo["dbname"]) && array_key_exists("dbname", $driverinfo)) {
+            $dbname = $driverinfo["dbname"];
+        } else {
+            $dbname = isset($driverinfo["path"])?$driverinfo["path"]:"";
+        }
         $this->data = array(
-            'database_driver' => $driverinfo["driver"],
-            'database_host' => $driverinfo["host"],
-            'database_port' => $driverinfo["port"],
-            'database_name' => array_key_exists("dbname", $driverinfo) ? $driverinfo["dbname"] : $driverinfo["path"],
-            'database_user' => $driverinfo["user"],
-            'database_password' => $driverinfo["password"],
+            'database_driver' => isset($driverinfo["driver"])?$driverinfo["driver"]:"",
+            'database_host' => isset($driverinfo["host"])?$driverinfo["host"]:"",
+            'database_port' => isset($driverinfo["port"])?$driverinfo["port"]:"",
+            'database_name' => $dbname,
+            'database_user' => isset($driverinfo["user"])?$driverinfo["user"]:"",
+            'database_password' => isset($driverinfo["password"])?$driverinfo["password"]:""
         );
     }
 
