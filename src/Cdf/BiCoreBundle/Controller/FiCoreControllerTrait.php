@@ -116,7 +116,7 @@ trait FiCoreControllerTrait
             $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
         }
 
-        $entityclassnotation = $this->getEntityClassNotation();
+        $entityclassnotation = $this->getEntityClassName();
         $entityclass = $this->getEntityClassName();
 
         $formclass = str_replace('Entity', 'Form', $entityclass);
