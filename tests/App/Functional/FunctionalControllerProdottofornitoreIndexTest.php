@@ -22,10 +22,11 @@ class FunctionalControllerProdottofornitoreIndexTest extends BiTestAuthorizedCli
                 });
             });
             $this->assertSame($prodottifornitoreregistrati, count($prodottifornitore));
-            $this->logout();
+            //$this->logout();
+            sleep(1);
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorFunctionalProdottofornitoreIndex.png');
             throw new \Exception($exc);
         }
     }

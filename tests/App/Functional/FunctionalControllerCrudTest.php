@@ -70,11 +70,11 @@ class FunctionalControllerCrudTest extends BiTestAuthorizedClient {
             $em->clear();
             $ordinerow2 = $em->getRepository('\\App\\Entity\\Ordine')->find(9);
             $this->assertEquals($qta2ex, $ordinerow2->getQuantita());
-
-            $this->logout();
+            sleep(1);
+            //$this->logout();
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorFunctionalOrdineEditinline.png');
             throw new \Exception($exc);
         }
     }

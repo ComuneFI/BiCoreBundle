@@ -82,10 +82,10 @@ class FunctionalControllerClienteIndexTest extends BiTestAuthorizedClient {
             sleep(1);
             $this->clickElement($selectorconfirm);
             sleep(1);
-            $this->logout();
+            //$this->logout();
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorFunctionalClienteIndex.png');
             throw new \Exception($exc);
         }
     }

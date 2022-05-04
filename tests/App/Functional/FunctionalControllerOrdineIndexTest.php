@@ -21,10 +21,11 @@ class FunctionalControllerOrdineIndexTest extends BiTestAuthorizedClient {
                 });
             });
             $this->assertSame($ordiniregistrati, count($ordini));
-            $this->logout();
+            //$this->logout();
+            sleep(1);
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorFunctionalOrdineIndex.png');
             throw new \Exception($exc);
         }
     }

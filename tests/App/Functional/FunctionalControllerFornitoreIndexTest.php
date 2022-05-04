@@ -21,10 +21,11 @@ class FunctionalControllerFornitoreIndexTest extends BiTestAuthorizedClient {
                 });
             });
             $this->assertSame($fornitoriregistrati, count($fornitori));
-            $this->logout();
+            //$this->logout();
+            sleep(1);
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorFunctionalFornitoreIndex.png');
             throw new \Exception($exc);
         }
     }

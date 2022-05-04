@@ -30,10 +30,11 @@ class FunctionalControllerMagazzinoIndexTest extends BiTestAuthorizedClient {
             $numrowstabella = $crawler->filterXPath('//table[@id="tableMagazzino"]')->filter('tbody')->filter('tr')->count();
             $this->assertEquals(11, $numrowstabella);
 
-            $this->logout();
+            //$this->logout();
+            sleep(1);
             $client->quit();
         } catch (\Exception $exc) {
-            $client->takeScreenshot('tests/var/error.png');
+            $client->takeScreenshot('tests/var/errorSecuredFunctionalMagazzinoIndex.png');
             throw new \Exception($exc);
         }
     }
