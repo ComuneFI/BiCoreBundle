@@ -11,7 +11,7 @@ class FunctionalControllerClienteIndexTest extends BiTestAuthorizedClient {
         try {
             $clientiregistrati = 15;
             $htmltableid = 'tableCliente';
-            $testUrl = '/Cliente/';
+            $testUrl = '/';
             $crawler = $client->request('GET', $testUrl);
             $client->waitFor('#' . $htmltableid); // Wait for the tabellaCliente to appear
             $this->assertSame(self::$baseUri . $testUrl, $client->getCurrentURL()); // Assert we're still on the same page
