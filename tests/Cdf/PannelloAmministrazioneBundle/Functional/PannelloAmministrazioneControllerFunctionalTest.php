@@ -106,7 +106,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
             $container = static::createClient()->getContainer();
             //url da testare
             $apppath = $container->get('pannelloamministrazione.projectpath');
-            $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png';
+            $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'errorAdmin.png';
             self::$client->takeScreenshot($screenshotpath);
             throw new \Exception($exc);
         }
