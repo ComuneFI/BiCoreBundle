@@ -10,7 +10,7 @@ class ProdottofornitoreRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
-                        ->from('App:Prodottofornitore', 'a')
+                        ->from('\\App\\Entity\\Prodottofornitore', 'a')
                         ->where('a.quantitadisponibile > 0')
                         ->getQuery()
                         ->getResult();
@@ -20,7 +20,7 @@ class ProdottofornitoreRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
-                        ->from('App:Prodottofornitore', 'a')
+                        ->from('\\App\\Entity\\Prodottofornitore', 'a')
                         ->where('a.quantitadisponibile = 0')
                         ->getQuery()
                         ->getResult();

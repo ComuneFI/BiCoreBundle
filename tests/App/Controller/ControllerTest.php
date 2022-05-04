@@ -30,7 +30,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
                 ->get('doctrine')
                 ->getManager();
 
-        $ec = count($this->em->getRepository('App:' . $nomecontroller)->findAll());
+        $ec = count($this->em->getRepository('\\App\\Entity\\' . $nomecontroller)->findAll());
         $response = $client->getResponse();
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
         $this->assertJson($response->getContent());
@@ -74,7 +74,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertStringContainsString('Questo valore non dovrebbe essere vuoto', $client->getResponse()->getContent());
 
         $nominativo = 'Andrea Manzi';
-        $entity = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
+        $entity = $this->em->getRepository('\\App\\Entity\\' . $nomecontroller)->findByNominativo($nominativo);
         $nominativonserito = $entity[0];
 
         //Update
@@ -125,7 +125,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         //Controllo storico modifiche
-        $entity = $this->em->getRepository('BiCoreBundle:Storicomodifiche')->findByNometabella($nomecontroller);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Storicomodifiche')->findByNometabella($nomecontroller);
         $this->assertSame(2, count($entity));
         foreach ($entity as $clientemodificato) {
             $this->assertSame('admin', $clientemodificato->getOperatori()->getUsername());
@@ -224,7 +224,8 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
+
+        $entity = $this->em->getRepository('\\App\\Entity\\' . $nomecontroller)->findByNominativo($nominativo);
         $this->assertSame(1, count($entity));
 
         foreach ($entity as $clientemodificato) {
@@ -232,7 +233,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
             $this->em->flush();
             $this->em->clear();
         }
-        $entitybis = $this->em->getRepository('App:' . $nomecontroller)->findByNominativo($nominativo);
+        $entitybis = $this->em->getRepository('\\App\\Entity\\' . $nomecontroller)->findByNominativo($nominativo);
         $this->assertSame(0, count($entitybis));
     }
 

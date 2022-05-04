@@ -43,7 +43,7 @@ class RuoliControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Ruoli')->findByRuolo($provaruolo);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Ruoli')->findByRuolo($provaruolo);
         $ruoloinserito = $entity[0];
 
         //Edit

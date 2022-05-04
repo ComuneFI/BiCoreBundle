@@ -45,7 +45,7 @@ class MenuapplicazioneControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Menuapplicazione')->findByNome($provamenuapplicazione);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Menuapplicazione')->findByNome($provamenuapplicazione);
         $menuapplicazioneinserito = $entity[0];
 
         //Edit

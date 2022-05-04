@@ -34,10 +34,10 @@ security:
                 realm: "Area protetta"
         
     access_control:
-        - { path: ^/(_(profiler|wdt)|css|images|js|accedi), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(_(profiler|wdt)|css|images|js|accedi), roles: PUBLIC_ACCESS }
+        - { path: ^/login$, role: PUBLIC_ACCESS }
+        - { path: ^/register, role: PUBLIC_ACCESS }
+        - { path: ^/resetting, role: PUBLIC_ACCESS }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/Operatori/, role: ROLE_SUPER_ADMIN }
         - { path: ^/Ruoli/, role: ROLE_SUPER_ADMIN }

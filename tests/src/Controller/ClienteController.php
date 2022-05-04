@@ -25,7 +25,7 @@ class ClienteController extends FiController
         /* $dateimm = new \DateTimeImmutable($datestrchk);
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita = :data")
           ->setParameter("data", $dateimm);
           $ret = $qb->getQuery()->getResult();
@@ -37,7 +37,7 @@ class ClienteController extends FiController
           $datedtchk = \DateTime::createFromFormat("Y-m-d H:i:s", $datestrchk . " 00:00:00");
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita = :data")
           ->setParameter("data", $datedtchk);
           $ret = $qb->getQuery()->getResult();
@@ -46,7 +46,7 @@ class ClienteController extends FiController
           $datedtchk = \DateTime::createFromFormat("Y-m-d", $datestrchk);
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita = :data")
           ->setParameter("data", $datedtchk);
           $ret = $qb->getQuery()->getResult();
@@ -54,7 +54,7 @@ class ClienteController extends FiController
 
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita = :data")
           ->setParameter("data", $datestrchk);
           $ret = $qb->getQuery()->getResult();
@@ -65,7 +65,7 @@ class ClienteController extends FiController
 
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita >= :data1start AND Cliente.datanascita <= :data1end")
           ->setParameter("data1start", $date1start)
           ->setParameter("data1end", $date1end);
@@ -77,7 +77,7 @@ class ClienteController extends FiController
 
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita >= :data2start AND Cliente.datanascita <= :data2end")
           ->setParameter("data2start", $date2start)
           ->setParameter("data2end", $date2end);
@@ -87,7 +87,7 @@ class ClienteController extends FiController
           /* $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.datanascita = :data")
           ->setParameter("data", $datestrchk);
           $ret = $qb->getQuery()->getResult();
@@ -98,7 +98,7 @@ class ClienteController extends FiController
           $datestrftimechk = strftime("%Y-%m-%d %H:%i:%s", strtotime($datestrchk));
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.iscrittoil = :data")
           ->setParameter("data", $datestrchk);
           $ret = $qb->getQuery()->getResult();
@@ -107,7 +107,7 @@ class ClienteController extends FiController
           $datestrftimechk = strftime("%Y-%m-%d", strtotime($datestrchk));
           $qb = $this->get("doctrine")->getManager()->createQueryBuilder()
           ->select(array("Cliente"))
-          ->from("App:Cliente", "Cliente")
+          ->from("\\App\\Entity\\Cliente", "Cliente")
           ->where("Cliente.iscrittoil = :data")
           ->setParameter("data", $datestrchk);
           $ret = $qb->getQuery()->getResult();
@@ -124,7 +124,7 @@ class ClienteController extends FiController
             $template = $controller . '/Crud/' . $this->getThisFunctionName() . '.html.twig';
         }
 
-        $entityclassnotation = $this->getEntityClassNotation();
+        $entityclassnotation = $this->getEntityClassName();
         $entityclass = $this->getEntityClassName();
         $formclass = str_replace('Entity', 'Form', $entityclass);
 
@@ -219,7 +219,7 @@ class ClienteController extends FiController
     public function preparazioneaggiornamentomultiplo(Request $request, EntityUtils $entityUtils): Response
     {
         $ritorno = array();
-        $entitycolumns = $entityUtils->getEntityColumns("App:Cliente");
+        $entitycolumns = $entityUtils->getEntityColumns("\\App\\Entity\\Cliente");
         $parametri = array();
         $parametri["campi"][] = array("id" => "Cliente.attivo", "value" => "Attivo", "datatype" => $entitycolumns["attivo"]["type"]);
         $parametri["campi"][] = array("id" => "Cliente.punti", "value" => "Punti", "datatype" => $entitycolumns["punti"]["type"]);
@@ -236,7 +236,7 @@ class ClienteController extends FiController
 
         try {
             $qb = $this->em->createQueryBuilder();
-            $q = $qb->update('App:Cliente', 'Cliente')
+            $q = $qb->update('\\App\\Entity\\Cliente', 'Cliente')
                     ->set($camposelezionato, ':valore')
                     ->where("Cliente.id in (:ids)")
                     ->setParameter("valore", $valoreselezionato)

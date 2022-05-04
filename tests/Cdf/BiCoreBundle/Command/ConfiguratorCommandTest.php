@@ -49,7 +49,7 @@ class ConfiguratorCommandTest extends WebTestCase
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
         $qb->delete();
-        $qb->from('BiCoreBundle:Operatori', 'o');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Operatori', 'o');
         $qb->where('o.username= :username');
         $qb->setParameter('username', 'usernoroles');
         $qb->getQuery()->execute();
@@ -61,7 +61,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->set('r.superadmin', ":true");
         $qb->set('r.user', ":null");
         $qb->set('r.admin', ":null");
-        $qb->from('BiCoreBundle:Ruoli', 'r');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Ruoli', 'r');
         $qb->where('r.ruolo= :ruolo');
         $qb->setParameter('ruolo', 'Amministratore');
         $qb->setParameter('amministratore', 'Amministratores');
@@ -70,21 +70,21 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb->getQuery()->execute();
         $em->clear();
 
-        $operatoreadmin = $em->getRepository('BiCoreBundle:Operatori')->findOneBy(array(
+        $operatoreadmin = $em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneBy(array(
             'username' => 'admin',
         ));
 
         $qb = $em->createQueryBuilder();
         $qb->update();
         $qb->set('p.ruoli', ':operatore');
-        $qb->from('BiCoreBundle:Permessi', 'p');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Permessi', 'p');
         $qb->where('p.modulo= :modulo');
         $qb->setParameter('modulo', 'Cliente');
         $qb->setParameter('operatore', $operatoreadmin);
         $qb->getQuery()->execute();
         $em->clear();
 
-        $operatore = $em->getRepository('BiCoreBundle:Operatori')->findOneBy(array(
+        $operatore = $em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneBy(array(
             'username' => 'admin',
         ));
         $operatore->setLastLogin(new \DateTime());
@@ -95,7 +95,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $em->flush();
         $em->clear();
 
-        $menuapplicazione = $em->getRepository('BiCoreBundle:Menuapplicazione')->findOneBy(array(
+        $menuapplicazione = $em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Menuapplicazione')->findOneBy(array(
             'percorso' => 'fi_pannello_amministrazione_homepage',
         ));
         $menuapplicazione->setAutorizzazionerichiesta(true);
@@ -104,7 +104,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $em->flush();
         $em->clear();
 
-        $menuapplicazione2 = $em->getRepository('BiCoreBundle:Menuapplicazione')->findOneBy(array(
+        $menuapplicazione2 = $em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Menuapplicazione')->findOneBy(array(
             'nome' => 'Amministrazione',
         ));
         $menuapplicazione2->setAutorizzazionerichiesta(false);
@@ -156,7 +156,7 @@ class ConfiguratorCommandTest extends WebTestCase
         $qb = $em->createQueryBuilder();
         $qb->update();
         $qb->set('o.lastLogin', ':ora');
-        $qb->from('BiCoreBundle:Operatori', 'o');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Operatori', 'o');
         $qb->where('o.username= :username');
         $qb->setParameter('username', 'admin');
         $qb->setParameter('ora', null);

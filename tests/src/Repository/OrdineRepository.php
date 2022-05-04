@@ -13,7 +13,7 @@ class OrdineRepository extends EntityRepository
 
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
-                        ->from('App:Ordine', 'a')
+                        ->from('\\App\\Entity\\Ordine', 'a')
                         ->where('a.data between :dal AND :al')
                         ->setParameter('dal', $dal)
                         ->setParameter('al', $al)

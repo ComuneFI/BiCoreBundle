@@ -6,8 +6,7 @@ use Cdf\BiCoreBundle\Tests\Utils\BiTestAuthorizedClient;
 use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\BiCoreBundle\Tests\Utils\BiTest;
 
-class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient
-{
+class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedClient {
 
     protected static $client;
 
@@ -15,8 +14,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
      * @test
      */
 
-    public function test20AdminpanelGenerateBundle()
-    {
+    public function test20AdminpanelGenerateBundle() {
         self::$client = static::createPantherClient();
         $container = static::createClient()->getContainer();
         //url da testare
@@ -102,18 +100,18 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
             $this->login('admin', 'admin');
 
             $this->crudoperation(self::$client);
+            self::$client->quit();
         } catch (\Exception $exc) {
             $container = static::createClient()->getContainer();
             //url da testare
             $apppath = $container->get('pannelloamministrazione.projectpath');
-            $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'error.png';
+            $screenshotpath = $apppath->getVarPath() . DIRECTORY_SEPARATOR . 'errorAdmin.png';
             self::$client->takeScreenshot($screenshotpath);
             throw new \Exception($exc);
         }
     }
 
-    private function crudoperation()
-    {
+    private function crudoperation() {
         $this->clickElement('tabellaadd');
 
         /* Inserimento */
@@ -131,7 +129,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb1 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest1)
                         ->getQuery()->getResult();
@@ -160,7 +158,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
         $qb2 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.id = :id')
                         ->setParameter('id', $rowid)
                         ->getQuery()->getResult();
@@ -183,7 +181,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb3 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest2)
                         ->getQuery()->getResult();
@@ -192,7 +190,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb = $em->createQueryBuilder();
         $qb->delete();
-        $qb->from('BiCoreBundle:Colonnetabelle', 'o');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Colonnetabelle', 'o');
         $qb->where('o.nometabella= :tabella');
         $qb->setParameter('tabella', 'Prova');
         $qb->getQuery()->execute();
@@ -202,12 +200,12 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
     /**
      * {@inheritdoc}
      */
-    public function tearDown(): void
-    {
+    public function tearDown(): void {
         self::$client->quit();
         parent::tearDown();
         BiTest::cleanFilesystem();
         BiTest::removecache();
         BiTest::clearcache();
     }
+
 }
