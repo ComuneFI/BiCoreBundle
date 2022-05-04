@@ -45,7 +45,7 @@ class ColonnetabelleControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Colonnetabelle')->findByNometabella($provacolonnatabella);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Colonnetabelle')->findByNometabella($provacolonnatabella);
         $colonnatabellainserito = $entity[0];
 
         //Edit

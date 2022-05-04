@@ -21,6 +21,7 @@ trait TabellaQueryTrait
         $qb = $this->em->createQueryBuilder()
                 ->select(array($nometabellaalias))
                 ->from($this->entityname, $nometabellaalias);
+        /* @phpstan-ignore-next-line */
         $campi = array_keys($this->em->getMetadataFactory()->getMetadataFor($this->entityname)->reflFields);
         $this->recursiveJoin($qb, $campi, $this->tablename, $nometabellaalias);
         $this->buildWhere($qb);

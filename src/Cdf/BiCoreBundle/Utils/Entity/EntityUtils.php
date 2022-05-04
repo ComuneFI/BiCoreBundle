@@ -21,7 +21,6 @@ class EntityUtils
     {
         $cleanClassName = str_replace('\\Entity', '\:', $entity);
         $parts = explode('\\', $cleanClassName);
-
         return implode('', $parts);
     }
 
@@ -32,6 +31,7 @@ class EntityUtils
      */
     public function getEntityColumns(string $entity): array
     {
+        /* @phpstan-ignore-next-line */
         $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
         $colonne = array();
         $fieldMappings = $infocolonne->fieldMappings;

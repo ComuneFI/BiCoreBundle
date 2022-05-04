@@ -44,7 +44,7 @@ abstract class BiWebtestcaseAuthorizedClient extends WebTestCase
 
         $users = $this->em->createQueryBuilder()
                 ->select('r')
-                ->from('BiCoreBundle:Operatori', 'r')
+                ->from('\\Cdf\\BiCoreBundle\\Entity\\Operatori', 'r')
                 ->where('r.username = :username')
                 ->setParameter('username', $username)
                 ->getQuery()

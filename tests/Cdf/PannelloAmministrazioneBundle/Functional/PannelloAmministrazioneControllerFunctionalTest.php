@@ -131,7 +131,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb1 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest1)
                         ->getQuery()->getResult();
@@ -160,7 +160,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
         $em = static::createClient()->getContainer()->get('doctrine')->getManager();
         $qb2 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.id = :id')
                         ->setParameter('id', $rowid)
                         ->getQuery()->getResult();
@@ -183,7 +183,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb3 = $em->createQueryBuilder()
                         ->select(['Prova'])
-                        ->from('App:Prova', 'Prova')
+                        ->from('\\App\\Entity\\Prova', 'Prova')
                         ->where('Prova.descrizione = :descrizione')
                         ->setParameter('descrizione', $descrizionetest2)
                         ->getQuery()->getResult();
@@ -192,7 +192,7 @@ class PannelloAmministrazioneControllerFunctionalTest extends BiTestAuthorizedCl
 
         $qb = $em->createQueryBuilder();
         $qb->delete();
-        $qb->from('BiCoreBundle:Colonnetabelle', 'o');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Colonnetabelle', 'o');
         $qb->where('o.nometabella= :tabella');
         $qb->setParameter('tabella', 'Prova');
         $qb->getQuery()->execute();

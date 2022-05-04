@@ -35,7 +35,7 @@ class ClonaruoloCommandTest extends WebTestCase
 
         $query = $em->createQueryBuilder()
                 ->select('p')
-                ->from('BiCoreBundle:Ruoli', 'p')
+                ->from('\\Cdf\\BiCoreBundle\\Entity\\Ruoli', 'p')
                 ->where("p.ruolo = :ruolo")
                 ->setParameter('ruolo', $nuovoruolo)
                 ->getQuery();
@@ -44,7 +44,7 @@ class ClonaruoloCommandTest extends WebTestCase
         $ruolonew = $resultruolonew[0];
 
         $query = $em->createQueryBuilder()
-                        ->delete('BiCoreBundle:Permessi', 'p')
+                        ->delete('\\Cdf\\BiCoreBundle\\Entity\\Permessi', 'p')
                         ->where("p.ruoli = :ruolo")
                         ->setParameter('ruolo', $ruolonew)
                         ->getQuery()->execute();

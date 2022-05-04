@@ -44,7 +44,7 @@ class FunctionalControllerCrudTest extends BiTestAuthorizedClient
         $container = static::createClient()->getContainer();
         $em = $container->get('doctrine')->getManager();
 
-        $ordinerow = $em->getRepository('App:Ordine')->find(9);
+        $ordinerow = $em->getRepository('\\App\\Entity\\Ordine')->find(9);
         $this->assertEquals($qta1ex, $ordinerow->getQuantita());
         $this->clickElement('.tabellarefresh');
         //$this->executeScript('$(".tabellarefresh").click();');
@@ -69,7 +69,7 @@ class FunctionalControllerCrudTest extends BiTestAuthorizedClient
 
         /* qui */
         $em->clear();
-        $ordinerow2 = $em->getRepository('App:Ordine')->find(9);
+        $ordinerow2 = $em->getRepository('\\App\\Entity\\Ordine')->find(9);
         $this->assertEquals($qta2ex, $ordinerow2->getQuantita());
 
         $this->logout();

@@ -55,7 +55,7 @@ class PermessiControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Permessi')->findByModulo($provaopermessi);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Permessi')->findByModulo($provaopermessi);
         $permessiinserito = $entity[0];
 
         //Edit

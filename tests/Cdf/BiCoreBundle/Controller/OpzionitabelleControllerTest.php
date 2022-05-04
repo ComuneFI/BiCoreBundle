@@ -46,7 +46,7 @@ class OpzionitabelleControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Opzionitabelle')->findByNometabella($provaopzionitabelle);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Opzionitabelle')->findByNometabella($provaopzionitabelle);
         $opzionitabelleinserito = $entity[0];
 
         //Edit

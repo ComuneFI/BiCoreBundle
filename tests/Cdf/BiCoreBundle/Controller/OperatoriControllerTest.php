@@ -65,7 +65,7 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         $this->em = self::bootKernel()->getContainer()
                 ->get('doctrine')
                 ->getManager();
-        $entity = $this->em->getRepository('BiCoreBundle:Operatori')->findByUsername($provaooperatori);
+        $entity = $this->em->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findByUsername($provaooperatori);
         $operatoriinserito = $entity[0];
 
         //Edit
@@ -89,7 +89,7 @@ class OperatoriControllerTest extends BiWebtestcaseAuthorizedClient
         //Delete
         $qb = $this->em->createQueryBuilder();
         $qb->delete();
-        $qb->from('BiCoreBundle:Operatori', 'o');
+        $qb->from('\\Cdf\\BiCoreBundle\\Entity\\Operatori', 'o');
         $qb->where('o.username= :username');
         $qb->setParameter('username', 'Provaoperatori2');
         $qb->getQuery()->execute();

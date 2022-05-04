@@ -184,7 +184,7 @@ trait FiCoreControllerTrait
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
 
-        $entityclassnotation = $this->getEntityClassNotation();
+        $entityclassnotation = $this->getEntityClassName();
         $em = $this->em;
         /** @var class-string $entityclassnotation */
         $righe = $em->getRepository($entityclassnotation)->findAll();

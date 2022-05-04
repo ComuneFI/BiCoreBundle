@@ -10,7 +10,7 @@ class ClienteRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
-                        ->from('App:Cliente', 'a')
+                        ->from('\\App\\Entity\\Cliente', 'a')
                         ->where('a.attivo = true')
                         ->orderBy('a.nominativo', 'asc')
                         ->getQuery()
@@ -21,7 +21,7 @@ class ClienteRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
                         ->select(array('a'))
-                        ->from('App:Cliente', 'a')
+                        ->from('\\App\\Entity\\Cliente', 'a')
                         ->where('a.attivo = false')
                         ->orderBy('a.nominativo', 'asc')
                         ->getQuery()

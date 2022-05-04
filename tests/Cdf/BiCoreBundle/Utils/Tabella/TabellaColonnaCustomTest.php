@@ -35,7 +35,7 @@ class TabellaColonnaCustomTest extends KernelTestCase
             $template = $this->controller.'/Crud/index.html.twig';
         }
 
-        $this->entityclassnotation = 'App:Ordine';
+        $this->entityclassnotation = '\\App\\Entity\\Ordine';
         $this->entityclass = 'App\Entity\Ordine';
         $this->formclass = str_replace('Entity', 'Form', $this->entityclass);
     }
@@ -91,7 +91,7 @@ class TabellaColonnaCustomTest extends KernelTestCase
 
     private function getParametriTabella($permessi = array(), $modellocolonne = array(), $colonneordinamento = array(), $prefiltri = array(), $filtri = array(), $idpassato = '', $user = null, $righeperpagina = 15)
     {
-        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('admin');
+        $useradmin = $this->doctrine->getManager()->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneByUsername('admin');
         if (!$user) {
             $user = $useradmin;
         }
@@ -121,9 +121,9 @@ class TabellaColonnaCustomTest extends KernelTestCase
 
     private function elencoTests()
     {
-        $useradmin = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('admin');
-        $usernoroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('usernorole');
-        $userreadroles = $this->doctrine->getManager()->getRepository('BiCoreBundle:Operatori')->findOneByUsername('userreadrole');
+        $useradmin = $this->doctrine->getManager()->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneByUsername('admin');
+        $usernoroles = $this->doctrine->getManager()->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneByUsername('usernorole');
+        $userreadroles = $this->doctrine->getManager()->getRepository('\\Cdf\\BiCoreBundle\\Entity\\Operatori')->findOneByUsername('userreadrole');
 
         $alltests = array();
         /* test */
