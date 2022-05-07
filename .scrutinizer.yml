@@ -74,7 +74,6 @@ tools:
     php_pdepend:
         enabled: true
         excluded_dirs: ["build", "tests", "vendor"]
-    php_analyzer: true
     php_analyzer:
         filter:
             paths: ["src/*", "tests/*"]

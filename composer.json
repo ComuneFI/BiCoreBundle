@@ -44,7 +44,7 @@
     },
     "require": {
         "php": ">=8.0",
-        "composer/package-versions-deprecated": "1.11.99.4",
+        "composer/package-versions-deprecated": "^1.11",
         "comunedifirenze/doctrine2-exporter": "^3.0",
         "comunedifirenze/mysql-workbench-schema-exporter": "^3.0",
         "comunedifirenze/user-bundle": "^3.0",
@@ -52,7 +52,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.9",
         "fi/osbundle": "^2.0",
-        "friendsofsymfony/jsrouting-bundle": "^2.2",
+        "friendsofsymfony/jsrouting-bundle": "^3.0",
         "hanneskod/classtools": "^1.2",
         "phpoffice/phpspreadsheet": "^1.4",
         "symfony/asset": "5.4.*",
