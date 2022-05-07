@@ -5,3 +5,4 @@ Tests:
     test su stampa campi definiti da utente
 
 <server name="PANTHER_CHROME_ARGUMENTS" value="--disable-dev-shm-usage --disable-gpu --disable-extensions --remote-debugging-port=9222"/>
+<server name="PANTHER_CHROME_ARGUMENTS" value="--disable-dev-shm-usage"/>

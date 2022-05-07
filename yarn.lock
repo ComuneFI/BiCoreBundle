@@ -1503,9 +1503,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/webpack-encore@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@symfony/webpack-encore@npm:2.0.0"
+"@symfony/webpack-encore@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@symfony/webpack-encore@npm:2.1.0"
   dependencies:
     "@babel/core": ^7.17.0
     "@babel/plugin-syntax-dynamic-import": ^7.8.0
@@ -1533,7 +1533,7 @@ __metadata:
     yargs-parser: ^21.0.0
   bin:
     encore: bin/encore.js
-  checksum: bb32039634feaf4e29ab54235b2bffaa4b48b958c6ccb09625be104dbdd28c66da7e4c7cfc8e8be3e62c326412cc1932c6c83ace5ea2ef71dbbd11fe42cd7d37
+  checksum: 4f30b2c901aa9628b273f063667310770f80849bc9458b5f74957aca7958739f5d8d0604fa7d14f74ca6042576e1002ace10e3a41a7e4b911b3b83e0dbd5570d
   languageName: node
   linkType: hard
 
@@ -5908,7 +5908,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@fortawesome/fontawesome-free": ^6.1.1
-    "@symfony/webpack-encore": ^2.0.0
+    "@symfony/webpack-encore": ^2.1.0
     bootbox: ^5.5.3
     bootstrap-confirmation2: ^4.2.1
     bootstrap-italia: ^1.6.2
