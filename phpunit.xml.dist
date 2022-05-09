@@ -48,6 +48,9 @@
         <!-- <env name="DATABASE_URL" value="postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&amp;charset=utf8"/>-->
         <env name="locale" value="it"/>
     </php>
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
     </extensions>
