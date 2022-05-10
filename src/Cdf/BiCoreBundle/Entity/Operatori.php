@@ -132,9 +132,9 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Get the value of ruoli_id.
      *
-     * @return int
+     * @return ?int
      */
-    public function getRuoliId() : int
+    public function getRuoliId() : ?int
     {
         return $this->ruoli_id;
     }
