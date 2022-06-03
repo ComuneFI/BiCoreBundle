@@ -2363,9 +2363,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-italia@npm:^1.6.2":
-  version: 1.6.2
-  resolution: "bootstrap-italia@npm:1.6.2"
+"bootstrap-italia@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "bootstrap-italia@npm:1.6.3"
   dependencies:
     "@splidejs/splide": ^3.6.12
     accessible-autocomplete: ^2.0.4
@@ -2377,7 +2377,7 @@ __metadata:
     owl.carousel: 2.3.4
     popper.js: 1.16.1
     svgxuse: 1.2.6
-  checksum: 72d477e30705c18801214e756e408280495db28611ef4a27780f1fb176a0e518c0added1430bb1e13e8cc5cd44c0e94343c0e8ef19ae58d716c8bb946b0751e9
+  checksum: f7f644987fc151a7ccfbb3507b81e45c479796688bc545ec2b75a19d01929a2e6b20fd8b575cd6f578a57185ccfa78bb5617ecebab9ec4c3ee0637e175d2a972
   languageName: node
   linkType: hard
 
@@ -2810,10 +2810,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.22.4":
-  version: 3.22.4
-  resolution: "core-js@npm:3.22.4"
-  checksum: 1d031597a61d11266343c7f9a788ad620bb8e1a15207c8ff41ee77183789f1d6592d7cbaf4931d74773be08739871c6ae1a59090a7e03f0bc5131d4443cc04d2
+"core-js@npm:^3.22.8":
+  version: 3.22.8
+  resolution: "core-js@npm:3.22.8"
+  checksum: c79bcfea37920a5da880ad1fc8336355e833c83998bb28cd45cc59eef4d9824dd8d59ccd24d6b18ff88f284d53d9eef021ddbd2b5ab1c6305b01e98c1402e510
   languageName: node
   linkType: hard
 
@@ -5911,13 +5911,13 @@ __metadata:
     "@symfony/webpack-encore": ^2.1.0
     bootbox: ^5.5.3
     bootstrap-confirmation2: ^4.2.1
-    bootstrap-italia: ^1.6.2
-    core-js: ^3.22.4
+    bootstrap-italia: ^1.6.3
+    core-js: ^3.22.8
     file-loader: ^6.2.0
     jquery-contextmenu: ^2.9.2
     moment: ^2.29.3
     popover: ^2.4.1
-    sweetalert2: ^11.4.10
+    sweetalert2: ^11.4.17
     webpack-notifier: ^1.15.0
   languageName: unknown
   linkType: soft
@@ -6422,10 +6422,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sweetalert2@npm:^11.4.10":
-  version: 11.4.10
-  resolution: "sweetalert2@npm:11.4.10"
-  checksum: 30162809a562050fc37cfe9ef481d11cd8a2564272cd6beabf9c6f4eeeee2bec1f3c1d6c0a289d6076794b38ba0ae6e1587809fcb3ae66cd35ad42f86e3e4f15
+"sweetalert2@npm:^11.4.17":
+  version: 11.4.17
+  resolution: "sweetalert2@npm:11.4.17"
+  checksum: 362dbbe9a590f4525f2e60d6277288017ef301425c5df63d26809a8b471acc33c155e2e956b62f70db84276654a5de62d19439332771f1841233cbdd61caade2
   languageName: node
   linkType: hard
 
