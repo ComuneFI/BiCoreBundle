@@ -88,6 +88,7 @@ class PannelloAmministrazioneController extends AbstractController
 
     public function index() : Response
     {
+        ini_set("memory_milit", "256M");
         $finder = new Finder();
         $fs = new Filesystem();
 
@@ -275,7 +276,6 @@ class PannelloAmministrazioneController extends AbstractController
     public function getVcs() : Response
     {
         set_time_limit(0);
-        $this->apppaths = $this->apppaths;
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {
@@ -332,7 +332,6 @@ class PannelloAmministrazioneController extends AbstractController
             return new Response($this->getLockMessage());
         } else {
             $this->locksystem->acquire();
-            $this->apppaths = $this->apppaths;
             $pammutils = $this->pautils;
             $command = $this->apppaths->getConsoleExecute().' '.$simfonycommand;
             $result = $pammutils->runCommand($command);
@@ -396,7 +395,6 @@ class PannelloAmministrazioneController extends AbstractController
     public function phpunittest(Request $request) : Response
     {
         set_time_limit(0);
-        $this->apppaths = $this->apppaths;
         if (!$this->locksystem->acquire()) {
             return new Response($this->getLockMessage());
         } else {

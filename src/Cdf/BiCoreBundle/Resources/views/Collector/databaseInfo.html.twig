@@ -13,19 +13,19 @@
     {% set text %}
 
         <div class="sf-toolbar-info-piece">
-            <b>Driver</b><span class="sf-toolbar-status">{{ collector.DatabaseDriver }}</span>
+            <strong>Driver</strong><span class="sf-toolbar-status">{{ collector.DatabaseDriver }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>Host</b><span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</span>
+            <strong>Host</strong><span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>Database</b><span class="sf-toolbar-status sf-toolbar-status-yellow">{{ collector.DatabaseName }}</span>
+            <strong>Database</strong><span class="sf-toolbar-status sf-toolbar-status-yellow">{{ collector.DatabaseName }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>User</b><span class="sf-toolbar-status">{{ collector.DatabaseUser }}</span>
+            <strong>User</strong><span class="sf-toolbar-status">{{ collector.DatabaseUser }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>Password</b><span>{{ collector.DatabasePassword[:2] ~ '*****' }}</span>
+            <strong>Password</strong><span>{{ collector.DatabasePassword[:2] ~ '*****' }}</span>
         </div>
     {% endset %}
     {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
@@ -51,13 +51,13 @@
     <div class="sf-toolbar-info-piece">
         <table style="width: 30%">
             <tr>
-                <td>Driver</td><td><b>{{ collector.DatabaseDriver }}</b></td>
+                <td>Driver</td><td><strong>{{ collector.DatabaseDriver }}</strong></td>
             </tr>
             <tr>
-                <td>Host</td><td><b>{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</b></td>
+                <td>Host</td><td><strong>{{ collector.DatabaseHost }}{{  collector.DatabasePort ? ':' ~ collector.DatabasePort : '' }}</strong></td>
             </tr>
             <tr>
-                <td>Database</td><td><b>{{ collector.DatabaseName }}</b></td>
+                <td>Database</td><td><strong>{{ collector.DatabaseName }}</strong></td>
             </tr>
             <tr>
                 <td>User</td><td>{{ collector.DatabaseUser }}</td>

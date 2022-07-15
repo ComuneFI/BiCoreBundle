@@ -161,7 +161,7 @@ class Tabella {
     {
 
         var tabellaclass = this;
-        if (BiStringFunctions.getTabellaParameter(this.parametri.editinline) === 1) {
+        if (parseInt(BiStringFunctions.getTabellaParameter(this.parametri.editinline)) === 1) {
             var elencocampinuovariga = $("#table" + BiStringFunctions.getTabellaParameter(this.parametri.nomecontroller) + " > tbody > tr.inputeditinline[data-bitableid='0'] input");
             var nuovariga = elencocampinuovariga.closest("tr");
             nuovariga.removeClass("sr-only");

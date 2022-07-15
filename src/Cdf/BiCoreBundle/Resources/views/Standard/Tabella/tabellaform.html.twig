@@ -22,9 +22,11 @@
         </button>
         <div class="collapse" id="collapseStoricomodifiche">
             <div class="card card-body">
+                <ul>
                 {% for modifica in elencomodifiche %}
                     <li>{{modifica.giorno|date("d/m/Y H:i:s")}} modificato {{modifica.nomecampo|e}} da {{ modifica.operatori.username|e }}, prima era: {{modifica.valoreprecedente|e}} </li>
                     {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
