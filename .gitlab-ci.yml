@@ -52,7 +52,7 @@ cache:
 build_php8.0:
     image: $CI_REGISTRY/docker/php8.0-xdebug-apache
     stage: build_php80
-    <<: *build_test-integration
+    <<: *build_php-integration
     script:
       - ant
       - php vendor/bin/ocular code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
@@ -67,7 +67,7 @@ build_php8.0:
 build_php8.1:
     image: $CI_REGISTRY/docker/php8.1-xdebug-apache
     stage: build_php81
-    <<: *build_test-integration
+    <<: *build_php-integration
     script:
       - ant
       - php vendor/bin/ocular code-coverage:upload --repository g/ComuneFI/BiCoreBundle --format=php-clover build/logs/clover.xml
