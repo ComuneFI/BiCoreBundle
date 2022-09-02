@@ -7,11 +7,11 @@ import bootbox from 'bootbox';
 import "../../js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js";
 import "../../css/bootstrap-datetimepicker.min.css";
 import "bootstrap-confirmation2";
-require('@fortawesome/fontawesome-free/css/all.min.css');
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
-require('jquery-contextmenu');
-import * as moment from "moment/moment.js"
-        moment.locale('it');
+import 'jquery-contextmenu';
+import * as moment from "moment/moment.js";
+moment.locale('it');
 
 class Tabella {
 
@@ -100,7 +100,7 @@ class Tabella {
                 //$("#" + formid).children('input[type="submit"]').click()
                 var url = form.attr('action');
                 $.each(form.find('input:disabled, select:disabled'), function (i, tag) {
-                   $(this).removeAttr('disabled');
+                    $(this).removeAttr('disabled');
                 });
                 var formSerialize = new FormData();
                 var formParams = form.serializeArray();
@@ -655,32 +655,35 @@ class Tabella {
         } else {
             $('[data-toggle=confirmation-popout].bibottonimodificatabella' + BiStringFunctions.getTabellaParameter(tabellaclass.parametri.nomecontroller)).hide();
         }
-        $.contextMenu({
-            selector: '.context-menu-crud',
-            callback: function (key, options) {
-                switch (key) {
-                    /*case "selezionatutti":
-                     //Sul menu Modifica
-                     var table = options.$trigger.closest("table");
-                     $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", true);
-                     break;*/
-                    case "modifica":
-                        //Sul menu Modifica
-                        var biid = options.$trigger.attr("data-bitableid");
-                        tabellaclass.modificarecord(biid);
-                        break;
-                    case "cancella":
-                        var biid = options.$trigger.attr("data-bitableid");
-                        tabellaclass.cancellarecord(biid);
-                        break;
+        if (typeof $.contextMenu === "function") {
+            $.contextMenu({
+                selector: '.context-menu-crud',
+                callback: function (key, options) {
+                    switch (key) {
+                        /*case "selezionatutti":
+                         //Sul menu Modifica
+                         var table = options.$trigger.closest("table");
+                         $("#" + $(table).attr("id") + " > tbody > tr .biselecttablerow").prop("checked", true);
+                         break;*/
+                        case "modifica":
+                            //Sul menu Modifica
+                            var biid = options.$trigger.attr("data-bitableid");
+                            tabellaclass.modificarecord(biid);
+                            break;
+                        case "cancella":
+                            var biid = options.$trigger.attr("data-bitableid");
+                            tabellaclass.cancellarecord(biid);
+                            break;
+                    }
+                },
+                items: {
+                    "modifica": {name: "Modifica", icon: "edit", disabled: permessi.update === false},
+                    "cancella": {name: "Cancella", icon: "delete", disabled: permessi.delete === false}/*,
+                     "selezionatutti": {name: "Seleziona tutti", icon: "copy", disabled: multiselezione === 0}*/
                 }
-            },
-            items: {
-                "modifica": {name: "Modifica", icon: "edit", disabled: permessi.update === false},
-                "cancella": {name: "Cancella", icon: "delete", disabled: permessi.delete === false}/*,
-                 "selezionatutti": {name: "Seleziona tutti", icon: "copy", disabled: multiselezione === 0}*/
-            }
-        });
+            });
+        }
+
     }
     _getContextmenuButtons()
     {

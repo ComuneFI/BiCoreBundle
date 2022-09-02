@@ -1400,10 +1400,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-free@npm:^6.1.1":
-  version: 6.1.1
-  resolution: "@fortawesome/fontawesome-free@npm:6.1.1"
-  checksum: adb3c71e0d9e60488401a193cfd1925ad100935ae41c88d3969937b59c182289ecc6f8c0835f0a3fb9cc215348a047a39536e918247381774baf7dcebef94b64
+"@fortawesome/fontawesome-free@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "@fortawesome/fontawesome-free@npm:6.2.0"
+  checksum: fd3fcc0a963b907110922b5ac0ca67633aea20b5034102a1f5d285830f7f7a27f9c9de0c4a30228ccd2579bd8f95581a1bbef9519c7b74632e7012d60dd57bb7
   languageName: node
   linkType: hard
 
@@ -1503,9 +1503,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/webpack-encore@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@symfony/webpack-encore@npm:3.0.0"
+"@symfony/webpack-encore@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@symfony/webpack-encore@npm:3.1.0"
   dependencies:
     "@babel/core": ^7.17.0
     "@babel/plugin-syntax-dynamic-import": ^7.8.0
@@ -1533,7 +1533,7 @@ __metadata:
     yargs-parser: ^21.0.0
   bin:
     encore: bin/encore.js
-  checksum: 976445e418b81e8810c9b83f72b56511175c9cff6156d39ef470420c46a61cbf22fc4a9522ba15780b164160c6ea3e5ff41922d4d739a7dcb4dfee043946f664
+  checksum: bdbf4ac40e3cbe197182944e5d7275597656992f78920a99b6d8a7cb65d922789b2f9fc6e3f452958d578537bca3ccb83464b2fd27a66d63b14c94acfe8cb8a7
   languageName: node
   linkType: hard
 
@@ -2803,10 +2803,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.23.4":
-  version: 3.23.4
-  resolution: "core-js@npm:3.23.4"
-  checksum: 1317591dbd4a6dc357b68da324dfab52ffecc0193fe577c55bedc058af3ec96a47c7d68dff4dc914badf398ca120c0b58815fca3a162a497abf73166910d834c
+"core-js@npm:^3.25.0":
+  version: 3.25.0
+  resolution: "core-js@npm:3.25.0"
+  checksum: 5a72740bf5babaf2e6203da4c0e831a0b97c3fe6f21b4c1aa8601d3a927660a22128dd8f0e86ce84778c4e5372ab0fc03c7944afa7e215c7fb13b2c79d5d5504
   languageName: node
   linkType: hard
 
@@ -5890,17 +5890,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@fortawesome/fontawesome-free": ^6.1.1
-    "@symfony/webpack-encore": ^3.0.0
+    "@fortawesome/fontawesome-free": ^6.2.0
+    "@symfony/webpack-encore": ^3.1.0
     bootbox: ^5.5.3
     bootstrap-confirmation2: ^4.2.1
     bootstrap-italia: ^1.6.4
-    core-js: ^3.23.4
+    core-js: ^3.25.0
     file-loader: ^6.2.0
     jquery-contextmenu: ^2.9.2
     moment: ^2.29.4
     popover: ^2.4.1
-    sweetalert2: ^11.4.23
+    sweetalert2: ^11.4.29
     webpack-notifier: ^1.15.0
   languageName: unknown
   linkType: soft
@@ -6405,10 +6405,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sweetalert2@npm:^11.4.23":
-  version: 11.4.23
-  resolution: "sweetalert2@npm:11.4.23"
-  checksum: 966c14d17a521eeba91a4400fec0892e69f0df0ee96c6b4a805e672f6efdb95684121b9efde6c08ff97334f60f6c2cfb582c97b16a091c8bb5e5623231b1c16f
+"sweetalert2@npm:^11.4.29":
+  version: 11.4.29
+  resolution: "sweetalert2@npm:11.4.29"
+  checksum: a3fe80e7585bef06f1ba3c52a7f636e771743ec00edca374d105e43990b5543822fa3b74174aa77d157edbf301e2d7a1b85cd69831b851ad2f1a7a5702d10be8
   languageName: node
   linkType: hard
 
