@@ -179,11 +179,10 @@ class FiApiController extends AbstractController
             //is it a foreign key field?
             if (\str_contains($fieldName, '_id')) {
                 $tools = $this->getApiTools($fieldName, '_id');
-                $apiController = $tools['controller'];
                 $apiBook = $tools['book'];
-
-                $method = $apiBook->getAllToString();
-                $results = $apiController->$method();
+                $apiProjectCollection = $apiBook->getApiCollection();
+                $this->apiManager->setApiController($apiProjectCollection);
+                $results = $this->apiManager->getAllToString($apiProjectCollection, null, null, null, "");
 
                 $arrayContainer = array();
                 foreach ($results as $myItem) {
@@ -195,11 +194,10 @@ class FiApiController extends AbstractController
             } elseif (\str_contains($fieldName, '_enum')) {
                 //dump("in fieldname ".$fieldName );
                 $tools = $this->getApiTools($fieldName, '_enum');
-                $apiController = $tools['controller'];
                 $apiBook = $tools['book'];
-
-                $getAllToStringMethod = $apiBook->getAllToString();
-                $results = $apiController->$getAllToStringMethod();
+                $apiProjectCollection = $apiBook->getApiCollection();
+                $this->apiManager->setApiController($apiProjectCollection);
+                $results = $this->apiManager->getAllToString($apiProjectCollection, null, null, null, "");
 
                 $decodeMap = array();
                 $arrayContainer = array();
