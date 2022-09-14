@@ -239,6 +239,34 @@ class ApiManager
         return $results;
     }
 
+    /**
+     * Get items existent for the given collection in "to-string" format, filtered as requested.
+     */
+    public function getAllToString(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $cond, String $sub = null): mixed
+    {
+        $tools = $this->map[$collection];
+        $getMethod = $this->getMethod($collection, 'getAllToString', $sub);
+        $results = [];
+        //the array of arguments
+        $arguments = array();
+        if ($sub != null) {
+            array_push($arguments, $sub);
+        }
+        array_push($arguments, $offset);
+        array_push($arguments, $limit);
+        array_push($arguments, $sort);
+        array_push($arguments, $cond);
+
+        $token = $this->setToken($tools['api']);
+        try {
+            $results = $tools['api']->$getMethod(...$arguments);
+        } catch (\Exception $apiEx) {
+            $this->refreshToken($tools['api'], $token);
+            $results = $this->retry($apiEx, $tools['api'], $getMethod, $arguments);
+        }
+        return $results;
+    }
+
       /**
      * Get items existent for the given collection, filtered as requested.
      * subcollection contains the name of sub-collection if any

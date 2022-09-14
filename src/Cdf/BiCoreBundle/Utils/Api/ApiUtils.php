@@ -138,6 +138,14 @@ class ApiUtils
     }
 
     /**
+     * Return the name of stored collection
+     */
+    public function getApiCollection(): string
+    {
+        return $this->apiCollection;
+    }
+
+    /**
      * Return the name of Form class.
      * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
      * class (i.e. App\\Form\\Claim)
