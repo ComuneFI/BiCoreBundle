@@ -3,6 +3,7 @@
 namespace Cdf\BiCoreBundle\Controller;
 
 use Cdf\BiCoreBundle\Utils\Tabella\ParametriTabella;
+use Cdf\BiCoreBundle\Utils\Entity\Finder;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -178,7 +179,7 @@ trait FiCoreCrudControllerTrait
             $em->flush();
 
             $newData = $em->getUnitOfWork()->getOriginalEntityData($entity);
-            $repoStorico = $em->getRepository('BiCoreBundle:Storicomodifiche');
+            $repoStorico = $em->getRepository(\Cdf\BiCoreBundle\Entity\Storicomodifiche::class);
             $changes = $repoStorico->isRecordChanged($controller, $originalData, $newData);
 
             if ($changes) {
@@ -250,7 +251,7 @@ trait FiCoreCrudControllerTrait
     public function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $em->getRepository(\Cdf\BiCoreBundle\Entity\Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,

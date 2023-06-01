@@ -330,7 +330,7 @@ trait FiApiCoreCrudControllerTrait
     public function elencoModifiche($controller, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository('BiCoreBundle:Storicomodifiche')->findBy(
+        $risultato = $em->getRepository(\Cdf\BiCoreBundle\Entity\Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,
