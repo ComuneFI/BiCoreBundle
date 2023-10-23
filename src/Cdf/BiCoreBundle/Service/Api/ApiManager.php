@@ -313,7 +313,7 @@ class ApiManager
             $response = $tools['api']->$deleteMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $response = $this->retry($apiEx, $tools['api'], $deleteMethod, $arguments);
+            $response = $this->retry($tools['api'], $deleteMethod, $arguments);
         }
         return $response;
     }
