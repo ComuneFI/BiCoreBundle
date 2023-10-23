@@ -125,7 +125,7 @@ class ApiManager
 
     /**
      * It checks if error is due to a Broken Pipe
-     */
+     * NO MORE USED SINCE 3.0.46
     private function isBrokenPipe(Exception &$error) : bool
     {
         $outcome = false;
@@ -134,6 +134,7 @@ class ApiManager
         }
         return $outcome;
     }
+    */
 
     /**
      * Set the token managed by wso2TokenService into api-service
