@@ -125,7 +125,7 @@ class ApiManager
 
     /**
      * It checks if error is due to a Broken Pipe
-     */
+     * NO MORE USED SINCE 3.0.46
     private function isBrokenPipe(Exception &$error) : bool
     {
         $outcome = false;
@@ -134,6 +134,7 @@ class ApiManager
         }
         return $outcome;
     }
+    */
 
     /**
      * Set the token managed by wso2TokenService into api-service
@@ -152,12 +153,18 @@ class ApiManager
     }
 
     /**
-     * Set the token managed by wso2TokenService into api-service
+     * Set the token managed by oauth2TokenService into api-service
+     * It forces the refresh of token
      * If token is already set, it replaces it
      */
     private function refreshToken(mixed $api, string $token): void
     {
         if ($this->isOauth2()) {
+            //call oauth2 service for a new token
+            $this->oauth2Service->refreshToken();
+            //get the new token
+            $token = $this->oauth2Service->getToken();
+            //set the new token to be used by api
             $api->getConfig()->setAccessToken($token);
         }
     }
@@ -178,14 +185,11 @@ class ApiManager
 
 
     /**
-     * Retry one more time if exception is for broken pipes
+     * Retry one more time the already done call to API objects
      */
-    private function retry(Exception $apiEx, object $object, string $method, mixed $args): mixed
+    private function retry(object $object, string $method, mixed $args): mixed
     {
-        if ($this->isBrokenPipe($apiEx)) {
-            return $object->$method(...$args);
-        }
-        throw $apiEx;
+        return $object->$method(...$args);
     }
 
     /**
@@ -206,7 +210,7 @@ class ApiManager
                 $amount = $tools['api']->$getCountmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $amount = $this->retry($apiEx, $tools['api'], $getCountmethod, $arguments);
+            $amount = $this->retry($tools['api'], $getCountmethod, $arguments);
         }
         return $amount;
     }
@@ -234,7 +238,7 @@ class ApiManager
                 $results = $tools['api']->$getAllmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $results = $this->retry($apiEx, $tools['api'], $getAllmethod, $arguments);
+            $results = $this->retry($tools['api'], $getAllmethod, $arguments);
         }
         return $results;
     }
@@ -262,7 +266,7 @@ class ApiManager
             $results = $tools['api']->$getMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $results = $this->retry($apiEx, $tools['api'], $getMethod, $arguments);
+            $results = $this->retry($tools['api'], $getMethod, $arguments);
         }
         return $results;
     }
@@ -287,7 +291,7 @@ class ApiManager
             $results = $tools['api']->$getAllmethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $results = $this->retry($apiEx, $tools['api'], $getAllmethod, $arguments);
+            $results = $this->retry($tools['api'], $getAllmethod, $arguments);
         }
         return $results;
     }
@@ -309,7 +313,7 @@ class ApiManager
             $response = $tools['api']->$deleteMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $response = $this->retry($apiEx, $tools['api'], $deleteMethod, $arguments);
+            $response = $this->retry($tools['api'], $deleteMethod, $arguments);
         }
         return $response;
     }
@@ -333,7 +337,7 @@ class ApiManager
             $results = $tools['api']->$createMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $results = $this->retry($apiEx, $tools['api'], $createMethod, $arguments);
+            $results = $this->retry($tools['api'], $createMethod, $arguments);
         }
         return $results;
     }
@@ -358,7 +362,7 @@ class ApiManager
             $results = $tools['api']->$createMethod(...$arguments);
         } catch (\Exception $apiEx) {
             $this->refreshToken($tools['api'], $token);
-            $results = $this->retry($apiEx, $tools['api'], $createMethod, $arguments);
+            $results = $this->retry($tools['api'], $createMethod, $arguments);
         }
         return $results;
     }

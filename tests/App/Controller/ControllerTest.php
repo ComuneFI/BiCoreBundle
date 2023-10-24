@@ -11,6 +11,7 @@ class ControllerTest extends BiWebtestcaseAuthorizedClient
 
     public function testSecuredClienteIndex()
     {
+        $this->tearDown();
         $client = $this->logInAdmin();
         $nomecontroller = 'Cliente';
         $client->request('GET', '/' . $nomecontroller);

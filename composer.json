@@ -84,7 +84,8 @@
         "symfony/twig-bridge": "5.4.*",
         "symfony/var-exporter": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.5",
-        "symfony/yaml": "5.4.*"
+        "symfony/yaml": "5.4.*",
+        "doctrine/annotations": "^1.0"
     },
     "require-dev": {
         "dbrekelmans/bdi": "^1.0.0",
