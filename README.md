@@ -1,3 +1,6 @@
+# BiCoreBundle
+## Branch per migrazione su 6.4 LTS
+
 BiCoreBundle
 =============
 [![Build Status](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ComuneFI/BiCoreBundle/build-status/master)
