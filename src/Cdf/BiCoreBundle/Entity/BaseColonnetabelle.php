@@ -7,71 +7,50 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Cdf\BiCoreBundle\Entity\Colonnetabelle.
  *
- * @ORM\Entity()
- * @ORM\Table(name="Colonnetabelle", indexes={@ORM\Index(name="fk_Colonnetabelle_Operatori1_idx", columns={"operatori_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseColonnetabelle", "extended":"Colonnetabelle"})
  * @SuppressWarnings(PHPMD)
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseColonnetabelle', 'extended' => 'Colonnetabelle'])]
+#[ORM\Table(name: 'Colonnetabelle')]
+#[ORM\Index(name: 'fk_Colonnetabelle_Operatori1_idx', columns: ['operatori_id'])]
 class BaseColonnetabelle
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $nometabella;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $nomecampo;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true, options: ['default' => true])]
     protected $mostraindex;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $ordineindex;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $larghezzaindex;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $etichettaindex;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default":false})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true, options: ['default' => false])]
     protected $registrastorico;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true, options={"default":true})
-     */
+    #[ORM\Column(type: 'boolean', nullable: true, options: ['default' => true])]
     protected $editabile;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $operatori_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Operatori", inversedBy="colonnetabelles")
-     * @ORM\JoinColumn(name="operatori_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'colonnetabelles')]
+    #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id', nullable: false)]
     protected $operatori;
 
     public function __construct()

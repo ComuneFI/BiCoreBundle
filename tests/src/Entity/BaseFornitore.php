@@ -7,41 +7,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * App\Entity\Fornitore
- *
- * @ORM\Entity()
- * @ORM\Table(name="Fornitore")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base": "BaseFornitore", "extended": "Fornitore"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseFornitore', 'extended' => 'Fornitore'])]
+#[ORM\Table(name: 'Fornitore')]
 class BaseFornitore
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $ragionesociale;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $partitaiva;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     protected $capitalesociale;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Prodottofornitore", mappedBy="fornitore")
-     * @ORM\JoinColumn(name="id", referencedColumnName="fornitore_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Prodottofornitore::class, mappedBy: 'fornitore')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'fornitore_id', nullable: false)]
     protected $prodottofornitores;
 
     public function __construct()

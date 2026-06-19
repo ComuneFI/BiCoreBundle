@@ -7,70 +7,48 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Cdf\BiCoreBundle\Menuapplicazione.
  *
- * @ORM\Entity()
- * @ORM\Table(name="Menuapplicazione")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseMenuapplicazione", "extended":"Menuapplicazione"})
  * @SuppressWarnings(PHPMD)
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseMenuapplicazione', 'extended' => 'Menuapplicazione'])]
+#[ORM\Table(name: 'Menuapplicazione')]
 class BaseMenuapplicazione
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $nome;
 
-    /**
-     * @ORM\Column(type="string", length=640, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 640, nullable: true)]
     protected $percorso;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $padre;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $ordine;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $attivo;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $target;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $tag;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $notifiche;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $autorizzazionerichiesta;
 
-    /**
-     * @ORM\Column(type="string", length=640, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 640, nullable: true)]
     protected $percorsonotifiche;
 
     public function __construct()

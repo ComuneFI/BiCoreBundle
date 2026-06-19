@@ -16,9 +16,7 @@ use App\Entity\Ordine;
 class ReportController extends AbstractController
 {
 
-    /**
-     * @Route( "/Report/{_anno}", name="Report_container", defaults={"_anno"=null}, methods={"GET","HEAD"})
-     */
+    #[Route(path: '/Report/{_anno}', name: 'Report_container', defaults: ['_anno' => null], methods: ['GET', 'HEAD'])]
     public function indexAction(Request $request): Response
     {
         $anno = ($request->get('_anno') ? $request->get('_anno') : \date('Y'));

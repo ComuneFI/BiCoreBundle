@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * App\Entity\Prodottofornitore.
- *
- * @ORM\Entity(repositoryClass="App\Repository\ProdottofornitoreRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\ProdottofornitoreRepository::class)]
 class Prodottofornitore extends BaseProdottofornitore
 {
     public function __toString()
