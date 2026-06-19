@@ -8,57 +8,41 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Cdf\BiCoreBundle\Ruoli.
  *
- * @ORM\Entity()
- * @ORM\Table(name="Ruoli")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseRuoli", "extended":"Ruoli"})
  * @SuppressWarnings(PHPMD)
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseRuoli', 'extended' => 'Ruoli'])]
+#[ORM\Table(name: 'Ruoli')]
 class BaseRuoli
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $ruolo;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $paginainiziale;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $superadmin;
 
-    /**
-     * @ORM\Column(name="`admin`", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: '`admin`', type: 'boolean', nullable: true)]
     protected $admin;
 
-    /**
-     * @ORM\Column(name="`user`", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: '`user`', type: 'boolean', nullable: true)]
     protected $user;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Operatori", mappedBy="ruoli")
-     * @ORM\JoinColumn(name="id", referencedColumnName="ruoli_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Operatori::class, mappedBy: 'ruoli')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'ruoli_id', nullable: false)]
     protected $operatoris;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Permessi", mappedBy="ruoli")
-     * @ORM\JoinColumn(name="id", referencedColumnName="ruoli_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Permessi::class, mappedBy: 'ruoli')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'ruoli_id', nullable: false)]
     protected $permessis;
 
     public function __construct()

@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cdf\BiCoreBundle\Entity\Permessi.
- *
- * @ORM\Entity(repositoryClass="Cdf\BiCoreBundle\Repository\PermessiRepository")
  */
+#[ORM\Entity(repositoryClass: \Cdf\BiCoreBundle\Repository\PermessiRepository::class)]
 class Permessi extends BasePermessi
 {
 }

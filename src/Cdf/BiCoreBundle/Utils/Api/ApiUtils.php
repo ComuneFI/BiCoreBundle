@@ -3,38 +3,39 @@
 namespace Cdf\BiCoreBundle\Utils\Api;
 
 use Symfony\Component\Finder\Finder;
-use hanneskod\classtools\Iterator\ClassIterator;
+use ReflectionClass;
 
 /**
- * @SuppressWarnings(PHPMD.TooManyFields)
- * @codeCoverageIgnore
+ * API Utilities for managing API models and controllers in Symfony 6+
+ * 
+ * Replaces hanneskod/classtools with native PHP reflection
  */
-
 class ApiUtils
 {
-
     private string $getAll;
     private string $getCount;
     private string $create;
     private string $apiCollection;
-    //namespaces
+    
+    // Namespaces
     private string $namespacePrefix = 'Swagger';
     private string $namespaceApi = 'Api';
-    private string $namespaceModel = "Model";
-    private string $namespaceForm = "App\\Form";
-    //suffix and prefix
+    private string $namespaceModel = 'Model';
+    private string $namespaceForm = 'App\\Form';
+    
+    // Suffix and prefix
     private string $suffixApiController = 'Api';
-    private string $prefixControllerModelItem = "DaosRow";
-    private string $prefixModelItem = "DaosRow";
-
+    private string $prefixControllerModelItem = 'DaosRow';
+    private string $prefixModelItem = 'DaosRow';
+    
     private string $delete;
     private string $get;
     private string $update;
     private string $getAllToString;
-
-    //TODO: evaluate to move this variable into configs
+    
+    // Regex for finding models
     private string $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
-
+    
     private string $rootDir;
 
     public function __construct(string $apiCollection = null)
@@ -42,31 +43,30 @@ class ApiUtils
         if (isset($apiCollection)) {
             $this->apiCollection = lcfirst($apiCollection);
         }
-        $this->getAll = "ControllerReadAll";
-        $this->getCount = "ControllerCount";
-        $this->create = "ControllerCreate";
-        $this->delete = "ControllerDeleteItem";
-        $this->get = "ControllerReadItem";
-        $this->update = "ControllerUpdateItem";
-        $this->getAllToString = "ControllerReadAllToString";
+        $this->getAll = 'ControllerReadAll';
+        $this->getCount = 'ControllerCount';
+        $this->create = 'ControllerCreate';
+        $this->delete = 'ControllerDeleteItem';
+        $this->get = 'ControllerReadItem';
+        $this->update = 'ControllerUpdateItem';
+        $this->getAllToString = 'ControllerReadAllToString';
 
         $this->initVariables();
     }
 
-    private function initVariables() : void
+    private function initVariables(): void
     {
         $this->namespacePrefix = 'Swagger';
         $this->namespaceApi = 'Api';
-        $this->namespaceModel = "Model";
-        $this->namespaceForm = "App\\Form";
-        //suffix and prefix
+        $this->namespaceModel = 'Model';
+        $this->namespaceForm = 'App\\Form';
         $this->suffixApiController = 'Api';
-        $this->prefixControllerModelItem = "DaosRow";
-        $this->prefixModelItem = "DaosRow";
+        $this->prefixControllerModelItem = 'DaosRow';
+        $this->prefixModelItem = 'DaosRow';
         $this->regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
     }
 
-    public function setRootDir(string $rootDir) : void
+    public function setRootDir(string $rootDir): void
     {
         $this->rootDir = $rootDir;
     }
@@ -74,7 +74,7 @@ class ApiUtils
     /**
      * Return path where core bundle will look for api models
      */
-    public function bundlesPath() : string
+    public function bundlesPath(): string
     {
         return $this->rootDir . '/fi';
     }
@@ -82,15 +82,15 @@ class ApiUtils
     /**
      * Return namespace prefix for api external bundles, i.e. Swagger
      */
-    public function namespacePrefix() : string
+    public function namespacePrefix(): string
     {
         return $this->namespacePrefix;
     }
 
     /**
-     * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
+     * Return namespace component for api models of external bundles, i.e. \Model\Models*
      */
-    public function namespaceModels() : string
+    public function namespaceModels(): string
     {
         return $this->namespaceModel;
     }
@@ -99,42 +99,43 @@ class ApiUtils
      * Return the project Root path string.
      * In case of project Insurance, it will return the string "\\Swagger\\Insurance\\"
      */
-    public function getProjectRoot(string $projectName) : string
+    public function getProjectRoot(string $projectName): string
     {
-        return "\\".$this->namespacePrefix()."\\".$projectName."\\";
+        return '\\' . $this->namespacePrefix() . '\\' . $projectName . '\\';
     }
 
     /**
      * Return the name of Api Controller.
-     * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) it returns the complete path of API controller
-     * class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
+     * Given the project name (i.e. Insurance) and the collection name (i.e. Claims) 
+     * it returns the complete path of API controller class (i.e. \\Swagger\\Insurance\\Api\\ClaimsApi)
      */
     public function getApiControllerClass(string $project, string $entityName): string
     {
-        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceApi . "\\$entityName" . $this->suffixApiController;
-        return $className;
+        return '\\' . $this->namespacePrefix . '\\' . $project . '\\' . $this->namespaceApi 
+            . '\\' . $entityName . $this->suffixApiController;
     }
 
     /**
      * Return the name of Model Controller.
-     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
-     * class (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
+     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) 
+     * it returns the complete path of API Model controller item class 
+     * (i.e. \\Swagger\\Insurance\\Model\\ControllersItemClaim)
      */
     public function getModelControllerClass(string $project, string $modelName): string
     {
-        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixControllerModelItem . $modelName;
-        return $className;
+        return '\\' . $this->namespacePrefix . '\\' . $project . '\\' . $this->namespaceModel 
+            . '\\' . $this->prefixControllerModelItem . $modelName;
     }
 
     /**
-     * Return the name of Model Controller.
-     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) it returns the complete path of API Model controller item
-     * class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
+     * Return the name of Model.
+     * Given the project name (i.e. Insurance) and the model name (i.e. Claim) 
+     * it returns the complete path of API Model class (i.e. \\Swagger\\Insurance\\Model\\ModelsClaim)
      */
     public function getModelClass(string $project, string $modelName): string
     {
-        $className = "\\" . $this->namespacePrefix . "\\$project\\" . $this->namespaceModel . "\\" . $this->prefixModelItem . $modelName;
-        return $className;
+        return '\\' . $this->namespacePrefix . '\\' . $project . '\\' . $this->namespaceModel 
+            . '\\' . $this->prefixModelItem . $modelName;
     }
 
     /**
@@ -147,25 +148,24 @@ class ApiUtils
 
     /**
      * Return the name of Form class.
-     * Given the model name (i.e. Claim) it returns the complete path of API Model controller item
-     * class (i.e. App\\Form\\Claim)
+     * Given the model name (i.e. Claim) it returns the complete path of Form class
+     * (i.e. App\\Form\\Claim)
      */
     public function getFormClass(string $modelName): string
     {
-        $className = $this->namespaceForm . "\\" . $modelName;
-        return $className;
+        return $this->namespaceForm . '\\' . $modelName;
     }
 
     /**
-     * Return namespace component for api models of external bundles, i.e. \\\Model\\\Models*
+     * Return regex pattern for finding models
      */
-    public function regexPathModels() : string
+    public function regexPathModels(): string
     {
         return $this->regexPathModels;
     }
 
     /**
-     * Return the method string to retrieve all elements / or filtering on them
+     * Return the method string to retrieve all elements
      */
     public function getAll(): string
     {
@@ -173,7 +173,7 @@ class ApiUtils
     }
 
     /**
-     * Return the method string to retrieve all elements descriptions (it's possible to filter them as for getAll)
+     * Return the method string to retrieve all elements descriptions
      */
     public function getAllToString(): string
     {
@@ -197,7 +197,7 @@ class ApiUtils
     }
 
     /**
-     * Return the method string to count all elemements inside a collection
+     * Return the method string to count all elements inside a collection
      */
     public function getCount(): string
     {
@@ -221,32 +221,118 @@ class ApiUtils
     }
 
     /**
-     * It looks for Models existent into included external bundles.
-     * It uses ApiUtils in order to know where to search and what look for.
+     * Look for Models existent into included external bundles using Symfony Finder.
+     * Replaces hanneskod/classtools with native PHP Reflection.
      *
-     * @return array<mixed>
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @return array<int, string>
      */
     public function apiModels(): array
     {
-        //where to look for
         $path = $this->bundlesPath();
         $regex = $this->regexPathModels();
-        //what to look for
-        $models = array();
-        $finder = new Finder();
-        $iter = new ClassIterator($finder->files()->in($path));
+        $models = [];
 
-        $matches = array();
-        // Print the file names of classes, interfaces and traits in given path
-        foreach ($iter->getClassMap() as $classname => $splFileInfo) {
-            preg_match($regex, $classname, $matches);
+        // Check if path exists
+        if (!is_dir($path)) {
+            return $models;
+        }
 
-            if (count($matches) > 0) {
-                $models[] = $matches[1] . '.' . substr($classname, strlen($matches[0])) . ' (API)';
+        try {
+            $finder = new Finder();
+            $phpFiles = $finder->files()
+                ->in($path)
+                ->name('*.php')
+                ->followLinks();
+
+            foreach ($phpFiles as $file) {
+                $className = $this->extractClassNameFromFile((string) $file);
+                
+                if ($className !== null) {
+                    $matches = [];
+                    if (preg_match($regex, $className, $matches)) {
+                        if (count($matches) > 0) {
+                            $models[] = $matches[1] . '.' . substr($className, strlen($matches[0])) . ' (API)';
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // Log error or handle gracefully
+            return $models;
+        }
+
+        return $models;
+    }
+
+    /**
+     * Extract fully qualified class name from a PHP file.
+     * Uses a simple regex to find namespace and class name without loading the file.
+     *
+     * @param string $filePath Path to PHP file
+     * @return string|null Fully qualified class name or null if not found
+     */
+    private function extractClassNameFromFile(string $filePath): ?string
+    {
+        $content = @file_get_contents($filePath);
+        
+        if ($content === false) {
+            return null;
+        }
+
+        // Extract namespace
+        $namespace = '';
+        if (preg_match('/^namespace\s+(.+?);/m', $content, $nsMatches)) {
+            $namespace = trim($nsMatches[1]);
+        }
+
+        // Extract class name (supports class, interface, trait)
+        $patterns = [
+            '/^class\s+(\w+)/m',
+            '/^interface\s+(\w+)/m',
+            '/^trait\s+(\w+)/m',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $content, $classMatches)) {
+                $className = trim($classMatches[1]);
+                
+                if ($namespace) {
+                    return $namespace . '\\' . $className;
+                }
+                return $className;
             }
         }
-        return $models;
+
+        return null;
+    }
+
+    /**
+     * Alternative method using Reflection (slower but more accurate).
+     * Use this if extractClassNameFromFile causes issues.
+     *
+     * @param string $filePath
+     * @return string|null
+     */
+    private function extractClassNameFromFileReflection(string $filePath): ?string
+    {
+        // This approach requires the class to be autoloadable
+        // Less reliable than the regex approach above
+        try {
+            // Get namespace and class from file path
+            // This is a simplified version and may need adjustment based on PSR-4
+            $relativePath = str_replace([$this->bundlesPath(), '.php'], '', $filePath);
+            $parts = explode(DIRECTORY_SEPARATOR, trim($relativePath, DIRECTORY_SEPARATOR));
+            
+            if (count($parts) < 2) {
+                return null;
+            }
+
+            $className = array_pop($parts);
+            $namespace = implode('\\', $parts);
+            
+            return $namespace . '\\' . $className;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

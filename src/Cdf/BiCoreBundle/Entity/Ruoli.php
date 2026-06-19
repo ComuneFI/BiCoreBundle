@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cdf\BiCoreBundle\Entity\Ruoli.
- *
- * @ORM\Entity()
  */
+#[ORM\Entity]
 class Ruoli extends BaseRuoli
 {
     public function isSuperadmin()

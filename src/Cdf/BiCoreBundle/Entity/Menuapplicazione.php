@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cdf\BiCoreBundle\Entity\Menuapplicazione.
- *
- * @ORM\Entity()
  */
+#[ORM\Entity]
 class Menuapplicazione extends BaseMenuapplicazione
 {
     public function isAttivo()
