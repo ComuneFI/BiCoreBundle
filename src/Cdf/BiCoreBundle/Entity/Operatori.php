@@ -11,52 +11,38 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * Cdf\BiCoreBundle\Entity\Operatori.
- *
- * @ORM\Entity()
- * @ORM\Table(name="Operatori", indexes={@ORM\Index(name="fk_operatori_ruoli2_idx", columns={"ruoli_id"})})
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'Operatori')]
+#[ORM\Index(name: 'fk_operatori_ruoli2_idx', columns: ['ruoli_id'])]
 class Operatori extends BaseUser implements EquatableInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $operatore;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $ruoli_id;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Colonnetabelle", mappedBy="operatori")
-     * @ORM\JoinColumn(name="id", referencedColumnName="operatori_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Colonnetabelle::class, mappedBy: 'operatori')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $colonnetabelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Permessi", mappedBy="operatori")
-     * @ORM\JoinColumn(name="id", referencedColumnName="operatori_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Permessi::class, mappedBy: 'operatori')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $permessis;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Storicomodifiche", mappedBy="operatori")
-     * @ORM\JoinColumn(name="id", referencedColumnName="operatori_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Storicomodifiche::class, mappedBy: 'operatori')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $storicomodifiches;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ruoli", inversedBy="operatoris")
-     * @ORM\JoinColumn(name="ruoli_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: \Ruoli::class, inversedBy: 'operatoris')]
+    #[ORM\JoinColumn(name: 'ruoli_id', referencedColumnName: 'id')]
     protected $ruoli;
 
     public function __construct()

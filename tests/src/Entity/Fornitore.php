@@ -7,14 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * App\Entity\Fornitore.
- *
- * @ORM\Entity()
  */
+#[ORM\Entity]
 class Fornitore extends BaseFornitore
 {
-    /**
-     * @Assert\NotBlank()
-     */
+    #[Assert\NotBlank]
     protected $ragionesociale;
 
     public function __toString()

@@ -6,46 +6,34 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * App\Entity\Magazzino
- *
- * @ORM\Entity()
- * @ORM\Table(name="Magazzino", indexes={@ORM\Index(name="fk_Magazzino_Ordine1_idx", columns={"ordine_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base": "BaseMagazzino", "extended": "Magazzino"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseMagazzino', 'extended' => 'Magazzino'])]
+#[ORM\Table(name: 'Magazzino')]
+#[ORM\Index(name: 'fk_Magazzino_Ordine1_idx', columns: ['ordine_id'])]
 class BaseMagazzino
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $ordine_id;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $evaso;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $dataspedizione;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $giornodellasettimana;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ordine", inversedBy="magazzinos")
-     * @ORM\JoinColumn(name="ordine_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Ordine::class, inversedBy: 'magazzinos')]
+    #[ORM\JoinColumn(name: 'ordine_id', referencedColumnName: 'id', nullable: false)]
     protected $ordine;
 
     public function __construct()

@@ -7,58 +7,43 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * App\Entity\Ordine
- *
- * @ORM\Entity()
- * @ORM\Table(name="Ordine", indexes={@ORM\Index(name="fk_Cliente_has_Fornitore_Cliente_idx", columns={"cliente_id"}), @ORM\Index(name="fk_Ordine_Prodottofornitore1_idx", columns={"prodottofornitore_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base": "BaseOrdine", "extended": "Ordine"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseOrdine', 'extended' => 'Ordine'])]
+#[ORM\Table(name: 'Ordine')]
+#[ORM\Index(name: 'fk_Cliente_has_Fornitore_Cliente_idx', columns: ['cliente_id'])]
+#[ORM\Index(name: 'fk_Ordine_Prodottofornitore1_idx', columns: ['prodottofornitore_id'])]
 class BaseOrdine
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $cliente_id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $prodottofornitore_id;
 
-    /**
-     * @ORM\Column(name="`data`", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: '`data`', type: 'datetime', nullable: true)]
     protected $data;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $quantita;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Magazzino", mappedBy="ordine")
-     * @ORM\JoinColumn(name="id", referencedColumnName="ordine_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Magazzino::class, mappedBy: 'ordine')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'ordine_id', nullable: false)]
     protected $magazzinos;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="ordines")
-     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Cliente::class, inversedBy: 'ordines')]
+    #[ORM\JoinColumn(name: 'cliente_id', referencedColumnName: 'id', nullable: false)]
     protected $cliente;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Prodottofornitore", inversedBy="ordines")
-     * @ORM\JoinColumn(name="prodottofornitore_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Prodottofornitore::class, inversedBy: 'ordines')]
+    #[ORM\JoinColumn(name: 'prodottofornitore_id', referencedColumnName: 'id', nullable: false)]
     protected $prodottofornitore;
 
     public function __construct()

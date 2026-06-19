@@ -7,52 +7,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * App\Entity\Prodottofornitore
- *
- * @ORM\Entity()
- * @ORM\Table(name="Prodottofornitore", indexes={@ORM\Index(name="fk_Prodottofornitore_Fornitore1_idx", columns={"fornitore_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base": "BaseProdottofornitore", "extended": "Prodottofornitore"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseProdottofornitore', 'extended' => 'Prodottofornitore'])]
+#[ORM\Table(name: 'Prodottofornitore')]
+#[ORM\Index(name: 'fk_Prodottofornitore_Fornitore1_idx', columns: ['fornitore_id'])]
 class BaseProdottofornitore
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $fornitore_id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $descrizione;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $quantitadisponibile;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     protected $prezzo;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Ordine", mappedBy="prodottofornitore")
-     * @ORM\JoinColumn(name="id", referencedColumnName="prodottofornitore_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Ordine::class, mappedBy: 'prodottofornitore')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'prodottofornitore_id', nullable: false)]
     protected $ordines;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Fornitore", inversedBy="prodottofornitores")
-     * @ORM\JoinColumn(name="fornitore_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Fornitore::class, inversedBy: 'prodottofornitores')]
+    #[ORM\JoinColumn(name: 'fornitore_id', referencedColumnName: 'id', nullable: false)]
     protected $fornitore;
 
     public function __construct()

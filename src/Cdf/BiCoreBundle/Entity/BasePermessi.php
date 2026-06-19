@@ -6,52 +6,39 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cdf\BiCoreBundle\Permessi.
- *
- * @ORM\Entity()
- * @ORM\Table(name="Permessi", indexes={@ORM\Index(name="fk_Permessi_Ruoli1_idx", columns={"ruoli_id"}), @ORM\Index(name="fk_Permessi_Operatori1_idx", columns={"operatori_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BasePermessi", "extended":"Permessi"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BasePermessi', 'extended' => 'Permessi'])]
+#[ORM\Table(name: 'Permessi')]
+#[ORM\Index(name: 'fk_Permessi_Ruoli1_idx', columns: ['ruoli_id'])]
+#[ORM\Index(name: 'fk_Permessi_Operatori1_idx', columns: ['operatori_id'])]
 class BasePermessi
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $modulo;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     protected $crud;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $ruoli_id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $operatori_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ruoli", inversedBy="permessis")
-     * @ORM\JoinColumn(name="ruoli_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: \Ruoli::class, inversedBy: 'permessis')]
+    #[ORM\JoinColumn(name: 'ruoli_id', referencedColumnName: 'id')]
     protected $ruoli;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Operatori", inversedBy="permessis")
-     * @ORM\JoinColumn(name="operatori_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'permessis')]
+    #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id')]
     protected $operatori;
 
     public function __construct()

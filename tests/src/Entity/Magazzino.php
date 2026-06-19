@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * App\Entity\Magazzino.
- *
- * @ORM\Entity()
  */
+#[ORM\Entity]
 class Magazzino extends BaseMagazzino
 {
 }

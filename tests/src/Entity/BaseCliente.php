@@ -7,61 +7,42 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * App\Entity\Cliente
- *
- * @ORM\Entity()
- * @ORM\Table(name="Cliente")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base": "BaseCliente", "extended": "Cliente"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseCliente', 'extended' => 'Cliente'])]
+#[ORM\Table(name: 'Cliente')]
 class BaseCliente
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $nominativo;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     protected $attivo;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\Column(type: 'date')]
     protected $datanascita;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $punti;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $iscrittoil;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
     protected $creditoresiduo;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $note;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Ordine", mappedBy="cliente")
-     * @ORM\JoinColumn(name="id", referencedColumnName="cliente_id", nullable=false)
-     */
+    #[ORM\OneToMany(targetEntity: \Ordine::class, mappedBy: 'cliente')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'cliente_id', nullable: false)]
     protected $ordines;
 
     public function __construct()

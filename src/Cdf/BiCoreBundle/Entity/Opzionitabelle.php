@@ -4,9 +4,7 @@ namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Cdf\BiCoreBundle\Repository\OpzionitabelleRepository")
- */
+#[ORM\Entity(repositoryClass: \Cdf\BiCoreBundle\Repository\OpzionitabelleRepository::class)]
 class Opzionitabelle extends BaseOpzionitabelle
 {
 }

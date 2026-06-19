@@ -7,14 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * App\Entity\Cliente.
- *
- * @ORM\Entity(repositoryClass="App\Repository\ClienteRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\ClienteRepository::class)]
 class Cliente extends BaseCliente
 {
-    /**
-     * @Assert\NotBlank()
-     */
+    #[Assert\NotBlank]
     protected $nominativo;
 
     public function __toString()

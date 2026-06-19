@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * App\Entity\Ordine.
- *
- * @ORM\Entity(repositoryClass="App\Repository\OrdineRepository")
  */
+#[ORM\Entity(repositoryClass: \App\Repository\OrdineRepository::class)]
 class Ordine extends BaseOrdine
 {
     public function __toString()

@@ -6,56 +6,40 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Cdf\BiCoreBundle\Storicomodifiche.
- *
- * @ORM\Entity()
- * @ORM\Table(name="Storicomodifiche", indexes={@ORM\Index(name="fk_Storicomodifiche_Operatori1_idx", columns={"operatori_id"})})
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"base":"BaseStoricomodifiche", "extended":"Storicomodifiche"})
  */
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['base' => 'BaseStoricomodifiche', 'extended' => 'Storicomodifiche'])]
+#[ORM\Table(name: 'Storicomodifiche')]
+#[ORM\Index(name: 'fk_Storicomodifiche_Operatori1_idx', columns: ['operatori_id'])]
 class BaseStoricomodifiche
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
+    #[ORM\Column(type: 'string', length: 45)]
     protected $nometabella;
 
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
+    #[ORM\Column(type: 'string', length: 45)]
     protected $nomecampo;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $idtabella;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $giorno;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $valoreprecedente;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $operatori_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Operatori", inversedBy="storicomodifiches")
-     * @ORM\JoinColumn(name="operatori_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'storicomodifiches')]
+    #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id', nullable: false)]
     protected $operatori;
 
     public function __construct()
