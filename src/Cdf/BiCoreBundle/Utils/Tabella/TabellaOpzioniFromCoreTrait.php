@@ -17,15 +17,14 @@ trait TabellaOpzioniFromCoreTrait
         $opzionitabella = $repoopzionitabelle->findOpzioniTabella($this->tablename);
         $colonnetabella = $repocolonnetabelle->findOpzioniColonnetabella($this->tablename, $this->user);
 
-        return array('opzionitabella' => $opzionitabella, 'colonnetabella' => $colonnetabella);
+        return ['opzionitabella' => $opzionitabella, 'colonnetabella' => $colonnetabella];
     }
 
     /**
      *
      * @param array<mixed> $opzionibuilder
-     * @return void
      */
-    protected function setOpzioniTabellaFromCore(&$opzionibuilder) : void
+    protected function setOpzioniTabellaFromCore(array &$opzionibuilder) : void
     {
         $colonnetabellacore = $this->opzionitabellacore['colonnetabella'];
         //$nomecolonna = $this->tablename . "." . $colonnadatabase["fieldName"];
@@ -52,7 +51,7 @@ trait TabellaOpzioniFromCoreTrait
      * @param string $colonnatabellacore
      * @param array<mixed> $opzionibuilder
      */
-    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, &$opzionibuilder) : void
+    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, array &$opzionibuilder) : void
     {
         if (null !== ($colonnatabellacore->$entityproperty())) {
             $opzionibuilder[$campo][$modellocolonneindex] = $colonnatabellacore->$entityproperty();

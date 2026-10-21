@@ -46,7 +46,7 @@ class ArrayUtils
      */
     public static function inMultiarrayTutti($elem, $array, $key)
     {
-        $trovato = array();
+        $trovato = [];
 
         foreach ($array as $indice => $value) {
             if (!is_array($value)) {
@@ -78,7 +78,7 @@ class ArrayUtils
     public static function multiInMultiarray($array, $search, bool $debug = false, bool $tutti = false)
     {
         $primo = true;
-        $vettorerisultati = array();
+        $vettorerisultati = [];
 
         foreach ($search as $key => $singolaricerca) {
             $trovato = self::inMultiarrayTutti($singolaricerca, $array, $key);
@@ -126,13 +126,13 @@ class ArrayUtils
      *          $rubrica[1]("matricola"=>99999,"cognome"=>"rossi","nome"=>"mario")
      *          $rubrica[2]("matricola"=>99997,"cognome"=>"verdi","nome"=>"michele")
      */
-    public static function arrayOrderby()
+    public static function arrayOrderby(): mixed
     {
         $args = func_get_args();
         $data = array_shift($args);
         foreach ($args as $n => $field) {
             if (is_string($field)) {
-                $tmp = array();
+                $tmp = [];
                 foreach ($data as $key => $row) {
                     $tmp[$key] = $row[$field];
                 }
@@ -140,7 +140,7 @@ class ArrayUtils
             }
         }
         $args[] = &$data;
-        call_user_func_array('array_multisort', $args);
+        call_user_func_array(array_multisort(...), $args);
 
         return array_pop($args);
     }
@@ -154,7 +154,7 @@ class ArrayUtils
     public function arraySearchRecursive($needle, $haystack)
     {
         foreach ($haystack as $key => $val) {
-            if (stripos(implode('', $val), $needle) > 0) {
+            if (stripos(implode('', $val), (string) $needle) > 0) {
                 return $key;
             }
         }
@@ -178,11 +178,10 @@ class ArrayUtils
      *          "telefono" => ["nomecampo" => "telefono","ordine" => 20],<br/><br/>
      *          "nominativo" => ["nomecampo" => "nominativo","ordine" => 30]</code>
      *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public static function sortMultiAssociativeArray(&$array, $subkey, $sort_ascending = true) : void
     {
-        $temp_array = array();
+        $temp_array = [];
         //Se sono tutti uguali (stesso "peso") evita di fare l'ordinamento
         if (!self::isSortArray($array, $subkey)) {
             if (count($array)) {
@@ -192,11 +191,11 @@ class ArrayUtils
             foreach ($array as $key => $val) {
                 $offset = 0;
                 $found = false;
-                foreach ($temp_array as $tmp_key => $tmp_val) {
-                    if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
+                foreach ($temp_array as $tmp_val) {
+                    if (!$found && strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
                         $temp_array = array_merge(
-                            (array) array_slice($temp_array, 0, $offset),
-                            array($key => $val),
+                            array_slice($temp_array, 0, $offset),
+                            [$key => $val],
                             array_slice($temp_array, $offset)
                         );
                         $found = true;
@@ -204,7 +203,7 @@ class ArrayUtils
                     ++$offset;
                 }
                 if (!$found) {
-                    $temp_array = array_merge($temp_array, array($key => $val));
+                    $temp_array = array_merge($temp_array, [$key => $val]);
                 }
             }
             $array = self::executeSortMultiAssociativeArray($temp_array, $sort_ascending);
@@ -215,15 +214,13 @@ class ArrayUtils
      *
      * @param array<mixed> $array
      * @param string $subkey
-     * @return bool
      */
     private static function isSortArray($array, $subkey) : bool
     {
         $check = null;
         $diff = false;
-        $key = '';
         //Controlla se sono tutti uguali i valori per i quali deve fare l'ordinamento
-        foreach ($array as $key => $val) {
+        foreach ($array as $val) {
             if (isset($check) && $check != $val[$subkey]) {
                 $diff = true;
                 break;
@@ -241,14 +238,12 @@ class ArrayUtils
      * @param bool $sort_ascending
      * @return array<mixed>
      */
-    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending) : array
+    private static function executeSortMultiAssociativeArray(array $temp_array, $sort_ascending) : array
     {
         if ($sort_ascending) {
-            $array = array_reverse($temp_array);
-        } else {
-            $array = $temp_array;
+            return array_reverse($temp_array);
         }
 
-        return $array;
+        return $temp_array;
     }
 }

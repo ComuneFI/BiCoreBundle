@@ -10,16 +10,12 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 class DoctrineFieldReader
 {
 
-    private string $tableprefix;
-
-    public function __construct(string $tableprefix)
+    public function __construct(private readonly string $tableprefix)
     {
-        $this->tableprefix = $tableprefix;
     }
 
     /**
      *
-     * @param string $fieldname
      * @param mixed $object
      * @param array<mixed> $decodifiche
      * @return mixed|null
@@ -45,7 +41,7 @@ class DoctrineFieldReader
             throw new Exception('Proprietà ' . $field . ' non trovata per ' . $fieldname);
         }
         if ($decodifiche) {
-            if (key_exists($object, $decodifiche)) {
+            if (array_key_exists($object, $decodifiche)) {
                 $object = $decodifiche[$object];
             }
         }
@@ -89,8 +85,6 @@ class DoctrineFieldReader
                     $risposta = date(FieldTypeUtils::getEnvVar("DATE_FORMAT", "d/m/Y"), $time);
                     break;
                 case 'string2bool':
-                    $risposta = $object ? 'SI' : 'NO';
-                    break;
                 case 'boolean':
                     $risposta = $object ? 'SI' : 'NO';
                     break;
@@ -106,30 +100,22 @@ class DoctrineFieldReader
 
     /**
      *
-     * @param string|null $type
      * @param mixed $object
-     * @return string
      */
-    private function getObjectType(?string $type, $object)
+    private function getObjectType(?string $type, $object): string
     {
         if (null === $type) {
-            $tipo = is_object($object) ?
-                    get_class($object) :
-                    gettype($object);
-        } else {
-            $tipo = $type;
+            return get_debug_type($object);
         }
 
-        return $tipo;
+        return $type;
     }
 
     /**
      *
-     * @param string $field
      * @param mixed $object
-     * @return string|null
      */
-    private function getObjectProperty(string $field, $object)
+    private function getObjectProperty(string $field, $object): ?string
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
 

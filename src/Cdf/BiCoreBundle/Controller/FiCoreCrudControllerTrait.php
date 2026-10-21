@@ -17,8 +17,6 @@ trait FiCoreCrudControllerTrait
     /**
      * Displays a form to create a new table entity.
      *
-     * @param Request $request
-     * @return Response
      * @throws AccessDeniedException
      *
      */
@@ -66,30 +64,26 @@ trait FiCoreCrudControllerTrait
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
-                    200
-                );
-            } else {
-                //Quando non passa la validazione
-                return new Response(
-                    $this->renderView($crudtemplate, $twigparms),
-                    400
+                    \Symfony\Component\HttpFoundation\Response::HTTP_OK
                 );
             }
-        } else {
-            //Quando viene richiesta una "nuova" new
+            //Quando non passa la validazione
             return new Response(
                 $this->renderView($crudtemplate, $twigparms),
-                200
+                \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
             );
         }
+        //Quando viene richiesta una "nuova" new
+        return new Response(
+            $this->renderView($crudtemplate, $twigparms),
+            \Symfony\Component\HttpFoundation\Response::HTTP_OK
+        );
     }
 
     /**
      * Displays a form to edit an existing table entity.
      *
-     * @param Request $request
      * @param string|int $id
-     * @return Response
      * @throws AccessDeniedException
      *
      */
@@ -113,7 +107,6 @@ trait FiCoreCrudControllerTrait
         $elencomodifiche = $this->elencoModifiche($controller, $id);
 
         /** @var class-string $entityclass */
-        /** @var mixed $entity */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
@@ -146,12 +139,9 @@ trait FiCoreCrudControllerTrait
     /**
      * Update an existing table entity.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
      * @throws AccessDeniedException
      */
-    public function update(Request $request, $id): Response
+    public function update(Request $request, int $id): Response
     {
         /* @var $ EntityManager */
         $bundle = $this->getBundle();
@@ -168,7 +158,6 @@ trait FiCoreCrudControllerTrait
         $formType = $formclass . 'Type';
 
         /** @var class-string $entityclass */
-        /** @var mixed $entity */
         $entity = $this->em->getRepository($entityclass)->find($id);
 
         if (!$entity) {
@@ -208,9 +197,8 @@ trait FiCoreCrudControllerTrait
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
                 return new Response('OK');
-            } else {
-                return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
             }
+            return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
         }
 
         return new Response($this->renderView(
@@ -222,7 +210,7 @@ trait FiCoreCrudControllerTrait
                             'tabellatemplate' => $tabellatemplate,
                             'elencomodifiche' => $elencomodifiche,
                         ]
-        ), 400);
+        ), \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -253,12 +241,12 @@ trait FiCoreCrudControllerTrait
             $query->execute();
         } catch (ForeignKeyConstraintViolationException $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode(501);
+            $response->setStatusCode(\Symfony\Component\HttpFoundation\Response::HTTP_NOT_IMPLEMENTED);
 
             return $response;
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode(200);
+            $response->setStatusCode(\Symfony\Component\HttpFoundation\Response::HTTP_OK);
 
             return $response;
         }
@@ -268,20 +256,17 @@ trait FiCoreCrudControllerTrait
 
     /**
      *
-     * @param string $controller
      * @param string|int $id
      * @return array<Storicomodifiche>
      */
     public function elencoModifiche(string $controller, $id): array
     {
-        $risultato = $this->em->getRepository(Storicomodifiche::class)->findBy(
+        return $this->em->getRepository(Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,
                 ],
             ['giorno' => 'DESC']
         );
-
-        return $risultato;
     }
 }

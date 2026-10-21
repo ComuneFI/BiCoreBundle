@@ -14,32 +14,11 @@
     "comunedifirenze/mysql-workbench-schema-exporter": {
         "version": "v3.1.4.1"
     },
-    "comunedifirenze/user-bundle": {
-        "version": "3.0.0"
-    },
     "dbrekelmans/bdi": {
         "version": "1.0"
     },
-    "doctrine/annotations": {
-        "version": "1.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
-        },
-        "files": [
-            "tests/config/routes/annotations.yaml"
-        ]
-    },
-    "doctrine/cache": {
-        "version": "2.1.1"
-    },
     "doctrine/collections": {
         "version": "1.6.8"
-    },
-    "doctrine/common": {
-        "version": "3.2.0"
     },
     "doctrine/dbal": {
         "version": "3.2.0"
@@ -108,6 +87,9 @@
     },
     "fi/osbundle": {
         "version": "2.0.5"
+    },
+    "fi/user-bundle": {
+        "version": "6.4.4"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
@@ -195,12 +177,6 @@
     },
     "phpstan/phpdoc-parser": {
         "version": "1.4.3"
-    },
-    "phpstan/phpstan": {
-        "version": "1.2.0"
-    },
-    "phpstan/phpstan-doctrine": {
-        "version": "1.0.2"
     },
     "phpunit/php-code-coverage": {
         "version": "9.2.10"
@@ -520,9 +496,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.23.1"
     },
-    "symfony/polyfill-php72": {
-        "version": "v1.23.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.23.1"
     },
@@ -555,24 +528,22 @@
         "version": "v5.4.1"
     },
     "symfony/security-bundle": {
-        "version": "5.4",
+        "version": "6.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.3",
-            "ref": "09b5e809bd7a992061febd05b797c64a2d93b5cd"
+            "branch": "main",
+            "version": "6.4",
+            "ref": "2ae08430db28c8eb4476605894296c82a642028f"
         },
         "files": [
-            "tests/config/packages/security.yaml"
+            "./tests/config/packages/security.yaml",
+            "./tests/config/routes/security.yaml"
         ]
     },
     "symfony/security-core": {
         "version": "v5.4.0"
     },
     "symfony/security-csrf": {
-        "version": "v5.4.0"
-    },
-    "symfony/security-http": {
         "version": "v5.4.0"
     },
     "symfony/serializer": {
@@ -620,16 +591,15 @@
         ]
     },
     "symfony/validator": {
-        "version": "5.4",
+        "version": "6.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.3",
-            "ref": "3eb8df139ec05414489d55b97603c5f6ca0c44cb"
+            "branch": "main",
+            "version": "5.3",
+            "ref": "c32cfd98f714894c4f128bb99aa2530c1227603c"
         },
         "files": [
-            "tests/config/packages/test/validator.yaml",
-            "tests/config/packages/validator.yaml"
+            "./tests/config/packages/validator.yaml"
         ]
     },
     "symfony/var-dumper": {

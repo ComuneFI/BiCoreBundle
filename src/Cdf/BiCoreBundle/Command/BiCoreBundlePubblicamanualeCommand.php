@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Command;
 
 use Exception;
@@ -9,24 +11,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:pubblicamanuale', description: 'Copia il manuale dalla cartella Doc alla cartella Web')]
 class BiCoreBundlePubblicamanualeCommand extends Command
 {
-    protected static $defaultName = 'bicorebundle:pubblicamanuale';
-    private string $projectdir;
-    private Filesystem $fs;
-
     protected function configure(): void
     {
         $this
-                ->setDescription('Copia il manuale dalla cartella Doc alla cartella Web')
                 ->setHelp('Estende la pubblicazione degli assets al manuale');
     }
 
-    public function __construct(string $projectdir, Filesystem $fs)
+    public function __construct(private readonly string $projectdir, private readonly Filesystem $fs)
     {
-        $this->projectdir = $projectdir;
-        $this->fs = $fs;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -47,6 +42,6 @@ class BiCoreBundlePubblicamanualeCommand extends Command
             throw new Exception('Attenzione, non è presente il file ' . $manualepath);
         }
         $output->writeln('Done!');
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

@@ -8,16 +8,13 @@ use Doctrine\ORM\Id\SequenceGenerator;
 class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 {
 
-    private string $schemaprefix;
-
-    public function __construct(string $schemaprefix)
+    public function __construct(private readonly string $schemaprefix)
     {
-        $this->schemaprefix = $schemaprefix;
     }
 
     public function getSubscribedEvents(): array
     {
-        return array('loadClassMetadata');
+        return ['loadClassMetadata'];
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
@@ -26,9 +23,9 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
         if (!$this->schemaprefix || ($classMetadata->isInheritanceTypeSingleTable() && !$classMetadata->isRootEntity())) {
             return;
         }
-        $classMetadata->setPrimaryTable(array('name' => $this->schemaprefix . '.' . $classMetadata->getTableName()));
+        $classMetadata->setPrimaryTable(['name' => $this->schemaprefix . '.' . $classMetadata->getTableName()]);
         foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-            if (\Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY == $mapping['type'] &&
+            if (\Doctrine\ORM\Mapping\ClassMetadata::MANY_TO_MANY == $mapping['type'] &&
                     isset($classMetadata->associationMappings[$fieldName]['joinTable']['name'])
             ) {
                 $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];
@@ -42,7 +39,6 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
             $em = $args->getEntityManager();
-            /** @phpstan-ignore-next-line */
             if (isset($classMetadata->idGenerator)) {
                 $sequenceGenerator = new SequenceGenerator(
                     $em->getConfiguration()->getQuoteStrategy()->getSequenceName(

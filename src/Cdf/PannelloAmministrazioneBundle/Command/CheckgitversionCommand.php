@@ -13,23 +13,17 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 /**
  * @codeCoverageIgnore
  */
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'pannelloamministrazione:checkgitversion', description: 'Controllo versioni bundles')]
 class CheckgitversionCommand extends Command
 {
-    protected static $defaultName = 'pannelloamministrazione:checkgitversion';
-    
-    private ProjectPath $projectpath;
-    
     protected function configure() : void
     {
         $this
-                ->setDescription('Controllo versioni bundles')
                 ->setHelp('Controlla le versioni git dei bundles');
     }
 
-    public function __construct(ProjectPath $projectpath)
+    public function __construct(private readonly ProjectPath $projectpath)
     {
-        $this->projectpath = $projectpath;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -39,10 +33,10 @@ class CheckgitversionCommand extends Command
         if (self::isWindows()) {
             $output->writeln('<info>Non previsto in ambiente windows</info>');
 
-            return 0;
+            return \Symfony\Component\Console\Command\Command::SUCCESS;
         }
 
-        $composerbundles = array();
+        $composerbundles = [];
         $papath = $this->projectpath;
         $composerbundlespath = $papath->getVendorBinPath().'/../fi';
         $findercomposerbundle = new Finder();
@@ -52,21 +46,21 @@ class CheckgitversionCommand extends Command
             $fullcomposerbundlepath = $composerbundlespath.DIRECTORY_SEPARATOR.$file->getBasename();
             $local = $this->getGitVersion($fullcomposerbundlepath, false);
             $remote = $this->getGitVersion($fullcomposerbundlepath, true);
-            $style = new OutputFormatterStyle('blue', 'white', array('bold', 'blink'));
+            $style = new OutputFormatterStyle('blue', 'white', ['bold', 'blink']);
             $output->getFormatter()->setStyle('warning', $style);
             if ($local !== $remote) {
                 $remote = '<warning> * '.$remote.' * </warning>';
             }
             $output->writeln('<info>'.$file->getBasename().'</info> '.$local.' -> '.$remote);
 
-            $composerbundles[] = array(
+            $composerbundles[] = [
                 'name' => $file->getBasename(),
                 'path' => $fullcomposerbundlepath,
                 'version' => $this->getGitVersion($fullcomposerbundlepath),
-            );
+            ];
         }
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     private function getGitVersion(string $path, bool $remote = false) : string
@@ -90,32 +84,29 @@ class CheckgitversionCommand extends Command
             }
 
             return '?';
-        } else {
-            //Local
-            $cmd = 'cd '.$path;
-            $process = Process::fromShellCommandline($cmd.';git branch | '."grep ' * '");
-            $process->setTimeout(60 * 100);
-            $process->run();
-            if ($process->isSuccessful()) {
-                $versions = explode(chr(10), $process->getOutput());
-
-                return $this->getLocalVersionString($versions);
-            } else {
-                //echo $process->getErrorOutput();
-                return '?';
-            }
         }
+        //Local
+        $cmd = 'cd '.$path;
+        $process = Process::fromShellCommandline($cmd.';git branch | '."grep ' * '");
+        $process->setTimeout(60 * 100);
+        $process->run();
+        if ($process->isSuccessful()) {
+            $versions = explode(chr(10), $process->getOutput());
+
+            return $this->getLocalVersionString($versions);
+        }
+        //echo $process->getErrorOutput();
+        return '?';
     }
 
     /**
      *
      * @param array<string> $versions
-     * @return string
      */
     private function getLocalVersionString(array $versions) : string
     {
         foreach ($versions as $line) {
-            if (false !== strpos($line, '* ')) {
+            if (str_contains($line, '* ')) {
                 $version = trim(strtolower(str_replace('* ', '', $line)));
 
                 return $this->getLocalVersionStringDetail($version);
@@ -127,13 +118,12 @@ class CheckgitversionCommand extends Command
 
     private function getLocalVersionStringDetail(string $versions) :string
     {
-        if ('master' == $versions) {
+        if ('master' === $versions) {
             return $versions;
-        } else {
-            $matches = [];
-            if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
-                return $matches[0]; //returning the first match
-            }
+        }
+        $matches = [];
+        if (preg_match('/\d+(?:\.\d+)+/', $versions, $matches)) {
+            return $matches[0]; //returning the first match
         }
 
         return '?';
@@ -151,10 +141,6 @@ class CheckgitversionCommand extends Command
 
     public static function isWindows() : bool
     {
-        if (PHP_OS == 'WINNT') {
-            return true;
-        } else {
-            return false;
-        }
+        return PHP_OS === 'WINNT';
     }
 }

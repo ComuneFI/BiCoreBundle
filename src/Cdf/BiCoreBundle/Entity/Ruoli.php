@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Cdf\BiCoreBundle\Entity\Ruoli.
  */
 #[ORM\Entity]
-class Ruoli extends BaseRuoli
+class Ruoli extends BaseRuoli implements \Stringable
 {
     public function isSuperadmin()
     {
@@ -25,7 +27,7 @@ class Ruoli extends BaseRuoli
         return $this->user;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getRuolo();
     }

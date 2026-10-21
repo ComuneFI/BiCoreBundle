@@ -18,7 +18,7 @@ abstract class FieldTypeUtils
     public static function getArrayValue($value)
     {
         if (is_null($value)) {
-            $newval = array();
+            $newval = [];
         } else {
             return $value;
         }
@@ -91,7 +91,7 @@ abstract class FieldTypeUtils
             }
         }
         if ($date === false) {
-            $date = null;
+            return null;
         }
         return $date;
     }

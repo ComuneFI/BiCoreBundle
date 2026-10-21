@@ -10,6 +10,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cdf\BiCoreBundle\Utils\Api\ApiUtils;
 use Cdf\BiCoreBundle\Utils\Entity\ModelUtils;
 use Cdf\BiCoreBundle\Entity\Storicomodifiche;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Twig\Environment;
 
 /**
  * @codeCoverageIgnore
@@ -21,7 +23,7 @@ trait FiApiCoreCrudControllerTrait
     /**
      * Displays a form to create a new table entity.
      */
-    public function new(Request $request)
+    public function new(Request $request, Environment $twig): \Symfony\Component\HttpFoundation\Response
     {
         /* @var $em EntityManager */
         $bundle = $this->getBundle();
@@ -30,8 +32,8 @@ trait FiApiCoreCrudControllerTrait
             throw new AccessDeniedException('Non si hanno i permessi per creare questo contenuto');
         }
 
-        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
-        $tabellatemplate = $this->getTabellaTemplate($controller);
+        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName() , $twig);
+        $tabellatemplate = $this->getTabellaTemplate($controller, $twig);
 
         $parametriform = $request->get('parametriform') ? json_decode($request->get('parametriform'), true) : [];
 
@@ -72,36 +74,41 @@ trait FiApiCoreCrudControllerTrait
             if ($form->isValid()) {
                 //TODO: evaluate if this part can be improved
                 $parameters = $request->request->get($form->getName());
+                if (!is_array($parameters)) {
+                    return new Response(
+                        $this->renderView($crudtemplate, $twigparms),
+                        \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
+                    );
+                } 
                 $entity = $form->getData();
                 $this->setIdObjectfromSelect($entity, $parameters);
+                    
 
                 $this->apiManager->postCreate($this->getCollectionName(), $entity);
 
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
-                    200
-                );
-            } else {
-                //Quando non passa la validazione
-                return new Response(
-                    $this->renderView($crudtemplate, $twigparms),
-                    400
+                    \Symfony\Component\HttpFoundation\Response::HTTP_OK
                 );
             }
-        } else {
-            //Quando viene richiesta una "nuova" new
+            //Quando non passa la validazione
             return new Response(
                 $this->renderView($crudtemplate, $twigparms),
-                200
+                \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
             );
         }
+        //Quando viene richiesta una "nuova" new
+        return new Response(
+            $this->renderView($crudtemplate, $twigparms),
+            \Symfony\Component\HttpFoundation\Response::HTTP_OK
+        );
     }
 
     /**
      * Displays a form to edit an existing table entity.
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, int $id, Environment $twig, ManagerRegistry $doctrine)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -109,8 +116,8 @@ trait FiApiCoreCrudControllerTrait
         if (!$this->getPermessi()->canUpdate($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
-        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
-        $tabellatemplate = $this->getTabellaTemplate($controller);
+        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName(), $twig);
+        $tabellatemplate = $this->getTabellaTemplate($controller, $twig);
 
         $formclass = $this->getFormName();
         $formType = $formclass . 'Type';
@@ -118,7 +125,7 @@ trait FiApiCoreCrudControllerTrait
 
         $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
-        $elencomodifiche = $this->elencoModifiche($controller, $id);
+        $elencomodifiche = $this->elencoModifiche($controller, $id, $doctrine);
 
         $modelutils = new ModelUtils();
         $entity = $modelutils->setApiValues($entityorig);
@@ -156,7 +163,7 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id field with value selected on select list.
      * //TODO: review duplicated code
      */
-    private function setIdfromSelect(&$parameters)
+    private function setIdfromSelect(array &$parameters): void
     {
         foreach (array_keys($parameters) as $key) {
             if (\str_contains($key, '_id')) {
@@ -177,7 +184,7 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id fields of an object with value selected on select list.
      * It forces the received field to be an INT (It applies a cast)
      */
-    private function setIdObjectfromSelect(&$classItem, &$parameters)
+    private function setIdObjectfromSelect(&$classItem, array &$parameters): void
     {
         //TODO: (int) cast that is fixed
         $setters = $classItem::setters();
@@ -197,16 +204,16 @@ trait FiApiCoreCrudControllerTrait
     /**
      * Edits an existing table entity.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id, ManagerRegistry $doctrine, Environment $twig )
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
         if (!$this->getPermessi()->canUpdate($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per modificare questo contenuto');
         }
-        $crudtemplate = $this->getCrudTemplate($bundle, $controller, 'edit');
-        $tabellatemplate = $this->getTabellaTemplate($controller);
-        $elencomodifiche = $this->elencoModifiche($controller, $id);
+        $crudtemplate = $this->getCrudTemplate($bundle, $controller, 'edit', $twig);
+        $tabellatemplate = $this->getTabellaTemplate($controller, $twig);
+        $elencomodifiche = $this->elencoModifiche($controller, $id, $doctrine );
 
         $formclass = $this->getFormName();
         $formType = $formclass . 'Type';
@@ -236,6 +243,12 @@ trait FiApiCoreCrudControllerTrait
         );
 
         $parameters = $request->request->get($editForm->getName());
+        if (!is_array($parameters)) {
+            return new Response(
+                $this->renderView($crudtemplate, []),
+                \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
+            );
+        }    
 
         $this->setIdfromSelect($parameters);
         $editForm->submit($parameters);
@@ -245,14 +258,13 @@ trait FiApiCoreCrudControllerTrait
 
 
 
-            $this->apiManager->postUpdate($this->getCollectionName(), $entityItem, $id);
+            $this->apiManager->postUpdate($this->getCollectionName(), (object) $entityItem, $id);
 
             $continua = (int) $request->get('continua');
             if (0 === $continua) {
                 return new Response('OK');
-            } else {
-                return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
             }
+            return $this->redirect($this->generateUrl($controller . '_edit', ['id' => $id]));
         }
 
         return new Response($this->renderView(
@@ -264,7 +276,7 @@ trait FiApiCoreCrudControllerTrait
                             'tabellatemplate' => $tabellatemplate,
                             'elencomodifiche' => $elencomodifiche,
             ]
-        ), 400);
+        ), \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -289,11 +301,11 @@ trait FiApiCoreCrudControllerTrait
 
 
             foreach ($ids as $id) {
-                $response = $this->apiManager->deleteItem($this->getCollectionName(), $id);
+                $response = $this->apiManager->deleteItem($this->getCollectionName(), (int) $id);
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());
-            $response->setStatusCode(501);
+            $response->setStatusCode(\Symfony\Component\HttpFoundation\Response::HTTP_NOT_IMPLEMENTED);
 
             return $response;
         }
@@ -301,17 +313,16 @@ trait FiApiCoreCrudControllerTrait
         return new Response('Operazione eseguita con successo');
     }
 
-    public function elencoModifiche($controller, $id)
+    public function elencoModifiche($controller, $id, ManagerRegistry $doctrine): array
     {
-        $em = $this->getDoctrine()->getManager();
-        $risultato = $em->getRepository(Storicomodifiche::class)->findBy(
+        $em = $doctrine->getManager();
+
+        return $em->getRepository(Storicomodifiche::class)->findBy(
             [
                     'nometabella' => $controller,
                     'idtabella' => $id,
                 ],
             ['giorno' => 'DESC']
         );
-
-        return $risultato;
     }
 }

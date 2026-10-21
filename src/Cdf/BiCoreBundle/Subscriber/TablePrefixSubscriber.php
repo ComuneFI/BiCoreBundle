@@ -6,16 +6,13 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 
 class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
 {
-    private string $tableprefix;
-
-    public function __construct(string $tableprefix)
+    public function __construct(private readonly string $tableprefix)
     {
-        $this->tableprefix = $tableprefix;
     }
 
     public function getSubscribedEvents(): array
     {
-        return array('loadClassMetadata');
+        return ['loadClassMetadata'];
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
@@ -25,11 +22,11 @@ class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
             // if we are in an inheritance hierarchy, only apply this once
             return;
         }
-        if (false !== strpos($classMetadata->namespace, 'Cdf\BiCoreBundle')) {
+        if (str_contains($classMetadata->namespace, 'Cdf\BiCoreBundle')) {
             $tableprefix = $this->tableprefix;
-            $classMetadata->setPrimaryTable(array('name' => $tableprefix . $classMetadata->getTableName()));
+            $classMetadata->setPrimaryTable(['name' => $tableprefix . $classMetadata->getTableName()]);
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-                if (\Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY == $mapping['type'] &&
+                if (\Doctrine\ORM\Mapping\ClassMetadata::MANY_TO_MANY == $mapping['type'] &&
                     isset($classMetadata->associationMappings[$fieldName]['joinTable']['name'])
                 ) {
                     $mappedTableName = $classMetadata->associationMappings[$fieldName]['joinTable']['name'];

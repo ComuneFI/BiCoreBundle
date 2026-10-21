@@ -13,11 +13,7 @@ class StoricomodificheRepository extends EntityRepository
     /**
      * save field modification in history table.
      *
-     * @param string $nometabella
      * @param array<mixed> $changes
-     * @param int $id
-     * @param Operatori $user
-     * @return void
      */
     public function saveHistory(string $nometabella, array $changes, int $id, Operatori $user): void
     {
@@ -49,7 +45,6 @@ class StoricomodificheRepository extends EntityRepository
             if ($change instanceof DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
-                /** @phpstan-ignore-next-line */
                 $risposta = $change->__toString() . ' (' . $change->getId() . ')';
             }
         } else {
@@ -73,14 +68,14 @@ class StoricomodificheRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $entity = $em->getRepository(Colonnetabelle::class)->findOneBy(
-            array(
+            [
                     'nometabella' => $nometabella,
                     'nomecampo' => $indiceDato,
-                )
+                ]
         );
 
         if ($entity && $entity->isRegistrastorico()) {
-            $risposta = true;
+            return true;
         }
 
         return $risposta;
@@ -89,12 +84,9 @@ class StoricomodificheRepository extends EntityRepository
     /**
      * check if single data is  changed.
      *
-     * @param string $nometabella
      * @param mixed $datooriginale
      * @param mixed $singoloDato
-     * @param string $indiceDato
      * @param array<mixed> $changes
-     * @return void
      */
     private function isDataChanged(string $nometabella, $datooriginale, $singoloDato, string $indiceDato, array &$changes): void
     {
@@ -106,14 +98,13 @@ class StoricomodificheRepository extends EntityRepository
     /**
      * check if something changes.
      *
-     * @param string $nometabella
      * @param array<mixed> $originalData
      * @param array<mixed> $newData
      * @return array<mixed>
      */
     public function isRecordChanged(string $nometabella, array $originalData, array $newData): array
     {
-        $changes = array();
+        $changes = [];
         foreach ($newData as $indiceDato => $singoloDato) {
             $this->isDataChanged($nometabella, $originalData[$indiceDato], $singoloDato, $indiceDato, $changes);
         }

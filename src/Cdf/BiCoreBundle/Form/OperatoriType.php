@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -14,28 +16,28 @@ use Cdf\BiCoreBundle\Entity\Operatori;
 class OperatoriType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $submitparms = array(
+        $submitparms = [
             'label' => 'Aggiorna record',
-            'attr' => array(
+            'attr' => [
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-            ),);
+            ],];
 
         $builder
                 ->add('operatore')
                 ->add('username')
                 ->add('email', EmailType::class)
                 ->add('enabled')
-                ->add('password', RepeatedType::class, array(
+                ->add('password', RepeatedType::class, [
                     'type' => TextType::class,
                     'invalid_message' => 'Le password devono coincidere.',
-                    'options' => array('attr' => array('class' => 'password-field')),
+                    'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
-                    'first_options' => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Ripeti Password'),
-                ))
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Ripeti Password'],
+                ])
                 ->add('ruoli')
                 ->add('submit', SubmitType::class, $submitparms)
         //->add('salt')
@@ -54,11 +56,11 @@ class OperatoriType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Operatori::class,
-            'parametriform' => array(),
+            'parametriform' => [],
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token

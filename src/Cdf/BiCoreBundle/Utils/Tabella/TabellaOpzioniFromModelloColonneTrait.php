@@ -9,7 +9,6 @@ trait TabellaOpzioniFromModelloColonneTrait
     /**
      *
      * @param array<mixed> $opzionibuilder
-     * @return void
      */
     protected function setOpzioniTabellaFromModellocolonne(array &$opzionibuilder) : void
     {
@@ -28,10 +27,8 @@ trait TabellaOpzioniFromModelloColonneTrait
 
     /**
      *
-     * @param string $campo
      * @param array<mixed> $modellocolonna
      * @param array<mixed> $opzionibuilder
-     * @return void
      * @throws \Exception
      */
     protected function checkCampoOpzioniTabella(string $campo, array $modellocolonna, array &$opzionibuilder) : void

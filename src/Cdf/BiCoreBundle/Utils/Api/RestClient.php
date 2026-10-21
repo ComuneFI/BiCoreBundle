@@ -13,24 +13,18 @@ class RestClient
 {
 
 
-    //parameters
-    private string $endpoint;
-    private string $clientkey;
-
-    public function __construct(string $endpoint, string $clientkey)
+    public function __construct(private readonly string $endpoint, private readonly string $clientkey)
     {
-        $this->endpoint = $endpoint;
-        $this->clientkey = $clientkey;
     }
 
     private function tokenize(): mixed
     {
 
-        $body = array();
+        $body = [];
         $body['grant_type'] = 'client_credentials';
 
         $client = new Client();
-        $res = $client->request('POST', $this->endpoint, [
+        return $client->request('POST', $this->endpoint, [
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Accept' => '*/*',
@@ -38,7 +32,6 @@ class RestClient
             ],
             'form_params' => ['grant_type' => 'client_credentials'],
         ]);
-        return $res;
     }
 
     /**
@@ -48,7 +41,6 @@ class RestClient
     {
         $response = $this->tokenize();
         $content = $response->getBody();
-        $data = json_decode($content);
-        return $data;
+        return json_decode($content);
     }
 }

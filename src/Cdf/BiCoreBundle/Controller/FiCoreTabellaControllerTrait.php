@@ -57,15 +57,10 @@ trait FiCoreTabellaControllerTrait
      * It returns true if the request belongs to an API service, false otherwise
      *
      * @param array<string> $parametripassati
-     * @return bool
      */
-    private function isApi(&$parametripassati): bool
+    private function isApi(array &$parametripassati): bool
     {
-        $isapi = false;
-        if (isset($parametripassati['isapi'])) {
-            $isapi = true;
-        }
-        return $isapi;
+        return isset($parametripassati['isapi']);
     }
 
     public function exportXls(Request $request, TabellaXls $tabellaxls, ManagerRegistry $doctrine): JsonResponse
@@ -89,7 +84,7 @@ trait FiCoreTabellaControllerTrait
                     ];
                     try {
                         unlink($filexls);
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         //IGNORE THE ERROR OF UNLINK
                     }
                 } else {
@@ -114,10 +109,11 @@ trait FiCoreTabellaControllerTrait
      * @param array<mixed> $parametripassati
      * @return array<mixed>
      */
-    protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati)
+    protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati): array
     {
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
-        $parametritabella = [
+
+        return [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
             'recordstabella' => $this->getRecordsTabella($this->isApi($parametripassati), $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
@@ -125,27 +121,21 @@ trait FiCoreTabellaControllerTrait
             'righetotali' => $configurazionetabella->getRighetotali(),
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
         ];
-
-        return $parametritabella;
     }
 
     /**
      * Append records to the given parameters of table.
      * It deals the difference between an API service or a ORM service.
      *
-     * @param bool $isApi
      * @param mixed $configurazionetabella
      * @return mixed
      */
     private function getRecordsTabella(bool $isApi, &$configurazionetabella)
     {
-        $results = [];
         if ($isApi) {
-            $results = $configurazionetabella->getApiRecordstabella();
-        } else {
-            $results = $configurazionetabella->getRecordstabella();
+            return $configurazionetabella->getApiRecordstabella();
         }
-        return $results;
+        return $configurazionetabella->getRecordstabella();
     }
 
     /**
@@ -156,7 +146,8 @@ trait FiCoreTabellaControllerTrait
     protected function getParametriTabellaXls(ManagerRegistry $doctrine, array $parametripassati): array
     {
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
-        $parametritabella = [
+
+        return [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
             'recordstabella' => $this->getRecordsTabella($this->isApi($parametripassati), $configurazionetabella),
             'paginacorrente' => $configurazionetabella->getPaginacorrente(),
@@ -165,13 +156,10 @@ trait FiCoreTabellaControllerTrait
             'traduzionefiltri' => $configurazionetabella->getTraduzionefiltri(),
             'nomecontroller' => ParametriTabella::getParameter($parametripassati['nomecontroller']),
         ];
-
-        return $parametritabella;
     }
 
     /**
      *
-     * @param string $controller
      * @return array<string>
      */
     protected function getTabellaTemplateInformations(string $controller): array

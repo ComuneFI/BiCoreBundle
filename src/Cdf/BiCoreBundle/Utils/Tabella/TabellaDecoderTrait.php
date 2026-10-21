@@ -16,9 +16,7 @@ trait TabellaDecoderTrait
 
     /**
      *
-     * @param string $descrizionefiltri
      * @param array<mixed> $filtrocorrente
-     * @param ParametriQueryTabellaDecoder $criteria
      */
     protected function getDescrizioneFiltro(string &$descrizionefiltri, array $filtrocorrente, ParametriQueryTabellaDecoder $criteria) : void
     {
@@ -27,26 +25,15 @@ trait TabellaDecoderTrait
         }
     }
 
-    /**
-     *
-     * @param mixed $fieldvalue
-     * @return mixed
-     */
-    protected function getFieldValue($fieldvalue)
+    protected function getFieldValue(array $fieldvalue): \Datetime|array
     {
         if (isset($fieldvalue['date'])) {
             return new Datetime($fieldvalue['date']);
-        } else {
-            return $fieldvalue;
         }
+        return $fieldvalue;
     }
 
-    /**
-     *
-     * @param string $operator
-     * @return string
-     */
-    protected function getOperator(string $operator)
+    protected function getOperator(string $operator): string
     {
         switch (strtoupper($operator)) {
             case 'LIKE':
@@ -67,12 +54,10 @@ trait TabellaDecoderTrait
 
     /**
      *
-     * @param string $nometabella
      * @param mixed $nomepadre
      * @param array<mixed> $ancestors
-     * @return string
      */
-    protected function generaAlias(string $nometabella, $nomepadre = false, $ancestors = array()) : string
+    protected function generaAlias(string $nometabella, $nomepadre = false, $ancestors = []) : string
     {
         $nometabellapulito = preg_replace('/[^a-z0-9\.]/i', '', $nometabella);
         $primalettera = strtolower(substr($nometabellapulito, 0, 1));
@@ -85,13 +70,13 @@ trait TabellaDecoderTrait
 
         if (isset($this->aliasGenerati[$primalettera])) {
             $risposta = $primalettera.$this->aliasGenerati[$primalettera];
-            $this->aliasGenerati[$primalettera] = $this->aliasGenerati[$primalettera] + 1;
+            $this->aliasGenerati[$primalettera] += 1;
         } else {
             $risposta = $primalettera;
             $this->aliasGenerati[$primalettera] = 1;
         }
 
-        $this->decodificaAlias[ucfirst(implode('.', $ancestors))] = array('alias' => $risposta);
+        $this->decodificaAlias[ucfirst(implode('.', $ancestors))] = ['alias' => $risposta];
 
         return $risposta;
     }
@@ -110,7 +95,6 @@ trait TabellaDecoderTrait
 
     /**
      *
-     * @param string $nomecampo
      * @return mixed
      * @throws \Exception
      */

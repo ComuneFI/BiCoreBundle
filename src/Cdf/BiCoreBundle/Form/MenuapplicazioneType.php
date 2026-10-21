@@ -13,25 +13,18 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class MenuapplicazioneType extends AbstractType
 {
 
-    private $transformer;
-
-    public function __construct(MenuapplicazioneTransformer $transformer)
+    public function __construct(private readonly MenuapplicazioneTransformer $transformer)
     {
-        $this->transformer = $transformer;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $submitparms = array(
+        $submitparms = [
             'label' => 'Aggiorna record',
-            'attr' => array(
+            'attr' => [
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-            ),);
+            ],];
         $builder
                 ->add('nome')
                 ->add('percorso')
@@ -53,11 +46,11 @@ class MenuapplicazioneType extends AbstractType
         $builder->get('padre')->addModelTransformer($this->transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Menuapplicazione::class,
-            'parametriform' => array(),
+            'parametriform' => [],
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token

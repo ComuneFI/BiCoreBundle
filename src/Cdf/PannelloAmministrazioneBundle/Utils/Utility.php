@@ -11,13 +11,8 @@ use Symfony\Component\Process\Process;
 class Utility
 {
 
-    private ProjectPath $apppaths;
-    private Kernel $kernel;
-
-    public function __construct(Kernel $kernel, ProjectPath $projectpath)
+    public function __construct(private readonly Kernel $kernel, private readonly ProjectPath $apppaths)
     {
-        $this->apppaths = $projectpath;
-        $this->kernel = $kernel;
     }
     /**
      *
@@ -36,11 +31,9 @@ class Utility
     }
     /**
      *
-     * @param string $command
-     * @param string $workingdir
      * @return array<mixed>
      */
-    public static function runCommand(string $command, string $workingdir = '.')
+    public static function runCommand(string $command, string $workingdir = '.'): array
     {
         /* @var $process \Symfony\Component\Process\Process */
         $process = Process::fromShellCommandline($command);
@@ -52,37 +45,34 @@ class Utility
         $process->run();
 
         if (!$process->isSuccessful()) {
-            $return = array('errcode' => -1,
+            return ['errcode' => -1,
                 'command' => $command,
-                'message' => 'Errore nel comando ' . $command . "\n" . $process->getErrorOutput() . "\n" . $process->getOutput(),);
-        } else {
-            $return = array('errcode' => 0,
-                'command' => $command,
-                'message' => $process->getOutput(),
-            );
+                'message' => 'Errore nel comando ' . $command . "\n" . $process->getErrorOutput() . "\n" . $process->getOutput(),];
         }
 
-        return $return;
+        return ['errcode' => 0,
+            'command' => $command,
+            'message' => $process->getOutput(),
+        ];
     }
     
     /**
      *
-     * @param string $command
      * @param array<mixed> $options
      * @return array<mixed>
      */
-    public function runSymfonyCommand(string $command, array $options = array()) : array
+    public function runSymfonyCommand(string $command, array $options = []) : array
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $cmdoptions = array_merge(array('command' => $command), $options);
+        $cmdoptions = array_merge(['command' => $command], $options);
 
         $outputbuf = new BufferedOutput();
         // return the output, don't use if you used NullOutput()
         $returncode = $application->run(new ArrayInput($cmdoptions), $outputbuf);
         $output = $outputbuf->fetch();
 
-        return array('errcode' => (0 == $returncode ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output);
+        return ['errcode' => (0 === $returncode ? 0 : 1), 'command' => $cmdoptions['command'], 'message' => $output];
     }
 }

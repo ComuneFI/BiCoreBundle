@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 trait ConfiguratorimportUpdateTrait
 {
-    private function executeUpdate($entityclass, $record, $objrecord)
+    private function executeUpdate($entityclass, array $record, $objrecord): int
     {
         unset($record['id']);
         foreach ($record as $key => $value) {
@@ -42,7 +42,7 @@ trait ConfiguratorimportUpdateTrait
         return 0;
     }
 
-    private function update(&$objrecord, $key, $value, $entityclass)
+    private function update(&$objrecord, $key, $value, $entityclass): bool
     {
         $fieldtype = $this->dbutility->getFieldType($objrecord, $key);
         $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);

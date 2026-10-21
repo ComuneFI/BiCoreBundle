@@ -11,36 +11,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils;
 use Cdf\BiCoreBundle\Utils\Entity\EntityUtils;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:configuratorexport', description: 'Esporta configurazione per BiCore')]
 class BiCoreBundleConfiguratorexportCommand extends Command
 {
-    protected static $defaultName = 'bicorebundle:configuratorexport';
+    private array $entities = [];
+    private ?\Symfony\Component\Console\Output\OutputInterface $output = null;
 
-    private $entities = array();
-    private $em;
-    private $systementity;
-    private $output;
-    private $entityutility;
-
-    protected function configure()
+    protected function configure(): void
     {
         $this
-                ->setDescription('Esporta configurazione per BiCore')
                 ->setHelp('Esporta la configurazione di bi');
     }
 
-    public function __construct(EntityManagerInterface $em, EntityUtils $entityutility, BiCoreSystemTablesUtils $systementity)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly EntityUtils $entityutility, private readonly BiCoreSystemTablesUtils $systementity)
     {
-        $this->em = $em;
-        $this->entityutility = $entityutility;
-        $this->systementity = $systementity;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
@@ -54,21 +42,21 @@ class BiCoreBundleConfiguratorexportCommand extends Command
             foreach ($systementities as $entity => $details) {
                 $ret = $this->export($fixturefile, $entity);
                 if (1 == $ret) {
-                    return 1;
+                    return \Symfony\Component\Console\Command\Command::FAILURE;
                 }
             }
 
-            return 0;
+            return \Symfony\Component\Console\Command\Command::SUCCESS;
         } catch (\Exception $exc) {
             echo $exc->getMessage() . ' at line ' . $exc->getLine();
         }
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
-    protected function export($fixturefile, $entity)
+    protected function export($fixturefile, $entity): int
     {
         $entityclass = $entity;
-        $ret = $this->exportEntity($fixturefile, $entityclass);
+        $ret = $this->exportEntity($entityclass);
         if (0 == $ret) {
             foreach ($this->entities as $entity) {
                 $this->output->writeln('<info>Esporto ' . $entity . ' su file</info>');
@@ -82,7 +70,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         return 1;
     }
 
-    private function exportEntity($fixturefile, $entityclass)
+    private function exportEntity($entityclass): int
     {
         $this->output->writeln('<info>Export Entity: ' . $entityclass . '</info>');
         if ($this->entityutility->entityExists($entityclass)) {
@@ -105,9 +93,9 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         return 0;
     }
 
-    private function exportEntityToFile($fixturefile, $entityclass)
+    private function exportEntityToFile($fixturefile, $entityclass): void
     {
-        $entityDump = array();
+        $entityDump = [];
 
         $query = $this->em->createQueryBuilder()
                 ->select('p')

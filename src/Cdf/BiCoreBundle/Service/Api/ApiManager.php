@@ -21,21 +21,19 @@ class ApiManager
 {
 
     private string $project;
-    private Oauth2TokenService $oauth2Service;
     private bool $oauth2Enabled;
     private mixed $map;
     private object $headerSelector;
     private object $config;
 
-    private ApiManagerUtil $apiManUtil;
+    private readonly ApiManagerUtil $apiManUtil;
 
     /**
      * Build an ApiManager instance
      */
-    public function __construct(String $oauth2Parameter, Oauth2TokenService $oauth2Service)
+    public function __construct(String $oauth2Parameter, private readonly Oauth2TokenService $oauth2Service)
     {
-        $this->map = array();
-        $this->oauth2Service = $oauth2Service;
+        $this->map = [];
         $this->oauth2Enabled = false;
         if ($oauth2Parameter == 1) {
             $this->oauth2Enabled = true;
@@ -93,12 +91,12 @@ class ApiManager
         $this->isApiClientConfigs();
 
         $apiUtils = new ApiUtils($collection);
-        $parametri = array('str' => $collection, 'primamaiuscola' => true);
+        $parametri = ['str' => $collection, 'primamaiuscola' => true];
         $outcome = StringUtils::toCamelCase($parametri);
 
         $subcollectionValue = '';
         if (!empty($subcollection)) {
-            $parametri2 = array('str' => $subcollection, 'primamaiuscola' => true);
+            $parametri2 = ['str' => $subcollection, 'primamaiuscola' => true];
             $subcollectionValue = StringUtils::toCamelCase($parametri2);
         }
         //NOT VALID FOR WINDOWS OS
@@ -118,9 +116,7 @@ class ApiManager
 
     private function map(string $collection, mixed $tools): void
     {
-        if (!isset($this->map[$collection])) {
-            $this->map[$collection] = $tools;
-        }
+        $this->map[$collection] ??= $tools;
     }
 
     /**
@@ -200,15 +196,15 @@ class ApiManager
         $getCountmethod = $this->getMethod($collection, 'getCount', $subcollection);
         $tools = $this->map[$collection];
         //the array of arguments
-        $arguments = array();
+        $arguments = [];
         if ($subcollection != null) {
-            array_push($arguments, $subcollection);
+            $arguments[] = $subcollection;
         }
         $amount = null;
         $token = $this->setToken($tools['api']);
         try {
                 $amount = $tools['api']->$getCountmethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $amount = $this->retry($tools['api'], $getCountmethod, $arguments);
         }
@@ -218,25 +214,25 @@ class ApiManager
     /**
      * Get items existent for the given collection, filtered as requested.
      */
-    public function getAll(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $condition, string $subcollection = null): mixed
+    public function getAll(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $condition = null, string $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $getAllmethod = $this->getMethod($collection, 'getAll', $subcollection);
         $results = [];
         //the array of arguments
-        $arguments = array();
+        $arguments = [];
         if ($subcollection != null) {
-            array_push($arguments, $subcollection);
+            $arguments[] = $subcollection;
         }
-        array_push($arguments, $offset);
-        array_push($arguments, $limit);
-        array_push($arguments, $sort);
-        array_push($arguments, $condition);
+        $arguments[] = $offset;
+        $arguments[] = $limit;
+        $arguments[] = $sort;
+        $arguments[] = $condition;
 
         $token = $this->setToken($tools['api']);
         try {
                 $results = $tools['api']->$getAllmethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $results = $this->retry($tools['api'], $getAllmethod, $arguments);
         }
@@ -246,25 +242,25 @@ class ApiManager
     /**
      * Get items existent for the given collection in "to-string" format, filtered as requested.
      */
-    public function getAllToString(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $cond, String $sub = null): mixed
+    public function getAllToString(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $cond = null, String $sub = null): mixed
     {
         $tools = $this->map[$collection];
         $getMethod = $this->getMethod($collection, 'getAllToString', $sub);
         $results = [];
         //the array of arguments
-        $arguments = array();
+        $arguments = [];
         if ($sub != null) {
-            array_push($arguments, $sub);
+            $arguments[] = $sub;
         }
-        array_push($arguments, $offset);
-        array_push($arguments, $limit);
-        array_push($arguments, $sort);
-        array_push($arguments, $cond);
+        $arguments[] = $offset;
+        $arguments[] = $limit;
+        $arguments[] = $sort;
+        $arguments[] = $cond;
 
         $token = $this->setToken($tools['api']);
         try {
             $results = $tools['api']->$getMethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $results = $this->retry($tools['api'], $getMethod, $arguments);
         }
@@ -281,15 +277,15 @@ class ApiManager
         $tools = $this->map[$collection];
         $getAllmethod = $this->getMethod($collection, 'getItem', $subcollection);
         $results = [];
-        $arguments = array();
+        $arguments = [];
         if ($subcollectionVar != null) {
-            array_push($arguments, $subcollectionVar);
+            $arguments[] = $subcollectionVar;
         }
-        array_push($arguments, $id);
+        $arguments[] = $id;
         $token = $this->setToken($tools['api']);
         try {
             $results = $tools['api']->$getAllmethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $results = $this->retry($tools['api'], $getAllmethod, $arguments);
         }
@@ -303,15 +299,15 @@ class ApiManager
     {
         $tools = $this->map[$collection];
         $deleteMethod = $this->getMethod($collection, 'getDelete', $subcollection);
-        $arguments = array();
+        $arguments = [];
         if ($subcollection != null) {
-            array_push($arguments, $subcollection);
+            $arguments[] = $subcollection;
         }
-        array_push($arguments, $id);
+        $arguments[] = $id;
         $token = $this->setToken($tools['api']);
         try {
             $response = $tools['api']->$deleteMethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $response = $this->retry($tools['api'], $deleteMethod, $arguments);
         }
@@ -327,15 +323,15 @@ class ApiManager
         $tools = $this->map[$collection];
         $createMethod = $this->getMethod($collection, 'getCreate', $subcollection);
         $results = [];
-        $arguments = array();
-        array_push($arguments, $body);
+        $arguments = [];
+        $arguments[] = $body;
         if ($subcollection != null) {
-            array_push($arguments, $subcollection);
+            $arguments[] = $subcollection;
         }
         $token = $this->setToken($tools['api']);
         try {
             $results = $tools['api']->$createMethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $results = $this->retry($tools['api'], $createMethod, $arguments);
         }
@@ -351,16 +347,16 @@ class ApiManager
         $tools = $this->map[$collection];
         $createMethod = $this->getMethod($collection, 'getUpdateItem', $subcollection);
         $results = [];
-        $arguments = array();
-        array_push($arguments, $body);
-        array_push($arguments, $id);
+        $arguments = [];
+        $arguments[] = $body;
+        $arguments[] = $id;
         if ($subcollection != null) {
-            array_push($arguments, $subcollection);
+            $arguments[] = $subcollection;
         }
         $token = $this->setToken($tools['api']);
         try {
             $results = $tools['api']->$createMethod(...$arguments);
-        } catch (\Exception $apiEx) {
+        } catch (\Exception) {
             $this->refreshToken($tools['api'], $token);
             $results = $this->retry($tools['api'], $createMethod, $arguments);
         }

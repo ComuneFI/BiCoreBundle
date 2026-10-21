@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Twig\Environment;
 
 /**
  * @codeCoverageIgnore
@@ -23,7 +24,7 @@ trait FiApiCoreControllerTrait
     /**
      * Lists all tables entities.
      */
-    public function index(Request $request, Packages $assetsmanager)
+    public function index(Request $request, Packages $assetsmanager, Environment $twig)
     {
         $bundle = $this->getBundle();
         $controller = $this->getController();
@@ -32,7 +33,7 @@ trait FiApiCoreControllerTrait
         if (!$this->getPermessi()->canRead($this->getController())) {
             throw new AccessDeniedException('Non si hanno i permessi per visualizzare questo contenuto');
         }
-        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName());
+        $crudtemplate = $this->getCrudTemplate($bundle, $controller, $this->getThisFunctionName(), $twig);
 
         //$entityclassnotation = $this->getEntityClassNotation();
         //$entityclass = $this->getEntityClassName();
@@ -210,12 +211,12 @@ trait FiApiCoreControllerTrait
         return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
     }*/
 
-    protected function getTabellaTemplate($controller)
+    protected function getTabellaTemplate(string $controller, Environment $twig): string
     {
         $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
+        if (!$twig->getLoader()->exists($tabellatemplate)) {
             $tabellatemplate = '@BiCore/' . $controller . '/Tabella/tabellaform.html.twig';
-            if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
+            if (!$twig->getLoader()->exists($tabellatemplate)) {
                 $tabellatemplate = '@BiCore/Standard/Tabella/tabellaform.html.twig';
             }
         }
@@ -223,12 +224,12 @@ trait FiApiCoreControllerTrait
         return $tabellatemplate;
     }
 
-    protected function getCrudTemplate($bundle, $controller, $operation)
+    protected function getCrudTemplate(string $bundle, string $controller, string $operation, Environment $twig): string
     {
         $crudtemplate = $bundle . '/' . $controller . '/Crud/' . $operation . '.html.twig';
-        if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
+        if (!$twig->getLoader()->exists($crudtemplate)) {
             $crudtemplate = $controller . '/Crud/' . $operation . '.html.twig';
-            if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
+            if (!$twig->getLoader()->exists($crudtemplate)) {
                 $crudtemplate = '@BiCore/Standard/Crud/' . $operation . '.html.twig';
             }
         }
@@ -239,7 +240,7 @@ trait FiApiCoreControllerTrait
     /**
      * Returns the calling function through a backtrace.
      */
-    protected function getThisFunctionName()
+    protected function getThisFunctionName(): string
     {
         // a funciton x has called a function y which called this
         // see stackoverflow.com/questions/190421

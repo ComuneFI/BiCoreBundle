@@ -13,15 +13,13 @@ class HeaderTabellaExtension extends AbstractExtension
      */
     public function getFunctions(): array
     {
-        return array(
-            new TwigFunction('sort_class', [$this, 'sortClass']),
-        );
+        return [
+            new TwigFunction('sort_class', $this->sortClass(...)),
+        ];
     }
     /**
      *
-     * @param string $colonneordinamento
      * @param array<mixed> $modellocampo
-     * @return string
      */
     public function sortClass(string $colonneordinamento, array $modellocampo): string
     {

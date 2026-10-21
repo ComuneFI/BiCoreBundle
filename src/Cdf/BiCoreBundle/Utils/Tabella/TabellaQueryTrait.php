@@ -19,7 +19,7 @@ trait TabellaQueryTrait
     {
         $nometabellaalias = $this->generaAlias($this->tablename);
         $qb = $this->em->createQueryBuilder()
-                ->select(array($nometabellaalias))
+                ->select([$nometabellaalias])
                 ->from($this->entityname, $nometabellaalias);
         /* @phpstan-ignore-next-line */
         $campi = array_keys($this->em->getMetadataFactory()->getMetadataFor($this->entityname)->reflFields);
@@ -38,21 +38,20 @@ trait TabellaQueryTrait
      * @param string $alias
      * @param array<mixed> $ancestors
      */
-    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array()): void
+    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = []): void
     {
         foreach ($campi as $campo) {
-            if (false !== strpos(strtolower($campo), 'relatedby')) {
+            if (str_contains(strtolower($campo), 'relatedby')) {
                 continue;
             }
             if (!in_array($nometabella, $ancestors)) {
                 $ancestors[] = $nometabella;
             }
 
-            $configurazionecampo = isset($this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)) . '.' . $campo]) ?
-                    $this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)) . '.' . $campo] : false;
+            $configurazionecampo = $this->configurazionecolonnetabella[ucfirst(implode('.', $ancestors)) . '.' . $campo] ?? false;
             if ($configurazionecampo && true === $configurazionecampo['association']) {
                 // crea la relazione con $padre = $nometabella in corso e figlio = $nomecampo con $alias generato
-                if ((isset($configurazionecampo['sourceentityclass'])) && (null !== $configurazionecampo['sourceentityclass'])) {
+                if ((isset($configurazionecampo['sourceentityclass'])) && (null != $configurazionecampo['sourceentityclass'])) {
                     $entitysrc = $configurazionecampo['sourceentityclass'];
                     $nometabellasrc = $this->em->getClassMetadata($entitysrc)->getTableName();
                 } else {
@@ -94,7 +93,7 @@ trait TabellaQueryTrait
             $this->filtri[$key]['prefiltro'] = false;
         }
         $tuttifiltri = array_merge($this->filtri, $this->prefiltri);
-        $parametribag = array();
+        $parametribag = [];
         if (count($tuttifiltri)) {
             $descrizionefiltri = '';
             foreach ($tuttifiltri as $num => $filtrocorrente) {
@@ -125,7 +124,7 @@ trait TabellaQueryTrait
                     $parametribag = array_merge($queryparameter, $parametribag);
                 } else {
                     $qb->andWhere($fieldname . ' ' . $fieldoperator . ' ' . ":$fitrocorrenteqp");
-                    $parametribag = array_merge(array($fitrocorrenteqp => $fieldvalue), $parametribag);
+                    $parametribag = array_merge([$fitrocorrenteqp => $fieldvalue], $parametribag);
                 }
                 $this->getDescrizioneFiltro($descrizionefiltri, $filtrocorrente, $criteria);
             }
@@ -161,24 +160,10 @@ trait TabellaQueryTrait
      */
     private function translateBoolValue(string $fieldvalue): string
     {
-        switch (strtoupper($fieldvalue)) {
-            case 'SI':
-                $fieldvalue = 'true';
-                break;
-            case '1':
-                $fieldvalue = 'true';
-                break;
-            case 'NO':
-                $fieldvalue = 'false';
-                break;
-            case '0':
-                $fieldvalue = 'false';
-                break;
-            default:
-                $fieldvalue = 'false';
-                break;
-        }
-        return $fieldvalue;
+        return match (strtoupper($fieldvalue)) {
+            'SI', '1' => 'true',
+            default => 'false',
+        };
     }
 
     /**
@@ -186,12 +171,12 @@ trait TabellaQueryTrait
      */
     private function appendFilterString(string &$filterString, ?string $swaggerType, string $swaggerKind, string $fieldvalue): void
     {
-        if ($swaggerKind == 'bool') {
+        if ($swaggerKind === 'bool') {
             $filterString .= $this->translateBoolValue($fieldvalue);
         } elseif ($swaggerType == null /* || $swaggerFormats[ $nomeCampo ] == 'datetime' */) {
             //"%" chars will be applied by insurance back-end API
             $filterString .= '"' . $fieldvalue . '"';
-        } elseif ($swaggerType == 'datetime' || $swaggerType == 'date') {
+        } elseif ($swaggerType === 'datetime' || $swaggerType === 'date') {
             $fieldvalue = \str_replace("/", "-", $fieldvalue);
             //does it contain an hour ?
             $hour = strpos($fieldvalue, ":");
@@ -263,8 +248,8 @@ trait TabellaQueryTrait
                 } else {
                     $fieldstring = $attributeMap[$nomeCampo];
                     $fieldstring .= ' ' . $this->getApiOperator($filtrocorrente['operatore']) . ' ';
-                    $fieldvalue = urldecode($filteringValues);
-                    $this->appendFilterString($fieldstring, $swaggerFormats[$nomeCampo], $swaggerTypes[$nomeCampo], $filteringValues);
+                    $fieldvalue = urldecode($filteringValues->format('d/m/Y'));
+                    $this->appendFilterString($fieldstring, $swaggerFormats[$nomeCampo], $swaggerTypes[$nomeCampo], $filteringValues->format('d/m/Y'));
                 }
 
                 if ($filterString != null) {
@@ -283,22 +268,10 @@ trait TabellaQueryTrait
      */
     private function getApiOperator(string $operator): string
     {
-        switch (strtoupper($operator)) {
-            case Comparison::CONTAINS:
-                $operator = '~';
-                break;
-            /* case 'IN':
-              $operator = Comparison::IN;
-              break;
-              case 'NOT IN':
-              $operator = Comparison::NIN;
-              break; */
-            default:
-                $operator = '=';
-                break;
-        }
-
-        return $operator;
+        return match (strtoupper($operator)) {
+            Comparison::CONTAINS => '~',
+            default => '=',
+        };
     }
 
     /**
@@ -352,8 +325,8 @@ trait TabellaQueryTrait
             $this->paginetotali = 1;
         }
 
-        $this->records = array();
-        $rigatabellahtml = array();
+        $this->records = [];
+        $rigatabellahtml = [];
         foreach ($recordsets as $record) {
             $this->records[$record->getId()] = $record;
             unset($rigatabellahtml);
@@ -394,8 +367,8 @@ trait TabellaQueryTrait
             $this->paginetotali = 1;
             $this->righetotali = count($recordsets);
         }
-        $this->records = array();
-        $rigatabellahtml = array();
+        $this->records = [];
+        $rigatabellahtml = [];
         foreach ((array) $recordsets as $record) {
             $this->records[$record->getId()] = $record;
             unset($rigatabellahtml);

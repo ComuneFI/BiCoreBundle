@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -31,18 +33,13 @@ class BaseOpzionitabelle
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $valore;
 
-    public function __construct()
-    {
-    }
-
     /**
      * Set the value of id.
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -64,9 +61,8 @@ class BaseOpzionitabelle
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
-    public function setNometabella($nometabella)
+    public function setNometabella($nometabella): static
     {
         $this->nometabella = $nometabella;
 
@@ -88,9 +84,8 @@ class BaseOpzionitabelle
      *
      * @param string $descrizione
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
-    public function setDescrizione($descrizione)
+    public function setDescrizione($descrizione): static
     {
         $this->descrizione = $descrizione;
 
@@ -112,9 +107,8 @@ class BaseOpzionitabelle
      *
      * @param string $parametro
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
-    public function setParametro($parametro)
+    public function setParametro($parametro): static
     {
         $this->parametro = $parametro;
 
@@ -136,9 +130,8 @@ class BaseOpzionitabelle
      *
      * @param string $valore
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
      */
-    public function setValore($valore)
+    public function setValore($valore): static
     {
         $this->valore = $valore;
 
@@ -157,6 +150,6 @@ class BaseOpzionitabelle
 
     public function __sleep()
     {
-        return array('id', 'nometabella', 'descrizione', 'parametro', 'valore');
+        return ['id', 'nometabella', 'descrizione', 'parametro', 'valore'];
     }
 }

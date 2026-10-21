@@ -37,11 +37,11 @@ class BaseRuoli
     #[ORM\Column(name: '`user`', type: 'boolean', nullable: true)]
     protected $user;
 
-    #[ORM\OneToMany(targetEntity: \Operatori::class, mappedBy: 'ruoli')]
+    #[ORM\OneToMany(targetEntity: Operatori::class, mappedBy: 'ruoli')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'ruoli_id', nullable: false)]
     protected $operatoris;
 
-    #[ORM\OneToMany(targetEntity: \Permessi::class, mappedBy: 'ruoli')]
+    #[ORM\OneToMany(targetEntity: Permessi::class, mappedBy: 'ruoli')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'ruoli_id', nullable: false)]
     protected $permessis;
 
@@ -56,9 +56,8 @@ class BaseRuoli
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -80,9 +79,8 @@ class BaseRuoli
      *
      * @param string $ruolo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setRuolo($ruolo)
+    public function setRuolo($ruolo): static
     {
         $this->ruolo = $ruolo;
 
@@ -104,9 +102,8 @@ class BaseRuoli
      *
      * @param string $paginainiziale
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setPaginainiziale($paginainiziale)
+    public function setPaginainiziale($paginainiziale): static
     {
         $this->paginainiziale = $paginainiziale;
 
@@ -128,9 +125,8 @@ class BaseRuoli
      *
      * @param bool $superadmin
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setSuperadmin($superadmin)
+    public function setSuperadmin($superadmin): static
     {
         $this->superadmin = $superadmin;
 
@@ -152,9 +148,8 @@ class BaseRuoli
      *
      * @param bool $admin
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setAdmin($admin)
+    public function setAdmin($admin): static
     {
         $this->admin = $admin;
 
@@ -176,9 +171,8 @@ class BaseRuoli
      *
      * @param bool $user
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function setUser($user)
+    public function setUser($user): static
     {
         $this->user = $user;
 
@@ -198,11 +192,9 @@ class BaseRuoli
     /**
      * Add Operatori entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function addOperatori(Operatori $operatori)
+    public function addOperatori(Operatori $operatori): static
     {
         $this->operatoris[] = $operatori;
 
@@ -212,11 +204,9 @@ class BaseRuoli
     /**
      * Remove Operatori entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function removeOperatori(Operatori $operatori)
+    public function removeOperatori(Operatori $operatori): static
     {
         $this->operatoris->removeElement($operatori);
 
@@ -236,11 +226,9 @@ class BaseRuoli
     /**
      * Add Permessi entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function addPermessi(Permessi $permessi)
+    public function addPermessi(Permessi $permessi): static
     {
         $this->permessis[] = $permessi;
 
@@ -250,11 +238,9 @@ class BaseRuoli
     /**
      * Remove Permessi entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
      */
-    public function removePermessi(Permessi $permessi)
+    public function removePermessi(Permessi $permessi): static
     {
         $this->permessis->removeElement($permessi);
 
@@ -273,6 +259,6 @@ class BaseRuoli
 
     public function __sleep()
     {
-        return array('id', 'ruolo', 'paginainiziale', 'superadmin', 'admin', 'user');
+        return ['id', 'ruolo', 'paginainiziale', 'superadmin', 'admin', 'user'];
     }
 }

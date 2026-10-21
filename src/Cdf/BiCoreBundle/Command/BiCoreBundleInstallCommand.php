@@ -8,19 +8,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
-use FOS\UserBundle\Util\UserManipulator;
+use Cdf\UserBundle\Util\UserManipulator;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:install', description: 'Installazione ambiente bi')]
 class BiCoreBundleInstallCommand extends Command
 {
 
-    protected static $defaultName = 'bicorebundle:install';
     protected string $fixtureFile;
-    private UserManipulator $usermanipulator;
 
     protected function configure(): void
     {
         $this
-                ->setDescription('Installazione ambiente bi')
                 ->setHelp('Crea il database, un utente amministratore e i dati di default')
                 ->addArgument('admin', InputArgument::REQUIRED, 'Username per amministratore')
                 ->addArgument('adminpass', InputArgument::REQUIRED, 'Password per amministratore')
@@ -28,10 +26,8 @@ class BiCoreBundleInstallCommand extends Command
         ;
     }
 
-    public function __construct(UserManipulator $usermanipulator)
+    public function __construct(private readonly UserManipulator $usermanipulator)
     {
-        $this->usermanipulator = $usermanipulator;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -46,31 +42,31 @@ class BiCoreBundleInstallCommand extends Command
         if (!$admin) {
             echo "Inserire il nome utente dell'amministratore";
 
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
         if (!$adminpass) {
             echo "Inserire la password per dell'amministratore";
 
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
         if (!$adminemail) {
             echo "Inserire la mail dell'amministratore";
 
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
 
         $commanddb = $this->getApplication()->find('bicorebundle:createdatabase');
-        $argumentsdb = array('command' => 'bicorebundle:createdatabase');
+        $argumentsdb = ['command' => 'bicorebundle:createdatabase'];
         $inputc = new ArrayInput($argumentsdb);
         $commanddb->run($inputc, $output);
 
         $this->generateDefaultData($admin, $adminemail);
 
         $commanddata = $this->getApplication()->find('bicorebundle:configuratorimport');
-        $argumentsdata = array(
+        $argumentsdata = [
             'command' => 'bicorebundle:configuratorimport',
-            array('--truncatetables' => true),
-        );
+            ['--truncatetables' => true],
+        ];
         $inputd = new ArrayInput($argumentsdata);
         $commanddata->run($inputd, $output);
 
@@ -80,12 +76,9 @@ class BiCoreBundleInstallCommand extends Command
         $userManipulator = $this->usermanipulator;
 
         $userManipulator->changePassword($admin, $adminpass);
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     */
     private function generateDefaultData(string $admin, string $adminemail): void
     {
         //$todaydt = new \DateTime();

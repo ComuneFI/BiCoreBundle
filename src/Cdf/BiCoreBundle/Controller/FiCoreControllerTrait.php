@@ -159,20 +159,12 @@ trait FiCoreControllerTrait
 
     /**
      *
-     * @param mixed $parametripassati
-     * @param string $keyparametro
      * @param mixed $defaultvalue
      * @return mixed
      */
-    protected function getParametroIndexDettaglio($parametripassati, string $keyparametro, $defaultvalue)
+    protected function getParametroIndexDettaglio(array $parametripassati, string $keyparametro, $defaultvalue)
     {
-        if (isset($parametripassati[$keyparametro])) {
-            $parametro = $parametripassati[$keyparametro];
-        } else {
-            $parametro = $defaultvalue;
-        }
-
-        return $parametro;
+        return $parametripassati[$keyparametro] ?? $defaultvalue;
     }
 
     /**

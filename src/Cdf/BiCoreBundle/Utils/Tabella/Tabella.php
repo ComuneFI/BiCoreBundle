@@ -13,17 +13,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Cdf\BiCoreBundle\Service\Api\ApiManager;
 use Cdf\BiCoreBundle\Service\Api\Oauth2TokenService;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyFields)
- */
 class Tabella
 {
     use TabellaQueryTrait,
         TabellaOpzioniTrait,
         TabellaDecoderTrait;
-
-    /** @var array<mixed> */
-    protected array $parametri;
     /** @var array<mixed> */
     protected array $colonnedatabase ;
     /** @var array<mixed> */
@@ -59,7 +53,6 @@ class Tabella
     protected $traduzionefiltri;
     protected int $maxordine = 0;
     protected EntityManagerInterface $em;
-    /** @phpstan-ignore-next-line */
     protected $user;
     protected string $apiController;
     protected string $apiCollection;
@@ -70,12 +63,10 @@ class Tabella
 
     /**
      *
-     * @param ManagerRegistry $doctrine
      * @param array<mixed> $parametri
      */
-    public function __construct(ManagerRegistry $doctrine, array $parametri)
+    public function __construct(ManagerRegistry $doctrine, protected array $parametri)
     {
-        $this->parametri = $parametri;
         if (isset($this->parametri['em'])) {
             /** @phpstan-ignore-next-line */
             $this->em = $doctrine->getManager(ParametriTabella::getParameter($this->parametri['em']));
@@ -93,15 +84,14 @@ class Tabella
         $this->paginetotali = (int) $this->getTabellaParameter('paginetotali');
         $this->righeperpagina = (int) $this->getTabellaParameter('righeperpagina', 15);
 
-        $this->estraituttirecords = '1' === $this->getTabellaParameter('estraituttirecords', 0) ? true : false;
+        $this->estraituttirecords = '1' === $this->getTabellaParameter('estraituttirecords', 0);
         $this->colonneordinamento = json_decode($this->getTabellaParameter('colonneordinamento', '{}'), true);
         $this->prefiltri = json_decode($this->getTabellaParameter('prefiltri', '{}'), true);
         $this->filtri = json_decode($this->getTabellaParameter('filtri', '{}'), true);
-        $this->wheremanuale = $this->getTabellaParameter('wheremanuale', null);
+        $this->wheremanuale = $this->getTabellaParameter('wheremanuale');
         $this->user = $this->parametri['user'];
 
         if (!isset($this->parametri['isapi'])) {
-            /** @phpstan-ignore-next-line */
             $utils = new EntityUtils($this->em);
             $this->colonnedatabase = $utils->getEntityColumns($this->entityname);
         } else {
@@ -149,29 +139,24 @@ class Tabella
 
     /**
      *
-     * @param string $name
-     * @param mixed|null $default
      * @return mixed|null
      */
-    private function getTabellaParameter(string $name, $default = null)
+    private function getTabellaParameter(string $name, string|int|null $default = null)
     {
-        $risposta = null;
         if (isset($this->parametri[$name])) {
-            $risposta = ParametriTabella::getParameter($this->parametri[$name]);
-        } else {
-            $risposta = $default;
+            return ParametriTabella::getParameter($this->parametri[$name]);
         }
 
-        return $risposta;
+        return $default;
     }
 
     public function calcolaPagineTotali(int $limit) : float
     {
-        if (0 == $this->righetotali) {
+        if (0 === $this->righetotali) {
             return 1;
         }
         /* calcola in mumero di pagine totali necessarie */
-        return ceil($this->righetotali / (0 == $limit ? 1 : $limit));
+        return ceil($this->righetotali / (0 === $limit ? 1 : $limit));
     }
 
     public function getPaginacorrente() : int

@@ -10,8 +10,6 @@ class ColonnetabelleRepository extends EntityRepository
 {
     /**
      *
-     * @param string $tabella
-     * @param Operatori $user
      * @return array<Colonnetabelle>
      */
     public function findOpzioniColonnetabella(string $tabella, Operatori $user = null): array
@@ -19,13 +17,13 @@ class ColonnetabelleRepository extends EntityRepository
         $em = $this->getEntityManager();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
-        $qb->select(array('t'));
+        $qb->select(['t']);
         $qb->from(Colonnetabelle::class, 't');
         $qb->where('t.nometabella = :tabella');
         $qb->andWhere('t.nomecampo is not null');
         $qb->orderBy('t.ordineindex', 'asc');
         $qb->setParameter('tabella', $tabella);
-        if ($user && !$user->getRuoli()->isSuperadmin()) {
+        if ($user instanceof \Cdf\BiCoreBundle\Entity\Operatori && !$user->getRuoli()->isSuperadmin()) {
             $qb->andWhere('t.operatori_id = :operatore');
             $qb->setParameter('operatore', $user->getId());
         }

@@ -9,16 +9,8 @@ use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
 class Commands
 {
-    /* @var $apppaths ProjectPath */
-
-    private ProjectPath $apppaths;
-    /* @var $pammutils Utility */
-    private Utility $pammutils;
-
-    public function __construct(ProjectPath $projectpath, Utility $pautils)
+    public function __construct(private readonly ProjectPath $apppaths, private readonly Utility $pammutils)
     {
-        $this->apppaths = $projectpath;
-        $this->pammutils = $pautils;
     }
 
     /**
@@ -55,20 +47,20 @@ class Commands
     public function generateEntity(string $wbFile): array
     {
         $command = 'pannelloamministrazione:generateormentities';
-        $result = $this->pammutils->runSymfonyCommand($command, array('mwbfile' => $wbFile));
+        $result = $this->pammutils->runSymfonyCommand($command, ['mwbfile' => $wbFile]);
 
         if (0 != $result['errcode']) {
-            return array(
+            return [
                 'errcode' => -1,
                 'command' => $command,
                 'message' => 'Errore nel comando:' . $command . ';' . $result['message'],
-            );
+            ];
         }
 
-        return array(
+        return [
             'errcode' => 0,
             'command' => $command,
-            'message' => 'Eseguito comando:' . $command . ';' . $result['message'],);
+            'message' => 'Eseguito comando:' . $command . ';' . $result['message'],];
     }
 
     /**
@@ -83,11 +75,11 @@ class Commands
         if ($isAPI) {
             $strposEntity = strpos($pannelloamministrazioneentity, ".");
             if ($strposEntity === false) {
-                return array(
+                return [
                     'errcode' => "-101",
                     'command' => "Ricerca entity",
                     'message' => "Impossibile trovare il . in " . $pannelloamministrazioneentity,
-                );
+                ];
             }
             $entityform = substr($pannelloamministrazioneentity, $strposEntity + 1);
             $projectname = substr($pannelloamministrazioneentity, 0, $strposEntity);
@@ -100,7 +92,7 @@ class Commands
         if (0 !== $resultchk['errcode']) {
             return $resultchk;
         }
-        $formcrudparms = array('entityform' => $entityform, '--generatemplate' => $generatemplate);
+        $formcrudparms = ['entityform' => $entityform, '--generatemplate' => $generatemplate];
         if ($isAPI) {
             $formcrudparms['--isApi'] = true;
             $formcrudparms['--projectname'] = $projectname;
@@ -108,68 +100,66 @@ class Commands
 
         $retmsggenerateform = $this->pammutils->runSymfonyCommand('pannelloamministrazione:generateformcrud', $formcrudparms);
 
-        $retmsg = array(
+        return [
             'errcode' => $retmsggenerateform['errcode'],
             'command' => $retmsggenerateform['command'],
             'message' => $retmsggenerateform['message'],
-        );
-
-        return $retmsg;
+        ];
     }
 
     /**
      *
      * @return array<mixed>
      */
-    public function checkFormCrud(string $entityform, string $projectname = "", bool $isAPI = false)
+    public function checkFormCrud(string $entityform, string $projectname = "", bool $isAPI = false): array
     {
         /* @var $fs Filesystem */
         $fs = new Filesystem();
         $srcPath = $this->apppaths->getSrcPath();
         $appPath = $srcPath;
         if (!is_writable($appPath)) {
-            return array('errcode' => -1, 'message' => $appPath . ' non scrivibile');
+            return ['errcode' => -1, 'message' => $appPath . ' non scrivibile'];
         }
 
         if (!$isAPI) {
             //Look for Entities... but they should already exist...
             $entityPath = $appPath . '/Entity' . DIRECTORY_SEPARATOR . $entityform . '.php';
             if (!$fs->exists($entityPath)) {
-                return array('errcode' => -1, 'message' => $entityPath . ' entity non trovata');
+                return ['errcode' => -1, 'message' => $entityPath . ' entity non trovata'];
             }
         } else {
             $apiUtil = new ApiUtils();
             $modelClass = $apiUtil->getModelClass($projectname, $entityform);
             if (!class_exists($modelClass)) {
-                return array('errcode' => -1, 'message' => $modelClass . ' model not found');
+                return ['errcode' => -1, 'message' => $modelClass . ' model not found'];
             }
         }
 
         $formPath = $appPath . '/Form/' . $entityform . 'Type.php';
         if ($fs->exists($formPath)) {
-            return array('errcode' => -1, 'message' => $formPath . ' esistente');
+            return ['errcode' => -1, 'message' => $formPath . ' esistente'];
         }
 
         $controllerPath = $appPath . '/Controller' . DIRECTORY_SEPARATOR . $entityform . 'Controller.php';
 
         if ($fs->exists($controllerPath)) {
-            return array('errcode' => -1, 'message' => $controllerPath . ' esistente');
+            return ['errcode' => -1, 'message' => $controllerPath . ' esistente'];
         }
 
         $viewPathSrc = $this->apppaths->getTemplatePath() . DIRECTORY_SEPARATOR . $entityform;
 
         if ($fs->exists($viewPathSrc)) {
-            return array('errcode' => -1, 'message' => $viewPathSrc . ' esistente');
+            return ['errcode' => -1, 'message' => $viewPathSrc . ' esistente'];
         }
 
-        return array('errcode' => 0, 'message' => 'OK');
+        return ['errcode' => 0, 'message' => 'OK'];
     }
 
     /**
      *
      * @return array<mixed>
      */
-    public function clearcache()
+    public function clearcache(): array
     {
         $cmdoutput = '';
         //$envs = array('dev', 'test', 'prod');
@@ -178,7 +168,7 @@ class Commands
             throw new Exception("APP_ENV non definita");
         }
         $result = $this->pammutils->clearcache($env);
-        $cmdoutput = $cmdoutput . $result['message'];
+        $cmdoutput .= $result['message'];
         if (0 !== $result['errcode']) {
             return $result;
         }
@@ -193,8 +183,6 @@ class Commands
      */
     public function aggiornaSchemaDatabase(): array
     {
-        $result = $this->pammutils->runSymfonyCommand('doctrine:schema:update', array('--force' => true));
-
-        return $result;
+        return $this->pammutils->runSymfonyCommand('doctrine:schema:update', ['--force' => true]);
     }
 }

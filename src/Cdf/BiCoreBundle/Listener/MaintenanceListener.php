@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -7,11 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MaintenanceListener
 {
-    private string $lockFilePath;
-
-    public function __construct(string $lockFilePath)
+    public function __construct(private readonly string $lockFilePath)
     {
-        $this->lockFilePath = $lockFilePath;
     }
 
     public function onKernelResponse(ResponseEvent $event): void
