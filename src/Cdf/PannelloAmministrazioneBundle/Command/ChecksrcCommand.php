@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\PannelloAmministrazioneBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -11,23 +13,17 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 /**
  * @codeCoverageIgnore
  */
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'pannelloamministrazione:checksrc', description: 'Controlla i sorgenti')]
 class ChecksrcCommand extends Command
 {
-    protected static $defaultName = 'pannelloamministrazione:checksrc';
-    
-    private ProjectPath $apppaths;
-    
     protected function configure() : void
     {
         $this
-                ->setDescription('Controlla i sorgenti')
                 ->setHelp('Usa phpcs, phpmd, ecc per controllare il codice in src');
     }
 
-    public function __construct(ProjectPath $projectpath)
+    public function __construct(private readonly ProjectPath $apppaths)
     {
-        $this->apppaths = $projectpath;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -40,7 +36,7 @@ class ChecksrcCommand extends Command
         $rootPath = $prjpath->getRootPath();
 
         /* phpcs */
-        $phpcscmd = array($vendorBin.'phpcs', '--standard='.$rootPath.'/../tools/phpcs/ruleset.xml', '--extensions=php', $srcPath);
+        $phpcscmd = [$vendorBin.'phpcs', '--standard='.$rootPath.'/../tools/phpcs/ruleset.xml', '--extensions=php', $srcPath];
         $phpcsoutput = $this->runcmd($phpcscmd);
         if (!$phpcsoutput) {
             $output->writeln('phpcs: OK');
@@ -52,7 +48,7 @@ class ChecksrcCommand extends Command
         /* phpcs */
 
         /* phpmd */
-        $phpmdcmd = array($vendorBin.'phpmd', $srcPath, 'text', $rootPath.'/../tools/phpmd/ruleset.xml');
+        $phpmdcmd = [$vendorBin.'phpmd', $srcPath, 'text', $rootPath.'/../tools/phpmd/ruleset.xml'];
         $phpmdoutput = $this->runcmd($phpmdcmd);
         if (!$phpmdoutput) {
             $output->writeln('phpmd: OK');
@@ -60,13 +56,12 @@ class ChecksrcCommand extends Command
             $output->writeln($phpmdoutput);
         }
         /* phpmd */
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 
     /**
      *
      * @param array<string> $cmd
-     * @return string
      */
     private function runcmd(array $cmd) : string
     {
@@ -74,11 +69,9 @@ class ChecksrcCommand extends Command
         $process->setTimeout(60 * 100);
         $process->run();
         if ($process->isSuccessful()) {
-            $out = $process->getOutput();
-        } else {
-            $out = ($process->getErrorOutput() ? $process->getErrorOutput() : $process->getOutput());
+            return $process->getOutput();
         }
 
-        return $out;
+        return $process->getErrorOutput() ?: $process->getOutput();
     }
 }

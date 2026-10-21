@@ -8,14 +8,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:dropdatabase', description: 'Cancellazione database bicorebundle')]
 class BiCoreBundleDropdatabaseCommand extends Command
 {
-    protected static $defaultName = 'bicorebundle:dropdatabase';
-
     protected function configure(): void
     {
         $this
-                ->setDescription('Cancellazione database bicorebundle')
                 ->setHelp('Cancella il database e tutti i dati di bicorebundle')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
@@ -27,7 +25,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
         if (!$force) {
             echo "Specificare l'opzione --force per eseguire il comando";
 
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
 
         /*$command = $this->getApplication()->find('doctrine:database:drop');
@@ -36,9 +34,9 @@ class BiCoreBundleDropdatabaseCommand extends Command
         $command->run($inputcmd, $output);*/
 
         $command = $this->getApplication()->find('doctrine:schema:drop');
-        $arguments = array('command' => 'doctrine:schema:drop', '--force' => true, '--full-database' => true);
+        $arguments = ['command' => 'doctrine:schema:drop', '--force' => true, '--full-database' => true];
         $inputcmd = new ArrayInput($arguments);
         $command->run($inputcmd, $output);
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

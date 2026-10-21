@@ -53,18 +53,15 @@ trait FiCoreCrudInlineControllerTrait
         $values = $request->get('values');
 
         if (0 == $id) {
-            $risultato = $this->insertinline($values, $token);
-        } else {
-            $risultato = $this->updateinline($id, $values, $token);
+            return $this->insertinline($values, $token);
         }
-        return $risultato;
+        return $this->updateinline($id, $values, $token);
     }
 
     /**
      *
      * @param mixed[] $values fileds
      * @param string $token CSRF token
-     * @return JsonResponse
      * @throws Exception
      */
     protected function insertinline($values, $token): JsonResponse
@@ -83,7 +80,7 @@ trait FiCoreCrudInlineControllerTrait
             $fieldpieces = explode('.', $value['fieldname']);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && 2 == count($fieldpieces)) {
+            if ($table == $controller && 2 === count($fieldpieces)) {
                 $field = ucfirst($fieldpieces[1]);
                 $fieldvalue = $this->getValueAggiorna($value);
                 if ('join' == $value['fieldtype']) {
@@ -114,7 +111,6 @@ trait FiCoreCrudInlineControllerTrait
      * @param string $id
      * @param mixed[] $values fileds
      * @param string $token
-     * @return JsonResponse
      */
     protected function updateinline($id, $values, $token): JsonResponse
     {
@@ -143,7 +139,7 @@ trait FiCoreCrudInlineControllerTrait
             $fieldpieces = explode('.', $value['fieldname']);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && 2 == count($fieldpieces)) {
+            if ($table == $controller && 2 === count($fieldpieces)) {
                 $field = $fieldpieces[1];
                 if ('join' == $value['fieldtype']) {
                     $field = lcfirst($field . '_id');
@@ -174,7 +170,7 @@ trait FiCoreCrudInlineControllerTrait
      * @return mixed
      * @throws Exception
      */
-    private function getValueAggiorna($field)
+    private function getValueAggiorna(array $field)
     {
         $fieldvalue = $field['fieldvalue'];
         if ('' == $fieldvalue) {
@@ -182,7 +178,7 @@ trait FiCoreCrudInlineControllerTrait
         } else {
             $fieldtype = $field['fieldtype'];
             if ('boolean' == $fieldtype) {
-                $fieldvalue = !('false' === $field['fieldvalue']);
+                $fieldvalue = 'false' !== $field['fieldvalue'];
             }
             if ('date' == $fieldtype) {
                 $fieldvalue = DateTime::createFromFormat('d/m/Y', $field['fieldvalue']);

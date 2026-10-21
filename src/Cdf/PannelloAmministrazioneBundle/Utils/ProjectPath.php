@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Exception;
@@ -53,8 +55,7 @@ class ProjectPath
 
     public function getVendorBinPath(): string
     {
-        $vendorbindir = $this->getVendorPath() . DIRECTORY_SEPARATOR . 'bin';
-        return $vendorbindir;
+        return $this->getVendorPath() . DIRECTORY_SEPARATOR . 'bin';
     }
 
     public function getVendorPath(): string
@@ -72,16 +73,12 @@ class ProjectPath
 
     public function getSrcPath(): string
     {
-        $srcdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'src';
-
-        return $srcdir;
+        return $this->getProjectPath() . DIRECTORY_SEPARATOR . 'src';
     }
 
     public function getPublicPath(): string
     {
-        $publicdir = $this->getProjectPath() . DIRECTORY_SEPARATOR . 'public';
-
-        return $publicdir;
+        return $this->getProjectPath() . DIRECTORY_SEPARATOR . 'public';
     }
 
     public function getTemplatePath(): string
@@ -150,7 +147,7 @@ class ProjectPath
     {
         $console = $this->getConsole();
         if (\Fi\OsBundle\DependencyInjection\OsFunctions::isWindows()) {
-            $console = \Fi\OsBundle\DependencyInjection\OsFunctions::getPHPExecutableFromPath() . " " . $console;
+            return \Fi\OsBundle\DependencyInjection\OsFunctions::getPHPExecutableFromPath() . " " . $console;
         }
 
         return $console;

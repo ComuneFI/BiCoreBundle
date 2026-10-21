@@ -20,7 +20,6 @@ use Cdf\BiCoreBundle\Service\Api\ApiManager;
 use Cdf\BiCoreBundle\Service\Api\Oauth2TokenService;
 
 /**
- * @SuppressWarnings(PHPMD.TooManyFields)
  * @codeCoverageIgnore
  */
 class FiApiController extends AbstractController
@@ -30,9 +29,7 @@ class FiApiController extends AbstractController
     use FiCoreTabellaControllerTrait;
 
     protected string $bundle;
-    protected Environment $template;
     protected string $controller;
-    protected PermessiManager $permessi;
     //API rest attributes
     protected string $project;
     protected string $model;
@@ -47,30 +44,24 @@ class FiApiController extends AbstractController
     protected array $enumOptions;
     /** @var array<mixed> */
     protected array $inflectorExceptions;
-    protected ParameterBagInterface $params;
-    protected EntityManagerInterface $em;
     protected ApiManager $apiManager;
     protected string $apiProjectCollection;
 
 
 
-    public function __construct(PermessiManager $permessi, Environment $template, ParameterBagInterface $params, EntityManagerInterface $em)
+    public function __construct(protected PermessiManager $permessi, protected Environment $template, protected ParameterBagInterface $params, protected EntityManagerInterface $em)
     {
         $matches = [];
-        $controllo = new ReflectionClass(get_class($this));
+        $controllo = new ReflectionClass(static::class);
 
         preg_match('/(.*)\\\(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
-        if (0 == count($matches)) {
+        if (0 === count($matches)) {
             preg_match('/(.*)(.*)\\\Controller\\\(.*)Controller/', $controllo->name, $matches);
         }
         $this->project = $this->getProject();
-        $this->params = $params;
 
-        $this->bundle = ($matches[count($matches) - 2] ? $matches[count($matches) - 2] : $matches[count($matches) - 3]);
+        $this->bundle = ($matches[count($matches) - 2] ?: $matches[count($matches) - 3]);
         $this->controller = $matches[count($matches) - 1];
-        $this->permessi = $permessi;
-        $this->template = $template;
-        $this->em = $em;
 
         $this->model = $this->controller; //they matches
         $this->collection = $this->pluralize($this->model);
@@ -79,9 +70,9 @@ class FiApiController extends AbstractController
         $this->formClass = $apiUtil->getFormClass($this->model);
         $this->controllerItem = $apiUtil->getModelControllerClass($this->project, $this->model);
         $this->apiController = $apiUtil->getApiControllerClass($this->project, $this->collection);
-        $this->options = array();
-        $this->enumOptions = array();
-        $this->inflectorExceptions = array();
+        $this->options = [];
+        $this->enumOptions = [];
+        $this->inflectorExceptions = [];
 
         //*** instantiate ApiManager ***
         $this->apiManager = new ApiManager(
@@ -129,7 +120,6 @@ class FiApiController extends AbstractController
     /**
      * Copy this method into your controller in case of exceptions
      *
-     * @param string $singleForm
      * @return array<mixed>|string
      */
     protected function pluralizeForm(string $singleForm)
@@ -184,11 +174,11 @@ class FiApiController extends AbstractController
                 $this->apiManager->setApiController($apiProjectCollection);
                 $results = $this->apiManager->getAllToString($apiProjectCollection, null, null, null, "");
 
-                $arrayContainer = array();
+                $arrayContainer = [];
                 foreach ($results as $myItem) {
                     //transform this items for options
-                    $element = array("id" => $myItem->getCode(), "descrizione" => $myItem->getText(), "valore" => $myItem->getText());
-                    array_push($arrayContainer, $element);
+                    $element = ["id" => $myItem->getCode(), "descrizione" => $myItem->getText(), "valore" => $myItem->getText()];
+                    $arrayContainer[] = $element;
                 }
                 $this->options[$tools['entity']] = $arrayContainer;
             } elseif (\str_contains($fieldName, '_enum')) {
@@ -199,20 +189,20 @@ class FiApiController extends AbstractController
                 $this->apiManager->setApiController($apiProjectCollection);
                 $results = $this->apiManager->getAllToString($apiProjectCollection, null, null, null, "");
 
-                $decodeMap = array();
-                $arrayContainer = array();
+                $decodeMap = [];
+                $arrayContainer = [];
                 foreach ($results as $result) {
                     $decodeMap[$result['code']] = $result['text'];
-                    $element = array("id" => $result['code'], "descrizione" => $result['text'], "valore" => $result['text']);
-                    array_push($arrayContainer, $element);
+                    $element = ["id" => $result['code'], "descrizione" => $result['text'], "valore" => $result['text']];
+                    $arrayContainer[] = $element;
                 }
                 $this->options[$tools['entity']] = $arrayContainer;
 
-                $arrayItem = array('nometabella' => $this->controller, 'nomecampo' => "$this->controller.$fieldName", 'etichetta' => "$fieldName",
+                $arrayItem = ['nometabella' => $this->controller, 'nomecampo' => "$this->controller.$fieldName", 'etichetta' => "$fieldName",
                     'escluso' => false,
-                    'decodifiche' => $decodeMap);
+                    'decodifiche' => $decodeMap];
 
-                array_push($this->enumOptions, $arrayItem);
+                $this->enumOptions[] = $arrayItem;
             }
         }
     }
@@ -251,7 +241,7 @@ class FiApiController extends AbstractController
     {
         $entityName = substr($fieldName, 0, strpos($fieldName, $suffixString));
 
-        $parametri = array('str' => $entityName, 'primamaiuscola' => true);
+        $parametri = ['str' => $entityName, 'primamaiuscola' => true];
         $outcome = StringUtils::toCamelCase($parametri);
         $outcome = $this->pluralize($outcome);
 
@@ -261,13 +251,11 @@ class FiApiController extends AbstractController
 
         //$apiBook = new ApiUtils($entityName);
         $apiBook = new ApiUtils($outcome);
-
-        $results = [
+        return [
             'controller' => $apiController,
             'book' => $apiBook,
             'entity' => $entityName,
         ];
-        return $results;
     }
 
     protected function getBundle() : string
@@ -292,8 +280,8 @@ class FiApiController extends AbstractController
 
     public function getProject() : string
     {
-        $annotations = array();
-        $r = new ReflectionClass(get_class($this));
+        $annotations = [];
+        $r = new ReflectionClass(static::class);
         $doc = $r->getDocComment();
         preg_match_all('#@var\(biproject="(.*?)"\)[\r\n]+#s', $doc, $annotations);
         return $annotations[1][0];

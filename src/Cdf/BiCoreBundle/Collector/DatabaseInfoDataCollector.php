@@ -10,50 +10,44 @@ use Throwable;
 
 class DatabaseInfoDataCollector extends DataCollector
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
         $driverinfo = $this->em->getConnection()->getParams();
-        $dbname = "";
-        if (isset($driverinfo["dbname"]) && array_key_exists("dbname", $driverinfo)) {
+        if (isset($driverinfo["dbname"])) {
             $dbname = $driverinfo["dbname"];
         } else {
-            $dbname = isset($driverinfo["path"])?$driverinfo["path"]:"";
+            $dbname = $driverinfo["path"] ?? "";
         }
-        $this->data = array(
-            'database_driver' => isset($driverinfo["driver"])?$driverinfo["driver"]:"",
-            'database_host' => isset($driverinfo["host"])?$driverinfo["host"]:"",
-            'database_port' => isset($driverinfo["port"])?$driverinfo["port"]:"",
+        $this->data = [
+            'database_driver' => $driverinfo["driver"] ?? "",
+            'database_host' => $driverinfo["host"] ?? "",
+            'database_port' => $driverinfo["port"] ?? "",
             'database_name' => $dbname,
-            'database_user' => isset($driverinfo["user"])?$driverinfo["user"]:"",
-            'database_password' => isset($driverinfo["password"])?$driverinfo["password"]:""
-        );
+            'database_user' => $driverinfo["user"] ?? "",
+            'database_password' => $driverinfo["password"] ?? ""
+        ];
     }
 
     public function getDatabaseDriver(): string
     {
-        $driverName = 'Driver non gestito da questo pannello';
-
         if ('pdo_mysql' === $this->data['database_driver']) {
-            $driverName = 'MySql';
+            return 'MySql';
         }
         if ('pdo_pgsql' === $this->data['database_driver']) {
-            $driverName = 'PostgreSQL';
+            return 'PostgreSQL';
         }
         if ('pdo_sqlite' === $this->data['database_driver']) {
-            $driverName = 'SQLite';
+            return 'SQLite';
         }
         if ('oci8' === $this->data['database_driver']) {
-            $driverName = 'Oracle';
+            return 'Oracle';
         }
 
-        return $driverName;
+        return 'Driver non gestito da questo pannello';
     }
 
     public function getDatabaseHost(): ?string

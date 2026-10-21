@@ -8,24 +8,19 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:droptables', description: 'Eliminazione di tutte le tabelle bicorebundle')]
 class BiCoreBundleDroptablesCommand extends Command
 {
-
-    protected static $defaultName = 'bicorebundle:droptables';
-    private EntityManagerInterface $em;
 
     protected function configure(): void
     {
         $this
-                ->setDescription('Eliminazione di tutte le tabelle bicorebundle')
                 ->setHelp('ATTENZIONE, questo comando cancellerà tutte le informazioni presenti nel database!!')
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-        $this->em = $em;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -34,26 +29,35 @@ class BiCoreBundleDroptablesCommand extends Command
     {
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $this->em;
-        $driver = $em->getConnection()->getDatabasePlatform()->getName();
+        //$driver = $em->getConnection()->getDatabasePlatform()->getName();
+        $platform = $em->getConnection()->getDatabasePlatform();
+        $driver = '';
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $driver = 'postgre';
+        }
+        if ($platform instanceof \Doctrine\DBAL\Platforms\MySQLPlatform) {
+            $driver = 'mysql';
+        }
+       
 
         $force = $input->getOption('force');
 
         if (!$force) {
             $output->writeln("Specificare l'opzione --force per eseguire il comando");
 
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
 
         //Truncate tabelle
-        $tables = $em->getConnection()->getSchemaManager()->listTables();
+        $tables = $em->getConnection()->createSchemaManager()->listTables();
         //Cancellazione tabelle
         foreach ($tables as $table) {
             $tableName = $table->getName();
 
             switch ($driver) {
-                case 'postgresql':
+                case 'postgre':
                     $em->getConnection()->executeQuery(sprintf('DROP TABLE %s CASCADE', $tableName));
-                    $sequences = $em->getConnection()->getSchemaManager()->listSequences();
+                    $sequences = $em->getConnection()->createSchemaManager()->listSequences();
                     foreach ($sequences as $sequence) {
                         $sequenceName = $sequence->getName();
                         $em->getConnection()->executeQuery(sprintf('DROP SEQUENCE %s', $sequenceName));
@@ -72,6 +76,6 @@ class BiCoreBundleDroptablesCommand extends Command
         }
 
         $output->writeln('Done!');
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

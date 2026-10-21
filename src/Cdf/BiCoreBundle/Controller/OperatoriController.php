@@ -10,20 +10,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Util\UserManipulator;
+use Cdf\UserBundle\Util\UserManipulator;
 
 /**
  * Operatori controller.
  */
 class OperatoriController extends FiController
 {
-    protected LoggerInterface $logger;
-    protected UserManipulator $usermanipulator;
-
-    public function __construct(PermessiManager $perm, Environment $template, EntityManagerInterface $em, LoggerInterface $log, UserManipulator $um)
+    public function __construct(PermessiManager $perm, Environment $template, EntityManagerInterface $em, protected LoggerInterface $logger, protected UserManipulator $usermanipulator)
     {
-        $this->logger = $log;
-        $this->usermanipulator = $um;
         parent::__construct($perm, $template, $em);
     }
 
@@ -73,27 +68,25 @@ class OperatoriController extends FiController
                 $entityManager->persist($entity);
                 $entityManager->flush();
 
-                $content = $this->usermanipulator->changePassword($username, $password);
+                $this->usermanipulator->changePassword($username, $password);
 
-                $logger->info('Esito inserimento nuovo utente ' . $username . ' : ' . $content);
+//                $logger->info('Esito inserimento nuovo utente ' . $username . ' : ' . $content);
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
-                    200
-                );
-            } else {
-                //Quando non passa la validazione
-                return new Response(
-                    $this->renderView($crudtemplate, $twigparms),
-                    400
+                    \Symfony\Component\HttpFoundation\Response::HTTP_OK
                 );
             }
-        } else {
-            //Quando viene richiesta una "nuova" new
+            //Quando non passa la validazione
             return new Response(
                 $this->renderView($crudtemplate, $twigparms),
-                200
+                \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
             );
         }
+        //Quando viene richiesta una "nuova" new
+        return new Response(
+            $this->renderView($crudtemplate, $twigparms),
+            \Symfony\Component\HttpFoundation\Response::HTTP_OK
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -10,14 +12,14 @@ use Cdf\BiCoreBundle\Entity\Ruoli;
 
 class RuoliType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $submitparms = array(
+        $submitparms = [
             'label' => 'Aggiorna record',
-            'attr' => array(
+            'attr' => [
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-        ), );
+        ], ];
 
         $builder
                 ->add('ruolo')
@@ -29,11 +31,11 @@ class RuoliType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Ruoli::class,
-            'parametriform' => array(),
+            'parametriform' => [],
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token

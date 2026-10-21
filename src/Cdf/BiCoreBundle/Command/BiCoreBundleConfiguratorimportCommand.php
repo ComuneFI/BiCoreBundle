@@ -15,39 +15,28 @@ use Symfony\Component\Filesystem\Filesystem;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportInsertTrait;
 use Cdf\BiCoreBundle\Utils\Command\ConfiguratorimportUpdateTrait;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:configuratorimport', description: 'Importa configurazione per BiCore')]
 class BiCoreBundleConfiguratorimportCommand extends Command
 {
     use ConfiguratorimportInsertTrait;
     use ConfiguratorimportUpdateTrait;
 
-    protected static $defaultName = 'bicorebundle:configuratorimport';
-
     private $forceupdate = false;
     private $verboso = false;
-    private $dbutility;
-    private $systementity;
-    private $entityutility;
-    private $em;
     private $truncatetables;
-    private $output;
+    private ?\Symfony\Component\Console\Output\OutputInterface $output = null;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-                ->setDescription('Importa configurazione per BiCore')
                 ->setHelp('Importa la configurazione di bi da file fixtures.yml')
                 ->addOption('forceupdate', null, InputOption::VALUE_NONE, 'Forza update di record con id già presente')
                 ->addOption('truncatetables', null, InputOption::VALUE_NONE, 'Esegue una truncate della tabelle')
                 ->addOption('verboso', null, InputOption::VALUE_NONE, 'Visualizza tutti i messaggi di importazione');
     }
 
-    public function __construct(EntityManagerInterface $em, DatabaseUtils $dbutil, EntityUtils $entityutil, BiCoreSystemTablesUtils $systementity)
+    public function __construct(private EntityManagerInterface $em, private DatabaseUtils $dbutility, private EntityUtils $entityutility, private BiCoreSystemTablesUtils $systementity)
     {
-        $this->em = $em;
-        $this->dbutility = $dbutil;
-        $this->entityutility = $entityutil;
-        $this->systementity = $systementity;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -62,12 +51,11 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         $this->checkSchemaStatus();
 
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
-        $ret = $this->import($fixturefile);
 
-        return $ret;
+        return (int) $this->import($fixturefile);
     }
 
-    protected function import($fixturefile)
+    protected function import($fixturefile): int
     {
         $fs = new Filesystem();
         if ($fs->exists($fixturefile)) {
@@ -89,15 +77,13 @@ class BiCoreBundleConfiguratorimportCommand extends Command
             }
 
             return 0;
-        } else {
-            $msgerr = '<error>Non trovato file ' . $fixturefile . '</error>';
-            $this->output->writeln($msgerr);
-
-            return 1;
         }
+        $msgerr = '<error>Non trovato file ' . $fixturefile . '</error>';
+        $this->output->writeln($msgerr);
+        return 1;
     }
 
-    private function checkSchemaStatus()
+    private function checkSchemaStatus(): void
     {
         $schemachanged = $this->dbutility->isSchemaChanged();
 
@@ -108,7 +94,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         }
     }
 
-    private function truncateTable($entityclass)
+    private function truncateTable($entityclass): void
     {
         $tablename = $this->entityutility->getTableFromEntity($entityclass);
         $msg = '<info>TRUNCATE della tabella ' . $tablename . ' (' . $entityclass . ')</info>';
@@ -117,11 +103,11 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @return mixed[]
      */
-    private function getSortedEntities($fixtures)
+    private function getSortedEntities(array $fixtures): array
     {
-        $entities = array();
+        $entities = [];
         $sortedEntities = $this->systementity->getSystemEntities();
         foreach ($sortedEntities as $fixture => $details) {
             if (isset($fixtures[$fixture])) {
@@ -132,7 +118,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return $entities;
     }
 
-    private function executeImport($entityclass, $fixture)
+    private function executeImport($entityclass, $fixture): int
     {
         $msg = '<info>Trovati ' . count($fixture) . " record per l'entity " . $entityclass . '</info>';
         $this->output->writeln($msg);
@@ -147,7 +133,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return 0;
     }
 
-    private function switchInsertUpdate($entityclass, $record, $objrecord)
+    private function switchInsertUpdate($entityclass, array $record, $objrecord)
     {
         if (!$objrecord) {
             return $this->executeInsert($entityclass, $record);
@@ -155,11 +141,10 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
         if ($this->forceupdate) {
             return $this->executeUpdate($entityclass, $record, $objrecord);
-        } else {
-            $msgerr = '<error>' . $entityclass . ' con id ' . $record['id']
-                    . " non modificata, specificare l'opzione --forceupdate "
-                    . 'per sovrascrivere record presenti</error>';
-            $this->output->writeln($msgerr);
         }
+        $msgerr = '<error>' . $entityclass . ' con id ' . $record['id']
+                . " non modificata, specificare l'opzione --forceupdate "
+                . 'per sovrascrivere record presenti</error>';
+        $this->output->writeln($msgerr);
     }
 }

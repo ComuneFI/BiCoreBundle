@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 trait FiApiCoreCrudInlineControllerTrait
 {
-    private function checkAggiornaRight($id, $token)
+    private function checkAggiornaRight($id, $token): void
     {
         if (0 === $id) {
             if (!$this->getPermessi()->canCreate($this->getController())) {
@@ -46,15 +46,13 @@ trait FiApiCoreCrudInlineControllerTrait
         $values = $request->get('values');
 
         if (0 == $id) {
-            $risultato = $this->insertinline($values, $token);
-        } else {
-            $risultato = $this->updateinline($id, $values, $token);
+            return $this->insertinline($values, $token);
         }
 
-        return $risultato;
+        return $this->updateinline($id, $values, $token);
     }
 
-    protected function insertinline($values, $token)
+    protected function insertinline($values, $token): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $this->checkAggiornaRight(0, $token);
 
@@ -70,7 +68,7 @@ trait FiApiCoreCrudInlineControllerTrait
             $fieldpieces = explode('.', $value['fieldname']);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && 2 == count($fieldpieces)) {
+            if ($table == $controller && 2 === count($fieldpieces)) {
                 $field = ucfirst($fieldpieces[1]);
                 $fieldvalue = $this->getValueAggiorna($value);
                 if ('join' == $value['fieldtype']) {
@@ -95,7 +93,7 @@ trait FiApiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
-    protected function updateinline($id, $values, $token)
+    protected function updateinline($id, $values, $token): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $this->checkAggiornaRight($id, $token);
 
@@ -121,7 +119,7 @@ trait FiApiCoreCrudInlineControllerTrait
             $fieldpieces = explode('.', $value['fieldname']);
             $table = $fieldpieces[0];
             //Si prende in considerazione solo i campi strettamente legati a questa entity
-            if ($table == $controller && 2 == count($fieldpieces)) {
+            if ($table == $controller && 2 === count($fieldpieces)) {
                 $field = $fieldpieces[1];
                 if ('join' == $value['fieldtype']) {
                     $field = lcfirst($field . '_id');
@@ -146,7 +144,7 @@ trait FiApiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
-    private function getValueAggiorna($field)
+    private function getValueAggiorna(array $field)
     {
         $fieldvalue = $field['fieldvalue'];
         if ('' == $fieldvalue) {
@@ -154,7 +152,7 @@ trait FiApiCoreCrudInlineControllerTrait
         } else {
             $fieldtype = $field['fieldtype'];
             if ('boolean' == $fieldtype) {
-                $fieldvalue = !('false' === $field['fieldvalue']);
+                $fieldvalue = 'false' !== $field['fieldvalue'];
             }
             if ('date' == $fieldtype) {
                 $fieldvalue = DateTime::createFromFormat('d/m/Y', $field['fieldvalue']);

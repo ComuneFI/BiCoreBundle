@@ -23,11 +23,10 @@ class ModelUtils
      */
     public function getAttributes($controllerItem): array
     {
-        /** @var mixed $myInstance */
         $myInstance = new $controllerItem();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
-        $outcomes = array();
+        $outcomes = [];
         foreach ($fieldMappings as $fieldName => $fieldType) {
             if (\str_contains($fieldType, 'Swagger')) {
                 $fieldName .= '_enum';
@@ -42,19 +41,16 @@ class ModelUtils
 
     /**
      * Return the entity columns for the grid display
-
-     * @param string $entity
      * @return array<mixed>
      */
     public function getEntityColumns(string $entity): array
     {
-        /** @var mixed $myInstance */
         $myInstance = new $entity();
         $fieldMappings = $myInstance::swaggerTypes();
         $formatMappings = $myInstance::swaggerFormats();
 
         //dump($fieldMappings);
-        $colonne = array();
+        $colonne = [];
         foreach ($fieldMappings as $fieldName => $fieldType) {
             if (\str_contains($fieldName, 'NOTenum')) {
                 //dump("Trovato enum ".$fieldName);
@@ -81,12 +77,12 @@ class ModelUtils
     private function getTypeOfData(string $fieldType, ?string $formatType): string
     {
         $type = $formatType;
-        if ($fieldType == 'bool') {
+        if ($fieldType === 'bool') {
             $type = 'string2bool';
         } elseif ($formatType == null) {
             $type = 'string';
-        } elseif ($fieldType != $formatType) {
-            if ($formatType == 'datetime') {
+        } elseif ($fieldType !== $formatType) {
+            if ($formatType === 'datetime') {
                 $type = 'string2' . $type;
             }
         }
@@ -126,15 +122,8 @@ class ModelUtils
         return $entityout;
     }
 
-    /**
-     *
-     * @param string $modelEntity
-     * @param string $controllerItemClass
-     * @return mixed
-     */
-    public function getControllerItem(string $modelEntity, string $controllerItemClass)
+    public function getControllerItem(string $modelEntity, string $controllerItemClass): object
     {
-        /** @var mixed $controllerItem */
         $controllerItem = new $controllerItemClass();
         $setters = $controllerItem::setters();
         $getters = $modelEntity::getters();
@@ -152,10 +141,8 @@ class ModelUtils
     /**
      * Try to insert in automatic way the conversion to a BiCore known value
      */
-
     /**
      *
-     * @param string $fieldType
      * @param string $formatType
      * @param mixed $oldvalue
      * @return mixed
@@ -163,9 +150,8 @@ class ModelUtils
     private function getValueOfData(string $fieldType, ?string $formatType, $oldvalue)
     {
         $value = $oldvalue;
-        if ($formatType == null) {
-        } elseif ($fieldType != $formatType) {
-            if ($formatType == 'datetime' && $oldvalue != null) {
+        if ($formatType != null && $fieldType !== $formatType) {
+            if ($formatType === 'datetime' && $oldvalue != null) {
                 $time = strtotime($oldvalue);
                 $value = new DateTime();
                 $value->setTimestamp($time);

@@ -6,7 +6,7 @@ use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
 
 trait ConfiguratorimportInsertTrait
 {
-    private function executeInsert($entityclass, $record)
+    private function executeInsert($entityclass, array $record)
     {
         $objrecord = new $entityclass();
         foreach ($record as $key => $value) {
@@ -23,12 +23,11 @@ trait ConfiguratorimportInsertTrait
 
         $infomsg = '<info>'.$entityclass.' con id '.$objrecord->getId().' aggiunta</info>';
         $this->output->writeln($infomsg);
-        $checkid = $this->changeRecordId($entityclass, $record, $objrecord);
 
-        return $checkid;
+        return $this->changeRecordId($entityclass, $record, $objrecord);
     }
 
-    private function insert(&$objrecord, $key, $value, $recordid, $entityclass)
+    private function insert(&$objrecord, $key, $value, $recordid, $entityclass): bool
     {
         $propertyEntity = $this->entityutility->getEntityProperties($key, $objrecord);
         $getfieldname = $propertyEntity['get'];
@@ -91,7 +90,7 @@ trait ConfiguratorimportInsertTrait
         return false;
     }
 
-    private function changeRecordId($entityclass, $record, $objrecord)
+    private function changeRecordId($entityclass, array $record, $objrecord): int
     {
         if ($record['id'] !== $objrecord->getId()) {
             try {

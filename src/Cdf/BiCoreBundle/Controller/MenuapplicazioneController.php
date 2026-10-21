@@ -36,7 +36,7 @@ class MenuapplicazioneController extends FiController
 
         $query = $this->em->createQueryBuilder()
                 ->select('o')
-                ->from('BiCoreBundle:Menuapplicazione', 'o')
+                ->from(\Cdf\BiCoreBundle\Entity\Menuapplicazione::class, 'o')
                 ->getQuery()
         ;
         $menuobj = $query->getResult();
@@ -45,19 +45,19 @@ class MenuapplicazioneController extends FiController
             $menus[$menu->getId()] = $menu->getNome();
         }
 
-        $modellocolonne = array(
-            array('nometabella' => $controller,
+        $modellocolonne = [
+            ['nometabella' => $controller,
                 'nomecampo' => "__bicorebundle_Menuapplicazione.id",
                 'etichetta' => 'Id',
                 'ordine' => 0,
                 'larghezza' => 10,
-                'escluso' => true),
-            array('nometabella' => $controller, 'nomecampo' =>
+                'escluso' => true],
+            ['nometabella' => $controller, 'nomecampo' =>
                 "__bicorebundle_Menuapplicazione.padre", 'etichetta' => 'Padre',
                 'ordine' => 10, 'larghezza' => 10, 'escluso' => false,
                 'decodifiche' => $menus,
-            ),
-        );
+            ],
+        ];
 
         $filtri = [];
         $prefiltri = [];

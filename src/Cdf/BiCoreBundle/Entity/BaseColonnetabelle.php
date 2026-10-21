@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -49,22 +51,17 @@ class BaseColonnetabelle
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $operatori_id;
 
-    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'colonnetabelles')]
+    #[ORM\ManyToOne(targetEntity: Operatori::class, inversedBy: 'colonnetabelles')]
     #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id', nullable: false)]
     protected $operatori;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Set the value of id.
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -86,9 +83,8 @@ class BaseColonnetabelle
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setNometabella($nometabella)
+    public function setNometabella($nometabella): static
     {
         $this->nometabella = $nometabella;
 
@@ -110,9 +106,8 @@ class BaseColonnetabelle
      *
      * @param string $nomecampo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setNomecampo($nomecampo)
+    public function setNomecampo($nomecampo): static
     {
         $this->nomecampo = $nomecampo;
 
@@ -134,9 +129,8 @@ class BaseColonnetabelle
      *
      * @param bool $mostraindex
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setMostraindex($mostraindex)
+    public function setMostraindex($mostraindex): static
     {
         $this->mostraindex = $mostraindex;
 
@@ -158,9 +152,8 @@ class BaseColonnetabelle
      *
      * @param int $ordineindex
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setOrdineindex($ordineindex)
+    public function setOrdineindex($ordineindex): static
     {
         $this->ordineindex = $ordineindex;
 
@@ -182,9 +175,8 @@ class BaseColonnetabelle
      *
      * @param int $larghezzaindex
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setLarghezzaindex($larghezzaindex)
+    public function setLarghezzaindex($larghezzaindex): static
     {
         $this->larghezzaindex = $larghezzaindex;
 
@@ -206,9 +198,8 @@ class BaseColonnetabelle
      *
      * @param string $etichettaindex
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setEtichettaindex($etichettaindex)
+    public function setEtichettaindex($etichettaindex): static
     {
         $this->etichettaindex = $etichettaindex;
 
@@ -230,9 +221,8 @@ class BaseColonnetabelle
      *
      * @param bool $registrastorico
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setRegistrastorico($registrastorico)
+    public function setRegistrastorico($registrastorico): static
     {
         $this->registrastorico = $registrastorico;
 
@@ -254,9 +244,8 @@ class BaseColonnetabelle
      *
      * @param bool $editabile
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setEditabile($editabile)
+    public function setEditabile($editabile): static
     {
         $this->editabile = $editabile;
 
@@ -278,9 +267,8 @@ class BaseColonnetabelle
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setOperatoriId($operatori_id)
+    public function setOperatoriId($operatori_id): static
     {
         $this->operatori_id = $operatori_id;
 
@@ -300,11 +288,9 @@ class BaseColonnetabelle
     /**
      * Set Operatori entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Colonnetabelle
      */
-    public function setOperatori(Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null): static
     {
         $this->operatori = $operatori;
 
@@ -323,6 +309,6 @@ class BaseColonnetabelle
 
     public function __sleep()
     {
-        return array('id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'editabile', 'registrastorico', 'operatori_id');
+        return ['id', 'nometabella', 'nomecampo', 'mostraindex', 'ordineindex', 'larghezzaindex', 'etichettaindex', 'editabile', 'registrastorico', 'operatori_id'];
     }
 }

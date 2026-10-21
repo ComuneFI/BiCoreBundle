@@ -15,23 +15,14 @@ use function count;
 class MenuExtension extends AbstractExtension
 {
 
-    protected EntityManagerInterface $em;
-    protected UrlGeneratorInterface $urlgenerator;
-    protected TokenStorageInterface $user;
-    protected string $rootpath;
-
-    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlgenerator, TokenStorageInterface $user, string $rootpath)
+    public function __construct(protected EntityManagerInterface $em, protected UrlGeneratorInterface $urlgenerator, protected TokenStorageInterface $user, protected string $rootpath)
     {
-        $this->em = $em;
-        $this->urlgenerator = $urlgenerator;
-        $this->user = $user;
-        $this->rootpath = $rootpath;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('generamenu', [$this, 'generamenu'], [
+            new TwigFunction('generamenu', $this->generamenu(...), [
                 'needs_environment' => true,
                 'is_safe' => ['html'],
                     ]),
@@ -42,17 +33,17 @@ class MenuExtension extends AbstractExtension
     {
         /** @phpstan-ignore-next-line */
         $router = $this->urlgenerator->match('/')['_route'];
-        $rispostahome = array();
-        $rispostahome[] = array('percorso' => $this->getUrlObject('', $router, ''),
+        $rispostahome = [];
+        $rispostahome[] = ['percorso' => $this->getUrlObject('', $router, ''),
             'nome' => 'Home',
             'target' => '_self',
-        );
+        ];
 
         $em = $this->em;
         /* @var $qb QueryBuilder */
         $qb = $em->createQueryBuilder();
-        $qb->select(array('a'));
-        $qb->from('BiCoreBundle:Menuapplicazione', 'a');
+        $qb->select(['a']);
+        $qb->from(\Cdf\BiCoreBundle\Entity\Menuapplicazione::class, 'a');
         $qb->where('a.attivo = :attivo and (a.padre is null or a.padre = 0)');
         $qb->setParameter('attivo', true);
         $qb->orderBy('a.padre', 'ASC');
@@ -70,58 +61,53 @@ class MenuExtension extends AbstractExtension
 
         /** @phpstan-ignore-next-line */
         if ('ssocdf' === $this->user->getToken()->getFirewallName()) {
-            $username = $this->user->getToken()->getUser()->getUsername();
+            $username = $this->user->getToken()->getUser()->getUserIdentifier();
             $urlLogout = $this->urlgenerator->generate('fi_autenticazione_signout');
         }
 
         /** @phpstan-ignore-next-line */
         if ('ssolineacomune' === $this->user->getToken()->getFirewallName()) {
-            $username = $this->user->getToken()->getUser()->getUsername();
+            $username = $this->user->getToken()->getUser()->getUserIdentifier();
             $urlLogout = $this->urlgenerator->generate('fi_Lineacomuneauth_signout');
         }
 
         /** @phpstan-ignore-next-line */
         if ('main' === $this->user->getToken()->getFirewallName()) {
-            $username = $this->user->getToken()->getUser()->getUsername();
+            $username = $this->user->getToken()->getUser()->getUserIdentifier();
             $urlLogout = $this->urlgenerator->generate('fos_user_security_logout');
         }
 
-        $risposta[] = array('percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',
-            'sottolivello' => array(
-                array('percorso' => $urlLogout, 'nome' => 'Logout', 'target' => '_self'),
-            ),
-        );
-        return $environment->render('@BiCore/Menu/menu.html.twig', array('risposta' => $risposta));
+        $risposta[] = ['percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',
+            'sottolivello' => [
+                ['percorso' => $urlLogout, 'nome' => 'Logout', 'target' => '_self'],
+            ],
+        ];
+        return $environment->render('@BiCore/Menu/menu.html.twig', ['risposta' => $risposta]);
     }
 
-    /**
-     *
-     * @param string[][] $risposta
-     * @return void
-     */
     protected function generaManualePdfMenu(array &$risposta): void
     {
         $pathmanuale = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'manuale.pdf';
         if (file_exists($pathmanuale)) {
-            $risposta[] = array(
+            $risposta[] = [
                 'percorso' => $this->getUrlObject('Manuale', $pathmanuale, '_blank'),
-                'nome' => 'Manuale (Pdf)', 'target' => '_blank',);
+                'nome' => 'Manuale (Pdf)', 'target' => '_blank',];
         }
     }
 
     /**
      *
-     * @param string[][] $risposta
      * @return void
      */
+    // param string[][] $risposta
     protected function generaManualeMkdocMenu(&$risposta)
     {
         $mkdocsfile = 'manuale' . DIRECTORY_SEPARATOR . 'index.html';
         $pathmanualemkdocs = $this->rootpath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $mkdocsfile;
         if (file_exists($pathmanualemkdocs)) {
-            $risposta[] = array(
-                'percorso' => array("percorso" => $this->urlgenerator->generate("homepage") . $mkdocsfile),
-                'nome' => 'Manuale', 'target' => '_blank',);
+            $risposta[] = [
+                'percorso' => ["percorso" => $this->urlgenerator->generate("homepage") . $mkdocsfile],
+                'nome' => 'Manuale', 'target' => '_blank',];
         }
     }
 
@@ -130,9 +116,9 @@ class MenuExtension extends AbstractExtension
      * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $menu
      * @return array<mixed>
      */
-    protected function getMenu($menu)
+    protected function getMenu($menu): array
     {
-        $risposta = array();
+        $risposta = [];
         $em = $this->em;
 
         foreach ($menu as $item) {
@@ -145,8 +131,8 @@ class MenuExtension extends AbstractExtension
 
             if ($visualizzare) {
                 $qb = $em->createQueryBuilder();
-                $qb->select(array('a'));
-                $qb->from('BiCoreBundle:Menuapplicazione', 'a');
+                $qb->select(['a']);
+                $qb->from(\Cdf\BiCoreBundle\Entity\Menuapplicazione::class, 'a');
                 $qb->where('a.padre = :padre_id');
                 $qb->andWhere('a.attivo = :attivo');
                 $qb->orderBy('a.padre', 'ASC');
@@ -158,7 +144,7 @@ class MenuExtension extends AbstractExtension
                 $sottomenutabelle = $this->getSubMenu($submenu);
 
                 $percorso = $this->getUrlObject($item->getNome(), $item->getPercorso(), $item->getTarget());
-                $risposta[] = array(
+                $risposta[] = [
                     'percorso' => $percorso,
                     'nome' => $item->getNome(),
                     'sottolivello' => $sottomenutabelle,
@@ -166,7 +152,7 @@ class MenuExtension extends AbstractExtension
                     'notifiche' => $item->hasNotifiche(),
                     'tag' => $item->getTag(),
                     'percorsonotifiche' => $this->getUrlObject($item->getNome(), $item->getPercorsonotifiche(), ''),
-                );
+                ];
                 unset($submenu);
                 unset($sottomenutabelle);
             }
@@ -180,9 +166,9 @@ class MenuExtension extends AbstractExtension
      * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $submenu
      * @return array<mixed>
      */
-    protected function getSubMenu($submenu)
+    protected function getSubMenu($submenu): array
     {
-        $sottomenutabelle = array();
+        $sottomenutabelle = [];
         foreach ($submenu as $subitem) {
             $visualizzare = true;
             if ($subitem->isAutorizzazionerichiesta()) {
@@ -191,11 +177,11 @@ class MenuExtension extends AbstractExtension
             }
 
             if ($visualizzare) {
-                $vettoresottomenu = $this->getMenu(array($subitem));
+                $vettoresottomenu = $this->getMenu([$subitem]);
                 $sottomenu = $vettoresottomenu[0];
 
                 if (isset($sottomenu['sottolivello']) && count($sottomenu['sottolivello']) > 0) {
-                    $sottolivellomenu = array('sottolivello' => $sottomenu['sottolivello']);
+                    $sottolivellomenu = ['sottolivello' => $sottomenu['sottolivello']];
                     $menuobj = $this->getUrlObject($subitem->getNome(), $subitem->getPercorso(), $subitem->getTarget());
                     $sottomenutabelle[] = array_merge($menuobj, $sottolivellomenu);
                 } else {
@@ -209,12 +195,11 @@ class MenuExtension extends AbstractExtension
 
     /**
      *
-     * @param string $nome
      * @param string $percorso
      * @param string $target
      * @return array<mixed>
      */
-    protected function getUrlObject(string $nome, ?string $percorso, ?string $target)
+    protected function getUrlObject(string $nome, ?string $percorso, ?string $target): array
     {
         if ($this->routeExists($percorso)) {
             $percorso = $this->urlgenerator->generate($percorso);
@@ -225,7 +210,7 @@ class MenuExtension extends AbstractExtension
             $target = '_self';
         }
 
-        return array('percorso' => $percorso, 'nome' => $nome, 'target' => $target);
+        return ['percorso' => $percorso, 'nome' => $nome, 'target' => $target];
     }
 
     protected function routeExists(?string $name): bool
@@ -236,52 +221,35 @@ class MenuExtension extends AbstractExtension
         $router = $this->urlgenerator;
 
         /** @phpstan-ignore-next-line */
-        if ((null === $router->getRouteCollection()->get($name)) ? false : true) {
-            return true;
-        } else {
-            return false;
-        }
+        return null !== $router->getRouteCollection()->get($name);
     }
 
     protected function urlExists(string $name): bool
     {
         if ($this->checkUrl($name, false)) {
             return true;
-        } else {
-            if ($this->checkUrl($name, true)) {
-                return true;
-            } else {
-                return false;
-            }
         }
+        return $this->checkUrl($name, true);
     }
 
     protected function checkUrl(string $name, bool $useProxy): bool
     {
         $ch = curl_init($name);
 
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_URL, $name);
         if (!$useProxy) {
-            /** @phpstan-ignore-next-line */
-            curl_setopt($ch, CURLOPT_PROXY, null);
+            curl_setopt($ch, CURLOPT_PROXY, '');
         }
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_NOBODY, true);
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
-        /** @phpstan-ignore-next-line */
         curl_exec($ch);
-        /** @phpstan-ignore-next-line */
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if (200 === $retcode || 401 === $retcode) {
             $exist = true;
         } else {
             $exist = false;
         }
-        /** @phpstan-ignore-next-line */
         curl_close($ch);
 
         return $exist;

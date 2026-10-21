@@ -16,7 +16,7 @@ trait TabellaOpzioniTrait
      */
     protected function getAllOpzioniTabella() : array
     {
-        $opzionibuilder = array();
+        $opzionibuilder = [];
         foreach ($this->colonnedatabase as $colonnadatabase) {
             // Inserire dati da definizione entity
             $this->setOpzioniTabellaDefault($colonnadatabase, $opzionibuilder, null, false);
@@ -31,15 +31,13 @@ trait TabellaOpzioniTrait
 
     /**
      *
-     * @param string $campo
      * @param array<mixed> $modellocolonna
      * @param array<mixed> $opzionibuilder
-     * @return void
      */
     private function getOpzionitabellaCampiExtra(string $campo, array $modellocolonna, array &$opzionibuilder) : void
     {
         if ((isset($modellocolonna['campoextra']) && true == $modellocolonna['campoextra'])) {
-            $opzionibuilder[$campo] = array(
+            $opzionibuilder[$campo] = [
                 'tipocampo' => $modellocolonna['tipocampo'],
                 'nomecampo' => $campo,
                 'nometabella' => $modellocolonna['nometabella'],
@@ -53,7 +51,7 @@ trait TabellaOpzioniTrait
                 'association' => null,
                 'associationtable' => null,
                 'escluso' => false,
-            );
+            ];
         }
     }
 
@@ -64,11 +62,10 @@ trait TabellaOpzioniTrait
      * @param string|null $jointable
      * @param bool $ricursione
      * @param array<mixed> $ancestors
-     * @return void
      */
-    protected function setOpzioniTabellaDefault($infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = []) : void
+    protected function setOpzioniTabellaDefault(array $infoentity, &$opzionibuilder, $jointable = null, $ricursione = false, $ancestors = []) : void
     {
-        $nometabella = ((isset($jointable)) ? $jointable : $this->tablename);
+        $nometabella = ($jointable ?? $this->tablename);
         if (!in_array($nometabella, $ancestors)) {
             $ancestors[] = $nometabella;
         }
@@ -88,32 +85,30 @@ trait TabellaOpzioniTrait
      * @param string $nometabella
      * @param string $nomecolonna
      * @param bool $ricursione
-     * @return void
      */
-    private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione) : void
+    private function elaboraColonneOpzioniTabellaMancanti(array &$opzionibuilder, array $colonnadatabase, $nometabella, $nomecolonna, $ricursione) : void
     {
-        $opzionibuilder[$nomecolonna] = array(
+        $opzionibuilder[$nomecolonna] = [
             'tipocampo' => isset($colonnadatabase['association']) ? 'join' : $colonnadatabase['type'],
             'nomecampo' => $nomecolonna,
             'nometabella' => $nometabella,
             'entityclass' => $colonnadatabase['entityClass'],
-            'sourceentityclass' => isset($colonnadatabase['sourceEntityClass']) ? $colonnadatabase['sourceEntityClass'] : null,
+            'sourceentityclass' => $colonnadatabase['sourceEntityClass'] ?? null,
             'ordine' => null,
             'etichetta' => ucfirst($colonnadatabase['columnName']),
             'larghezza' => 10,
             'editabile' => true,
             'campoextra' => false,
-            'association' => isset($colonnadatabase['association']) ? $colonnadatabase['association'] : false,
-            'associationtable' => isset($colonnadatabase['associationtable']) ? $colonnadatabase['associationtable'] : null,
+            'association' => $colonnadatabase['association'] ?? false,
+            'associationtable' => $colonnadatabase['associationtable'] ?? null,
             'decodifiche' => null,
-            'escluso' => (true === $ricursione ? true : ('_id' == substr($colonnadatabase['fieldName'], -3) ? true : false)),
-        );
+            'escluso' => (true === $ricursione ? true : (str_ends_with($colonnadatabase['fieldName'], '_id'))),
+        ];
     }
 
     /**
      *
      * @param array<mixed> $opzionibuilder
-     * @return int
      */
     private function getLarghezzaColonneTabellaTotalePercentuale(array $opzionibuilder) : int
     {
@@ -142,7 +137,6 @@ trait TabellaOpzioniTrait
     /**
      *
      * @param array<mixed> $opzionibuilder
-     * @return void
      */
     private function setLarghezzaColonneTabella(array &$opzionibuilder) : void
     {
@@ -181,12 +175,12 @@ trait TabellaOpzioniTrait
                 $ancestors[] = $tablecollegataname;
             }
             $nomecampo = ucfirst(implode('.', $ancestors)).'.'.$colonnacorrente['fieldName'];
-            $opzionibuilder[$nomecampo] = array(
+            $opzionibuilder[$nomecampo] = [
                 'tipocampo' => $colonnacorrente['type'],
                 'nomecampo' => $nomecampo,
                 'nometabella' => $tablecollegataname,
                 'entityclass' => $colonnadatabase['entityClass'],
-                'sourceentityclass' => isset($colonnadatabase['sourceEntityClass']) ? $colonnadatabase['sourceEntityClass'] : null,
+                'sourceentityclass' => $colonnadatabase['sourceEntityClass'] ?? null,
                 'ordine' => null,
                 'etichetta' => ucfirst($colonnacorrente['columnName']),
                 'larghezza' => 0,
@@ -195,14 +189,13 @@ trait TabellaOpzioniTrait
                 'association' => null,
                 'associationtable' => null,
                 'escluso' => true,
-            );
+            ];
         }
     }
 
     /**
      *
      * @param array<mixed> $opzionibuilder
-     * @return void
      */
     protected function setOrdinaColonneTabella(array &$opzionibuilder) : void
     {
@@ -221,8 +214,9 @@ trait TabellaOpzioniTrait
     {
         $parti = explode('.', $nomecampo);
         $campo = '';
-        for ($index = 0; $index < count($parti); ++$index) {
-            if ($index == count($parti) - 1) {
+        $counter = count($parti);
+        for ($index = 0; $index < $counter; ++$index) {
+            if ($index === count($parti) - 1) {
                 $campo .= '.'.lcfirst($parti[$index]);
             } else {
                 $campo .= '.'.ucfirst($parti[$index]);

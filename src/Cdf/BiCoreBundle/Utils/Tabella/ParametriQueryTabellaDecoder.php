@@ -55,7 +55,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
                     $this->criteria = $expr->eq($this->fieldname, ':'.$this->fieldqueryparameter);
                 }
             }
-            $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
+            $this->parameters = [$this->fieldqueryparameter => $this->fieldvalue];
         }
     }
 
@@ -75,7 +75,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
                     $this->criteria = $expr->neq($this->fieldname, ':'.$this->fieldqueryparameter);
                 }
             }
-            $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
+            $this->parameters = [$this->fieldqueryparameter => $this->fieldvalue];
         }
     }
 
@@ -88,7 +88,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         } else {
             $this->criteria = $expr->notin($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
+        $this->parameters = [$this->fieldqueryparameter => $this->fieldvalue];
     }
 
     protected function setInCriteria(): void
@@ -100,7 +100,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         } else {
             $this->criteria = $expr->in($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue);
+        $this->parameters = [$this->fieldqueryparameter => $this->fieldvalue];
     }
 
     protected function setContainsCriteria(): void
@@ -111,7 +111,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         } else {
             $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => '%'.$this->fieldvalue.'%');
+        $this->parameters = [$this->fieldqueryparameter => '%'.$this->fieldvalue.'%'];
     }
 
     protected function setStartswithCriteria(): void
@@ -122,7 +122,7 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         } else {
             $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => $this->fieldvalue.'%');
+        $this->parameters = [$this->fieldqueryparameter => $this->fieldvalue.'%'];
     }
 
     protected function setEndswithCriteria(): void
@@ -133,6 +133,6 @@ class ParametriQueryTabellaDecoder extends BaseParametriQueryTabellaDecoder
         } else {
             $this->criteria = $expr->like($this->fieldname, ':'.$this->fieldqueryparameter);
         }
-        $this->parameters = array($this->fieldqueryparameter => '%'.$this->fieldvalue);
+        $this->parameters = [$this->fieldqueryparameter => '%'.$this->fieldvalue];
     }
 }

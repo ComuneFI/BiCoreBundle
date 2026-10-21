@@ -7,33 +7,25 @@ use Doctrine\ORM\EntityManager;
 
 class BiCoreSystemTablesUtils
 {
-    /* @var $em EntityManager */
-
-    private EntityManager $em;
-
     /**
      *
      * @var array<mixed>
      */
-    private $entities = array();
+    private array $entities = [];
 
-    public function __construct(EntityManager $em)
+    public function __construct(private readonly EntityManager $em)
     {
-        $this->em = $em;
-        $this->entities[Ruoli::class] = array('priority' => 10);
-        $this->entities["Cdf\BiCoreBundle\Entity\Operatori"] = array('priority' => 50);
-        $this->entities["Cdf\BiCoreBundle\Entity\Permessi"] = array('priority' => 100);
-        $this->entities["Cdf\BiCoreBundle\Entity\Storicomodifiche"] = array('priority' => 110);
-        $this->entities["Cdf\BiCoreBundle\Entity\Colonnetabelle"] = array('priority' => 120);
-        $this->entities["Cdf\BiCoreBundle\Entity\Opzionitabelle"] = array('priority' => 150);
-        $this->entities["Cdf\BiCoreBundle\Entity\Menuapplicazione"] = array('priority' => 160);
+        $this->entities[Ruoli::class] = ['priority' => 10];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Operatori::class] = ['priority' => 50];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Permessi::class] = ['priority' => 100];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Storicomodifiche::class] = ['priority' => 110];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Colonnetabelle::class] = ['priority' => 120];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Opzionitabelle::class] = ['priority' => 150];
+        $this->entities[\Cdf\BiCoreBundle\Entity\Menuapplicazione::class] = ['priority' => 160];
 
         $this->countEntitiesRows();
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
-     */
     public function countEntitiesRows(): void
     {
         $records = $this->entities;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -38,22 +40,17 @@ class BaseStoricomodifiche
     #[ORM\Column(type: 'integer')]
     protected $operatori_id;
 
-    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'storicomodifiches')]
+    #[ORM\ManyToOne(targetEntity: Operatori::class, inversedBy: 'storicomodifiches')]
     #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id', nullable: false)]
     protected $operatori;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Set the value of id.
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -75,9 +72,8 @@ class BaseStoricomodifiche
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setNometabella($nometabella)
+    public function setNometabella($nometabella): static
     {
         $this->nometabella = $nometabella;
 
@@ -99,9 +95,8 @@ class BaseStoricomodifiche
      *
      * @param string $nomecampo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setNomecampo($nomecampo)
+    public function setNomecampo($nomecampo): static
     {
         $this->nomecampo = $nomecampo;
 
@@ -123,9 +118,8 @@ class BaseStoricomodifiche
      *
      * @param int $idtabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setIdtabella($idtabella)
+    public function setIdtabella($idtabella): static
     {
         $this->idtabella = $idtabella;
 
@@ -147,9 +141,8 @@ class BaseStoricomodifiche
      *
      * @param \DateTime $giorno
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setGiorno($giorno)
+    public function setGiorno($giorno): static
     {
         $this->giorno = $giorno;
 
@@ -171,9 +164,8 @@ class BaseStoricomodifiche
      *
      * @param string $valoreprecedente
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setValoreprecedente($valoreprecedente)
+    public function setValoreprecedente($valoreprecedente): static
     {
         $this->valoreprecedente = $valoreprecedente;
 
@@ -195,9 +187,8 @@ class BaseStoricomodifiche
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setOperatoriId($operatori_id)
+    public function setOperatoriId($operatori_id): static
     {
         $this->operatori_id = $operatori_id;
 
@@ -217,11 +208,9 @@ class BaseStoricomodifiche
     /**
      * Set Operatori entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
      */
-    public function setOperatori(Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null): static
     {
         $this->operatori = $operatori;
 
@@ -240,6 +229,6 @@ class BaseStoricomodifiche
 
     public function __sleep()
     {
-        return array('id', 'nometabella', 'nomecampo', 'idtabella', 'giorno', 'valoreprecedente', 'operatori_id');
+        return ['id', 'nometabella', 'nomecampo', 'idtabella', 'giorno', 'valoreprecedente', 'operatori_id'];
     }
 }

@@ -4,9 +4,9 @@ namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\User as BaseUser;
+use Cdf\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Cdf\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
@@ -29,19 +29,19 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $ruoli_id;
 
-    #[ORM\OneToMany(targetEntity: \Colonnetabelle::class, mappedBy: 'operatori')]
+    #[ORM\OneToMany(targetEntity: Colonnetabelle::class, mappedBy: 'operatori')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $colonnetabelles;
 
-    #[ORM\OneToMany(targetEntity: \Permessi::class, mappedBy: 'operatori')]
+    #[ORM\OneToMany(targetEntity: Permessi::class, mappedBy: 'operatori')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $permessis;
 
-    #[ORM\OneToMany(targetEntity: \Storicomodifiche::class, mappedBy: 'operatori')]
+    #[ORM\OneToMany(targetEntity: Storicomodifiche::class, mappedBy: 'operatori')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'operatori_id', nullable: false)]
     protected $storicomodifiches;
 
-    #[ORM\ManyToOne(targetEntity: \Ruoli::class, inversedBy: 'operatoris')]
+    #[ORM\ManyToOne(targetEntity: Ruoli::class, inversedBy: 'operatoris')]
     #[ORM\JoinColumn(name: 'ruoli_id', referencedColumnName: 'id')]
     protected $ruoli;
 
@@ -57,8 +57,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
      * Set the value of id.
      *
      * @param int $id
-     *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function setId($id) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -69,8 +67,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     /**
      * Get the value of id.
-     *
-     * @return int
      */
     public function getId() : int
     {
@@ -81,8 +77,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
      * Set the value of operatore.
      *
      * @param string $operatore
-     *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function setOperatore($operatore) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -105,8 +99,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
      * Set the value of ruoli_id.
      *
      * @param int $ruoli_id
-     *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function setRuoliId($ruoli_id) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -117,8 +109,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     /**
      * Get the value of ruoli_id.
-     *
-     * @return ?int
      */
     public function getRuoliId() : ?int
     {
@@ -128,9 +118,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Add Colonnetabelle entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Colonnetabelle $colonnetabelle
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function addColonnetabelle(Colonnetabelle $colonnetabelle) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -142,9 +130,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Remove Colonnetabelle entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Colonnetabelle $colonnetabelle
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function removeColonnetabelle(Colonnetabelle $colonnetabelle) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -155,8 +141,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     /**
      * Get Colonnetabelle entity collection (one to many).
-     *
-     * @return \Doctrine\Common\Collections\Collection
      */
     public function getColonnetabelles() : \Doctrine\Common\Collections\Collection
     {
@@ -166,9 +150,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Add Permessi entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function addPermessi(Permessi $permessi) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -180,9 +162,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Remove Permessi entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function removePermessi(Permessi $permessi) :\Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -193,8 +173,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     /**
      * Get Permessi entity collection (one to many).
-     *
-     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPermessis(): \Doctrine\Common\Collections\Collection
     {
@@ -204,9 +182,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Add Storicomodifiche entity to collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Storicomodifiche $storicomodifiche
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function addStoricomodifiche(Storicomodifiche $storicomodifiche) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -218,9 +194,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Remove Storicomodifiche entity from collection (one to many).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Storicomodifiche $storicomodifiche
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function removeStoricomodifiche(Storicomodifiche $storicomodifiche) : \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -231,8 +205,6 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     /**
      * Get Storicomodifiche entity collection (one to many).
-     *
-     * @return \Doctrine\Common\Collections\Collection
      */
     public function getStoricomodifiches() : \Doctrine\Common\Collections\Collection
     {
@@ -242,9 +214,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * Set Ruoli entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Ruoli $ruoli
      *
-     * @return \Cdf\BiCoreBundle\Entity\Operatori
      */
     public function setRuoli(Ruoli $ruoli = null): \Cdf\BiCoreBundle\Entity\Operatori
     {
@@ -265,7 +235,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
 
     public function __sleep() : array
     {
-        return array('id', 'operatore', 'ruoli_id');
+        return ['id', 'operatore', 'ruoli_id'];
     }
 
     public function isEqualTo(UserInterface $user) : bool
@@ -277,12 +247,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
         if ($this->salt !== $user->getSalt()) {
             return false;
         }
-
-        if ($this->username !== $user->getUsername()) {
-            return false;
-        }
-
-        return true;
+        return $this->username === $user->getUsername();
     }
 
     /**
@@ -294,9 +259,9 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     }
     
     /**
-     * @return string the hashed password for this user
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

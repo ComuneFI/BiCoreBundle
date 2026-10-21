@@ -9,7 +9,6 @@ class OpzionitabelleRepository extends EntityRepository
 {
     /**
      *
-     * @param string $tabella
      * @return array<Opzionitabelle>
      */
     public function findOpzioniTabella(string $tabella): array
@@ -17,7 +16,7 @@ class OpzionitabelleRepository extends EntityRepository
         $em = $this->getEntityManager();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder();
-        $qb->select(array('t'));
+        $qb->select(['t']);
         $qb->from(Opzionitabelle::class, 't');
         $qb->where("(t.nometabella = '*' OR t.nometabella = :tabella)");
         $qb->setParameter('tabella', $tabella);

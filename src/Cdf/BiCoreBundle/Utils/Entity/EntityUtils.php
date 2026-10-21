@@ -4,17 +4,14 @@ namespace Cdf\BiCoreBundle\Utils\Entity;
 
 use Cdf\BiCoreBundle\Utils\String\StringUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Proxy\Proxy;
+use Doctrine\Persistence\Proxy;
 use function count;
 
 class EntityUtils
 {
 
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     public function getClassNameToShortcutNotations(string $entity): string
@@ -26,14 +23,12 @@ class EntityUtils
 
     /**
      *
-     * @param string $entity
      * @return array<mixed>
      */
     public function getEntityColumns(string $entity): array
     {
-        /* @phpstan-ignore-next-line */
         $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
-        $colonne = array();
+        $colonne = [];
         $fieldMappings = $infocolonne->fieldMappings;
         //dump($fieldMappings);
         foreach ($fieldMappings as $colonna) {
@@ -56,23 +51,22 @@ class EntityUtils
     public function getTableFromEntity(string $entity): string
     {
         $metadata = $this->em->getClassMetadata($entity);
-        $tablename = $metadata->getTablename();
 
-        return $tablename;
+        return $metadata->getTablename();
     }
 
     public function entityHasJoinTables(string $entityclass): bool
     {
         $jointables = $this->getEntityJoinTables($entityclass);
 
-        return count($jointables) > 0 ? true : false;
+        return count($jointables) > 0;
     }
 
     public function getJoinTableField(string $entityclass, string $field): ?string
     {
         $joinfields = $this->getEntityJoinTables($entityclass);
         foreach ($joinfields as $joinfield) {
-            if (1 != count($joinfield)) {
+            if (1 !== count($joinfield)) {
                 return null;
             }
             $jointableentity = $this->getJoinTable($joinfield, $field);
@@ -88,7 +82,7 @@ class EntityUtils
     {
         $joinfields = $this->getEntityJoinTables($entityclass);
         foreach ($joinfields as $joinfield) {
-            if (1 != count($joinfield)) {
+            if (1 !== count($joinfield)) {
                 return null;
             }
             $joinfieldname = $this->getJoinFieldName($joinfield, $field);
@@ -102,13 +96,12 @@ class EntityUtils
 
     /**
      *
-     * @param string $fieldname
      * @param mixed $objrecord
      * @return array<mixed>
      */
     public function getEntityProperties(string $fieldname, $objrecord): array
     {
-        $parametri = array('str' => $fieldname, 'primamaiuscola' => true);
+        $parametri = ['str' => $fieldname, 'primamaiuscola' => true];
         $getfieldname = StringUtils::toCamelCase($parametri);
         if (!method_exists($objrecord, $getfieldname)) {
             $getfieldname = 'has' . StringUtils::toCamelCase($parametri);
@@ -121,18 +114,17 @@ class EntityUtils
         }
         $setfieldname = 'set' . StringUtils::toCamelCase($parametri);
 
-        return array('get' => $getfieldname, 'set' => $setfieldname);
+        return ['get' => $getfieldname, 'set' => $setfieldname];
     }
 
     /**
      *
      * @param mixed $className
-     * @return bool
      */
     public function entityExists($className): bool
     {
         if (is_object($className)) {
-            $className = ($className instanceof Proxy) ? get_parent_class($className) : get_class($className);
+            $className = ($className instanceof Proxy) ? get_parent_class($className) : $className::class;
         }
 
         return !$this->em->getMetadataFactory()->isTransient($className);
@@ -140,17 +132,16 @@ class EntityUtils
 
     /**
      *
-     * @param string $entityclass
      * @return array<mixed>
      */
     public function getEntityJoinTables(string $entityclass): array
     {
-        $jointables = array();
+        $jointables = [];
         $metadata = $this->em->getClassMetadata($entityclass);
         $fielsassoc = $metadata->associationMappings;
         foreach ($fielsassoc as $tableassoc) {
             if ($tableassoc['inversedBy']) {
-                $jointables[$tableassoc['targetEntity']] = array('entity' => $tableassoc);
+                $jointables[$tableassoc['targetEntity']] = ['entity' => $tableassoc];
             }
         }
 
@@ -160,8 +151,6 @@ class EntityUtils
     /**
      *
      * @param array<mixed> $joinfield
-     * @param string $field
-     * @return string|null
      */
     private function getJoinFieldName(array $joinfield, string $field): ?string
     {
@@ -169,9 +158,7 @@ class EntityUtils
         $joinColumns = $joinFieldentity['joinColumns'];
         foreach ($joinColumns as $joinColumn) {
             if ($field === $joinColumn['name']) {
-                $joinFieldName = $joinFieldentity['fieldName'];
-
-                return $joinFieldName;
+                return $joinFieldentity['fieldName'];
             }
         }
 
@@ -181,7 +168,6 @@ class EntityUtils
     /**
      *
      * @param array<mixed> $joinfield
-     * @param string $field
      * @return string
      */
     private function getJoinTable(array $joinfield, string $field): ?string

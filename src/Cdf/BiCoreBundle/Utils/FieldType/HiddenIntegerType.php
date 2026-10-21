@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Utils\FieldType;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -12,7 +14,6 @@ class HiddenIntegerType extends HiddenType implements DataTransformerInterface
 
     /**
      *
-     * @param FormBuilderInterface $builder
      * @param array<mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void
@@ -23,9 +24,7 @@ class HiddenIntegerType extends HiddenType implements DataTransformerInterface
     /**
      *
      * @param mixed $data
-     * @return int
      */
-     
     public function transform($data) : int
     {
         return (int) $data;
@@ -34,15 +33,13 @@ class HiddenIntegerType extends HiddenType implements DataTransformerInterface
     /**
      *
      * @param string $data
-     * @return int
      */
-     
     public function reverseTransform($data) : int
     {
         return (int) $data;
     }
 
-    public function getName() : string
+    public function getBlockPrefix() : string
     {
         return 'hidden_integer';
     }

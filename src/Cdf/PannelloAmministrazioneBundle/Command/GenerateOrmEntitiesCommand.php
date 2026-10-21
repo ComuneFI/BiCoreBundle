@@ -11,28 +11,19 @@ use Cdf\PannelloAmministrazioneBundle\Utils\ProjectPath;
 use Cdf\PannelloAmministrazioneBundle\Utils\GeneratorHelper;
 use Cdf\PannelloAmministrazioneBundle\Utils\Utility;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'pannelloamministrazione:generateormentities', description: 'Genera le entities partendo da un modello workbeanch mwb')]
 class GenerateOrmEntitiesCommand extends Command
 {
-    protected static $defaultName = 'pannelloamministrazione:generateormentities';
-    protected ProjectPath $apppaths;
-    protected GeneratorHelper $genhelper;
-    protected Utility $pammutils;
-
     protected function configure() : void
     {
         $this
-                ->setDescription('Genera le entities partendo da un modello workbeanch mwb')
                 ->setHelp('Genera i file orm per le entities partendo da un modello workbeanch mwb, <br/>bi.mwb Fi/BiCoreBundle default<br/>')
                 ->addArgument('mwbfile', InputArgument::REQUIRED, 'Nome file mwb, bi.mwb')
         ;
     }
 
-    public function __construct(ProjectPath $projectpath, GeneratorHelper $genhelper, Utility $pammutils)
+    public function __construct(protected ProjectPath $apppaths, protected GeneratorHelper $genhelper, protected Utility $pammutils)
     {
-        $this->apppaths = $projectpath;
-        $this->genhelper = $genhelper;
-        $this->pammutils = $pammutils;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -71,20 +62,19 @@ class GenerateOrmEntitiesCommand extends Command
         if ($schemaupdateresult['errcode'] < 0) {
             $output->writeln($schemaupdateresult['message']);
 
-            return 1;
-        } else {
-            $output->writeln($schemaupdateresult['message']);
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
+        $output->writeln($schemaupdateresult['message']);
 
         $this->genhelper->removeExportJsonFile();
         $tablecheck = $this->genhelper->checktables($destinationPath, $wbFile, $output);
 
         if ($tablecheck < 0) {
-            return 1;
+            return \Symfony\Component\Console\Command\Command::FAILURE;
         }
 
         $output->writeln('<info>Entities yml create</info>');
 
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

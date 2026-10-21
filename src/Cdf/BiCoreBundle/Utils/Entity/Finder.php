@@ -9,11 +9,8 @@ use function count;
 class Finder
 {
 
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     public function getClassNameFromEntityName(string $entityname): string

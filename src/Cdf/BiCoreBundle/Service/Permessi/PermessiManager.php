@@ -14,14 +14,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class PermessiManager
 {
 
-    private EntityManagerInterface $em;
-    /** @phpstan-ignore-next-line */
     private $user;
 
-    /** @phpstan-ignore-next-line */
-    public function __construct(EntityManagerInterface $em, $user)
+    public function __construct(private readonly EntityManagerInterface $em, $user)
     {
-        $this->em = $em;
         $this->user = $user->getToken()->getUser();
     }
 
@@ -30,7 +26,7 @@ class PermessiManager
 
         $permessi = $this->getPermessi($modulo);
         $canread = false;
-        if ($permessi) {
+        if ($permessi instanceof \Cdf\BiCoreBundle\Entity\Permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'R')) {
                 $canread = true;
             }
@@ -47,7 +43,7 @@ class PermessiManager
     {
         $permessi = $this->getPermessi($modulo);
         $cancreate = false;
-        if ($permessi) {
+        if ($permessi instanceof \Cdf\BiCoreBundle\Entity\Permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'C')) {
                 $cancreate = true;
             }
@@ -64,7 +60,7 @@ class PermessiManager
     {
         $permessi = $this->getPermessi($modulo);
         $canupdate = false;
-        if ($permessi) {
+        if ($permessi instanceof \Cdf\BiCoreBundle\Entity\Permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'U')) {
                 $canupdate = true;
             }
@@ -81,7 +77,7 @@ class PermessiManager
     {
         $permessi = $this->getPermessi($modulo);
         $candelete = false;
-        if ($permessi) {
+        if ($permessi instanceof \Cdf\BiCoreBundle\Entity\Permessi) {
             if (false !== stripos(strtoupper($permessi->getCrud()), 'D')) {
                 $candelete = true;
             }
@@ -103,16 +99,15 @@ class PermessiManager
 
     /**
      *
-     * @param string $modulo
      * @return array<string, bool>
      */
     public function toJson(string $modulo): array
     {
-        return array(
+        return [
             'read' => $this->canRead($modulo),
             'create' => $this->canCreate($modulo),
             'delete' => $this->canDelete($modulo),
             'update' => $this->canUpdate($modulo),
-        );
+        ];
     }
 }

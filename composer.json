@@ -1,8 +1,6 @@
 {
-    "name": "comunedifirenze/bicorebundle",
+    "name": "fi/bicorebundle",
     "description": "Bootstrap italia CoreBundle by Comune Di Firenze",
-    "homepage": "https://github.com/ComuneFI/BiCoreBundle",
-    "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -44,26 +42,44 @@
             "Cdf\\BiCoreBundle\\Tests\\": "tests/Cdf/Tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.comune.intranet",
+            "canonical": false,
+            "options": {
+                "ssl": {
+                    "verify_peer": true,
+                    "allow_self_signed": true,
+                    "local_cert": "/Users/D22088/.satiscerts/satis.comune.intranet.cer"
+                }
+            }       
+        }
+    ],
     "require": {
         "php": ">=8.2",
         "composer/package-versions-deprecated": "^1.11",
         "comunedifirenze/doctrine2-exporter": "^3.0",
         "comunedifirenze/mysql-workbench-schema-exporter": "^3.0",
-        "comunedifirenze/user-bundle": "^6.4",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.1",
-        "doctrine/orm": "^2.9",
+        "doctrine/orm": "^3.0",
         "fi/osbundle": "6.4.*",
+        "fi/user-bundle": "*",
         "friendsofsymfony/jsrouting-bundle": "^3.0",
+        "hanneskod/classtools": "*",
         "phpoffice/phpspreadsheet": "^1.4",
         "symfony/asset": "6.4.*",
         "symfony/cache": "6.4.*",
         "symfony/console": "6.4.*",
+        "symfony/dependency-injection": "^6.4",
         "symfony/dotenv": "6.4.*",
         "symfony/error-handler": "6.4.*",
         "symfony/event-dispatcher": "6.4.*",
+        "symfony/finder": "^6.4",
         "symfony/flex": "^1.0|^2.0",
         "symfony/form": "6.4.*",
+        "symfony/framework-bundle": "^6.4",
         "symfony/http-foundation": "6.4.*",
         "symfony/http-kernel": "6.4.*",
         "symfony/lock": "6.4.*",
@@ -85,17 +101,11 @@
         "symfony/twig-bridge": "6.4.*",
         "symfony/var-exporter": "6.4.*",
         "symfony/webpack-encore-bundle": "^1.5",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/dependency-injection": "^6.4",  
-        "symfony/finder": "^6.4",
-        "symfony/yaml": "6.4.*",
-        "doctrine/annotations": "^1.0"
+        "symfony/yaml": "6.4.*"
     },
     "require-dev": {
         "dbrekelmans/bdi": "^1.0.0",
         "phpmd/phpmd": "^2.6",
-        "phpstan/phpstan": "^1.0.0",
-        "phpstan/phpstan-doctrine": "^1.0",
         "phpunit/phpunit": "^10.0",
         "scrutinizer/ocular": "^1.8",
         "squizlabs/php_codesniffer": "^3.3",
@@ -127,9 +137,9 @@
     },
     "config": {
         "allow-plugins": {
+            "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "composer/package-versions-deprecated" : true            
+            "symfony/runtime": true
         },
         "preferred-install": {
             "*": "dist"

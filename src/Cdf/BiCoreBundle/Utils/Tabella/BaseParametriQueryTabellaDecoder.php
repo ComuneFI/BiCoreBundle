@@ -8,15 +8,11 @@ use Doctrine\Common\Collections\Expr\Comparison;
 class BaseParametriQueryTabellaDecoder
 {
 
-    protected string $fieldname;
-    protected string $fieldoperator;
-
     /**
      *
      * @var mixed
      */
     protected $fieldvalue;
-    protected string $fieldqueryparameter;
 
     /**
      *
@@ -32,30 +28,17 @@ class BaseParametriQueryTabellaDecoder
 
     /**
      *
-     * @var array<mixed>
-     */
-    protected $fieldinfo;
-
-    /**
-     *
-     * @param string $fieldname
-     * @param string $fieldoperator
      * @param mixed $fieldvalue
-     * @param string $fieldqueryparameter
      * @param array<mixed> $fieldinfo
      */
-    public function __construct(string $fieldname, string $fieldoperator, $fieldvalue, string $fieldqueryparameter, $fieldinfo)
+    public function __construct(protected string $fieldname, protected string $fieldoperator, $fieldvalue, protected string $fieldqueryparameter, protected $fieldinfo)
     {
-        $this->fieldname = $fieldname;
-        $this->fieldoperator = $fieldoperator;
         if (is_string($fieldvalue)) {
             $this->fieldvalue = urldecode($fieldvalue);
         } else {
             $this->fieldvalue = $fieldvalue;
         }
-        $this->fieldqueryparameter = $fieldqueryparameter;
-        $this->fieldinfo = $fieldinfo;
-        $this->parameters = array();
+        $this->parameters = [];
         /** @phpstan-ignore-next-line */
         $this->buildQuery();
     }
@@ -84,15 +67,10 @@ class BaseParametriQueryTabellaDecoder
 
         switch (true) {
             case $this->getDescrizioneFiltroIsNull($descrizionevalore):
-                break;
             case $this->getDescrizioneFiltroDecodifiche($descrizionevalore):
-                break;
             case $this->getDescrizioneFiltroBoolean($descrizionevalore):
-                break;
             case $this->getDescrizioneFiltroDate($descrizionevalore):
-                break;
             case $this->getDescrizioneFiltroArray($descrizionevalore):
-                break;
             case $this->getDescrizioneFiltroString($descrizionevalore):
                 break;
             default:
@@ -100,14 +78,13 @@ class BaseParametriQueryTabellaDecoder
                 break;
         }
         $nomecampo = substr($this->fieldname, stripos($this->fieldname, '.') + 1);
-        $filtro = $nomecampo . ' ' . $this->operatorToString($this->fieldoperator) . ' ' . $descrizionevalore;
 
-        return $filtro;
+        return $nomecampo . ' ' . $this->operatorToString($this->fieldoperator) . ' ' . $descrizionevalore;
     }
 
     protected function getDescrizioneFiltroAltro(string &$descrizionevalore): void
     {
-        if ('' == $descrizionevalore) {
+        if ('' === $descrizionevalore) {
             $descrizionevalore = "'" . $this->fieldvalue . "'";
         }
     }
@@ -147,7 +124,7 @@ class BaseParametriQueryTabellaDecoder
     {
         $trovato = false;
         if (is_string($this->fieldvalue)) {
-            $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+            $descrizionevalore = "'" . $this->fieldvalue . "'";
             $trovato = true;
         }
 
@@ -166,9 +143,9 @@ class BaseParametriQueryTabellaDecoder
                     }
                 } else {
                     if (isset($decodifiche[$this->fieldvalue])) {
-                        $descrizionevalore = $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
+                        $descrizionevalore = "'" . $decodifiche[$this->fieldvalue] . "'";
                     } else {
-                        $descrizionevalore = $descrizionevalore = "'" . $this->fieldvalue . "'";
+                        $descrizionevalore = "'" . $this->fieldvalue . "'";
                     }
                 }
                 $trovato = true;
@@ -220,7 +197,7 @@ class BaseParametriQueryTabellaDecoder
 
     protected function operatorToString(string $operator): string
     {
-        $decoder = array(
+        $decoder = [
             Comparison::LT => 'minore di',
             Comparison::LTE => 'minore o uguale di',
             Comparison::GT => 'maggiore di',
@@ -232,7 +209,7 @@ class BaseParametriQueryTabellaDecoder
             Comparison::NIN => 'non compreso tra',
             Comparison::EQ => 'uguale a',
             Comparison::NEQ => 'diverso da',
-        );
+        ];
 
         return $decoder[$operator];
     }

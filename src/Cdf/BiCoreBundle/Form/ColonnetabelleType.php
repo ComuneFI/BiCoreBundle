@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -13,37 +15,37 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class ColonnetabelleType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $submitparms = array(
+        $submitparms = [
             'label' => 'Aggiorna record',
-            'attr' => array(
+            'attr' => [
                 'class' => 'btn-outline-primary bisubmit',
                 'aria-label' => 'Aggiorna record',
-            ),);
+            ],];
 
         $builder
-                ->add('nometabella', null, array('label' => 'Tabella'))
-                ->add('nomecampo', null, array('label' => 'Nome campo'))
-                ->add('mostraindex', null, array('label' => 'Mostra in tabella'))
-                ->add('ordineindex', null, array('label' => 'Ordine in tabella'))
-                ->add('larghezzaindex', null, array('label' => 'Larghezza % in tabella', 'attr' => array(
+                ->add('nometabella', null, ['label' => 'Tabella'])
+                ->add('nomecampo', null, ['label' => 'Nome campo'])
+                ->add('mostraindex', null, ['label' => 'Mostra in tabella'])
+                ->add('ordineindex', null, ['label' => 'Ordine in tabella'])
+                ->add('larghezzaindex', null, ['label' => 'Larghezza % in tabella', 'attr' => [
                         'min' => 0,
                         'max' => 100,
-                )))
-                ->add('etichettaindex', null, array('label' => 'Etichetta in tabella'))
-                ->add('registrastorico', null, array('label' => 'Registra in storico'))
-                ->add('editabile', null, array('label' => 'Editabile'))
-                ->add('operatori', EntityType::class, array('class' => Operatori::class, 'required' => false))
+                ]])
+                ->add('etichettaindex', null, ['label' => 'Etichetta in tabella'])
+                ->add('registrastorico', null, ['label' => 'Registra in storico'])
+                ->add('editabile', null, ['label' => 'Editabile'])
+                ->add('operatori', EntityType::class, ['class' => Operatori::class, 'required' => false])
                 ->add('submit', SubmitType::class, $submitparms)
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Colonnetabelle::class,
-            'parametriform' => array(),
+            'parametriform' => [],
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             // a unique key to help generate the secret token

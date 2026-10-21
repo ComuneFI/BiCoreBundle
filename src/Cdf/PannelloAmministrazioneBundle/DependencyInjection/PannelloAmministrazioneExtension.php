@@ -17,8 +17,6 @@ class PannelloAmministrazioneExtension extends Extension
     /**
      *
      * @param array<mixed> $configs
-     * @param ContainerBuilder $container
-     * @return void
      */
     public function load(array $configs, ContainerBuilder $container) : void
     {

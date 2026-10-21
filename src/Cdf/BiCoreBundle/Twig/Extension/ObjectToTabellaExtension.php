@@ -8,20 +8,17 @@ use Twig\TwigFunction;
 
 class ObjectToTabellaExtension extends AbstractExtension
 {
-    private string $tableprefix;
-
-    public function __construct(string $tableprefix)
+    public function __construct(private readonly string $tableprefix)
     {
-        $this->tableprefix = $tableprefix;
     }
 
     public function getFunctions(): array
     {
-        return array(
-            new TwigFunction('object2view', [$this, 'object2View']),
-            new TwigFunction('field2object', [$this, 'field2Object']),
-            new TwigFunction('joinfieldid', [$this, 'joinFieldId']),
-        );
+        return [
+            new TwigFunction('object2view', $this->object2View(...)),
+            new TwigFunction('field2object', $this->field2Object(...)),
+            new TwigFunction('joinfieldid', $this->joinFieldId(...)),
+        ];
     }
 
     /**
@@ -59,11 +56,10 @@ class ObjectToTabellaExtension extends AbstractExtension
      */
     public function joinFieldId($object)
     {
-        $valore = null;
         if ($object) {
-            $valore = $object->getId();
+            return $object->getId();
         }
 
-        return $valore;
+        return null;
     }
 }

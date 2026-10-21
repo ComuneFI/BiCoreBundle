@@ -9,26 +9,21 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Exception;
 
+#[\Symfony\Component\Console\Attribute\AsCommand(name: 'bicorebundle:clonaruolo', description: 'Clona i permessi di un ruolo esistente su un nuovo ruolo')]
 class BiCoreBundleClonaruoloCommand extends Command
 {
-
-    protected static $defaultName = 'bicorebundle:clonaruolo';
-    private EntityManagerInterface $em;
 
     protected function configure(): void
     {
         $this
-                ->setDescription('Clona i permessi di un ruolo esistente su un nuovo ruolo')
                 ->setHelp('Specificare come parametri il nome del ruolo da clonare e quello nuovo')
                 ->addArgument('ruoloesistente', InputArgument::REQUIRED, 'Ruolo esistente')
                 ->addArgument('nuovoruolo', InputArgument::REQUIRED, 'Nuovo ruolo')
         ;
     }
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $em)
     {
-        $this->em = $em;
-
         // you *must* call the parent constructor
         parent::__construct();
     }
@@ -47,7 +42,7 @@ class BiCoreBundleClonaruoloCommand extends Command
 
         $query = $this->em->createQueryBuilder()
                 ->select('r')
-                ->from('BiCoreBundle:Ruoli', 'r')
+                ->from(\Cdf\BiCoreBundle\Entity\Ruoli::class, 'r')
                 ->where('r.ruolo = :ruolo')
                 ->setParameter('ruolo', $ruoloesistente)
                 ->getQuery()
@@ -55,13 +50,12 @@ class BiCoreBundleClonaruoloCommand extends Command
         $ruoloesistenteobj = $query->getResult();
         if (!$ruoloesistenteobj) {
             throw new Exception('Non esiste il ruolo ' . $ruoloesistente);
-        } else {
-            $newruoloesistente = $ruoloesistenteobj[0];
         }
+        $newruoloesistente = $ruoloesistenteobj[0];
 
         $query = $this->em->createQueryBuilder()
                 ->select('r')
-                ->from('BiCoreBundle:Ruoli', 'r')
+                ->from(\Cdf\BiCoreBundle\Entity\Ruoli::class, 'r')
                 ->where('r.ruolo = :ruolo')
                 ->setParameter('ruolo', $nuovoruolo)
                 ->getQuery()
@@ -79,7 +73,7 @@ class BiCoreBundleClonaruoloCommand extends Command
 
         $query = $this->em->createQueryBuilder()
                 ->select('p')
-                ->from('BiCoreBundle:Permessi', 'p')
+                ->from(\Cdf\BiCoreBundle\Entity\Permessi::class, 'p')
                 ->where('p.ruoli = :ruolo')
                 ->setParameter('ruolo', $newruoloesistente)
                 ->getQuery()
@@ -91,6 +85,6 @@ class BiCoreBundleClonaruoloCommand extends Command
             $this->em->persist($newpermessi);
             $this->em->flush();
         }
-        return 0;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

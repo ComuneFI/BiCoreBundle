@@ -14,35 +14,25 @@ use function count;
 
 class DatabaseUtils
 {
-    /* @var $em EntityManager */
-
-    private EntityManagerInterface $em;
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel, EntityManagerInterface $em)
+    public function __construct(private readonly KernelInterface $kernel, private readonly EntityManagerInterface $em)
     {
-        $this->kernel = $kernel;
-        $this->em = $em;
     }
 
     /**
      *
      * @param mixed $entity
-     * @param string $field
      * @return string
      */
-    public function getFieldType($entity, $field)
+    public function getFieldType($entity, string $field)
     {
-        $classname = get_class($entity);
-        if ($classname === false) {
+        $classname = $entity::class;
+        if ($classname == false) {
             throw new Exception("Entity class not found: " . $entity);
         }
         $metadata = $this->em->getClassMetadata($classname);
         $fieldMetadata = $metadata->fieldMappings[$field];
 
-        $fieldType = $fieldMetadata['type'];
-
-        return $fieldType;
+        return $fieldMetadata['type'];
     }
 
     /**
@@ -73,9 +63,8 @@ class DatabaseUtils
      *
      * @param mixed $oldvalue
      * @param mixed $newvalue
-     * @return boolean
      */
-    public function isDateChanged($oldvalue, $newvalue)
+    public function isDateChanged($oldvalue, $newvalue): bool
     {
         $datenewvalue = new DateTime();
         $datenewvalue->setTimestamp($newvalue);
@@ -87,18 +76,16 @@ class DatabaseUtils
         if ($onlyonenull) {
             return true;
         }
-        $changed = ($oldvalue != $datenewvalue);
 
-        return $changed;
+        return $oldvalue != $datenewvalue;
     }
 
     /**
      *
      * @param mixed $oldvalue
      * @param mixed $newvalue
-     * @return boolean
      */
-    public function isArrayChanged($oldvalue, $newvalue)
+    public function isArrayChanged($oldvalue, $newvalue): bool
     {
         $twoboth = !$oldvalue && !$newvalue;
         if ($twoboth) {
@@ -117,34 +104,41 @@ class DatabaseUtils
      *
      * @param string $entityclass
      * @param bool $cascade
-     * @return mixed
      */
-    public function truncateTable($entityclass, $cascade = false)
+    public function truncateTable($entityclass, $cascade = false): int|string
     {
         $cmd = $this->em->getClassMetadata($entityclass);
         $connection = $this->em->getConnection();
         $dbPlatform = $connection->getDatabasePlatform();
-        $dbtype = $connection->getDriver()->getDatabasePlatform()->getName();
+        //$dbtype = $connection->getDriver()->getDatabasePlatform()->getName();
+        $platform = $connection->getDatabasePlatform();
+        $driver = '';
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $driver = 'postgre';
+        }
+        if ($platform instanceof \Doctrine\DBAL\Platforms\MySQLPlatform) {
+            $driver = 'mysql';
+        }
         $retval = false;
 
-        switch ($dbtype) {
+        switch ($driver) {
             case 'mysql':
-                $connection->query('SET FOREIGN_KEY_CHECKS=0');
+                $connection->executeStatement('SET FOREIGN_KEY_CHECKS=0');
                 $q = $dbPlatform->getTruncateTableSql($cmd->getTableName(), $cascade);
-                $retval = $connection->executeUpdate($q);
-                $connection->query('SET FOREIGN_KEY_CHECKS=1');
+                $retval = $connection->executeStatement($q);
+                $connection->executeStatement('SET FOREIGN_KEY_CHECKS=1');
                 break;
-            case 'postgresql':
+            case 'postgre':
                 $cascadesql = $cascade ? 'CASCADE' : '';
                 $tablename = $cmd->getTableName();
                 if ($cmd->getSchemaName()) {
                     $tablename = $cmd->getSchemaName() . '.' . $tablename;
                 }
-                $retval = $connection->executeQuery(sprintf('TRUNCATE TABLE %s ' . $cascadesql, $tablename));
+                $retval = $connection->executeStatement(sprintf('TRUNCATE TABLE %s ' . $cascadesql, $tablename));
                 break;
             default:
                 $q = $dbPlatform->getTruncateTableSql($cmd->getTableName(), $cascade);
-                $retval = $connection->executeUpdate($q);
+                $retval = $connection->executeStatement($q);
                 break;
         }
         $this->em->clear();
@@ -157,12 +151,12 @@ class DatabaseUtils
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:schema:update',
             '--dump-sql' => true,
             '--no-debug' => true,
             '--env' => $this->kernel->getEnvironment(),
-        ));
+        ]);
 
         // You can use NullOutput() if you don't need the output
         $output = new BufferedOutput();

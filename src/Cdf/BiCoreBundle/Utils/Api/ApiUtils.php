@@ -12,29 +12,29 @@ use ReflectionClass;
  */
 class ApiUtils
 {
-    private string $getAll;
-    private string $getCount;
-    private string $create;
+    private readonly string $getAll;
+    private readonly string $getCount;
+    private readonly string $create;
     private string $apiCollection;
     
     // Namespaces
-    private string $namespacePrefix = 'Swagger';
-    private string $namespaceApi = 'Api';
-    private string $namespaceModel = 'Model';
-    private string $namespaceForm = 'App\\Form';
+    private string $namespacePrefix;
+    private string $namespaceApi;
+    private string $namespaceModel;
+    private string $namespaceForm;
     
     // Suffix and prefix
-    private string $suffixApiController = 'Api';
-    private string $prefixControllerModelItem = 'DaosRow';
-    private string $prefixModelItem = 'DaosRow';
+    private string $suffixApiController;
+    private string $prefixControllerModelItem;
+    private string $prefixModelItem;
     
-    private string $delete;
-    private string $get;
-    private string $update;
-    private string $getAllToString;
+    private readonly string $delete;
+    private readonly string $get;
+    private readonly string $update;
+    private readonly string $getAllToString;
     
     // Regex for finding models
-    private string $regexPathModels = '/Swagger\\\(.*)\\\Model\\\DaosRow/';
+    private string $regexPathModels;
     
     private string $rootDir;
 
@@ -256,7 +256,7 @@ class ApiUtils
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Log error or handle gracefully
             return $models;
         }
@@ -304,35 +304,5 @@ class ApiUtils
         }
 
         return null;
-    }
-
-    /**
-     * Alternative method using Reflection (slower but more accurate).
-     * Use this if extractClassNameFromFile causes issues.
-     *
-     * @param string $filePath
-     * @return string|null
-     */
-    private function extractClassNameFromFileReflection(string $filePath): ?string
-    {
-        // This approach requires the class to be autoloadable
-        // Less reliable than the regex approach above
-        try {
-            // Get namespace and class from file path
-            // This is a simplified version and may need adjustment based on PSR-4
-            $relativePath = str_replace([$this->bundlesPath(), '.php'], '', $filePath);
-            $parts = explode(DIRECTORY_SEPARATOR, trim($relativePath, DIRECTORY_SEPARATOR));
-            
-            if (count($parts) < 2) {
-                return null;
-            }
-
-            $className = array_pop($parts);
-            $namespace = implode('\\', $parts);
-            
-            return $namespace . '\\' . $className;
-        } catch (\Exception $e) {
-            return null;
-        }
     }
 }

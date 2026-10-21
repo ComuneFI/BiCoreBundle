@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -33,26 +35,21 @@ class BasePermessi
     #[ORM\Column(type: 'integer', nullable: true)]
     protected $operatori_id;
 
-    #[ORM\ManyToOne(targetEntity: \Ruoli::class, inversedBy: 'permessis')]
+    #[ORM\ManyToOne(targetEntity: Ruoli::class, inversedBy: 'permessis')]
     #[ORM\JoinColumn(name: 'ruoli_id', referencedColumnName: 'id')]
     protected $ruoli;
 
-    #[ORM\ManyToOne(targetEntity: \Operatori::class, inversedBy: 'permessis')]
+    #[ORM\ManyToOne(targetEntity: Operatori::class, inversedBy: 'permessis')]
     #[ORM\JoinColumn(name: 'operatori_id', referencedColumnName: 'id')]
     protected $operatori;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Set the value of id.
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -74,9 +71,8 @@ class BasePermessi
      *
      * @param string $modulo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setModulo($modulo)
+    public function setModulo($modulo): static
     {
         $this->modulo = $modulo;
 
@@ -98,9 +94,8 @@ class BasePermessi
      *
      * @param string $crud
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setCrud($crud)
+    public function setCrud($crud): static
     {
         $this->crud = $crud;
 
@@ -122,9 +117,8 @@ class BasePermessi
      *
      * @param int $ruoli_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setRuoliId($ruoli_id)
+    public function setRuoliId($ruoli_id): static
     {
         $this->ruoli_id = $ruoli_id;
 
@@ -146,9 +140,8 @@ class BasePermessi
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setOperatoriId($operatori_id)
+    public function setOperatoriId($operatori_id): static
     {
         $this->operatori_id = $operatori_id;
 
@@ -168,11 +161,9 @@ class BasePermessi
     /**
      * Set Ruoli entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Ruoli $ruoli
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setRuoli(Ruoli $ruoli = null)
+    public function setRuoli(Ruoli $ruoli = null): static
     {
         $this->ruoli = $ruoli;
 
@@ -192,11 +183,9 @@ class BasePermessi
     /**
      * Set Operatori entity (many to one).
      *
-     * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
      */
-    public function setOperatori(Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null): static
     {
         $this->operatori = $operatori;
 
@@ -215,6 +204,6 @@ class BasePermessi
 
     public function __sleep()
     {
-        return array('id', 'modulo', 'crud', 'ruoli_id', 'operatori_id');
+        return ['id', 'modulo', 'crud', 'ruoli_id', 'operatori_id'];
     }
 }

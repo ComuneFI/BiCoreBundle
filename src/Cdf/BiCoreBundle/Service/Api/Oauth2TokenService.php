@@ -15,8 +15,6 @@ class Oauth2TokenService
 {
 
     private string $access_token;
-    private string $endpoint;
-    private string $clientkey;
     private string $expires_in;
     private string $token_type;
 
@@ -24,11 +22,9 @@ class Oauth2TokenService
     /**
      * Build an EcmTokenService instance
      */
-    public function __construct(string $endpoint, string $clientkey)
+    public function __construct(private readonly string $endpoint, private readonly string $clientkey)
     {
         $this->access_token = '';
-        $this->endpoint = $endpoint;
-        $this->clientkey = $clientkey;
     }
 
     /**
@@ -36,7 +32,7 @@ class Oauth2TokenService
      */
     public function getToken(): string
     {
-        if ($this->access_token == '') {
+        if ($this->access_token === '') {
             $this->refreshToken();
         }
         return $this->access_token;

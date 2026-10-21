@@ -13,11 +13,8 @@ use function count;
 class GeneratorHelper
 {
 
-    private ProjectPath $apppaths;
-
-    public function __construct(ProjectPath $projectpath)
+    public function __construct(private readonly ProjectPath $apppaths)
     {
-        $this->apppaths = $projectpath;
     }
 
     public function getDestinationEntityOrmPath(): string
@@ -27,11 +24,10 @@ class GeneratorHelper
         if ($entitypath === false) {
             throw new Exception("Impossibile trovare il percorso " . $path);
         }
-        if (DIRECTORY_SEPARATOR == '/') {
+        if (DIRECTORY_SEPARATOR === '/') {
             return $entitypath;
-        } else {
-            return str_replace('\\', '\\\\', $entitypath);
         }
+        return str_replace('\\', '\\\\', $entitypath);
     }
 
     public function checktables(string $destinationPath, string $wbFile, OutputInterface $output): int
@@ -43,7 +39,7 @@ class GeneratorHelper
         //Si cercano file con nomi errati
         $finderwrong = new Finder();
         $finderwrong->in($pathdoctrineorm)->files()->name('*_*');
-        $wrongfilename = array();
+        $wrongfilename = [];
         if (count($finderwrong) > 0) {
             foreach ($finderwrong as $file) {
                 $wrongfilename[] = $file->getFileName();
@@ -54,14 +50,13 @@ class GeneratorHelper
         //Si cercano file con nomi campo errati
         $finderwrongproperty = new Finder();
         $finderwrongproperty->in($pathdoctrineorm)->files()->name('Base*.php');
-        $wrongpropertyname = array();
+        $wrongpropertyname = [];
         foreach ($finderwrongproperty as $file) {
-            /** @phpstan-ignore-next-line */
             $ref = new ReflectionClass('App\\Entity\\' . basename($file->getFileName(), '.php'));
             $props = $ref->getProperties();
             foreach ($props as $prop) {
                 $f = $prop->getName();
-                if ($f !== strtolower($f) && false === strpos($f, 'RelatedBy')) {
+                if ($f !== strtolower($f) && !str_contains($f, 'RelatedBy')) {
                     $wrongpropertyname[] = $file->getFileName();
                     $fullpathprmbase = $pathdoctrineorm . DIRECTORY_SEPARATOR . $file->getFileName();
                     $fullpathprm = $pathdoctrineorm . DIRECTORY_SEPARATOR . substr($file->getFileName(), 4);
@@ -80,9 +75,8 @@ class GeneratorHelper
             $output->writeln($errout);
 
             return -1;
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     public function checkprerequisiti(string $mwbfile, OutputInterface $output): int
@@ -169,7 +163,7 @@ class GeneratorHelper
 
     public static function getJsonMwbGenerator(): string
     {
-        $jsonTemplate = <<<EOF
+        return <<<EOF
 {"export": "doctrine2-annotation",
     "zip": false,
     "dir": "[dir]",
@@ -194,7 +188,5 @@ class GeneratorHelper
             }
 }
 EOF;
-
-        return $jsonTemplate;
     }
 }
