@@ -1,8 +1,6 @@
 {
-    "name": "comunedifirenze/bicorebundle",
+    "name": "fi/bicorebundle",
     "description": "Bootstrap italia CoreBundle by Comune Di Firenze",
-    "homepage": "https://github.com/ComuneFI/BiCoreBundle",
-    "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "stable",
     "prefer-stable": true,
