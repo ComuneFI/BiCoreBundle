@@ -25,7 +25,8 @@ class Menuapplicazione extends BaseMenuapplicazione
     {
         return $this->getNotifiche();
     }
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
         return $this->getNome();
     }

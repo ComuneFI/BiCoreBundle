@@ -13,6 +13,7 @@ class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
         $this->tableprefix = $tableprefix;
     }
 
+    #[\Override]
     public function getSubscribedEvents(): array
     {
         return array('loadClassMetadata');

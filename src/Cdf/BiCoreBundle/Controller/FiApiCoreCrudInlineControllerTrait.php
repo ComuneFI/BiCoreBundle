@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 trait FiApiCoreCrudInlineControllerTrait
 {
-    private function checkAggiornaRight($id, $token)
+    private function checkAggiornaRight($id, $token): void
     {
         if (0 === $id) {
             if (!$this->getPermessi()->canCreate($this->getController())) {
@@ -54,7 +54,7 @@ trait FiApiCoreCrudInlineControllerTrait
         return $risultato;
     }
 
-    protected function insertinline($values, $token)
+    protected function insertinline($values, $token): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $this->checkAggiornaRight(0, $token);
 
@@ -95,7 +95,7 @@ trait FiApiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
-    protected function updateinline($id, $values, $token)
+    protected function updateinline(string $id, $values, $token): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $this->checkAggiornaRight($id, $token);
 
@@ -146,7 +146,7 @@ trait FiApiCoreCrudInlineControllerTrait
         return new JsonResponse(['errcode' => 0, 'message' => 'Registrazione eseguita']);
     }
 
-    private function getValueAggiorna($field)
+    private function getValueAggiorna(array $field)
     {
         $fieldvalue = $field['fieldvalue'];
         if ('' == $fieldvalue) {

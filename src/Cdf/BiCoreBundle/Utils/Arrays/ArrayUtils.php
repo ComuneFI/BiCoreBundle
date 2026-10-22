@@ -126,7 +126,7 @@ class ArrayUtils
      *          $rubrica[1]("matricola"=>99999,"cognome"=>"rossi","nome"=>"mario")
      *          $rubrica[2]("matricola"=>99997,"cognome"=>"verdi","nome"=>"michele")
      */
-    public static function arrayOrderby()
+    public static function arrayOrderby(): mixed
     {
         $args = func_get_args();
         $data = array_shift($args);
@@ -241,7 +241,7 @@ class ArrayUtils
      * @param bool $sort_ascending
      * @return array<mixed>
      */
-    private static function executeSortMultiAssociativeArray($temp_array, $sort_ascending) : array
+    private static function executeSortMultiAssociativeArray(array $temp_array, $sort_ascending) : array
     {
         if ($sort_ascending) {
             $array = array_reverse($temp_array);

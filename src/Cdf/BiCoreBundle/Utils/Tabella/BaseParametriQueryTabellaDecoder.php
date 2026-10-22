@@ -10,12 +10,7 @@ class BaseParametriQueryTabellaDecoder
 
     protected string $fieldname;
     protected string $fieldoperator;
-
-    /**
-     *
-     * @var mixed
-     */
-    protected $fieldvalue;
+    protected mixed $fieldvalue;
     protected string $fieldqueryparameter;
 
     /**
@@ -28,7 +23,7 @@ class BaseParametriQueryTabellaDecoder
      *
      * @var array<mixed>
      */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      *

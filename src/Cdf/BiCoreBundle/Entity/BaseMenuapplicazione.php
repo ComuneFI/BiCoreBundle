@@ -82,9 +82,9 @@ class BaseMenuapplicazione
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -106,9 +106,9 @@ class BaseMenuapplicazione
      *
      * @param string $nome
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setNome($nome)
+    public function setNome($nome): static
     {
         $this->nome = $nome;
 
@@ -130,9 +130,9 @@ class BaseMenuapplicazione
      *
      * @param string $percorso
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setPercorso($percorso)
+    public function setPercorso($percorso): static
     {
         $this->percorso = $percorso;
 
@@ -154,9 +154,9 @@ class BaseMenuapplicazione
      *
      * @param int $padre
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setPadre($padre)
+    public function setPadre($padre): static
     {
         $this->padre = $padre;
 
@@ -178,9 +178,9 @@ class BaseMenuapplicazione
      *
      * @param int $ordine
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setOrdine($ordine)
+    public function setOrdine($ordine): static
     {
         $this->ordine = $ordine;
 
@@ -202,9 +202,9 @@ class BaseMenuapplicazione
      *
      * @param bool $attivo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setAttivo($attivo)
+    public function setAttivo($attivo): static
     {
         $this->attivo = $attivo;
 
@@ -226,9 +226,9 @@ class BaseMenuapplicazione
      *
      * @param string $target
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setTarget($target)
+    public function setTarget($target): static
     {
         $this->target = $target;
 
@@ -250,9 +250,9 @@ class BaseMenuapplicazione
      *
      * @param string $tag
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setTag($tag)
+    public function setTag($tag): static
     {
         $this->tag = $tag;
 
@@ -274,9 +274,9 @@ class BaseMenuapplicazione
      *
      * @param bool $notifiche
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setNotifiche($notifiche)
+    public function setNotifiche($notifiche): static
     {
         $this->notifiche = $notifiche;
 
@@ -298,9 +298,9 @@ class BaseMenuapplicazione
      *
      * @param bool $autorizzazionerichiesta
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setAutorizzazionerichiesta($autorizzazionerichiesta)
+    public function setAutorizzazionerichiesta($autorizzazionerichiesta): static
     {
         $this->autorizzazionerichiesta = $autorizzazionerichiesta;
 
@@ -322,9 +322,9 @@ class BaseMenuapplicazione
      *
      * @param string $percorsonotifiche
      *
-     * @return \Cdf\BiCoreBundle\Entity\Menuapplicazione
+     * @return static
      */
-    public function setPercorsonotifiche($percorsonotifiche)
+    public function setPercorsonotifiche($percorsonotifiche): static
     {
         $this->percorsonotifiche = $percorsonotifiche;
 

@@ -17,6 +17,7 @@ class DatabaseInfoDataCollector extends DataCollector
         $this->em = $em;
     }
 
+    #[\Override]
     public function collect(Request $request, Response $response, Throwable $exception = null): void
     {
         $driverinfo = $this->em->getConnection()->getParams();
@@ -81,11 +82,13 @@ class DatabaseInfoDataCollector extends DataCollector
         return $this->data['database_password'];
     }
 
+    #[\Override]
     public function reset(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return 'databaseInfo';

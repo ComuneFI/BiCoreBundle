@@ -25,12 +25,13 @@ class BiCoreBundleConfiguratorimportCommand extends Command
     private $forceupdate = false;
     private $verboso = false;
     private $dbutility;
-    private $systementity;
+    private \Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils $systementity;
     private $entityutility;
     private $em;
     private $truncatetables;
     private $output;
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -52,6 +53,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
@@ -67,7 +69,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return $ret;
     }
 
-    protected function import($fixturefile)
+    protected function import(string $fixturefile): int
     {
         $fs = new Filesystem();
         if ($fs->exists($fixturefile)) {
@@ -97,7 +99,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         }
     }
 
-    private function checkSchemaStatus()
+    private function checkSchemaStatus(): void
     {
         $schemachanged = $this->dbutility->isSchemaChanged();
 
@@ -108,7 +110,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         }
     }
 
-    private function truncateTable($entityclass)
+    private function truncateTable(string $entityclass): void
     {
         $tablename = $this->entityutility->getTableFromEntity($entityclass);
         $msg = '<info>TRUNCATE della tabella ' . $tablename . ' (' . $entityclass . ')</info>';
@@ -118,8 +120,9 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @return mixed[]
      */
-    private function getSortedEntities($fixtures)
+    private function getSortedEntities($fixtures): array
     {
         $entities = array();
         $sortedEntities = $this->systementity->getSystemEntities();
@@ -132,7 +135,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return $entities;
     }
 
-    private function executeImport($entityclass, $fixture)
+    private function executeImport(string $entityclass, $fixture): int
     {
         $msg = '<info>Trovati ' . count($fixture) . " record per l'entity " . $entityclass . '</info>';
         $this->output->writeln($msg);
@@ -147,7 +150,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return 0;
     }
 
-    private function switchInsertUpdate($entityclass, $record, $objrecord)
+    private function switchInsertUpdate(string $entityclass, array $record, $objrecord)
     {
         if (!$objrecord) {
             return $this->executeInsert($entityclass, $record);

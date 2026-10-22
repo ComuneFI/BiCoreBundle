@@ -14,7 +14,8 @@ use Cdf\BiCoreBundle\Entity\Operatori;
 class OperatoriType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
@@ -54,7 +55,8 @@ class OperatoriType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Operatori::class,

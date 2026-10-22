@@ -10,7 +10,8 @@ use Cdf\BiCoreBundle\Entity\Ruoli;
 
 class RuoliType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
@@ -29,7 +30,8 @@ class RuoliType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Ruoli::class,

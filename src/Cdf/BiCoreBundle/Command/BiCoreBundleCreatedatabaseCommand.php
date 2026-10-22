@@ -22,6 +22,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -29,6 +30,7 @@ class BiCoreBundleCreatedatabaseCommand extends Command
                 ->setHelp('Creazione di un nuovo database di bi');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /* @var $em \Doctrine\ORM\EntityManager */

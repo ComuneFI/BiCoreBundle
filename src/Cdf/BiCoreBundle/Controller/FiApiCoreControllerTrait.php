@@ -210,7 +210,7 @@ trait FiApiCoreControllerTrait
         return new JsonResponse(ArrayUtils::arrayOrderby($lista, 'descrizione', SORT_ASC));
     }*/
 
-    protected function getTabellaTemplate($controller)
+    protected function getTabellaTemplate(string $controller): string
     {
         $tabellatemplate = $controller . '/Tabella/tabellaform.html.twig';
         if (!$this->get('twig')->getLoader()->exists($tabellatemplate)) {
@@ -223,7 +223,7 @@ trait FiApiCoreControllerTrait
         return $tabellatemplate;
     }
 
-    protected function getCrudTemplate($bundle, $controller, $operation)
+    protected function getCrudTemplate(string $bundle, string $controller, string $operation): string
     {
         $crudtemplate = $bundle . '/' . $controller . '/Crud/' . $operation . '.html.twig';
         if (!$this->get('twig')->getLoader()->exists($crudtemplate)) {
@@ -239,7 +239,7 @@ trait FiApiCoreControllerTrait
     /**
      * Returns the calling function through a backtrace.
      */
-    protected function getThisFunctionName()
+    protected function getThisFunctionName(): string
     {
         // a funciton x has called a function y which called this
         // see stackoverflow.com/questions/190421

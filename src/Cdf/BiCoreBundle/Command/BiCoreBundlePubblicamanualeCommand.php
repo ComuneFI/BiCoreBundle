@@ -15,6 +15,7 @@ class BiCoreBundlePubblicamanualeCommand extends Command
     private string $projectdir;
     private Filesystem $fs;
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -31,6 +32,7 @@ class BiCoreBundlePubblicamanualeCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projectDir = $this->projectdir;

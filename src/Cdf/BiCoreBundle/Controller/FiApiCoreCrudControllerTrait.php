@@ -21,7 +21,7 @@ trait FiApiCoreCrudControllerTrait
     /**
      * Displays a form to create a new table entity.
      */
-    public function new(Request $request)
+    public function new(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         /* @var $em EntityManager */
         $bundle = $this->getBundle();
@@ -156,7 +156,7 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id field with value selected on select list.
      * //TODO: review duplicated code
      */
-    private function setIdfromSelect(&$parameters)
+    private function setIdfromSelect(&$parameters): void
     {
         foreach (array_keys($parameters) as $key) {
             if (\str_contains($key, '_id')) {
@@ -177,7 +177,7 @@ trait FiApiCoreCrudControllerTrait
      * Update value of _id fields of an object with value selected on select list.
      * It forces the received field to be an INT (It applies a cast)
      */
-    private function setIdObjectfromSelect(&$classItem, &$parameters)
+    private function setIdObjectfromSelect(&$classItem, array &$parameters): void
     {
         //TODO: (int) cast that is fixed
         $setters = $classItem::setters();
@@ -211,8 +211,6 @@ trait FiApiCoreCrudControllerTrait
         $formclass = $this->getFormName();
         $formType = $formclass . 'Type';
 
-
-
         $entityorig = $this->apiManager->getItem($this->getCollectionName(), $id);
 
         $modelutils = new ModelUtils();
@@ -242,9 +240,9 @@ trait FiApiCoreCrudControllerTrait
 
         if ($editForm->isValid()) {
             $entityItem = $editForm->getData();
-
-
-
+            if ($entityItem === null) {
+                throw new \RuntimeException('I dati del form non sono validi o sono vuoti.');
+            }
             $this->apiManager->postUpdate($this->getCollectionName(), $entityItem, $id);
 
             $continua = (int) $request->get('continua');
@@ -289,7 +287,7 @@ trait FiApiCoreCrudControllerTrait
 
 
             foreach ($ids as $id) {
-                $response = $this->apiManager->deleteItem($this->getCollectionName(), $id);
+                $response = $this->apiManager->deleteItem($this->getCollectionName(), (int) $id);
             }
         } catch (\Exception $e) {
             $response = new Response($e->getMessage());

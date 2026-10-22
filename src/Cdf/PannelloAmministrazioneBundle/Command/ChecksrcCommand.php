@@ -17,6 +17,7 @@ class ChecksrcCommand extends Command
     
     private ProjectPath $apppaths;
     
+    #[\Override]
     protected function configure() : void
     {
         $this
@@ -32,6 +33,7 @@ class ChecksrcCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $prjpath = $this->apppaths;

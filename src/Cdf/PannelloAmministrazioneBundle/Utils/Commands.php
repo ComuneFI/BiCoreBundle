@@ -121,7 +121,7 @@ class Commands
      *
      * @return array<mixed>
      */
-    public function checkFormCrud(string $entityform, string $projectname = "", bool $isAPI = false)
+    public function checkFormCrud(string $entityform, string $projectname = "", bool $isAPI = false): array
     {
         /* @var $fs Filesystem */
         $fs = new Filesystem();
@@ -169,7 +169,7 @@ class Commands
      *
      * @return array<mixed>
      */
-    public function clearcache()
+    public function clearcache(): array
     {
         $cmdoutput = '';
         //$envs = array('dev', 'test', 'prod');

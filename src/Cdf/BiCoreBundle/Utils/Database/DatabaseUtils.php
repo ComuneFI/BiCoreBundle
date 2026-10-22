@@ -27,15 +27,15 @@ class DatabaseUtils
 
     /**
      *
-     * @param mixed $entity
+     * @param string|object $entity
      * @param string $field
      * @return string
      */
-    public function getFieldType($entity, $field)
+    public function getFieldType(string|object $entity, $field)
     {
-        $classname = get_class($entity);
-        if ($classname === false) {
-            throw new Exception("Entity class not found: " . $entity);
+        $classname = is_string($entity) ? $entity : get_class($entity);
+        if ($classname == "") {
+            throw new Exception("Entity class not found: " . $classname);
         }
         $metadata = $this->em->getClassMetadata($classname);
         $fieldMetadata = $metadata->fieldMappings[$field];

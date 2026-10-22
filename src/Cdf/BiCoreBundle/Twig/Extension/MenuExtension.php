@@ -28,6 +28,7 @@ class MenuExtension extends AbstractExtension
         $this->rootpath = $rootpath;
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [
@@ -130,7 +131,7 @@ class MenuExtension extends AbstractExtension
      * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $menu
      * @return array<mixed>
      */
-    protected function getMenu($menu)
+    protected function getMenu($menu): array
     {
         $risposta = array();
         $em = $this->em;
@@ -180,7 +181,7 @@ class MenuExtension extends AbstractExtension
      * @param \Cdf\BiCoreBundle\Entity\Menuapplicazione[] $submenu
      * @return array<mixed>
      */
-    protected function getSubMenu($submenu)
+    protected function getSubMenu($submenu): array
     {
         $sottomenutabelle = array();
         foreach ($submenu as $subitem) {
@@ -214,7 +215,7 @@ class MenuExtension extends AbstractExtension
      * @param string $target
      * @return array<mixed>
      */
-    protected function getUrlObject(string $nome, ?string $percorso, ?string $target)
+    protected function getUrlObject(string $nome, ?string $percorso, ?string $target): array
     {
         if ($this->routeExists($percorso)) {
             $percorso = $this->urlgenerator->generate($percorso);
@@ -260,28 +261,20 @@ class MenuExtension extends AbstractExtension
     {
         $ch = curl_init($name);
 
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_URL, $name);
         if (!$useProxy) {
-            /** @phpstan-ignore-next-line */
             curl_setopt($ch, CURLOPT_PROXY, null);
         }
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_NOBODY, true);
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-        /** @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_TIMEOUT, 1); //timeout in seconds
-        /** @phpstan-ignore-next-line */
         curl_exec($ch);
-        /** @phpstan-ignore-next-line */
         $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if (200 === $retcode || 401 === $retcode) {
             $exist = true;
         } else {
             $exist = false;
         }
-        /** @phpstan-ignore-next-line */
         curl_close($ch);
 
         return $exist;

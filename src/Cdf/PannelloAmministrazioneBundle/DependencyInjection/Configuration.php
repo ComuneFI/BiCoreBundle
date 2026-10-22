@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('Pannello_amministrazione');

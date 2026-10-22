@@ -15,12 +15,13 @@ class BiCoreBundleConfiguratorexportCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:configuratorexport';
 
-    private $entities = array();
-    private $em;
-    private $systementity;
-    private $output;
-    private $entityutility;
+    private array $entities = array();
+    private \Doctrine\ORM\EntityManagerInterface $em;
+    private \Cdf\BiCoreBundle\Utils\Entity\BiCoreSystemTablesUtils $systementity;
+    private ?\Symfony\Component\Console\Output\OutputInterface $output = null;
+    private \Cdf\BiCoreBundle\Utils\Entity\EntityUtils $entityutility;
 
+    #[\Override]
     protected function configure()
     {
         $this
@@ -41,6 +42,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
@@ -65,7 +67,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         return 0;
     }
 
-    protected function export($fixturefile, $entity)
+    protected function export($fixturefile, string $entity): int
     {
         $entityclass = $entity;
         $ret = $this->exportEntity($fixturefile, $entityclass);
@@ -82,7 +84,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         return 1;
     }
 
-    private function exportEntity($fixturefile, $entityclass)
+    private function exportEntity($fixturefile, string $entityclass): int
     {
         $this->output->writeln('<info>Export Entity: ' . $entityclass . '</info>');
         if ($this->entityutility->entityExists($entityclass)) {
@@ -105,7 +107,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
         return 0;
     }
 
-    private function exportEntityToFile($fixturefile, $entityclass)
+    private function exportEntityToFile($fixturefile, string $entityclass): void
     {
         $entityDump = array();
 

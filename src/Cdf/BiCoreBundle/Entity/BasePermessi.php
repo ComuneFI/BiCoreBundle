@@ -63,9 +63,9 @@ class BasePermessi
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -87,9 +87,9 @@ class BasePermessi
      *
      * @param string $modulo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setModulo($modulo)
+    public function setModulo($modulo): static
     {
         $this->modulo = $modulo;
 
@@ -111,9 +111,9 @@ class BasePermessi
      *
      * @param string $crud
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setCrud($crud)
+    public function setCrud($crud): static
     {
         $this->crud = $crud;
 
@@ -135,9 +135,9 @@ class BasePermessi
      *
      * @param int $ruoli_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setRuoliId($ruoli_id)
+    public function setRuoliId($ruoli_id): static
     {
         $this->ruoli_id = $ruoli_id;
 
@@ -159,9 +159,9 @@ class BasePermessi
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setOperatoriId($operatori_id)
+    public function setOperatoriId($operatori_id): static
     {
         $this->operatori_id = $operatori_id;
 
@@ -183,9 +183,9 @@ class BasePermessi
      *
      * @param \Cdf\BiCoreBundle\Entity\Ruoli $ruoli
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setRuoli(Ruoli $ruoli = null)
+    public function setRuoli(Ruoli $ruoli = null): static
     {
         $this->ruoli = $ruoli;
 
@@ -207,9 +207,9 @@ class BasePermessi
      *
      * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Permessi
+     * @return static
      */
-    public function setOperatori(Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null): static
     {
         $this->operatori = $operatori;
 

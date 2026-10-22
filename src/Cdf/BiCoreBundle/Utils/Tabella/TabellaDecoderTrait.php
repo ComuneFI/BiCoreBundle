@@ -46,7 +46,7 @@ trait TabellaDecoderTrait
      * @param string $operator
      * @return string
      */
-    protected function getOperator(string $operator)
+    protected function getOperator(string $operator): string
     {
         switch (strtoupper($operator)) {
             case 'LIKE':

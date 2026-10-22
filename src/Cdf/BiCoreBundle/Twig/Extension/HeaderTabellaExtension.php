@@ -11,6 +11,7 @@ class HeaderTabellaExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return array(

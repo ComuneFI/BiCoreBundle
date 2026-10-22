@@ -23,7 +23,7 @@ class TabellaXls
      * @param array<mixed> $parametri
      * @return string
      */
-    public function esportaexcel($parametri = array())
+    public function esportaexcel(array $parametri = array()): string
     {
         set_time_limit(960);
         ini_set('memory_limit', '2048M');

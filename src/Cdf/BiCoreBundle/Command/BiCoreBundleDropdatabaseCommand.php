@@ -12,6 +12,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
 {
     protected static $defaultName = 'bicorebundle:dropdatabase';
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -20,6 +21,7 @@ class BiCoreBundleDropdatabaseCommand extends Command
                 ->addOption('force', null, InputOption::VALUE_NONE, 'Se non impostato, il comando non avrà effetto');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $force = $input->getOption('force');

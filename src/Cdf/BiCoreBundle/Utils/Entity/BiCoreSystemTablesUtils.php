@@ -15,7 +15,7 @@ class BiCoreSystemTablesUtils
      *
      * @var array<mixed>
      */
-    private $entities = array();
+    private array $entities = array();
 
     public function __construct(EntityManager $em)
     {

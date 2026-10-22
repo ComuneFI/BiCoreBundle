@@ -218,7 +218,7 @@ class ApiManager
     /**
      * Get items existent for the given collection, filtered as requested.
      */
-    public function getAll(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $condition, string $subcollection = null): mixed
+    public function getAll(string $collection, ?int $offset, ?int $limit, mixed $sort = null, string $condition = null, string $subcollection = null): mixed
     {
         $tools = $this->map[$collection];
         $getAllmethod = $this->getMethod($collection, 'getAll', $subcollection);
@@ -246,7 +246,7 @@ class ApiManager
     /**
      * Get items existent for the given collection in "to-string" format, filtered as requested.
      */
-    public function getAllToString(string $collection, ?int $offset, ?int $limit, mixed $sort = null, ?string $cond, String $sub = null): mixed
+    public function getAllToString(string $collection, ?int $offset, ?int $limit, mixed $sort = null, string $cond = null, String $sub = null): mixed
     {
         $tools = $this->map[$collection];
         $getMethod = $this->getMethod($collection, 'getAllToString', $sub);

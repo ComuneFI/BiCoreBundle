@@ -51,9 +51,9 @@ class BaseOpzionitabelle
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
+     * @return static
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -75,9 +75,9 @@ class BaseOpzionitabelle
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
+     * @return static
      */
-    public function setNometabella($nometabella)
+    public function setNometabella($nometabella): static
     {
         $this->nometabella = $nometabella;
 
@@ -99,9 +99,9 @@ class BaseOpzionitabelle
      *
      * @param string $descrizione
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
+     * @return static
      */
-    public function setDescrizione($descrizione)
+    public function setDescrizione($descrizione): static
     {
         $this->descrizione = $descrizione;
 
@@ -123,9 +123,9 @@ class BaseOpzionitabelle
      *
      * @param string $parametro
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
+     * @return static
      */
-    public function setParametro($parametro)
+    public function setParametro($parametro): static
     {
         $this->parametro = $parametro;
 
@@ -147,9 +147,9 @@ class BaseOpzionitabelle
      *
      * @param string $valore
      *
-     * @return \Cdf\BiCoreBundle\Entity\Opzionitabelle
+     * @return static
      */
-    public function setValore($valore)
+    public function setValore($valore): static
     {
         $this->valore = $valore;
 

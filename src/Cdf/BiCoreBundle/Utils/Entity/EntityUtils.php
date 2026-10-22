@@ -31,7 +31,6 @@ class EntityUtils
      */
     public function getEntityColumns(string $entity): array
     {
-        /* @phpstan-ignore-next-line */
         $infocolonne = $this->em->getMetadataFactory()->getMetadataFor($entity);
         $colonne = array();
         $fieldMappings = $infocolonne->fieldMappings;

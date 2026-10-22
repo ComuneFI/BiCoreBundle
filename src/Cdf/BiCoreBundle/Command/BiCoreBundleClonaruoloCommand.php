@@ -15,6 +15,7 @@ class BiCoreBundleClonaruoloCommand extends Command
     protected static $defaultName = 'bicorebundle:clonaruolo';
     private EntityManagerInterface $em;
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -33,6 +34,7 @@ class BiCoreBundleClonaruoloCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ruoloesistente = $input->getArgument('ruoloesistente');

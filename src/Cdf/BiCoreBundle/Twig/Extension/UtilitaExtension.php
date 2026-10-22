@@ -20,6 +20,7 @@ class UtilitaExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return array(
@@ -28,6 +29,7 @@ class UtilitaExtension extends AbstractExtension
         );
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return array(
@@ -41,7 +43,7 @@ class UtilitaExtension extends AbstractExtension
      * @param string $string
      * @return mixed
      */
-    public function jsonDecode(string $string)
+    public function jsonDecode(string $string): mixed
     {
         return json_decode($string);
     }

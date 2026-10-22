@@ -15,6 +15,7 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
         $this->schemaprefix = $schemaprefix;
     }
 
+    #[\Override]
     public function getSubscribedEvents(): array
     {
         return array('loadClassMetadata');
@@ -42,7 +43,6 @@ class TableSchemaSubscriber implements \Doctrine\Common\EventSubscriber
 
             $classMetadata->setSequenceGeneratorDefinition($newDefinition);
             $em = $args->getEntityManager();
-            /** @phpstan-ignore-next-line */
             if (isset($classMetadata->idGenerator)) {
                 $sequenceGenerator = new SequenceGenerator(
                     $em->getConfiguration()->getQuoteStrategy()->getSequenceName(

@@ -17,6 +17,7 @@ class BiCoreBundleInstallCommand extends Command
     protected string $fixtureFile;
     private UserManipulator $usermanipulator;
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -36,6 +37,7 @@ class BiCoreBundleInstallCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $admin = $input->getArgument('admin');

@@ -14,6 +14,7 @@ class BiCoreBundleDroptablesCommand extends Command
     protected static $defaultName = 'bicorebundle:droptables';
     private EntityManagerInterface $em;
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -30,6 +31,7 @@ class BiCoreBundleDroptablesCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /* @var $em \Doctrine\ORM\EntityManager */

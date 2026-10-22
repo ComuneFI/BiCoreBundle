@@ -86,6 +86,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
      *
      * @return int
      */
+    #[\Override]
     public function getId() : int
     {
         return $this->id;
@@ -282,6 +283,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
         return array('id', 'operatore', 'ruoli_id');
     }
 
+    #[\Override]
     public function isEqualTo(UserInterface $user) : bool
     {
         if ($this->password !== $user->getPassword()) {
@@ -310,6 +312,7 @@ class Operatori extends BaseUser implements EquatableInterface, UserInterface, P
     /**
      * @return string the hashed password for this user
      */
+    #[\Override]
     public function getPassword(): string
     {
         return $this->password;

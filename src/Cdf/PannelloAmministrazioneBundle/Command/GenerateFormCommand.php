@@ -41,6 +41,7 @@ class GenerateFormCommand extends Command
     /** @var array<mixed> */
     private array $typesMapping;
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -200,7 +201,7 @@ class GenerateFormCommand extends Command
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addFkType(array &$lines, $position, $attributeName)
+    private function addFkType(array &$lines, $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $strpos = strpos($attributeName, '_id');
@@ -234,7 +235,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addEnumType(array &$lines, $position, $attributeName)
+    private function addEnumType(array &$lines, $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',HiddenIntegerType::class)");
         $strpos = strpos($attributeName, '_enum');
@@ -269,7 +270,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addCheckbox(array &$lines, $position, $attributeName)
+    private function addCheckbox(array &$lines, $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, '            ->add(\'' . $attributeName . '\',CheckboxType::class,
             array(
@@ -290,7 +291,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addNumberType(array &$lines, $position, $attributeName)
+    private function addNumberType(array &$lines, $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',NumberType::class)");
     }
@@ -305,7 +306,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addIntegerType(array &$lines, $position, $attributeName)
+    private function addIntegerType(array &$lines, $position, string $attributeName): void
     {
         array_splice($lines, ++$position, 0, "            ->add('" . $attributeName . "',IntegerType::class)");
     }
@@ -321,7 +322,7 @@ class GenerateFormCommand extends Command
 
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function addComment(array &$lines, $position, $attributeName, bool $commented = false)
+    private function addComment(array &$lines, $position, $attributeName, bool $commented = false): void
     {
         $this->addStringType($lines, $position, $attributeName, true);
     }
@@ -336,7 +337,7 @@ class GenerateFormCommand extends Command
      * @return void
 
      */
-    private function addStringType(array &$lines, $position, $attributeName, $commented = false)
+    private function addStringType(array &$lines, $position, string $attributeName, bool $commented = false): void
     {
         $comment = '';
         if ($commented) {
@@ -348,6 +349,7 @@ class GenerateFormCommand extends Command
     /**
      * Execute command in order to create the new form class
      */
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         set_time_limit(0);

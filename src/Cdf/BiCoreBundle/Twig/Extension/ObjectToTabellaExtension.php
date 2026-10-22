@@ -15,6 +15,7 @@ class ObjectToTabellaExtension extends AbstractExtension
         $this->tableprefix = $tableprefix;
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return array(
@@ -45,7 +46,7 @@ class ObjectToTabellaExtension extends AbstractExtension
      * @param array<mixed> $decodifiche
      * @return mixed|null
      */
-    public function field2Object($fieldname, $object, $decodifiche = null)
+    public function field2Object(string $fieldname, $object, $decodifiche = null)
     {
         $dfr = new DoctrineFieldReader($this->tableprefix);
 

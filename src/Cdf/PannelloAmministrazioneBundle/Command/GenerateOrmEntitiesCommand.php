@@ -18,6 +18,7 @@ class GenerateOrmEntitiesCommand extends Command
     protected GeneratorHelper $genhelper;
     protected Utility $pammutils;
 
+    #[\Override]
     protected function configure() : void
     {
         $this
@@ -37,6 +38,7 @@ class GenerateOrmEntitiesCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         set_time_limit(0);

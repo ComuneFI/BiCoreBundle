@@ -116,7 +116,7 @@ trait FiCoreCrudInlineControllerTrait
      * @param string $token
      * @return JsonResponse
      */
-    protected function updateinline($id, $values, $token): JsonResponse
+    protected function updateinline(string $id, $values, $token): JsonResponse
     {
         $this->checkAggiornaRight($id, $token);
 
@@ -174,7 +174,7 @@ trait FiCoreCrudInlineControllerTrait
      * @return mixed
      * @throws Exception
      */
-    private function getValueAggiorna($field)
+    private function getValueAggiorna(array $field)
     {
         $fieldvalue = $field['fieldvalue'];
         if ('' == $fieldvalue) {

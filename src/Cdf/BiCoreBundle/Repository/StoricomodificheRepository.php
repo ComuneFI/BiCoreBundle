@@ -49,7 +49,6 @@ class StoricomodificheRepository extends EntityRepository
             if ($change instanceof DateTime) {
                 $risposta = $change->format('d/m/Y H:i:s');
             } else {
-                /** @phpstan-ignore-next-line */
                 $risposta = $change->__toString() . ' (' . $change->getId() . ')';
             }
         } else {

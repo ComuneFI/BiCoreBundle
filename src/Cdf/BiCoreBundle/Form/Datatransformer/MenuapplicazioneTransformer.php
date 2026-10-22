@@ -10,7 +10,7 @@ use Cdf\BiCoreBundle\Entity\Menuapplicazione;
 
 class MenuapplicazioneTransformer implements DataTransformerInterface
 {
-    private $entityManager;
+    private \Doctrine\ORM\EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -21,15 +21,15 @@ class MenuapplicazioneTransformer implements DataTransformerInterface
      * Transforms an object (Menuapplicazione) to a string (number).
      *
      * @param  Menuapplicazione|null $menu
-     * @return string
+     * @return string|null
      */
+    #[\Override]
     public function reverseTransform($menu)
     {
         if (null === $menu) {
             return null;
         }
-
-        return $menu->getId();
+        return (string) $menu->getId();
     }
 
     /**
@@ -39,11 +39,12 @@ class MenuapplicazioneTransformer implements DataTransformerInterface
      * @return Menuapplicazione|null
      * @throws TransformationFailedException if object (Menuapplicazione) is not found.
      */
+    #[\Override]
     public function transform($menuId)
     {
         // no issue number? It's optional, so that's ok
         if (!$menuId) {
-            return;
+            return null;
         }
 
         $menu = $this->entityManager
@@ -52,7 +53,7 @@ class MenuapplicazioneTransformer implements DataTransformerInterface
             ->find($menuId)
         ;
 
-        if (null === $menuId) {
+        if (null == $menuId) {
             // causes a validation error
             // this message is not shown to the user
             // see the invalid_message option

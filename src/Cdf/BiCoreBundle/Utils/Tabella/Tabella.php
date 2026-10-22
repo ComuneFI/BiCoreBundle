@@ -27,7 +27,7 @@ class Tabella
     /** @var array<mixed> */
     protected array $colonnedatabase ;
     /** @var array<mixed> */
-    protected $opzionitabellacore;
+    protected array $opzionitabellacore;
     /** @var array<mixed> */
     protected $configurazionecolonnetabella;
     protected string $entityname;
@@ -59,7 +59,6 @@ class Tabella
     protected $traduzionefiltri;
     protected int $maxordine = 0;
     protected EntityManagerInterface $em;
-    /** @phpstan-ignore-next-line */
     protected $user;
     protected string $apiController;
     protected string $apiCollection;
@@ -150,10 +149,10 @@ class Tabella
     /**
      *
      * @param string $name
-     * @param mixed|null $default
+     * @param string|int|null $default
      * @return mixed|null
      */
-    private function getTabellaParameter(string $name, $default = null)
+    private function getTabellaParameter(string $name, string|int|null $default = null)
     {
         $risposta = null;
         if (isset($this->parametri[$name])) {

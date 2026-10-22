@@ -14,7 +14,7 @@ class StringUtils
      *
      * @return string $str translated into camel caps
      */
-    public static function toCamelCase($parametri = array()): string
+    public static function toCamelCase(array $parametri = array()): string
     {
         $str = $parametri['str'];
         $capitalise_first_char = isset($parametri['primamaiuscola']) ? $parametri['primamaiuscola'] : false;

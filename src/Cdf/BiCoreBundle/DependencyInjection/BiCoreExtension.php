@@ -19,6 +19,7 @@ class BiCoreExtension extends Extension
      *
      * @throws \Exception
      */
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);

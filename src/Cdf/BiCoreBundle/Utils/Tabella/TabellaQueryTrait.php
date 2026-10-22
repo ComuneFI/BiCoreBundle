@@ -38,7 +38,7 @@ trait TabellaQueryTrait
      * @param string $alias
      * @param array<mixed> $ancestors
      */
-    protected function recursiveJoin(&$qb, $campi, $nometabella, $alias, $ancestors = array()): void
+    protected function recursiveJoin(&$qb, $campi, $nometabella, string $alias, $ancestors = array()): void
     {
         foreach ($campi as $campo) {
             if (false !== strpos(strtolower($campo), 'relatedby')) {

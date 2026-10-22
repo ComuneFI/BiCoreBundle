@@ -90,7 +90,7 @@ trait TabellaOpzioniTrait
      * @param bool $ricursione
      * @return void
      */
-    private function elaboraColonneOpzioniTabellaMancanti(&$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione) : void
+    private function elaboraColonneOpzioniTabellaMancanti(array &$opzionibuilder, $colonnadatabase, $nometabella, $nomecolonna, $ricursione) : void
     {
         $opzionibuilder[$nomecolonna] = array(
             'tipocampo' => isset($colonnadatabase['association']) ? 'join' : $colonnadatabase['type'],

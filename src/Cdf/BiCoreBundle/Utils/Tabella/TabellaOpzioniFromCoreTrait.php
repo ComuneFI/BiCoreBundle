@@ -25,7 +25,7 @@ trait TabellaOpzioniFromCoreTrait
      * @param array<mixed> $opzionibuilder
      * @return void
      */
-    protected function setOpzioniTabellaFromCore(&$opzionibuilder) : void
+    protected function setOpzioniTabellaFromCore(array &$opzionibuilder) : void
     {
         $colonnetabellacore = $this->opzionitabellacore['colonnetabella'];
         //$nomecolonna = $this->tablename . "." . $colonnadatabase["fieldName"];
@@ -52,7 +52,7 @@ trait TabellaOpzioniFromCoreTrait
      * @param string $colonnatabellacore
      * @param array<mixed> $opzionibuilder
      */
-    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, &$opzionibuilder) : void
+    protected function buildOpzioneTabellaFromCore($campo, $modellocolonneindex, $entityproperty, $colonnatabellacore, array &$opzionibuilder) : void
     {
         if (null !== ($colonnatabellacore->$entityproperty())) {
             $opzionibuilder[$campo][$modellocolonneindex] = $colonnatabellacore->$entityproperty();

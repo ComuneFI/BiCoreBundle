@@ -20,6 +20,7 @@ class PannelloAmministrazioneExtension extends Extension
      * @param ContainerBuilder $container
      * @return void
      */
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container) : void
     {
         $configuration = new Configuration();

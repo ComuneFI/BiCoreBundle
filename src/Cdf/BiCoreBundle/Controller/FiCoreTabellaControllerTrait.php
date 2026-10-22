@@ -114,7 +114,7 @@ trait FiCoreTabellaControllerTrait
      * @param array<mixed> $parametripassati
      * @return array<mixed>
      */
-    protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati)
+    protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati): array
     {
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
         $parametritabella = [

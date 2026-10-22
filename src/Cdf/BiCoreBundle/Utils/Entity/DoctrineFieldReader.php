@@ -110,7 +110,7 @@ class DoctrineFieldReader
      * @param mixed $object
      * @return string
      */
-    private function getObjectType(?string $type, $object)
+    private function getObjectType(?string $type, $object): string
     {
         if (null === $type) {
             $tipo = is_object($object) ?
@@ -129,7 +129,7 @@ class DoctrineFieldReader
      * @param mixed $object
      * @return string|null
      */
-    private function getObjectProperty(string $field, $object)
+    private function getObjectProperty(string $field, $object): ?string
     {
         $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
 

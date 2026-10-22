@@ -17,6 +17,7 @@ class PermessiController extends FiController
     /**
      * Lists all tables entities.
      */
+    #[\Override]
     public function index(Request $request, Packages $assetsmanager): Response
     {
         $bundle = $this->getBundle();

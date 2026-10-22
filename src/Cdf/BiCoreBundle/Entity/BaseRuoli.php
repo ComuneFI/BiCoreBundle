@@ -72,9 +72,9 @@ class BaseRuoli
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -96,9 +96,9 @@ class BaseRuoli
      *
      * @param string $ruolo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setRuolo($ruolo)
+    public function setRuolo($ruolo): static
     {
         $this->ruolo = $ruolo;
 
@@ -120,9 +120,9 @@ class BaseRuoli
      *
      * @param string $paginainiziale
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setPaginainiziale($paginainiziale)
+    public function setPaginainiziale($paginainiziale): static
     {
         $this->paginainiziale = $paginainiziale;
 
@@ -144,9 +144,9 @@ class BaseRuoli
      *
      * @param bool $superadmin
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setSuperadmin($superadmin)
+    public function setSuperadmin($superadmin): static
     {
         $this->superadmin = $superadmin;
 
@@ -168,9 +168,9 @@ class BaseRuoli
      *
      * @param bool $admin
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setAdmin($admin)
+    public function setAdmin($admin): static
     {
         $this->admin = $admin;
 
@@ -192,9 +192,9 @@ class BaseRuoli
      *
      * @param bool $user
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function setUser($user)
+    public function setUser($user): static
     {
         $this->user = $user;
 
@@ -216,9 +216,9 @@ class BaseRuoli
      *
      * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function addOperatori(Operatori $operatori)
+    public function addOperatori(Operatori $operatori): static
     {
         $this->operatoris[] = $operatori;
 
@@ -230,9 +230,9 @@ class BaseRuoli
      *
      * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function removeOperatori(Operatori $operatori)
+    public function removeOperatori(Operatori $operatori): static
     {
         $this->operatoris->removeElement($operatori);
 
@@ -254,9 +254,9 @@ class BaseRuoli
      *
      * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function addPermessi(Permessi $permessi)
+    public function addPermessi(Permessi $permessi): static
     {
         $this->permessis[] = $permessi;
 
@@ -268,9 +268,9 @@ class BaseRuoli
      *
      * @param \Cdf\BiCoreBundle\Entity\Permessi $permessi
      *
-     * @return \Cdf\BiCoreBundle\Entity\Ruoli
+     * @return static
      */
-    public function removePermessi(Permessi $permessi)
+    public function removePermessi(Permessi $permessi): static
     {
         $this->permessis->removeElement($permessi);
 

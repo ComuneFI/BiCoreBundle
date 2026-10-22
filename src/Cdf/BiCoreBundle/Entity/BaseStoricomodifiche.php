@@ -67,9 +67,9 @@ class BaseStoricomodifiche
      *
      * @param int $id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -91,9 +91,9 @@ class BaseStoricomodifiche
      *
      * @param string $nometabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setNometabella($nometabella)
+    public function setNometabella($nometabella): static
     {
         $this->nometabella = $nometabella;
 
@@ -115,9 +115,9 @@ class BaseStoricomodifiche
      *
      * @param string $nomecampo
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setNomecampo($nomecampo)
+    public function setNomecampo($nomecampo): static
     {
         $this->nomecampo = $nomecampo;
 
@@ -139,9 +139,9 @@ class BaseStoricomodifiche
      *
      * @param int $idtabella
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setIdtabella($idtabella)
+    public function setIdtabella($idtabella): static
     {
         $this->idtabella = $idtabella;
 
@@ -163,9 +163,9 @@ class BaseStoricomodifiche
      *
      * @param \DateTime $giorno
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setGiorno($giorno)
+    public function setGiorno($giorno): static
     {
         $this->giorno = $giorno;
 
@@ -187,9 +187,9 @@ class BaseStoricomodifiche
      *
      * @param string $valoreprecedente
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setValoreprecedente($valoreprecedente)
+    public function setValoreprecedente($valoreprecedente): static
     {
         $this->valoreprecedente = $valoreprecedente;
 
@@ -211,9 +211,9 @@ class BaseStoricomodifiche
      *
      * @param int $operatori_id
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setOperatoriId($operatori_id)
+    public function setOperatoriId($operatori_id): static
     {
         $this->operatori_id = $operatori_id;
 
@@ -235,9 +235,9 @@ class BaseStoricomodifiche
      *
      * @param \Cdf\BiCoreBundle\Entity\Operatori $operatori
      *
-     * @return \Cdf\BiCoreBundle\Entity\Storicomodifiche
+     * @return static
      */
-    public function setOperatori(Operatori $operatori = null)
+    public function setOperatori(Operatori $operatori = null): static
     {
         $this->operatori = $operatori;
 

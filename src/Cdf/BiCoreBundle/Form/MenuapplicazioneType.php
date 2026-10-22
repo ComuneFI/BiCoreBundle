@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class MenuapplicazioneType extends AbstractType
 {
 
-    private $transformer;
+    private \Cdf\BiCoreBundle\Form\Datatransformer\MenuapplicazioneTransformer $transformer;
 
     public function __construct(MenuapplicazioneTransformer $transformer)
     {
@@ -24,7 +24,8 @@ class MenuapplicazioneType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $submitparms = array(
             'label' => 'Aggiorna record',
@@ -53,7 +54,8 @@ class MenuapplicazioneType extends AbstractType
         $builder->get('padre')->addModelTransformer($this->transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Menuapplicazione::class,

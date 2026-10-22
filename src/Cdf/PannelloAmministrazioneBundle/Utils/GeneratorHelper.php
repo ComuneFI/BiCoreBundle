@@ -56,7 +56,6 @@ class GeneratorHelper
         $finderwrongproperty->in($pathdoctrineorm)->files()->name('Base*.php');
         $wrongpropertyname = array();
         foreach ($finderwrongproperty as $file) {
-            /** @phpstan-ignore-next-line */
             $ref = new ReflectionClass('App\\Entity\\' . basename($file->getFileName(), '.php'));
             $props = $ref->getProperties();
             foreach ($props as $prop) {

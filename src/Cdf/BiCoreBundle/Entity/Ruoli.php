@@ -26,7 +26,8 @@ class Ruoli extends BaseRuoli
         return $this->user;
     }
 
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
         return $this->getRuolo();
     }
