@@ -127,7 +127,7 @@ trait TabellaOpzioniTrait
         // il 5% si lascia per la ruzzolina in fondo alla riga, il 3% si lascia per il checkbox in testa alla riga,
         // quindi per le colonne dati resta il 92%
         $percentualefinale = 95; // il 5% si lascia per la ruzzolina in fondo
-        if (true === $this->getTabellaParameter('multiselezione')) {
+        if (true == $this->getTabellaParameter('multiselezione')) {
             $percentualefinale -= 3;
         }
 

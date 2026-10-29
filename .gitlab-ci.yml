@@ -61,7 +61,6 @@ build_php8.0:
         when: always
         paths:
           - build/logs/clover.xml
-          - tests/var/error*.png
         expire_in: 1 week
 
 build_php8.1:
@@ -76,7 +75,6 @@ build_php8.1:
         when: always
         paths:
           - build/logs/clover.xml
-          - tests/var/error*.png
         expire_in: 1 week
 
 sonarqube-check:

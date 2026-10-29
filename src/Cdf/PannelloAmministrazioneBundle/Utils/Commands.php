@@ -67,7 +67,7 @@ class Commands
      *
      * @return array<mixed>
      */
-    public function generateFormCrud(string $entityform, bool $generatemplate, bool $isAPI = false)
+    public function generateFormCrud(string $entityform, bool $generatemplate, bool $isAPI = false): array
     {
         // check if some item already exist, and it interrupts the execution if any
         $pannelloamministrazioneentity = $entityform;

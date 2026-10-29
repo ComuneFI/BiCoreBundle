@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\PannelloAmministrazioneBundle\Utils;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;

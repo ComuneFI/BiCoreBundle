@@ -153,8 +153,8 @@ services:
         arguments:
             $tableprefix: "%bi_core.table_prefix%"
 
-    FOS\UserBundle\Util\UserManipulator:
-        alias: fos_user.util.user_manipulator
+    Cdf\UserBundle\Util\UserManipulator:
+        alias: cdf_user.util.user_manipulator
 
     #listener
     cdf.bicorebundle.kernel.listener.maintenance:
@@ -184,7 +184,7 @@ services:
             $log: '@logger'
             $perm: '@cdf.bicorebundle.permessi'
             $em: '@doctrine.orm.entity_manager'
-            $um: '@fos_user.util.user_manipulator'
+            $um: '@cdf_user.util.user_manipulator'
             
     cdf.bicorebundle.form.menuapplicazionetype:
         class: Cdf\BiCoreBundle\Form\MenuapplicazioneType

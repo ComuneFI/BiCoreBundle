@@ -35,6 +35,7 @@ BiCoreBundle_Storicomodifiche:
     prefix:   /Storicomodifiche
     
 fos_user_security:
-    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    resource: "@CdfUserBundle/Resources/config/routing/security.xml"
 
-
+cdf_user_security:
+    resource: "@CdfUserBundle/Resources/config/routing/security.xml"

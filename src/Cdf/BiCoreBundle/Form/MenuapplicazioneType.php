@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cdf\BiCoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;

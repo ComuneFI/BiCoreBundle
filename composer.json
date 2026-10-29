@@ -29,7 +29,6 @@
     ],
     "autoload": {
         "psr-4": {
-            "App\\": "tests/src",
             "App\\": "src/",
             "Cdf\\BiCoreBundle\\": "src/Cdf/BiCoreBundle",
             "Cdf\\PannelloAmministrazioneBundle\\": "src/Cdf/PannelloAmministrazioneBundle"
@@ -37,9 +36,7 @@
     },
     "autoload-dev": {   
         "psr-4": {
-            "Tests\\": "tests/",
-            "App\\": "src/",
-            "Cdf\\BiCoreBundle\\Tests\\": "tests/Cdf/Tests/"
+            "App\\": "src/"
         }
     },
     "repositories": [
@@ -51,13 +48,13 @@
                 "ssl": {
                     "verify_peer": true,
                     "allow_self_signed": true,
-                    "local_cert": "/Users/D22088/.satiscerts/satis.comune.intranet.cer"
+                    "local_cert": "~/.satiscerts/satis.comune.intranet.cer"
                 }
             }       
         }
     ],
     "require": {
-        "php": ">=8.2",
+        "php": "~8.3",
         "composer/package-versions-deprecated": "^1.11",
         "comunedifirenze/doctrine2-exporter": "^3.0",
         "comunedifirenze/mysql-workbench-schema-exporter": "^3.0",
@@ -106,13 +103,11 @@
     "require-dev": {
         "dbrekelmans/bdi": "^1.0.0",
         "phpmd/phpmd": "^2.6",
-        "phpunit/phpunit": "^10.0",
         "scrutinizer/ocular": "^1.8",
         "squizlabs/php_codesniffer": "^3.3",
         "symfony/browser-kit": "6.4.*",
         "symfony/css-selector": "6.4.*",
         "symfony/panther": "^1.0.0|^2.0.0",
-        "symfony/phpunit-bridge": "^5.0",
         "symfony/stopwatch": "6.4.*",
         "symfony/var-dumper": "6.4.*",
         "symfony/web-profiler-bundle": "6.4.*"
@@ -160,9 +155,6 @@
             "allow-contrib": false,
             "require": "6.4.*"
         },
-        "public-dir": "tests/public",
-        "conf-dir": "tests/conf",
-        "config-dir": "tests/config",
         "branch-alias": {
             "dev-master": "6.4.x-dev"
         }

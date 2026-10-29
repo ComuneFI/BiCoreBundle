@@ -137,11 +137,7 @@ class Tabella
         return $this->apiProjectCollection;
     }
 
-    /**
-     *
-     * @return mixed|null
-     */
-    private function getTabellaParameter(string $name, string|int|null $default = null)
+    private function getTabellaParameter(string $name, string|int|null $default = null): string|int|null
     {
         if (isset($this->parametri[$name])) {
             return ParametriTabella::getParameter($this->parametri[$name]);
