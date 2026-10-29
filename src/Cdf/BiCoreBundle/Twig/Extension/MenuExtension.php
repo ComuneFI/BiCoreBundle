@@ -74,7 +74,7 @@ class MenuExtension extends AbstractExtension
         /** @phpstan-ignore-next-line */
         if ('main' === $this->user->getToken()->getFirewallName()) {
             $username = $this->user->getToken()->getUser()->getUserIdentifier();
-            $urlLogout = $this->urlgenerator->generate('fos_user_security_logout');
+            $urlLogout = $this->urlgenerator->generate('cdf_user_security_logout');
         }
 
         $risposta[] = ['percorso' => $this->getUrlObject($username, '', ''), 'nome' => $username, 'target' => '',

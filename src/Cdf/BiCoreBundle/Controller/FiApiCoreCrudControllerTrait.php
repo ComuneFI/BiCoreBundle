@@ -73,7 +73,11 @@ trait FiApiCoreCrudControllerTrait
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 //TODO: evaluate if this part can be improved
-                $parameters = $request->request->get($form->getName());
+                //$parameters = $request->request->get($form->getName());
+                $allData = $request->request->all();
+                $parameters = isset($allData[$form->getName()]) && is_array($allData[$form->getName()]) 
+                    ? $allData[$formclass] 
+                    : [];
                 if (!is_array($parameters)) {
                     return new Response(
                         $this->renderView($crudtemplate, $twigparms),
@@ -83,9 +87,7 @@ trait FiApiCoreCrudControllerTrait
                 $entity = $form->getData();
                 $this->setIdObjectfromSelect($entity, $parameters);
                     
-
                 $this->apiManager->postCreate($this->getCollectionName(), $entity);
-
 
                 return new Response(
                     $this->renderView($crudtemplate, $twigparms),
@@ -242,7 +244,11 @@ trait FiApiCoreCrudControllerTrait
             $attrArray
         );
 
-        $parameters = $request->request->get($editForm->getName());
+        //$parameters = $request->request->get($editForm->getName());
+        $allData = $request->request->all();
+        $parameters = isset($allData[$editForm->getName()]) && is_array($allData[$editForm->getName()]) 
+            ? $allData[$formclass] 
+            : [];
         if (!is_array($parameters)) {
             return new Response(
                 $this->renderView($crudtemplate, []),

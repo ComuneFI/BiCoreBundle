@@ -43,7 +43,6 @@ build:
 filter:
     excluded_paths:
         - 'vendor/*'
-        - 'tests/*'
     paths:
         - 'src/*'
 tools:
@@ -54,28 +53,28 @@ tools:
         config:
             standard: PSR2
         filter:
-            paths: ["src/*", "tests/*"]
+            paths: ["src/*"]
     php_cpd:
         enabled: true
-        excluded_dirs: ["build", "tests", "vendor"]
+        excluded_dirs: ["build", "vendor"]
     php_cs_fixer:
         enabled: true
         config:
             level: all
         filter:
-            paths: ["src/*", "tests/*"]
+            paths: ["src/*"]
     php_loc:
         enabled: true
-        excluded_dirs: ["build", "tests", "vendor"]
+        excluded_dirs: ["build", "vendor"]
     php_mess_detector:
         enabled: true
         filter:
             paths: ["src/*"]
     php_pdepend:
         enabled: true
-        excluded_dirs: ["build", "tests", "vendor"]
+        excluded_dirs: ["build", "vendor"]
     php_analyzer:
         filter:
-            paths: ["src/*", "tests/*"]
+            paths: ["src/*"]
     sensiolabs_security_checker: true
     

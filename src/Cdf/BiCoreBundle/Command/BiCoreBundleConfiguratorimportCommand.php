@@ -52,7 +52,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
 
         $fixturefile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'fixtures.yml';
 
-        return (int) $this->import($fixturefile);
+        return $this->import($fixturefile);
     }
 
     protected function import($fixturefile): int
@@ -71,7 +71,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
             $sortedEntities = $this->getSortedEntities($fixtures);
             foreach ($sortedEntities as $entityclass => $fixture) {
                 $ret = $this->executeImport($entityclass, $fixture);
-                if (1 == $ret) {
+                if (1 === $ret) {
                     return 1;
                 }
             }
@@ -118,7 +118,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return $entities;
     }
 
-    private function executeImport($entityclass, $fixture): int
+    private function executeImport(int|string $entityclass, $fixture): int
     {
         $msg = '<info>Trovati ' . count($fixture) . " record per l'entity " . $entityclass . '</info>';
         $this->output->writeln($msg);
@@ -133,7 +133,7 @@ class BiCoreBundleConfiguratorimportCommand extends Command
         return 0;
     }
 
-    private function switchInsertUpdate($entityclass, array $record, $objrecord)
+    private function switchInsertUpdate(int|string $entityclass, array $record, ?object $objrecord)
     {
         if (!$objrecord) {
             return $this->executeInsert($entityclass, $record);

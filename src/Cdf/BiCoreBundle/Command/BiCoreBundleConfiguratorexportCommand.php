@@ -41,7 +41,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
             $systementities = $this->systementity->getSystemEntities();
             foreach ($systementities as $entity => $details) {
                 $ret = $this->export($fixturefile, $entity);
-                if (1 == $ret) {
+                if (1 === $ret) {
                     return \Symfony\Component\Console\Command\Command::FAILURE;
                 }
             }
@@ -57,7 +57,7 @@ class BiCoreBundleConfiguratorexportCommand extends Command
     {
         $entityclass = $entity;
         $ret = $this->exportEntity($entityclass);
-        if (0 == $ret) {
+        if (0 === $ret) {
             foreach ($this->entities as $entity) {
                 $this->output->writeln('<info>Esporto ' . $entity . ' su file</info>');
                 $this->exportEntityToFile($fixturefile, $entity);

@@ -1,8 +1,0 @@
-Fixed symfony/makerbundle 1.5.*, dalla 1.6.* non funziona più il regenerate entity
-
-Tests:
-    test su ordinamento campi definiti da utente
-    test su stampa campi definiti da utente
-
-<server name="PANTHER_CHROME_ARGUMENTS" value="--disable-dev-shm-usage --disable-gpu --disable-extensions --remote-debugging-port=9222"/>
-<server name="PANTHER_CHROME_ARGUMENTS" value="--disable-dev-shm-usage"/>

@@ -127,8 +127,8 @@ class PannelloAmministrazioneController extends AbstractController
         $comandisymfony = [
             ['text' => 'list', 'link' => '#'],
             ['text' => 'cache:clear --env=prod --no-debug', 'link' => '#'],
-            ['text' => 'fos:user:create admin pass admin@admin.it', 'link' => '#'],
-            ['text' => 'fos:user:promote username ROLE_SUPER_ADMIN', 'link' => '#'],
+            ['text' => 'cdf:user:create admin pass admin@admin.it', 'link' => '#'],
+            ['text' => 'cdf:user:promote username ROLE_SUPER_ADMIN', 'link' => '#'],
             ['text' => "assets:install $projectDir/public", 'link' => '#'],
             ['text' => 'pannelloamministrazione:checkgitversion', 'link' => '#'],
         ];

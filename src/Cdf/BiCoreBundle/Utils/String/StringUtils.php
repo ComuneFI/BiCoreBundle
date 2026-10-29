@@ -22,7 +22,7 @@ class StringUtils
         if ($capitalise_first_char) {
             $str[0] = strtoupper($str[0]);
         }
-        $func = (fn($matches) => strtoupper($matches[1]));
+        $func = (fn($matches): string => strtoupper($matches[1]));
 
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }

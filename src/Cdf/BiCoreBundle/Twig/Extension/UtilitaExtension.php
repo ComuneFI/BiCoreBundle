@@ -45,11 +45,7 @@ class UtilitaExtension extends AbstractExtension
         return $this->parameterBag->get($parameter);
     }
 
-    /**
-     *
-     * @return string|false
-     */
-    public function getParametroTabella(string $parametro)
+    public function getParametroTabella(string $parametro): string
     {
         return ParametriTabella::getParameter($parametro);
     }

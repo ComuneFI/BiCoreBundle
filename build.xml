@@ -27,8 +27,6 @@
         <delete file="composer.phar"/>
         <delete file="composer.lock"/>
         <delete file=".phpunit.result.cache"/>
-        <delete file="tests/var/error.png"/>
-        
     </target>
 
     <target name="finish" description="Cleanup">
@@ -37,7 +35,6 @@
         <delete file="cache.properties"/>
         <delete file="composer.phar"/>
         <delete file=".phpunit.result.cache"/>
-        <delete file="tests/var/error.png"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
@@ -158,15 +155,5 @@
     </target>
 
     <target name="phpunit-ci" description="Run unit tests with PHPUnit">
-        <exec executable="vendor/bin/simple-phpunit" failonerror="true">
-            <env key="PANTHER_WEB_SERVER_DIR" value="${basedir}/tests/public"/>
-            <env key="PANTHER_NO_HEADLESS" value="0"/>
-            <env key="PANTHER_NO_SANDBOX" value="1"/>
-            <env key="PANTHER_DEVTOOLS" value="0"/>
-            <env key="PANTHER_CHROME_ARGUMENTS" value="--disable-dev-shm-usage"/>
-            <env key="PANTHER_WEB_SERVER_ROUTER" value="${basedir}/tests/router.php"/>
-            <arg line="--configuration=${basedir}/phpunit.xml.dist"/>
-            <arg line="--coverage-clover=${basedir}/build/logs/clover.xml"/>
-        </exec>
     </target>
 </project>

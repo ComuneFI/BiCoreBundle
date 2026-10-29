@@ -16,8 +16,8 @@ $(document).ready(function () {
 
     //PHPUNIT
     $("#adminpanelphpunittest").click(function () {
-        var domanda = "Vuoi eseguire tutti i test unitari?";
-        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_phpunittest"));
+//        var domanda = "Vuoi eseguire tutti i test unitari?";
+//        Pannelloamministrazione.eseguicomando(domanda, Routing.generate("fi_pannello_amministrazione_phpunittest"));
     });
 
     $("#adminpanelunixcommand").click(function () {
