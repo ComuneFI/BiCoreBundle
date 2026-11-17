@@ -112,7 +112,6 @@ trait FiCoreTabellaControllerTrait
     protected function getParametriTabella(ManagerRegistry $doctrine, array $parametripassati): array
     {
         $configurazionetabella = new Tabella($doctrine, $parametripassati);
-
         return [
             'parametritabella' => $configurazionetabella->getConfigurazionecolonnetabella(),
             'recordstabella' => $this->getRecordsTabella($this->isApi($parametripassati), $configurazionetabella),

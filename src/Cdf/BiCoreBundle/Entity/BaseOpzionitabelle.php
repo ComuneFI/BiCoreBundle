@@ -18,7 +18,8 @@ class BaseOpzionitabelle
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'opzionitabelle_id_seq', allocationSize: 1, initialValue: 1)]    
     protected $id;
 
     #[ORM\Column(type: 'string', length: 45, nullable: true)]
