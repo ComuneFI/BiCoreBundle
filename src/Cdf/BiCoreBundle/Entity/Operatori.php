@@ -6,8 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Cdf\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
-use Cdf\UserBundle\Model\UserInterface as CdfUserInterface;
+use Cdf\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
@@ -16,8 +15,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity]
 #[ORM\Table(name: 'Operatori')]
 #[ORM\Index(name: 'fk_operatori_ruoli2_idx', columns: ['ruoli_id'])]
-//class Operatori extends BaseUser implements EquatableInterface, UserInterface, PasswordAuthenticatedUserInterface
-class Operatori extends BaseUser implements EquatableInterface, SymfonyUserInterface, PasswordAuthenticatedUserInterface
+class Operatori extends BaseUser implements EquatableInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
 
     #[ORM\Id]
@@ -240,22 +238,16 @@ class Operatori extends BaseUser implements EquatableInterface, SymfonyUserInter
         return ['id', 'operatore', 'ruoli_id'];
     }
 
-    //public function isEqualTo(UserInterface $user) : bool
-    public function isEqualTo(SymfonyUserInterface $user): bool
+    public function isEqualTo(UserInterface $user) : bool
     {
-        if (!$user instanceof CdfUserInterface) {
+        if ($this->password !== $user->getPassword()) {
             return false;
         }
 
-        if ($this->getPassword() !== $user->getPassword()) {
+        if ($this->salt !== $user->getSalt()) {
             return false;
         }
-
-        if ($this->getSalt() !== $user->getSalt()) {
-            return false;
-        }
-
-        return $this->getUsername() === $user->getUsername();
+        return $this->username === $user->getUsername();
     }
 
     /**

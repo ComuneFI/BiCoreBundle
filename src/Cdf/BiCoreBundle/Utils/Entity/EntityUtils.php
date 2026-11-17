@@ -140,7 +140,7 @@ class EntityUtils
         $metadata = $this->em->getClassMetadata($entityclass);
         $fielsassoc = $metadata->associationMappings;
         foreach ($fielsassoc as $tableassoc) {
-            if ($tableassoc->inversedBy ?? null) {
+            if ($tableassoc['inversedBy']) {
                 $jointables[$tableassoc['targetEntity']] = ['entity' => $tableassoc];
             }
         }

@@ -181,10 +181,10 @@ services:
         class: Cdf\BiCoreBundle\Controller\OperatoriController
         bind:
             # for any $logger argument, pass this specific service
-            $logger: '@logger'
+            $log: '@logger'
             $perm: '@cdf.bicorebundle.permessi'
             $em: '@doctrine.orm.entity_manager'
-            $usermanipulator: '@cdf_user.util.user_manipulator'
+            $um: '@cdf_user.util.user_manipulator'
             
     cdf.bicorebundle.form.menuapplicazionetype:
         class: Cdf\BiCoreBundle\Form\MenuapplicazioneType

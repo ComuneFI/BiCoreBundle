@@ -257,9 +257,12 @@ trait FiApiCoreCrudControllerTrait
         }    
 
         $this->setIdfromSelect($parameters);
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        $editForm->submit($parameters);
+
+        if ($editForm->isValid()) {
             $entityItem = $editForm->getData();
+
+
 
             $this->apiManager->postUpdate($this->getCollectionName(), (object) $entityItem, $id);
 

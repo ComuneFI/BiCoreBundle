@@ -19,11 +19,7 @@ trait TabellaOpzioniTrait
         $opzionibuilder = [];
         foreach ($this->colonnedatabase as $colonnadatabase) {
             // Inserire dati da definizione entity
-            if (is_array($colonnadatabase)) {
-                $this->setOpzioniTabellaDefault($colonnadatabase, $opzionibuilder, null, false);
-            } else {
-                $this->setOpzioniTabellaDefault((array) $colonnadatabase, $opzionibuilder, null, false);                
-            }
+            $this->setOpzioniTabellaDefault($colonnadatabase, $opzionibuilder, null, false);
         }
         $this->setOpzioniTabellaFromCore($opzionibuilder);
         $this->setOpzioniTabellaFromModellocolonne($opzionibuilder);

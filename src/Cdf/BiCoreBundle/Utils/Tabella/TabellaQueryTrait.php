@@ -5,7 +5,6 @@ namespace Cdf\BiCoreBundle\Utils\Tabella;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Cdf\BiCoreBundle\Utils\FieldType\FieldTypeUtils;
-use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use function count;
 
@@ -23,8 +22,7 @@ trait TabellaQueryTrait
                 ->select([$nometabellaalias])
                 ->from($this->entityname, $nometabellaalias);
         /* @phpstan-ignore-next-line */
-        //$campi = array_keys((array) $this->em->getMetadataFactory()->getMetadataFor($this->entityname)->reflFields);
-        $campi = $this->getNomiCampiEntity($this->entityname);        
+        $campi = array_keys($this->em->getMetadataFactory()->getMetadataFor($this->entityname)->reflFields);
         $this->recursiveJoin($qb, $campi, $this->tablename, $nometabellaalias);
         $this->buildWhere($qb);
         $this->orderByBuilder($qb);
@@ -69,8 +67,7 @@ trait TabellaQueryTrait
 
                 $camporelazionejoin = strtolower($parti[count($parti) - 1]);
                 $qb->leftJoin($alias . '.' . $camporelazionejoin, $aliastarget);
-                //$campitarget = array_keys($this->em->getMetadataFactory()->getMetadataFor($entitytarget)->reflFields);
-                $campitarget = $this->getNomiCampiEntity($entitytarget);
+                $campitarget = array_keys($this->em->getMetadataFactory()->getMetadataFor($entitytarget)->reflFields);
                 $this->recursiveJoin($qb, $campitarget, $nometabellatarget, $aliastarget, $ancestors);
 
                 // lancia rescursiveJoin su questo campo con padre = $aliasgenerato
@@ -86,6 +83,7 @@ trait TabellaQueryTrait
      */
     protected function buildWhere(&$qb): void
     {
+
         $filtro = '';
         $prefiltro = '';
         foreach ($this->prefiltri as $key => $prefiltro) {
@@ -95,7 +93,7 @@ trait TabellaQueryTrait
             $this->filtri[$key]['prefiltro'] = false;
         }
         $tuttifiltri = array_merge($this->filtri, $this->prefiltri);
-        
+        $parametribag = [];
         if (count($tuttifiltri)) {
             $descrizionefiltri = '';
             foreach ($tuttifiltri as $num => $filtrocorrente) {
@@ -123,20 +121,16 @@ trait TabellaQueryTrait
 
                 if ($querycriteria) {
                     $qb->andWhere($querycriteria);
-                    // Registriamo i parametri uno a uno in modo sicuro per Doctrine 3
-                    if (is_array($queryparameter)) {
-                        foreach ($queryparameter as $pKey => $pValue) {
-                            $qb->setParameter($pKey, $pValue);
-                        }
-                    }
+                    $parametribag = array_merge($queryparameter, $parametribag);
                 } else {
                     $qb->andWhere($fieldname . ' ' . $fieldoperator . ' ' . ":$fitrocorrenteqp");
-                    $qb->setParameter($fitrocorrenteqp, $fieldvalue);
+                    $parametribag = array_merge([$fitrocorrenteqp => $fieldvalue], $parametribag);
                 }
                 $this->getDescrizioneFiltro($descrizionefiltri, $filtrocorrente, $criteria);
             }
             $this->traduzionefiltri = substr($descrizionefiltri, 2);
         }
+        $qb->setParameters($parametribag);
 
         if (isset($this->wheremanuale)) {
             $qb->andWhere($this->wheremanuale);
@@ -309,7 +303,6 @@ trait TabellaQueryTrait
 
         if (false === $this->estraituttirecords) {
             $paginator = new Paginator($qb, true);
-            $paginator->setUseOutputWalkers(false); // Disabilita gli output walkers per evitare il crash su Doctrine 3 con le funzioni stringa (es. lower())
             $this->righetotali = count($paginator);
             $this->paginetotali = (int) $this->calcolaPagineTotali($this->getRigheperpagina());
             /* imposta l'offset, ovvero il record dal quale iniziare a visualizzare i dati */
@@ -383,14 +376,4 @@ trait TabellaQueryTrait
 
         return $this->records;
     }
-    
-    /**
-     * @return array<string>
-     */
-    private function getNomiCampiEntity(string $entityclass): array
-    {
-        $metadata = $this->em->getClassMetadata($entityclass);
-
-        return array_merge($metadata->getFieldNames(), $metadata->getAssociationNames());
-    }    
 }
