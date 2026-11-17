@@ -25,7 +25,7 @@ trait TabellaDecoderTrait
         }
     }
 
-    protected function getFieldValue(array $fieldvalue): \Datetime|array
+    protected function getFieldValue(mixed $fieldvalue): mixed
     {
         if (isset($fieldvalue['date'])) {
             return new Datetime($fieldvalue['date']);

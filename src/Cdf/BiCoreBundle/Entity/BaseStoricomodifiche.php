@@ -19,7 +19,8 @@ class BaseStoricomodifiche
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'storicomodifiche_id_seq', allocationSize: 1, initialValue: 1)]    
     protected $id;
 
     #[ORM\Column(type: 'string', length: 45)]

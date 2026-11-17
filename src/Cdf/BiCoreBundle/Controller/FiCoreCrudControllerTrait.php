@@ -163,7 +163,6 @@ trait FiCoreCrudControllerTrait
         if (!$entity) {
             throw $this->createNotFoundException('Impossibile trovare l\'entità ' . $controller . ' per il record con id ' . $id);
         }
-        
         $editForm = $this->createForm(
             $formType,
             $entity,
@@ -173,11 +172,9 @@ trait FiCoreCrudControllerTrait
                     'action' => $this->generateUrl($controller . '_update', ['id' => $entity->getId()]),
                 ]
         );
-        
-        /** @phpstan-ignore-next-line */
-        $editForm->submit($request->request->get($editForm->getName()));
 
-        if ($editForm->isValid()) {
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
             $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
 
             $this->em->persist($entity);

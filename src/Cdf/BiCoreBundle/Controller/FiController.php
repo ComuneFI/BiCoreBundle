@@ -52,4 +52,18 @@ class FiController extends AbstractController
     {
         return $this->template;
     }
+    
+    protected function getUser(): \Cdf\UserBundle\Model\UserInterface
+    {
+        if (!$this->container->has('security.token_storage')) {
+            throw new \LogicException('The SecurityBundle is not registered in your application. Try running "composer require symfony/security-bundle".');
+        }
+
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
+
+        return $token->getUser();
+    }
+    
 }
