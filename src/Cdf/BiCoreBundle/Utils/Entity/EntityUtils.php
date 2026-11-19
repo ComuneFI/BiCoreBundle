@@ -32,7 +32,7 @@ class EntityUtils
         $fieldMappings = $infocolonne->fieldMappings;
         //dump($fieldMappings);
         foreach ($fieldMappings as $colonna) {
-            $colonne[$colonna['fieldName']] = $colonna;
+            $colonne[$colonna['fieldName']] = get_object_vars($colonna);
             $colonne[$colonna['fieldName']]['entityClass'] = $entity;
         }
         $joinTables = $this->getEntityJoinTables($entity);

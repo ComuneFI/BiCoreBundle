@@ -55,7 +55,7 @@ class ModelUtils
             if (\str_contains($fieldName, 'NOTenum')) {
                 //dump("Trovato enum ".$fieldName);
             } else {
-                $colonne[$fieldName]['fieldName'] = $fieldName;
+                $colonne[$fieldName]['fieldName'] = get_object_vars($fieldName);
                 //$colonne[$fieldName]['type'] = $formatMappings[$fieldName];
                 $colonne[$fieldName]['type'] = $this->getTypeOfData($fieldType, $formatMappings[$fieldName]);
                 $colonne[$fieldName]['entityClass'] = $entity;

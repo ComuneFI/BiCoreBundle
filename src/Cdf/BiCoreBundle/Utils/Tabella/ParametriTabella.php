@@ -19,6 +19,6 @@ class ParametriTabella
      */
     public static function setParameter($parametro): string
     {
-        return base64_encode($parametro);
+        return ($parametro != NULL) ? base64_encode($parametro) : "";
     }
 }
